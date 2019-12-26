@@ -9,14 +9,14 @@ import (
 	"testing"
 )
 
-func TestDemo(t *testing.T){
+func TestDemo(t *testing.T) {
 	//t.Run("demo1" ,Demo1)
 	t.Run("Adapters_test", Adapters)
 }
 
-func Demo1(t *testing.T){
-	e,err:=casbin.NewEnforcer("casbin_conf/model.conf","casbin_conf/policy.csv")
-	if err!=nil{
+func Demo1(t *testing.T) {
+	e, err := casbin.NewEnforcer("casbin_conf/model.conf", "casbin_conf/policy.csv")
+	if err != nil {
 		panic(err)
 	}
 	sub := "alice" // the user that wants to access a resource. 对象
@@ -25,7 +25,7 @@ func Demo1(t *testing.T){
 	ok, err := e.Enforce(sub, obj, act)
 
 	if err != nil {
-		fmt.Println("验证失败",err)
+		fmt.Println("验证失败", err)
 	}
 
 	if ok == true {
@@ -117,7 +117,7 @@ func testAutoSave(t *testing.T, a *utils.Adapter) {
 
 	// NewEnforcer() will load the policy automatically.
 	e, err := casbin.NewEnforcer("casbin_conf/rbac_model.conf", a)
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 	// AutoSave is enabled by default.
