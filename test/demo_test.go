@@ -6,12 +6,15 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/util"
 	"github.com/gogf/gf/os/glog"
+	"github.com/mojocn/base64Captcha"
 	"testing"
 )
 
 func TestDemo(t *testing.T) {
 	//t.Run("demo1" ,Demo1)
-	t.Run("Adapters_test", Adapters)
+	//t.Run("Adapters_test", Adapters)
+	t.Run("CaptchaDemo", CaptchaDemo)
+	t.Run("CaptchaVerify", CaptchaVerify)
 }
 
 func Demo1(t *testing.T) {
@@ -32,6 +35,57 @@ func Demo1(t *testing.T) {
 		fmt.Println("权限通过")
 	} else {
 		fmt.Println("没有权限")
+	}
+}
+
+func demoCodeCaptchaCreate() {
+	//config struct for digits
+	//数字验证码配置
+	/*var configD = base64Captcha.ConfigDigit{
+		Height:     80,
+		Width:      240,
+		MaxSkew:    0.7,
+		DotCount:   80,
+		CaptchaLen: 5,
+	}*/
+	//config struct for audio
+	//声音验证码配置
+	/*var configA = base64Captcha.ConfigAudio{
+		CaptchaLen: 6,
+		Language:   "zh",
+	}*/
+	//config struct for Character
+	//字符,公式,验证码配置
+	var configC = base64Captcha.ConfigCharacter{
+		Height: 60,
+		Width:  240,
+		//const CaptchaModeNumber:数字,CaptchaModeAlphabet:字母,CaptchaModeArithmetic:算术,CaptchaModeNumberAlphabet:数字字母混合.
+		Mode:               base64Captcha.CaptchaModeNumber,
+		ComplexOfNoiseText: base64Captcha.CaptchaComplexLower,
+		ComplexOfNoiseDot:  base64Captcha.CaptchaComplexLower,
+		IsShowHollowLine:   false,
+		IsShowNoiseDot:     false,
+		IsShowNoiseText:    false,
+		IsShowSlimeLine:    false,
+		IsShowSineLine:     false,
+		CaptchaLen:         4,
+	}
+	//创建字符公式验证码.
+	//GenerateCaptcha 第一个参数为空字符串,包会自动在服务器一个随机种子给你产生随机uiid.
+	idKeyC, capC := base64Captcha.GenerateCaptcha("8nM77YhE2xOvU6GMQ33A", configC)
+	//以base64编码
+	base64stringC := base64Captcha.CaptchaWriteToBase64Encoding(capC)
+	fmt.Println(idKeyC, "\n", base64stringC)
+}
+func CaptchaDemo(t *testing.T) {
+	demoCodeCaptchaCreate()
+}
+
+func CaptchaVerify(t *testing.T) {
+	if base64Captcha.VerifyCaptchaAndIsClear("8nM77YhE2xOvU6GMQ33A", "0870", false) {
+		fmt.Println("验证成功")
+	} else {
+		fmt.Println("验证失败")
 	}
 }
 
