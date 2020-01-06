@@ -5,25 +5,41 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+const (
+	SuccessCode       int = 200
+	ErrorCode         int = 400
+	AccessDeniedCode  int = 403
+	NotFoundCode      int = 404
+	NotAcceptableCode int = 406
+	ServerErrorCode   int = 500
+	RedirectCode      int = 302
+)
+
+// 返回JSON数据并退出当前HTTP执行函数。
+func JsonExit(r *ghttp.Request, code int, msg string, data ...interface{}) {
+	RJson(r, code, msg, data...)
+	r.Exit()
+}
+
 // 标准返回结果数据结构封装。
 // 返回固定数据结构的JSON:
-// err:  错误码(0:成功, 1:失败, >1:错误码);
+// code:  状态码(200:成功,302跳转，和http请求状态码一至);
 // msg:  请求结果信息;
 // data: 请求结果,根据不同接口返回结果的数据结构不同;
-func Json(r *ghttp.Request, err int, msg string, data ...interface{}) {
+func RJson(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	responseData := interface{}(nil)
-	if len(data) > 0 {
-		responseData = data[0]
-	}
+	responseData = data
 	r.Response.WriteJson(g.Map{
-		"err":  err,
+		"code": code,
 		"msg":  msg,
 		"data": responseData,
 	})
 }
 
-// 返回JSON数据并退出当前HTTP执行函数。
-func JsonExit(r *ghttp.Request, err int, msg string, data ...interface{}) {
-	Json(r, err, msg, data...)
-	r.Exit()
+//成功返回JSON
+func SusJson(isExit bool, r *ghttp.Request, msg string, data ...interface{}) {
+	if isExit {
+		JsonExit(r, SuccessCode, msg, data...)
+	}
+	RJson(r, SuccessCode, msg, data...)
 }
