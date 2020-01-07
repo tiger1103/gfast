@@ -5,6 +5,9 @@ import (
 	"gfast/library/utils"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/util"
+	"github.com/goflyfox/gtoken/gtoken"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/glog"
 	"github.com/mojocn/base64Captcha"
 	"testing"
@@ -13,8 +16,9 @@ import (
 func TestDemo(t *testing.T) {
 	//t.Run("demo1" ,Demo1)
 	//t.Run("Adapters_test", Adapters)
-	t.Run("CaptchaDemo", CaptchaDemo)
-	t.Run("CaptchaVerify", CaptchaVerify)
+	//t.Run("CaptchaDemo", CaptchaDemo)
+	//t.Run("CaptchaVerify", CaptchaVerify)
+	t.Run("GTokenTest", GTokenTest)
 }
 
 func Demo1(t *testing.T) {
@@ -38,6 +42,30 @@ func Demo1(t *testing.T) {
 	}
 }
 
+func GTokenTest(t *testing.T) {
+	// 启动gtoken
+	gtoken := &gtoken.GfToken{
+		LoginPath:        "/login",
+		LoginBeforeFunc:  loginFunc,
+		LogoutPath:       "/user/logout",
+		AuthPaths:        g.SliceStr{"/system/*"},
+		LogoutBeforeFunc: loginOutFunc,
+	}
+	gtoken.Start()
+	s := g.Server()
+	s.BindHandler("/system/admin", func(r *ghttp.Request) {
+		r.Response.Write("hello admin")
+	})
+	s.SetPort(8080)
+	s.Run()
+}
+
+func loginFunc(r *ghttp.Request) (string, interface{}) {
+	return "yixiaohu", []g.MapStrStr{{"name": "张三", "age": "18"}, {"name": "李四", "age": "32"}}
+}
+func loginOutFunc(r *ghttp.Request) bool {
+	return true
+}
 func demoCodeCaptchaCreate() {
 	//config struct for digits
 	//数字验证码配置

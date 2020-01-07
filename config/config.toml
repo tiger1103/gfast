@@ -1,0 +1,15 @@
+# 数据库连接
+[database]
+    link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast"
+#web服务器配置
+[server]
+    Address          = ":8080"
+    ServerRoot       = "./public/resource"
+    AccessLogEnabled = true
+    ErrorLogEnabled  = true
+    PProfEnabled     = true
+    LogPath          = "./data/log/server_log"
+    SessionIdName    = "sysSessionId"
+    SessionPath      = "./data/session"
+    SessionMaxAge    = "24h"
+    DumpRouterMap    = true
