@@ -2,10 +2,12 @@ package test
 
 import (
 	"fmt"
-	"gfast/library/utils"
+	"gfast/library/adapterUtils"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/util"
 	"github.com/goflyfox/gtoken/gtoken"
+	"github.com/gogf/gf/crypto/gaes"
+	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/glog"
@@ -18,7 +20,16 @@ func TestDemo(t *testing.T) {
 	//t.Run("Adapters_test", Adapters)
 	//t.Run("CaptchaDemo", CaptchaDemo)
 	//t.Run("CaptchaVerify", CaptchaVerify)
-	t.Run("GTokenTest", GTokenTest)
+	//t.Run("GTokenTest", GTokenTest)
+	t.Run("CbcEncrypt", CbcEncrypt)
+}
+
+func CbcEncrypt(t *testing.T) {
+	b, e := gaes.EncryptCBC([]byte("yxh123456"), []byte("HqmP1KLMuz09Q0Bu"), []byte("HqmP1KLMuz09Q0Bu"))
+	if e != nil {
+		panic(e)
+	}
+	fmt.Println(gbase64.EncodeToString(b))
 }
 
 func Demo1(t *testing.T) {
@@ -122,7 +133,7 @@ func Adapters(t *testing.T) {
 	testAutoSave(t, a)
 	testSaveLoad(t, a)
 
-	a = initAdapterFormOptions(t, &utils.Adapter{
+	a = initAdapterFormOptions(t, &adapterUtils.Adapter{
 		DriverName:     "mysql",
 		DataSourceName: "root:123456@tcp(127.0.0.1:3306)/test2",
 	})
@@ -130,9 +141,9 @@ func Adapters(t *testing.T) {
 	testSaveLoad(t, a)
 }
 
-func initAdapterFormOptions(t *testing.T, adapter *utils.Adapter) *utils.Adapter {
+func initAdapterFormOptions(t *testing.T, adapter *adapterUtils.Adapter) *adapterUtils.Adapter {
 	// Create an adapter
-	a, _ := utils.NewAdapterFromOptions(adapter)
+	a, _ := adapterUtils.NewAdapterFromOptions(adapter)
 	// Initialize some policy in DB.
 	initPolicy(t, a)
 	// Now the DB has policy, so we can provide a normal use case.
@@ -142,7 +153,7 @@ func initAdapterFormOptions(t *testing.T, adapter *utils.Adapter) *utils.Adapter
 	return a
 }
 
-func initPolicy(t *testing.T, a *utils.Adapter) {
+func initPolicy(t *testing.T, a *adapterUtils.Adapter) {
 	// Because the DB is empty at first,
 	// so we need to load the policy from the file adapter (.CSV) first.
 	e, err := casbin.NewEnforcer("casbin_conf/rbac_model.conf", "casbin_conf/rbac_policy.csv")
@@ -179,9 +190,9 @@ func testGetPolicy(t *testing.T, e *casbin.Enforcer, res [][]string) {
 	}
 }
 
-func initAdapter(t *testing.T, driverName string, dataSourceName string) *utils.Adapter {
+func initAdapter(t *testing.T, driverName string, dataSourceName string) *adapterUtils.Adapter {
 	// Create an adapter
-	a, err := utils.NewAdapter(driverName, dataSourceName)
+	a, err := adapterUtils.NewAdapter(driverName, dataSourceName)
 	if err != nil {
 		panic(err)
 	}
@@ -195,7 +206,7 @@ func initAdapter(t *testing.T, driverName string, dataSourceName string) *utils.
 	return a
 }
 
-func testAutoSave(t *testing.T, a *utils.Adapter) {
+func testAutoSave(t *testing.T, a *adapterUtils.Adapter) {
 
 	// NewEnforcer() will load the policy automatically.
 	e, err := casbin.NewEnforcer("casbin_conf/rbac_model.conf", a)
@@ -237,7 +248,7 @@ func testAutoSave(t *testing.T, a *utils.Adapter) {
 	testGetPolicy(t, e, [][]string{{"alice", "data1", "read"}, {"bob", "data2", "write"}})
 }
 
-func testSaveLoad(t *testing.T, a *utils.Adapter) {
+func testSaveLoad(t *testing.T, a *adapterUtils.Adapter) {
 	// Initialize some policy in DB.
 	initPolicy(t, a)
 	// Note: you don't need to look at the above code

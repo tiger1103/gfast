@@ -8,14 +8,13 @@ import (
 )
 
 // 用户登录，成功返回用户信息，否则返回nil; passport应当会md5值字符串
-func SignIn(username, password string, session *ghttp.Session) error {
-	qxkjUser, err := qxkj_user.Model.Where("username=? and user_password=?", username, password).One()
+func SignIn(username, password string, session *ghttp.Session) (error, *qxkj_user.QxkjUser) {
+	qxkjUser, err := qxkj_user.Model.Where("user_name=? and user_password=?", username, password).One()
 	if err != nil && err != sql.ErrNoRows {
-		return err
+		return err, nil
 	}
 	if qxkjUser == nil {
-		return errors.New("账号或密码错误")
+		return errors.New("账号或密码错误"), nil
 	}
-	//session.Set(USER_SESSION_MARK, record)
-	return nil
+	return nil, qxkjUser
 }
