@@ -30,6 +30,8 @@ func CbcEncrypt(t *testing.T) {
 		panic(e)
 	}
 	fmt.Println(gbase64.EncodeToString(b))
+	b, _ = gaes.DecryptCBC(b, []byte("HqmP1KLMuz09Q0Bu"), []byte("HqmP1KLMuz09Q0Bu"))
+	fmt.Println(string(b))
 }
 
 func Demo1(t *testing.T) {

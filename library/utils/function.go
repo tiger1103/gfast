@@ -42,21 +42,24 @@ func GetVerifyImg() (idKeyC string, base64stringC string) {
 //AdminLogin 后台用户登陆验证
 func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	data := r.GetPostMapStrStr()
-	//判断验证码是否正确
-	/*if !base64Captcha.VerifyCaptchaAndIsClear(data["idKeyC"], data["idValueC"], true) {
-		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
-	}*/
 	rules := map[string]string{
+		"idValueC": "required",
 		"username": "required",
 		"password": "required",
 	}
 	msgs := map[string]interface{}{
+		"idValueC": "请输入验证码",
 		"username": "账号不能为空",
 		"password": "密码不能为空",
 	}
 	if e := gvalid.CheckMap(data, rules, msgs); e != nil {
 		response.JsonExit(r, response.ErrorCode, e.String())
 	}
+	//判断验证码是否正确
+	if !base64Captcha.VerifyCaptchaAndIsClear(data["idKeyC"], data["idValueC"], true) {
+		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
+	}
+
 	if err, user := user_service.SignIn(data["username"], EncryptCBC(data["password"]), r.Session); err != nil {
 		response.JsonExit(r, response.NotAcceptableCode, err.Error())
 	} else {
@@ -74,6 +77,22 @@ func AdminLoginOut(r *ghttp.Request) bool {
 func EncryptCBC(plainText string) string {
 	key := []byte(AESPublicKey)
 	b, e := gaes.EncryptCBC([]byte(plainText), key, key)
+	if e != nil {
+		glog.Error(e.Error())
+		return ""
+	}
+	return gbase64.EncodeToString(b)
+}
+
+//字符串解密
+func DecryptCBC(plainText string) string {
+	key := []byte(AESPublicKey)
+	plainTextByte, e := gbase64.DecodeString(plainText)
+	if e != nil {
+		glog.Error(e.Error())
+		return ""
+	}
+	b, e := gaes.DecryptCBC(plainTextByte, key, key)
 	if e != nil {
 		glog.Error(e.Error())
 		return ""

@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-// 用户登录，成功返回用户信息，否则返回nil; passport应当会md5值字符串
+// 用户登录，成功返回用户信息，否则返回nil
 func SignIn(username, password string, session *ghttp.Session) (error, *qxkj_user.QxkjUser) {
 	qxkjUser, err := qxkj_user.Model.Where("user_name=? and user_password=?", username, password).One()
 	if err != nil && err != sql.ErrNoRows {
