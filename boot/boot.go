@@ -6,16 +6,26 @@ import (
 	"github.com/gogf/gf/frame/g"
 )
 
+var GfToken *gtoken.GfToken
+
 func init() {
 	g.Server().SetPort(8200)
 	g.Server().AddStaticPath("/public", g.Cfg().Get("server.ServerRoot").(string))
 	// 启动gtoken
-	gtoken := &gtoken.GfToken{
+	GfToken = &gtoken.GfToken{
+		CacheMode:        int8(g.Cfg().Get("gToken.CacheMode").(float64)),
+		CacheKey:         g.Cfg().Get("gToken.CacheKey").(string),
+		Timeout:          int(g.Cfg().Get("gToken.Timeout").(float64)),
+		MaxRefresh:       int(g.Cfg().Get("gToken.MaxRefresh").(float64)),
+		TokenDelimiter:   g.Cfg().Get("gToken.TokenDelimiter").(string),
+		EncryptKey:       []byte(g.Cfg().Get("gToken.EncryptKey").(string)),
+		AuthFailMsg:      g.Cfg().Get("gToken.AuthFailMsg").(string),
+		MultiLogin:       g.Cfg().Get("gToken.MultiLogin").(bool),
 		LoginPath:        "/sysLogin/login",
 		LoginBeforeFunc:  utils.AdminLogin,
 		LogoutPath:       "/sysLogin/logout",
 		AuthPaths:        g.SliceStr{"/system/*"},
 		LogoutBeforeFunc: utils.AdminLoginOut,
 	}
-	gtoken.Start()
+	GfToken.Start()
 }

@@ -1,6 +1,7 @@
 # 数据库连接
 [database]
     link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast"
+
 #web服务器配置
 [server]
     Address          = ":8080"
@@ -13,3 +14,25 @@
     SessionPath      = "./data/session"
     SessionMaxAge    = "24h"
     DumpRouterMap    = true
+
+
+# Redis数据库配置
+[redis]
+    default = "127.0.0.1:6379,1"
+
+#jwt配置
+[gToken]
+    CacheMode = 2
+    CacheKey = "GToken:"
+    Timeout = 0
+    MaxRefresh = 0
+    TokenDelimiter="_"
+    EncryptKey = "koi29a83idakguqjq29asd9asd8a7jhq"
+    AuthFailMsg = "登录超时，请重新登录"
+    MultiLogin = true
+
+#单例日志配置 g.Log(单例名称)获取Logger单例对象时
+[logger]
+    path   = "./data/log/run_log"
+    level  = "all"
+    stdout = true

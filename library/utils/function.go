@@ -7,11 +7,12 @@ import (
 	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/glog"
+	"github.com/gogf/gf/util/grand"
 	"github.com/gogf/gf/util/gvalid"
 	"github.com/mojocn/base64Captcha"
 )
 
-const AESPublicKey = "HqmP1KLMuz09Q0Bu"
+const adminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
 
 //获取验证码
 func GetVerifyImg() (idKeyC string, base64stringC string) {
@@ -33,7 +34,7 @@ func GetVerifyImg() (idKeyC string, base64stringC string) {
 	//创建字符公式验证码.
 	//GenerateCaptcha 第一个参数为空字符串,包会自动在服务器一个随机种子给你产生随机uiid.
 	var capC base64Captcha.CaptchaInterface
-	idKeyC, capC = base64Captcha.GenerateCaptcha("8nM77YhE2xOvU6GMQ33A", configC)
+	idKeyC, capC = base64Captcha.GenerateCaptcha(grand.Str(20), configC)
 	//以base64编码
 	base64stringC = base64Captcha.CaptchaWriteToBase64Encoding(capC)
 	return idKeyC, base64stringC
@@ -41,7 +42,7 @@ func GetVerifyImg() (idKeyC string, base64stringC string) {
 
 //AdminLogin 后台用户登陆验证
 func AdminLogin(r *ghttp.Request) (string, interface{}) {
-	data := r.GetPostMapStrStr()
+	data := r.GetFormMapStrStr()
 	rules := map[string]string{
 		"idValueC": "required",
 		"username": "required",
@@ -60,7 +61,7 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
 	}
 
-	if err, user := user_service.SignIn(data["username"], EncryptCBC(data["password"]), r.Session); err != nil {
+	if err, user := user_service.SignIn(data["username"], EncryptCBC(data["password"], adminCbcPublicKey), r.Session); err != nil {
 		response.JsonExit(r, response.NotAcceptableCode, err.Error())
 	} else {
 		return data["username"], user
@@ -74,8 +75,8 @@ func AdminLoginOut(r *ghttp.Request) bool {
 }
 
 //字符串加密
-func EncryptCBC(plainText string) string {
-	key := []byte(AESPublicKey)
+func EncryptCBC(plainText, publicKey string) string {
+	key := []byte(publicKey)
 	b, e := gaes.EncryptCBC([]byte(plainText), key, key)
 	if e != nil {
 		glog.Error(e.Error())
@@ -85,8 +86,8 @@ func EncryptCBC(plainText string) string {
 }
 
 //字符串解密
-func DecryptCBC(plainText string) string {
-	key := []byte(AESPublicKey)
+func DecryptCBC(plainText, publicKey string) string {
+	key := []byte(publicKey)
 	plainTextByte, e := gbase64.DecodeString(plainText)
 	if e != nil {
 		glog.Error(e.Error())

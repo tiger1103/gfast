@@ -12,7 +12,8 @@ func init() {
 	s.BindMiddleware("/sysLogin/logout", MiddlewareCORS)
 	group := s.Group("/")
 	group.Middleware(MiddlewareCORS)
-	//systemGroup := group.Group("/system")
 	sysLoginGroup := group.Group("/sysLogin")
 	sysLoginGroup.ALL("/public", new(admin.Public))
+	systemGroup := group.Group("/system")
+	systemGroup.ALL("/index", new(admin.Index))
 }
