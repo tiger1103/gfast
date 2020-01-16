@@ -16,6 +16,44 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `qxkj_auth_rule`
+--
+
+DROP TABLE IF EXISTS `qxkj_auth_rule`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `qxkj_auth_rule` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` enum('menu','file') NOT NULL DEFAULT 'file' COMMENT 'menu为菜单,file为权限节点',
+  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '规则名称',
+  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '规则名称',
+  `icon` varchar(50) NOT NULL DEFAULT '' COMMENT '图标',
+  `condition` varchar(255) NOT NULL DEFAULT '' COMMENT '条件',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+  `ismenu` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为菜单',
+  `createtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `updatetime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `weigh` int(10) NOT NULL DEFAULT '0' COMMENT '权重',
+  `status` varchar(30) NOT NULL DEFAULT '' COMMENT '状态',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`) USING BTREE,
+  KEY `pid` (`pid`),
+  KEY `weigh` (`weigh`)
+) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单节点表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qxkj_auth_rule`
+--
+
+LOCK TABLES `qxkj_auth_rule` WRITE;
+/*!40000 ALTER TABLE `qxkj_auth_rule` DISABLE KEYS */;
+INSERT INTO `qxkj_auth_rule` VALUES (5,'file',0,'auth','权限管理','fa fa-group','','',1,1497429920,1497430092,99,'normal'),(9,'file',5,'auth/admin','管理员管理','fa fa-user','','Admin tips',1,1497429920,1497430320,118,'normal'),(10,'file',5,'auth/adminlog','管理员日志','fa fa-list-alt','','Admin log tips',1,1497429920,1497430307,113,'normal'),(11,'file',5,'auth/group','角色组','fa fa-group','','Group tips',1,1497429920,1497429920,109,'normal'),(12,'file',5,'auth/rule','菜单规则','fa fa-bars','','Rule tips',1,1497429920,1497430581,104,'normal'),(43,'file',9,'auth/admin/del','删除','fa fa-circle-o','','',0,1497429920,1497429920,114,'normal'),(42,'file',9,'auth/admin/edit','修改','fa fa-circle-o','','',0,1497429920,1497429920,115,'normal'),(41,'file',9,'auth/admin/add','添加','fa fa-circle-o','','',0,1497429920,1497429920,116,'normal'),(40,'file',9,'auth/admin/index','查看','fa fa-circle-o','','Admin tips',0,1497429920,1497429920,117,'normal');
+/*!40000 ALTER TABLE `qxkj_auth_rule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `qxkj_role`
 --
 
@@ -121,4 +159,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-26 22:52:55
+-- Dump completed on 2020-01-16 18:07:54

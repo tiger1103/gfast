@@ -6,13 +6,8 @@ import (
 )
 
 const (
-	SuccessCode       int = 200
-	ErrorCode         int = 400
-	AccessDeniedCode  int = 403
-	NotFoundCode      int = 404
-	NotAcceptableCode int = 406
-	ServerErrorCode   int = 500
-	RedirectCode      int = 302
+	SuccessCode int = 0
+	ErrorCode   int = -1
 )
 
 // 返回JSON数据并退出当前HTTP执行函数。
@@ -42,4 +37,12 @@ func SusJson(isExit bool, r *ghttp.Request, msg string, data ...interface{}) {
 		JsonExit(r, SuccessCode, msg, data...)
 	}
 	RJson(r, SuccessCode, msg, data...)
+}
+
+//失败返回JSON
+func FailJson(isExit bool, r *ghttp.Request, msg string, data ...interface{}) {
+	if isExit {
+		JsonExit(r, ErrorCode, msg, data...)
+	}
+	RJson(r, ErrorCode, msg, data...)
 }

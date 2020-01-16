@@ -5,14 +5,14 @@ import (
 	"gfast/library/response"
 	"github.com/gogf/gf/crypto/gaes"
 	"github.com/gogf/gf/encoding/gbase64"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/util/grand"
 	"github.com/gogf/gf/util/gvalid"
 	"github.com/mojocn/base64Captcha"
 )
 
-const adminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
+const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
 
 //获取验证码
 func GetVerifyImg() (idKeyC string, base64stringC string) {
@@ -60,13 +60,13 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	if !base64Captcha.VerifyCaptchaAndIsClear(data["idKeyC"], data["idValueC"], true) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
 	}
-
-	if err, user := user_service.SignIn(data["username"], EncryptCBC(data["password"], adminCbcPublicKey), r.Session); err != nil {
-		response.JsonExit(r, response.NotAcceptableCode, err.Error())
+	password := EncryptCBC(data["password"], AdminCbcPublicKey)
+	if err, user := user_service.SignIn(data["username"], password, r.Session); err != nil {
+		response.JsonExit(r, response.ErrorCode, err.Error())
 	} else {
-		return data["username"], user
+		return data["username"] + password, user
 	}
-	return data["username"], nil
+	return data["username"] + password, nil
 }
 
 //后台退出登陆
@@ -79,7 +79,7 @@ func EncryptCBC(plainText, publicKey string) string {
 	key := []byte(publicKey)
 	b, e := gaes.EncryptCBC([]byte(plainText), key, key)
 	if e != nil {
-		glog.Error(e.Error())
+		g.Log().Error(e.Error())
 		return ""
 	}
 	return gbase64.EncodeToString(b)
@@ -90,12 +90,12 @@ func DecryptCBC(plainText, publicKey string) string {
 	key := []byte(publicKey)
 	plainTextByte, e := gbase64.DecodeString(plainText)
 	if e != nil {
-		glog.Error(e.Error())
+		g.Log().Error(e.Error())
 		return ""
 	}
 	b, e := gaes.DecryptCBC(plainTextByte, key, key)
 	if e != nil {
-		glog.Error(e.Error())
+		g.Log().Error(e.Error())
 		return ""
 	}
 	return gbase64.EncodeToString(b)

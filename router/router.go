@@ -16,4 +16,5 @@ func init() {
 	sysLoginGroup.ALL("/public", new(admin.Public))
 	systemGroup := group.Group("/system")
 	systemGroup.ALL("/index", new(admin.Index))
+	systemGroup.ALL("/auth", new(admin.Auth))
 }

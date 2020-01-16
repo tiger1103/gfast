@@ -6,13 +6,17 @@ import (
 	"github.com/gogf/gf/frame/g"
 )
 
-var GfToken *gtoken.GfToken
+var AdminGfToken *gtoken.GfToken
 
 func init() {
 	g.Server().SetPort(8200)
 	g.Server().AddStaticPath("/public", g.Cfg().Get("server.ServerRoot").(string))
-	// 启动gtoken
-	GfToken = &gtoken.GfToken{
+	// 设置并启动后台gtoken处理
+	initAdminGfToken()
+}
+
+func initAdminGfToken() {
+	AdminGfToken = &gtoken.GfToken{
 		CacheMode:        int8(g.Cfg().Get("gToken.CacheMode").(float64)),
 		CacheKey:         g.Cfg().Get("gToken.CacheKey").(string),
 		Timeout:          int(g.Cfg().Get("gToken.Timeout").(float64)),
@@ -27,5 +31,5 @@ func init() {
 		AuthPaths:        g.SliceStr{"/system/*"},
 		LogoutBeforeFunc: utils.AdminLoginOut,
 	}
-	GfToken.Start()
+	AdminGfToken.Start()
 }

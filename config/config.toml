@@ -1,6 +1,7 @@
 # 数据库连接
 [database]
     link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast"
+    debug  = true
 
 #web服务器配置
 [server]
