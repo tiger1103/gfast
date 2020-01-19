@@ -2,13 +2,13 @@ package utils
 
 import (
 	"fmt"
-	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gconv"
 	"strings"
 )
 
 //有层级关系的数组,父级-》子级 排序
-func ParentSonSort(list gdb.List, params ...interface{}) gdb.List {
+func ParentSonSort(list g.List, params ...interface{}) g.List {
 	args := make([]interface{}, 8)
 	for k, v := range params {
 		if k == 8 {
@@ -35,7 +35,7 @@ func ParentSonSort(list gdb.List, params ...interface{}) gdb.List {
 	breaks = gconv.Int(GetSliceByKey(args, 6, -1))
 	prefixStr = gconv.String(GetSliceByKey(args, 7, "&nbsp;&nbsp;"))
 	//定义一个新slice用于返回
-	var returnSlice gdb.List
+	var returnSlice g.List
 	for _, v := range list {
 		if pid == gconv.Int(v[fieldName]) {
 			v[levelName] = level
@@ -68,6 +68,48 @@ func ParentSonSort(list gdb.List, params ...interface{}) gdb.List {
 		}
 	}
 	return returnSlice
+}
+
+//有层级关系的数组 ,将子级压入到父级（树形结构）
+func PushSonToParent(list g.List, params ...interface{}) g.List {
+	args := make([]interface{}, 6)
+	for k, v := range params {
+		if k == 6 {
+			break
+		}
+		args[k] = v
+	}
+	var (
+		pid       int         //父级id
+		fieldName string      //父级id键名
+		id        string      //id键名
+		key       string      //子级数组键名
+		filter    string      //过滤键名
+		filterVal interface{} //过滤的值
+	)
+	pid = gconv.Int(GetSliceByKey(args, 0, 0))
+	fieldName = gconv.String(GetSliceByKey(args, 1, "pid"))
+	id = gconv.String(GetSliceByKey(args, 2, "id"))
+	key = gconv.String(GetSliceByKey(args, 3, "children"))
+	filter = gconv.String(GetSliceByKey(args, 4, ""))
+	filterVal = GetSliceByKey(args, 5, nil)
+	var returnList g.List
+	for _, v := range list {
+		if gconv.Int(v[fieldName]) == pid {
+			if filter != "" {
+				if v[filter] == filterVal {
+					args[0] = v[id]
+					v[key] = PushSonToParent(list, args...)
+					returnList = append(returnList, v)
+				}
+			} else {
+				args[0] = v[id]
+				v[key] = PushSonToParent(list, args...)
+				returnList = append(returnList, v)
+			}
+		}
+	}
+	return returnList
 }
 
 //获取切片里的值 若为nil 可设置默认值val
