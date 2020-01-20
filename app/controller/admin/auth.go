@@ -7,17 +7,12 @@ import (
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
-	"strings"
 )
 
-//用户管理
+//菜单用户组用户管理
 type Auth struct{}
-
-//添加用户组
-func (c *Auth) AddGroup(r *ghttp.Request) {
-	r.Response.Write("添加用户组")
-}
 
 //菜单列表
 func (c *Auth) MenuList(r *ghttp.Request) {
@@ -93,15 +88,19 @@ func (c *Auth) EditMenu(r *ghttp.Request) {
 //删除菜单
 func (c *Auth) DeleteMenu(r *ghttp.Request) {
 	ids := r.GetRequestArray("ids")
-	where := "id in(" + strings.TrimRight(strings.Repeat("?,", len(ids)), ",") + ")"
-	idsInterface := make([]interface{}, len(ids))
+	idsInterface := make(g.Slice, len(ids))
 	for k, v := range ids {
-		idsInterface[k] = v
+		idsInterface[k] = gconv.Int(v)
 	}
-	_, err := auth_rule.Model.Where(where, idsInterface...).Delete()
+	_, err := auth_rule.Model.Where("id in(?)", idsInterface).Delete()
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "删除失败")
 	}
 	response.SusJson(true, r, "删除成功")
+}
+
+//添加用户组
+func (c *Auth) AddGroup(r *ghttp.Request) {
+	r.Response.Write("添加用户组")
 }
