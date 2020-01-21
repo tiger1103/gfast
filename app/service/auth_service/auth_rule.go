@@ -2,6 +2,7 @@ package auth_service
 
 import (
 	"gfast/app/model/auth_rule"
+	"gfast/app/model/role"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
@@ -61,5 +62,25 @@ func EditMenu(req *MenuReq, id int) (err error, rows int64) {
 	res, e := auth_rule.Model.Where("id=?", id).Update(menuMap)
 	err = e
 	rows, _ = res.RowsAffected()
+	return
+}
+
+//获取用户组列表
+func GetRoleList(where string, params ...interface{}) (err error, list g.List) {
+	var rl []*role.Entity
+	if where != "" {
+		rl, err = role.Model.Where(where, params).OrderBy("list_order asc,id asc").All()
+	} else {
+		rl, err = role.Model.OrderBy("list_order asc,id asc").All()
+	}
+	if err != nil {
+		g.Log().Error(err)
+		return err, nil
+	}
+	list = make(g.List, len(rl))
+	for k, v := range rl {
+		tMap := gconv.Map(v)
+		list[k] = tMap
+	}
 	return
 }

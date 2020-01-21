@@ -102,5 +102,28 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 
 //添加用户组
 func (c *Auth) AddGroup(r *ghttp.Request) {
-	r.Response.Write("添加用户组")
+	//添加操作
+	if r.Method == "POST" {
+		res := r.GetFormMap()
+		response.SusJson(true, r, "添加成功", res)
+	}
+	//获取父级组
+	err, pList := auth_service.GetRoleList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取父级数据失败")
+	}
+	pList = utils.ParentSonSort(pList, 0, 0, "parent_id", "id", "flg", "name")
+	//获取菜单信息
+	err, mList := auth_service.GetMenuList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取菜单数据失败")
+	}
+	mList = utils.PushSonToParent(mList)
+	res := g.Map{
+		"parentList": pList,
+		"menuList":   mList,
+	}
+	response.SusJson(true, r, "成功", res)
 }
