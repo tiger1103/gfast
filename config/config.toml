@@ -40,3 +40,9 @@
     path   = "./data/log/run_log"
     level  = "all"
     stdout = true
+
+#casbin配置
+[casbin]
+modelFile="./config/casbin_conf/rbac_model.conf"
+policyFile="./config/casbin_conf/rbac_policy.csv"
+

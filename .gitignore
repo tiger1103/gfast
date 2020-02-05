@@ -19,3 +19,4 @@ main
 .vscode
 go.sum
 *.exe
+tmp

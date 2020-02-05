@@ -104,8 +104,35 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 func (c *Auth) AddGroup(r *ghttp.Request) {
 	//添加操作
 	if r.Method == "POST" {
+		/*enforcer,err:=casbin_adapter_service.GetEnforcer()
+		if err!=nil{
+			g.Log().Error(err.Error())
+			response.FailJson(true, r, "权限适配器获取失败")
+		}
+		ss:=enforcer.GetPolicy()*/
+		//获取表单提交的数据
 		res := r.GetFormMap()
-		response.SusJson(true, r, "添加成功", res)
+		//添加角色获取添加的id
+		tx, err := g.DB("default").Begin() //开启事务
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "事务处理失败")
+		}
+		//插入角色
+		insertId, err := auth_service.AddRole(tx, res)
+		if err != nil {
+			tx.Rollback() //回滚
+			response.FailJson(true, r, err.Error())
+		}
+		//添加角色权限
+		err = auth_service.AddRoleRule(tx, res["rule"], insertId)
+		if err != nil {
+			tx.Rollback() //回滚
+			g.Log().Error(err.Error())
+			response.FailJson(true, r, "添加用户组失败")
+		}
+		tx.Commit()
+		response.SusJson(true, r, "添加用户组成功", insertId, res)
 	}
 	//获取父级组
 	err, pList := auth_service.GetRoleList("")
