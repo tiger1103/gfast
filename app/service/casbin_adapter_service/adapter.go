@@ -206,24 +206,23 @@ func rawDelete(a *Adapter, line casbin_rule.Entity) error {
 	db := casbin_rule.Model
 	db.Where("ptype = ?", line.Ptype)
 	if line.V0 != "" {
-		db.Where("v0 = ?", line.V0)
+		db = db.Where("v0 = ?", line.V0)
 	}
 	if line.V1 != "" {
-		db.Where("v1 = ?", line.V1)
+		db = db.Where("v1 = ?", line.V1)
 	}
 	if line.V2 != "" {
-		db.Where("v2 = ?", line.V2)
+		db = db.Where("v2 = ?", line.V2)
 	}
 	if line.V3 != "" {
-		db.Where("v3 = ?", line.V3)
+		db = db.Where("v3 = ?", line.V3)
 	}
 	if line.V4 != "" {
-		db.Where("v4 = ?", line.V4)
+		db = db.Where("v4 = ?", line.V4)
 	}
 	if line.V5 != "" {
-		db.Where("v5 = ?", line.V5)
+		db = db.Where("v5 = ?", line.V5)
 	}
-
 	_, err := db.Delete()
 	return err
 }

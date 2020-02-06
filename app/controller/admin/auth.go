@@ -1,12 +1,16 @@
 package admin
 
 import (
+	"fmt"
 	"gfast/app/model/auth_rule"
+	"gfast/app/model/role"
 	"gfast/app/service/auth_service"
+	"gfast/app/service/casbin_adapter_service"
 	"gfast/library/response"
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
 )
@@ -100,39 +104,39 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//添加用户组
-func (c *Auth) AddGroup(r *ghttp.Request) {
+//角色列表
+func (c *Auth) RoleList(r *ghttp.Request) {
+	//获取角色列表
+
+}
+
+//添加角色
+func (c *Auth) AddRole(r *ghttp.Request) {
 	//添加操作
 	if r.Method == "POST" {
-		/*enforcer,err:=casbin_adapter_service.GetEnforcer()
-		if err!=nil{
-			g.Log().Error(err.Error())
-			response.FailJson(true, r, "权限适配器获取失败")
-		}
-		ss:=enforcer.GetPolicy()*/
 		//获取表单提交的数据
 		res := r.GetFormMap()
-		//添加角色获取添加的id
 		tx, err := g.DB("default").Begin() //开启事务
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "事务处理失败")
 		}
 		//插入角色
+		//添加角色获取添加的id
 		insertId, err := auth_service.AddRole(tx, res)
 		if err != nil {
 			tx.Rollback() //回滚
 			response.FailJson(true, r, err.Error())
 		}
 		//添加角色权限
-		err = auth_service.AddRoleRule(tx, res["rule"], insertId)
+		err = auth_service.AddRoleRule(res["rule"], insertId)
 		if err != nil {
 			tx.Rollback() //回滚
 			g.Log().Error(err.Error())
 			response.FailJson(true, r, "添加用户组失败")
 		}
 		tx.Commit()
-		response.SusJson(true, r, "添加用户组成功", insertId, res)
+		response.SusJson(true, r, "添加用户组成功")
 	}
 	//获取父级组
 	err, pList := auth_service.GetRoleList("")
@@ -151,6 +155,81 @@ func (c *Auth) AddGroup(r *ghttp.Request) {
 	res := g.Map{
 		"parentList": pList,
 		"menuList":   mList,
+	}
+	response.SusJson(true, r, "成功", res)
+}
+
+//修改角色
+func (c *Auth) EditRole(r *ghttp.Request) {
+	id := r.GetRequestInt64("id")
+	if r.Method == "POST" {
+		//获取表单提交的数据
+		res := r.GetFormMap()
+		tx, err := g.DB("default").Begin() //开启事务
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "事务处理失败")
+		}
+		//修改角色信息
+		err = auth_service.EditRole(tx, res)
+		if err != nil {
+			tx.Rollback() //回滚
+			response.FailJson(true, r, err.Error())
+		}
+		//添加角色权限
+		err = auth_service.EditRoleRule(res["rule"], id)
+		if err != nil {
+			tx.Rollback() //回滚
+			g.Log().Error(err.Error())
+			response.FailJson(true, r, "添加用户组失败")
+		}
+		tx.Commit()
+		response.SusJson(true, r, "修改用户组成功")
+	}
+	//获取角色信息
+	role, err := role.Model.Where("id=?", id).One()
+	if err != nil {
+		response.FailJson(true, r, "获取角色数据失败")
+	}
+	//获取父级组
+	err, pList := auth_service.GetRoleList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取父级数据失败")
+	}
+	pList = utils.ParentSonSort(pList, 0, 0, "parent_id", "id", "flg", "name")
+	//获取菜单信息
+	err, mList := auth_service.GetMenuList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取菜单数据失败")
+	}
+	//获取角色关联的菜单规则
+	enforcer, err := casbin_adapter_service.GetEnforcer()
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取权限处理器失败")
+	}
+	gp := enforcer.GetFilteredNamedPolicy("p", 0, fmt.Sprintf("g_%d", id))
+	g.Log().Debug(gp)
+	gpMap := map[int64]int64{}
+	for _, v := range gp {
+		gpMap[gconv.Int64(gstr.SubStr(v[1], 2))] = gconv.Int64(gstr.SubStr(v[1], 2))
+	}
+	//关联选中的权限
+	for k, v := range mList {
+		if _, has := gpMap[gconv.Int64(v["id"])]; has {
+			v["isChecked"] = true
+		} else {
+			v["isChecked"] = false
+		}
+		mList[k] = v
+	}
+	mList = utils.PushSonToParent(mList)
+	res := g.Map{
+		"parentList": pList,
+		"menuList":   mList,
+		"role":       role,
 	}
 	response.SusJson(true, r, "成功", res)
 }

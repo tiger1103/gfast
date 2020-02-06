@@ -2,8 +2,11 @@ package auth_service
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"gfast/app/model/auth_rule"
 	"gfast/app/model/role"
+	"gfast/app/service/casbin_adapter_service"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
@@ -115,10 +118,74 @@ func AddRole(tx *gdb.TX, data map[string]interface{}) (InsId int64, err error) {
 	return
 }
 
-func AddRoleRule(tx *gdb.TX, iRule interface{}, roleId int64) (err error) {
+//添加角色授权规则
+func AddRoleRule(iRule interface{}, roleId int64) (err error) {
+	enforcer, e := casbin_adapter_service.GetEnforcer()
+	if e != nil {
+		err = e
+		return
+	}
 	rule := iRule.([]interface{})
 	for _, v := range rule {
-		g.Log().Debug(v)
+		_, err = enforcer.AddPolicy(fmt.Sprintf("g_%d", roleId), fmt.Sprintf("r_%s", v), "All")
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+//修改角色信息操作
+func EditRole(tx *gdb.TX, data map[string]interface{}) (err error) {
+	if _, k := data["id"]; !k {
+		err = errors.New("缺少更新条件Id")
+		return
+	}
+	if e := checkRoleData(data); e != nil {
+		err = gerror.New(e.(*gvalid.Error).FirstString())
+		return
+	}
+	//保存角色信息
+	now := gtime.Timestamp()
+	roleMap := gdb.Map{
+		"id":          data["id"],
+		"parent_id":   data["parent_id"],
+		"status":      data["status"],
+		"name":        data["name"],
+		"update_time": now,
+		"list_order":  data["list_order"],
+		"remark":      data["remark"],
+	}
+	_, err = tx.Table(role.Table).Data(roleMap).Save()
+	if err != nil {
+		return
+	}
+	return
+}
+
+//修改角色的授权规则
+func EditRoleRule(iRule interface{}, roleId int64) (err error) {
+	enforcer, e := casbin_adapter_service.GetEnforcer()
+	if e != nil {
+		err = e
+		return
+	}
+	//查询当前权限
+	gp := enforcer.GetFilteredNamedPolicy("p", 0, fmt.Sprintf("g_%d", roleId))
+	//删除旧权限
+	for _, v := range gp {
+		_, e = enforcer.RemovePolicy(v)
+		if e != nil {
+			err = e
+			return
+		}
+	}
+	rule := iRule.([]interface{})
+	for _, v := range rule {
+		_, err = enforcer.AddPolicy(fmt.Sprintf("g_%d", roleId), fmt.Sprintf("r_%s", v), "All")
+		if err != nil {
+			return
+		}
 	}
 	return
 }
