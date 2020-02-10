@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"gfast/app/model/auth_rule"
 	"gfast/app/model/role"
+	"gfast/app/model/user"
 	"gfast/app/service/casbin_adapter_service"
+	"gfast/library/utils"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
@@ -190,12 +192,143 @@ func EditRoleRule(iRule interface{}, roleId int64) (err error) {
 	return
 }
 
+//删除角色权限操作
+func DeleteRoleRule(roleId int64) (err error) {
+	enforcer, e := casbin_adapter_service.GetEnforcer()
+	if e != nil {
+		err = e
+		return
+	}
+	//查询当前权限
+	gp := enforcer.GetFilteredNamedPolicy("p", 0, fmt.Sprintf("g_%d", roleId))
+	//删除旧权限
+	for _, v := range gp {
+		_, e = enforcer.RemovePolicy(v)
+		if e != nil {
+			err = e
+			return
+		}
+	}
+	return
+}
+
 func checkRoleData(params map[string]interface{}) error {
 	rules := []string{
 		"name@required|length:1,20#请填写角色名称|名称应在:min到:max个字符之间",
 		"parent_id@integer|min:0#父级ID必须为整数|父级ID必须大于等于0",
 	}
 
+	e := gvalid.CheckMap(params, rules)
+	if e != nil {
+		return e
+	}
+	return nil
+}
+
+//添加管理员操作
+func AddUser(data map[string]interface{}) (InsertId int64, err error) {
+	e := checkUserData(data, "add")
+	if e != nil {
+		err = gerror.New(e.(*gvalid.Error).FirstString())
+		return
+	}
+	if i, _ := user.Model.Where("user_name=?", data["user_name"]).Count(); i != 0 {
+		err = gerror.New("用户名已经存在")
+		return
+	}
+	if i, _ := user.Model.Where("mobile=?", data["mobile"]).Count(); i != 0 {
+		err = gerror.New("手机号已经存在")
+		return
+	}
+	//保存管理员信息
+	data["create_time"] = gtime.Timestamp()
+	//密码加密
+	data["user_password"] = utils.EncryptCBC(gconv.String(data["user_password"]), utils.AdminCbcPublicKey)
+	res, err := user.Model.Filter().Data(data).Save()
+	if err != nil {
+		return
+	}
+	InsertId, _ = res.LastInsertId()
+	return
+}
+
+//修改用户信息
+func EditUser(data map[string]interface{}) (err error) {
+	e := checkUserData(data, "add")
+	if e != nil {
+		err = gerror.New(e.(*gvalid.Error).FirstString())
+		return
+	}
+	if i, _ := user.Model.Where("id!=? and user_name=?", data["id"], data["user_name"]).Count(); i != 0 {
+		err = gerror.New("用户名已经存在")
+		return
+	}
+	if i, _ := user.Model.Where("id!=? and mobile=?", data["mobile"]).Count(); i != 0 {
+		err = gerror.New("手机号已经存在")
+		return
+	}
+	//保存管理员信息
+	//提交了密码？密码加密
+	if _, ok := data["user_password"]; ok {
+		data["user_password"] = utils.EncryptCBC(gconv.String(data["user_password"]), utils.AdminCbcPublicKey)
+	}
+	_, err = user.Model.Filter().Data(data).Save()
+	if err != nil {
+		return
+	}
+	return
+}
+
+//添加用户角色信息
+func AddUserRole(roleIds interface{}, userId int64) (err error) {
+	enforcer, e := casbin_adapter_service.GetEnforcer()
+	if e != nil {
+		err = e
+		return
+	}
+	rule := roleIds.([]interface{})
+	for _, v := range rule {
+		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("u_%d", userId), fmt.Sprintf("g_%s", v))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+//修改用户角色信息
+func EditUserRole(roleIds interface{}, userId int64) (err error) {
+	enforcer, e := casbin_adapter_service.GetEnforcer()
+	if e != nil {
+		err = e
+		return
+	}
+	rule := roleIds.([]interface{})
+	//删除用户旧角色信息
+	enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("u_%d", userId))
+	for _, v := range rule {
+		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("u_%d", userId), fmt.Sprintf("g_%s", v))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+//验证用户表单数据
+func checkUserData(params map[string]interface{}, t string) error {
+	rules := []string{
+		"id@integer|min:1#管理员id必须为整数|管理员Id必须大于0",
+		"user_name@required|length:3,60#请填用户名|用户名应在:min到:max个字符之间",
+		"mobile@telephone#手机号码格式不正确",
+		"user_nickname@required|length:3,50#请填写姓名|姓名应在:min到:max个字符之间",
+		"user_email@email#邮箱格式错误",
+	}
+	if t == "add" {
+		rules = append(rules, "user_password@required|length:6,60#请填写密码|密码应在::min到:max个字符之间")
+	} else {
+		rules = append(rules, "user_password@length:6,60#密码应在::min到:max个字符之间")
+	}
 	e := gvalid.CheckMap(params, rules)
 	if e != nil {
 		return e

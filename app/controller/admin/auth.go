@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"gfast/app/model/auth_rule"
 	"gfast/app/model/role"
+	"gfast/app/model/user"
 	"gfast/app/service/auth_service"
 	"gfast/app/service/casbin_adapter_service"
+	"gfast/boot"
 	"gfast/library/response"
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
@@ -94,7 +96,7 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 	ids := r.GetRequestArray("ids")
 	idsInterface := make(g.Slice, len(ids))
 	for k, v := range ids {
-		idsInterface[k] = gconv.Int(v)
+		idsInterface[k] = gconv.Int64(v)
 	}
 	_, err := auth_rule.Model.Where("id in(?)", idsInterface).Delete()
 	if err != nil {
@@ -107,7 +109,15 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 //角色列表
 func (c *Auth) RoleList(r *ghttp.Request) {
 	//获取角色列表
-
+	err, list := auth_service.GetRoleList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取数据失败")
+	}
+	list = utils.ParentSonSort(list, 0, 0, "parent_id", "id", "flg", "name")
+	response.SusJson(true, r, "成功", g.Map{
+		"list": list,
+	})
 }
 
 //添加角色
@@ -232,4 +242,108 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 		"role":       role,
 	}
 	response.SusJson(true, r, "成功", res)
+}
+
+//删除角色
+func (c *Auth) DeleteRole(r *ghttp.Request) {
+	ids := r.GetRequestArray("ids")
+	idsInterface := make(g.Slice, len(ids))
+	for k, v := range ids {
+		idsInterface[k] = gconv.Int64(v)
+	}
+	tx, err := g.DB("default").Begin() //开启事务
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "事务处理失败")
+	}
+	_, err = tx.Table(role.Table).Where("id in(?)", idsInterface).Delete()
+	if err != nil {
+		g.Log().Error(err)
+		tx.Rollback()
+		response.FailJson(true, r, "删除失败")
+	}
+	//删除角色的权限
+	for _, v := range idsInterface {
+		err = auth_service.DeleteRoleRule(gconv.Int64(v))
+		if err != nil {
+			g.Log().Error(err)
+			tx.Rollback()
+			response.FailJson(true, r, "删除失败")
+		}
+	}
+	tx.Commit()
+	response.SusJson(true, r, "删除成功")
+}
+
+//添加管理员
+func (c *Auth) AddUser(r *ghttp.Request) {
+	if r.Method == "POST" {
+		requestData := r.GetFormMap()
+		InsertId, err := auth_service.AddUser(requestData)
+		if err != nil {
+			response.FailJson(true, r, err.Error())
+		}
+		//设置用户所属角色信息
+		err = auth_service.AddUserRole(requestData["role_id"], InsertId)
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "设置用户权限失败")
+		}
+		response.SusJson(true, r, "添加管理员成功")
+	}
+	//获取角色信息
+	err, roleList := auth_service.GetRoleList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取角色数据失败")
+	}
+	roleList = utils.ParentSonSort(roleList, 0, 0, "parent_id", "id", "flg", "name")
+	res := g.Map{
+		"roleList": roleList,
+	}
+	response.SusJson(true, r, "成功", res)
+}
+
+//修改管理员
+func (c *Auth) EditUser(r *ghttp.Request) {
+	id := r.GetRequestInt64("id")
+	if r.Method == "POST" {
+		requestData := r.GetFormMap()
+		err := auth_service.EditUser(requestData)
+		if err != nil {
+			response.FailJson(true, r, err.Error())
+		}
+		//设置用户所属角色信息
+		err = auth_service.EditUserRole(requestData["role_id"], id)
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "设置用户权限失败")
+		}
+		response.SusJson(true, r, "修改管理员成功")
+	}
+	//用户用户信息
+	userEntity, err := user.Model.Where("id=?", id).One()
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取用户数据失败")
+	}
+	//获取角色信息
+	err, roleList := auth_service.GetRoleList("")
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取角色数据失败")
+	}
+	roleList = utils.ParentSonSort(roleList, 0, 0, "parent_id", "id", "flg", "name")
+	res := g.Map{
+		"roleList": roleList,
+		"userInfo": userEntity,
+	}
+	response.SusJson(true, r, "成功", res)
+}
+
+//用户列表
+func (c *Auth) UserList(r *ghttp.Request) {
+	resp := boot.AdminGfToken.GetTokenData(r)
+	g.Log().Debug(r.Router.Uri)
+	r.Response.Write("hello Index-", gconv.Map(resp.Get("data"))["user_nickname"])
 }
