@@ -23,7 +23,9 @@ func JsonExit(r *ghttp.Request, code int, msg string, data ...interface{}) {
 // data: 请求结果,根据不同接口返回结果的数据结构不同;
 func RJson(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	responseData := interface{}(nil)
-	responseData = data
+	if len(data) > 0 {
+		responseData = data[0]
+	}
 	r.Response.WriteJson(g.Map{
 		"code": code,
 		"msg":  msg,

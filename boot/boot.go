@@ -10,21 +10,21 @@ var AdminGfToken *gtoken.GfToken
 
 func init() {
 	g.Server().SetPort(8200)
-	g.Server().AddStaticPath("/public", g.Cfg().Get("server.ServerRoot").(string))
+	g.Server().AddStaticPath("/public", g.Cfg().GetString("server.ServerRoot"))
 	// 设置并启动后台gtoken处理
 	initAdminGfToken()
 }
 
 func initAdminGfToken() {
 	AdminGfToken = &gtoken.GfToken{
-		CacheMode:        int8(g.Cfg().Get("gToken.CacheMode").(float64)),
-		CacheKey:         g.Cfg().Get("gToken.CacheKey").(string),
-		Timeout:          int(g.Cfg().Get("gToken.Timeout").(float64)),
-		MaxRefresh:       int(g.Cfg().Get("gToken.MaxRefresh").(float64)),
-		TokenDelimiter:   g.Cfg().Get("gToken.TokenDelimiter").(string),
-		EncryptKey:       []byte(g.Cfg().Get("gToken.EncryptKey").(string)),
-		AuthFailMsg:      g.Cfg().Get("gToken.AuthFailMsg").(string),
-		MultiLogin:       g.Cfg().Get("gToken.MultiLogin").(bool),
+		CacheMode:        g.Cfg().GetInt8("gToken.CacheMode"),
+		CacheKey:         g.Cfg().GetString("gToken.CacheKey"),
+		Timeout:          g.Cfg().GetInt("gToken.Timeout"),
+		MaxRefresh:       g.Cfg().GetInt("gToken.MaxRefresh"),
+		TokenDelimiter:   g.Cfg().GetString("gToken.TokenDelimiter"),
+		EncryptKey:       g.Cfg().GetBytes("gToken.EncryptKey"),
+		AuthFailMsg:      g.Cfg().GetString("gToken.AuthFailMsg"),
+		MultiLogin:       g.Cfg().GetBool("gToken.MultiLogin"),
 		LoginPath:        "/sysLogin/login",
 		LoginBeforeFunc:  utils.AdminLogin,
 		LogoutPath:       "/sysLogin/logout",

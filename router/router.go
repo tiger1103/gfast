@@ -8,10 +8,8 @@ import (
 // 统一路由注册.
 func init() {
 	s := g.Server()
-	s.BindMiddleware("/sysLogin/login", MiddlewareCORS)
-	s.BindMiddleware("/sysLogin/logout", MiddlewareCORS)
+	s.Use(MiddlewareCORS)
 	group := s.Group("/")
-	group.Middleware(MiddlewareCORS)
 	sysLoginGroup := group.Group("/sysLogin")
 	sysLoginGroup.ALL("/public", new(admin.Public))
 	systemGroup := group.Group("/system")

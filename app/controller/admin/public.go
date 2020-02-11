@@ -11,5 +11,5 @@ type Public struct{}
 
 func (p *Public) Verify(r *ghttp.Request) {
 	idKeyC, base64stringC := utils.GetVerifyImg()
-	response.RJson(r, 200, "ok", g.MapStrStr{"idKeyC": idKeyC, "base64stringC": base64stringC})
+	response.SusJson(true, r, "ok", g.MapStrStr{"idKeyC": idKeyC, "base64stringC": base64stringC})
 }
