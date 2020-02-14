@@ -1,16 +1,42 @@
 package admin
 
 import (
-	"gfast/boot"
+	"gfast/app/service/user_service"
+	"gfast/library/response"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
-	"github.com/gogf/gf/util/gconv"
+	"strings"
 )
 
 type Index struct{}
 
+//后台首页接口数据
 func (c *Index) Index(r *ghttp.Request) {
-	resp := boot.AdminGfToken.GetTokenData(r)
-	g.Log().Debug(r.Router.Uri)
-	r.Response.Write("hello Index-", gconv.Map(resp.Get("data"))["user_nickname"])
+	//获取用户信息
+	userId := user_service.GetLoginID(r)
+	//获取用户角色信息
+	userMap := user_service.GetAdminInfoById(userId)
+	if userMap != nil {
+		delete(userMap, "user_password")
+		roles, err := user_service.GetAdminRole(userId)
+		if err == nil {
+			name := make([]string, len(roles))
+			roleIds := make([]int, len(roles))
+			for k, v := range roles {
+				name[k] = v.Name
+				roleIds[k] = v.Id
+			}
+			userMap["roles"] = strings.Join(name, "，")
+			//获取菜单信息
+			user_service.GetAdminMenusByRoleIds(roleIds)
+		} else {
+			g.Log().Error(err)
+			userMap["roles"] = ""
+		}
+	}
+
+	result := g.Map{
+		"userInfo": userMap,
+	}
+	response.SusJson(true, r, "ok", result)
 }

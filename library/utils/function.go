@@ -1,12 +1,18 @@
 package utils
 
 import (
-	"gfast/app/service/user_service"
+	"database/sql"
+	"errors"
+	"fmt"
+	"gfast/app/model/user"
 	"gfast/library/response"
+	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/crypto/gaes"
 	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/grand"
 	"github.com/gogf/gf/util/gvalid"
 	"github.com/mojocn/base64Captcha"
@@ -57,16 +63,34 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		response.JsonExit(r, response.ErrorCode, e.String())
 	}
 	//判断验证码是否正确
-	if !base64Captcha.VerifyCaptchaAndIsClear(data["idKeyC"], data["idValueC"], true) {
+	/*if !base64Captcha.VerifyCaptchaAndIsClear(data["idKeyC"], data["idValueC"], true) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
-	}
+	}*/
 	password := EncryptCBC(data["password"], AdminCbcPublicKey)
-	if err, user := user_service.SignIn(data["username"], password, r.Session); err != nil {
+	if err, user := signIn(data["username"], password, r); err != nil {
 		response.JsonExit(r, response.ErrorCode, err.Error())
 	} else {
-		return data["username"] + password, user
+		return data["username"] + password, user.Id
 	}
 	return data["username"] + password, nil
+}
+
+//gtoken验证后返回
+func AuthAfterFunc(r *ghttp.Request, respData gtoken.Resp) {
+	if r.Method == "OPTIONS" || respData.Success() {
+		r.Middleware.Next()
+	} else {
+		params := r.GetRequestMap()
+		no := gtime.TimestampMilliStr()
+		g.Log().Info(fmt.Sprintf("[AUTH_%s][url:%s][params:%s][data:%s]",
+			no, r.URL.Path, params, respData.Json()))
+		respData.Msg = "用户信息验证失败"
+		response := r.Response
+		options := response.DefaultCORSOptions()
+		response.CORS(options)
+		response.WriteJson(respData)
+		r.ExitAll()
+	}
 }
 
 //后台退出登陆
@@ -99,4 +123,20 @@ func DecryptCBC(plainText, publicKey string) string {
 		return ""
 	}
 	return gbase64.EncodeToString(b)
+}
+
+// 用户登录，成功返回用户信息，否则返回nil
+func signIn(username, password string, r *ghttp.Request) (error, *user.QxkjUser) {
+	qxkjUser, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
+	if err != nil && err != sql.ErrNoRows {
+		return err, nil
+	}
+	if qxkjUser == nil {
+		return errors.New("账号或密码错误"), nil
+	}
+	//更新登陆时间及ip
+	qxkjUser.LastLoginTime = gconv.Int(gtime.Timestamp())
+	qxkjUser.LastLoginIp = r.GetClientIp()
+	qxkjUser.Update()
+	return nil, qxkjUser
 }

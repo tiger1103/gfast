@@ -29,6 +29,7 @@ func initAdminGfToken() {
 		LoginBeforeFunc:  utils.AdminLogin,
 		LogoutPath:       "/sysLogin/logout",
 		AuthPaths:        g.SliceStr{"/system/*"},
+		AuthAfterFunc:    utils.AuthAfterFunc,
 		LogoutBeforeFunc: utils.AdminLoginOut,
 	}
 	AdminGfToken.Start()

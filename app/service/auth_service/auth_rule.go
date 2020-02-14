@@ -173,7 +173,7 @@ func EditRoleRule(iRule interface{}, roleId int64) (err error) {
 		return
 	}
 	//查询当前权限
-	gp := enforcer.GetFilteredNamedPolicy("p", 0, fmt.Sprintf("g_%d", roleId))
+	gp := enforcer.GetFilteredPolicy(0, fmt.Sprintf("g_%d", roleId))
 	//删除旧权限
 	for _, v := range gp {
 		_, e = enforcer.RemovePolicy(v)
