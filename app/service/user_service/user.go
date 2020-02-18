@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"gfast/app/model/role"
 	"gfast/app/model/user"
+	"gfast/app/service/auth_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/boot"
+	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
@@ -13,10 +15,37 @@ import (
 )
 
 //获取登陆用户ID
-func GetLoginID(r *ghttp.Request) int64 {
+func GetLoginID(r *ghttp.Request) (userId int64) {
+	userInfo := GetCacheAdminInfo(r)
+	if userInfo != nil {
+		userId = gconv.Int64(userInfo["id"])
+	}
+	return
+}
+
+//获取缓存的用户信息
+func GetCacheAdminInfo(r *ghttp.Request) (userInfo g.Map) {
 	resp := boot.AdminGfToken.GetTokenData(r)
-	userId := resp.GetInt("data")
-	return gconv.Int64(userId)
+	userInfo = gconv.Map(resp.Get("data"))
+	return
+}
+
+//获取管理员列表
+func GetAdminList(r *ghttp.Request, where g.Map) (page int, total int,
+	userList []*user.Entity, err error) {
+	userModel := user.Model
+	if v, ok := where["keyWords"]; ok {
+		keyWords := gconv.String(v)
+		if keyWords != "" {
+			keyWords = "%" + keyWords + "%"
+			userModel = userModel.Where("user_name like ? or mobile like ? or user_nickname like ?",
+				keyWords, keyWords, keyWords)
+		}
+	}
+	total, err = userModel.Count()
+	page, start := utils.SetPageLimit(r)
+	userList, err = userModel.Limit(start, utils.AdminPageNum).OrderBy("id asc").All()
+	return
 }
 
 //获取管理员的角色信息
@@ -55,18 +84,34 @@ func GetAdminInfoById(id int64) (userMap g.Map) {
 }
 
 //获取管理员所属角色菜单
-func GetAdminMenusByRoleIds(roleIds []int) (menus g.Map, err error) {
+func GetAdminMenusByRoleIds(roleIds []int) (menus g.List, err error) {
 	//获取角色对应的菜单id
 	enforcer, e := casbin_adapter_service.GetEnforcer()
 	if e != nil {
 		err = e
 		return
 	}
+	menuIds := map[int64]int64{}
 	for _, roleId := range roleIds {
 		//查询当前权限
 		gp := enforcer.GetFilteredPolicy(0, fmt.Sprintf("g_%d", roleId))
-		g.Log().Debug(gp)
+		for _, p := range gp {
+			mid := gconv.Int64(gstr.SubStr(p[1], 2))
+			menuIds[mid] = mid
+		}
 	}
-
+	//获取所有开启的菜单
+	err, allMenus := auth_service.GetMenuList("status=? and ismenu=?", 1, 1)
+	if err != nil {
+		return
+	}
+	roleMenus := make(g.List, 0, 100)
+	for _, v := range allMenus {
+		if _, ok := menuIds[gconv.Int64(v["id"])]; ok {
+			v["index"] = v["name"]
+			roleMenus = append(roleMenus, v)
+		}
+	}
+	menus = utils.PushSonToParent(roleMenus, 0, "pid", "id", "subs", "", nil, false)
 	return
 }

@@ -8,6 +8,7 @@ import (
 	"gfast/library/response"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/crypto/gaes"
+	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -19,6 +20,11 @@ import (
 )
 
 const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
+
+var (
+	AdminMultiLogin bool //是否允许后台管理员多端登陆
+	AdminPageNum    = 20 //后台分页长度
+)
 
 //获取验证码
 func GetVerifyImg() (idKeyC string, base64stringC string) {
@@ -67,12 +73,18 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
 	}*/
 	password := EncryptCBC(data["password"], AdminCbcPublicKey)
+	var keys string
+	if AdminMultiLogin {
+		keys = data["username"] + password + gmd5.MustEncryptString(r.GetClientIp())
+	} else {
+		keys = data["username"] + password
+	}
 	if err, user := signIn(data["username"], password, r); err != nil {
 		response.JsonExit(r, response.ErrorCode, err.Error())
 	} else {
-		return data["username"] + password, user.Id
+		return keys, user
 	}
-	return data["username"] + password, nil
+	return keys, nil
 }
 
 //gtoken验证后返回
@@ -134,9 +146,20 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.QxkjUser)
 	if qxkjUser == nil {
 		return errors.New("账号或密码错误"), nil
 	}
+	returnData := *qxkjUser
 	//更新登陆时间及ip
 	qxkjUser.LastLoginTime = gconv.Int(gtime.Timestamp())
 	qxkjUser.LastLoginIp = r.GetClientIp()
 	qxkjUser.Update()
-	return nil, qxkjUser
+	return nil, &returnData
+}
+
+//获取分页limit start
+func SetPageLimit(r *ghttp.Request) (page int, start int) {
+	page = r.GetInt("page")
+	if page == 0 {
+		page = 1
+	}
+	start = (page - 1) * AdminPageNum
+	return
 }

@@ -46,3 +46,6 @@
 modelFile="./config/casbin_conf/rbac_model.conf"
 policyFile="./config/casbin_conf/rbac_policy.csv"
 
+#后台相关配置
+[adminInfo]
+pageNum = 5  #后台列表分页长度

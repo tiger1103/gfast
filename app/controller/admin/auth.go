@@ -7,7 +7,7 @@ import (
 	"gfast/app/model/user"
 	"gfast/app/service/auth_service"
 	"gfast/app/service/casbin_adapter_service"
-	"gfast/boot"
+	"gfast/app/service/user_service"
 	"gfast/library/response"
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
@@ -15,6 +15,7 @@ import (
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
+	"strings"
 )
 
 //菜单用户组用户管理
@@ -343,7 +344,52 @@ func (c *Auth) EditUser(r *ghttp.Request) {
 
 //用户列表
 func (c *Auth) UserList(r *ghttp.Request) {
-	resp := boot.AdminGfToken.GetTokenData(r)
-	g.Log().Debug(r.Router.Uri)
-	r.Response.Write("hello Index-", gconv.Map(resp.Get("data"))["user_nickname"])
+	keyWords := r.GetString("keywords")
+	g.Log().Debug("keyWords=", keyWords)
+	var where = map[string]interface{}{}
+	if keyWords != "" {
+		where["keyWords"] = keyWords
+	}
+	page, total, userList, err := user_service.GetAdminList(r, where)
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取用户列表数据失败")
+	}
+	users := make([]g.Map, len(userList))
+	for k, u := range userList {
+		users[k] = gconv.Map(u)
+		roles, err := user_service.GetAdminRole(gconv.Int64(u.Id))
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "获取用户角色数据失败")
+		}
+		name := make([]string, len(roles))
+		for rk, r := range roles {
+			name[rk] = r.Name
+		}
+		users[k]["roles"] = strings.Join(name, "，")
+	}
+	//获取用户对应角色
+
+	res := g.Map{
+		"total":       total,
+		"currentPage": page,
+		"userList":    users,
+	}
+	response.SusJson(true, r, "成功", res)
+}
+
+//删除管理员
+func (c *Auth) DeleteAdmin(r *ghttp.Request) {
+	ids := r.GetRequestArray("ids")
+	idsInterface := make(g.Slice, len(ids))
+	for k, v := range ids {
+		idsInterface[k] = gconv.Int64(v)
+	}
+	_, err := user.Model.Where("id in(?)", idsInterface).Delete()
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "删除失败")
+	}
+	response.SusJson(true, r, "删除成功")
 }

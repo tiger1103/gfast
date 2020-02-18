@@ -23,7 +23,7 @@ type Entity struct {
 	Createtime uint   `orm:"createtime"  json:"createtime"` // 创建时间
 	Updatetime uint   `orm:"updatetime"  json:"updatetime"` // 更新时间
 	Weigh      int    `orm:"weigh"       json:"weigh"`      // 权重
-	Status     string `orm:"status"      json:"status"`     // 状态
+	Status     uint   `orm:"status"      json:"status"`     // 状态
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

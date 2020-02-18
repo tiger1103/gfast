@@ -5,6 +5,7 @@ import (
 	"gfast/library/response"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gconv"
 	"strings"
 )
 
@@ -13,11 +14,13 @@ type Index struct{}
 //后台首页接口数据
 func (c *Index) Index(r *ghttp.Request) {
 	//获取用户信息
-	userId := user_service.GetLoginID(r)
-	//获取用户角色信息
-	userMap := user_service.GetAdminInfoById(userId)
-	if userMap != nil {
-		delete(userMap, "user_password")
+	userInfo := user_service.GetCacheAdminInfo(r)
+	//菜单列表
+	var menuList g.List
+	if userInfo != nil {
+		userId := gconv.Int64(userInfo["id"])
+		delete(userInfo, "user_password")
+		//获取用户角色信息
 		roles, err := user_service.GetAdminRole(userId)
 		if err == nil {
 			name := make([]string, len(roles))
@@ -26,17 +29,21 @@ func (c *Index) Index(r *ghttp.Request) {
 				name[k] = v.Name
 				roleIds[k] = v.Id
 			}
-			userMap["roles"] = strings.Join(name, "，")
+			userInfo["roles"] = strings.Join(name, "，")
 			//获取菜单信息
-			user_service.GetAdminMenusByRoleIds(roleIds)
+			menuList, err = user_service.GetAdminMenusByRoleIds(roleIds)
+			if err != nil {
+				g.Log().Error(err)
+			}
 		} else {
 			g.Log().Error(err)
-			userMap["roles"] = ""
+			userInfo["roles"] = ""
 		}
 	}
 
 	result := g.Map{
-		"userInfo": userMap,
+		"userInfo": userInfo,
+		"menuList": menuList,
 	}
 	response.SusJson(true, r, "ok", result)
 }
