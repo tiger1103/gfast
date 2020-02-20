@@ -48,4 +48,5 @@ policyFile="./config/casbin_conf/rbac_policy.csv"
 
 #后台相关配置
 [adminInfo]
+notCheckAuthAdminIds = [1,2]  #无需验证后台权限的用户id
 pageNum = 5  #后台列表分页长度

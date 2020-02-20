@@ -18,7 +18,7 @@ func (c *Index) Index(r *ghttp.Request) {
 	//菜单列表
 	var menuList g.List
 	if userInfo != nil {
-		userId := gconv.Int64(userInfo["id"])
+		userId := gconv.Int(userInfo["id"])
 		delete(userInfo, "user_password")
 		//获取用户角色信息
 		roles, err := user_service.GetAdminRole(userId)

@@ -13,6 +13,16 @@ func init() {
 	g.Log().SetFlags(glog.F_ASYNC | glog.F_TIME_DATE | glog.F_TIME_TIME | glog.F_FILE_LONG)
 	g.Server().SetPort(8200)
 	g.Server().AddStaticPath("/public", g.Cfg().GetString("server.ServerRoot"))
+	//后台初始化配置
+	initAdmin()
+
+}
+
+func initAdmin() {
+	//无需验证权限的用户id
+	utils.NotCheckAuthAdminIds = g.Cfg().GetInts("adminInfo.notCheckAuthAdminIds")
+	//后端分页长度配置
+	utils.AdminPageNum = g.Cfg().GetInt("adminInfo.pageNum")
 	// 设置并启动后台gtoken处理
 	initAdminGfToken()
 }
@@ -20,8 +30,6 @@ func init() {
 func initAdminGfToken() {
 	//多端登陆配置
 	utils.AdminMultiLogin = g.Cfg().GetBool("gToken.MultiLogin")
-	//后端分页长度配置
-	utils.AdminPageNum = g.Cfg().GetInt("adminInfo.pageNum")
 	AdminGfToken = &gtoken.GfToken{
 		CacheMode:        g.Cfg().GetInt8("gToken.CacheMode"),
 		CacheKey:         g.Cfg().GetString("gToken.CacheKey"),

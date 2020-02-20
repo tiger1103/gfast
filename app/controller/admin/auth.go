@@ -15,7 +15,6 @@ import (
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
-	"strings"
 )
 
 //菜单用户组用户管理
@@ -94,12 +93,11 @@ func (c *Auth) EditMenu(r *ghttp.Request) {
 
 //删除菜单
 func (c *Auth) DeleteMenu(r *ghttp.Request) {
-	ids := r.GetRequestArray("ids")
-	idsInterface := make(g.Slice, len(ids))
-	for k, v := range ids {
-		idsInterface[k] = gconv.Int64(v)
+	ids := r.GetInts("ids")
+	if len(ids) == 0 {
+		response.FailJson(true, r, "删除失败，参数错误")
 	}
-	_, err := auth_rule.Model.Where("id in(?)", idsInterface).Delete()
+	_, err := auth_rule.Model.Where("id in(?)", ids).Delete()
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "删除失败")
@@ -115,7 +113,7 @@ func (c *Auth) RoleList(r *ghttp.Request) {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取数据失败")
 	}
-	list = utils.ParentSonSort(list, 0, 0, "parent_id", "id", "flg", "name")
+	list = utils.PushSonToParent(list, 0, "parent_id", "id", "children", "", nil, false)
 	response.SusJson(true, r, "成功", g.Map{
 		"list": list,
 	})
@@ -248,23 +246,22 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 //删除角色
 func (c *Auth) DeleteRole(r *ghttp.Request) {
 	ids := r.GetRequestArray("ids")
-	idsInterface := make(g.Slice, len(ids))
-	for k, v := range ids {
-		idsInterface[k] = gconv.Int64(v)
+	if len(ids) == 0 {
+		response.FailJson(true, r, "删除失败，参数错误")
 	}
 	tx, err := g.DB("default").Begin() //开启事务
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "事务处理失败")
 	}
-	_, err = tx.Table(role.Table).Where("id in(?)", idsInterface).Delete()
+	_, err = tx.Table(role.Table).Where("id in(?)", ids).Delete()
 	if err != nil {
 		g.Log().Error(err)
 		tx.Rollback()
 		response.FailJson(true, r, "删除失败")
 	}
 	//删除角色的权限
-	for _, v := range idsInterface {
+	for _, v := range ids {
 		err = auth_service.DeleteRoleRule(gconv.Int64(v))
 		if err != nil {
 			g.Log().Error(err)
@@ -345,12 +342,15 @@ func (c *Auth) EditUser(r *ghttp.Request) {
 //用户列表
 func (c *Auth) UserList(r *ghttp.Request) {
 	keyWords := r.GetString("keywords")
-	g.Log().Debug("keyWords=", keyWords)
+	page := r.GetInt("page")
+	if page == 0 {
+		page = 1
+	}
 	var where = map[string]interface{}{}
 	if keyWords != "" {
 		where["keyWords"] = keyWords
 	}
-	page, total, userList, err := user_service.GetAdminList(r, where)
+	total, userList, err := user_service.GetAdminList(where, page)
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取用户列表数据失败")
@@ -358,16 +358,16 @@ func (c *Auth) UserList(r *ghttp.Request) {
 	users := make([]g.Map, len(userList))
 	for k, u := range userList {
 		users[k] = gconv.Map(u)
-		roles, err := user_service.GetAdminRole(gconv.Int64(u.Id))
+		roles, err := user_service.GetAdminRole(gconv.Int(u.Id))
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "获取用户角色数据失败")
 		}
-		name := make([]string, len(roles))
-		for rk, r := range roles {
-			name[rk] = r.Name
+		roleInfo := make(map[int]string, len(roles))
+		for _, r := range roles {
+			roleInfo[r.Id] = r.Name
 		}
-		users[k]["roles"] = strings.Join(name, "，")
+		users[k]["roleInfo"] = roleInfo
 	}
 	//获取用户对应角色
 
@@ -381,15 +381,22 @@ func (c *Auth) UserList(r *ghttp.Request) {
 
 //删除管理员
 func (c *Auth) DeleteAdmin(r *ghttp.Request) {
-	ids := r.GetRequestArray("ids")
-	idsInterface := make(g.Slice, len(ids))
-	for k, v := range ids {
-		idsInterface[k] = gconv.Int64(v)
+	ids := r.GetInts("ids")
+	if len(ids) > 0 {
+		_, err := user.Model.Where("id in(?)", ids).Delete()
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "删除失败")
+		}
+	} else {
+		response.FailJson(true, r, "删除失败，参数错误")
 	}
-	_, err := user.Model.Where("id in(?)", idsInterface).Delete()
-	if err != nil {
-		g.Log().Error(err)
-		response.FailJson(true, r, "删除失败")
+	//删除对应权限
+	enforcer, err := casbin_adapter_service.GetEnforcer()
+	if err == nil {
+		for _, v := range ids {
+			enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("u_%d", v))
+		}
 	}
 	response.SusJson(true, r, "删除成功")
 }

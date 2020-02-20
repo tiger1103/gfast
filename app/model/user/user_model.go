@@ -133,7 +133,7 @@ func (m *arModel) Offset(offset int) *arModel {
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
 func (m *arModel) ForPage(page, limit int) *arModel {
-	return &arModel{m.Model.ForPage(page, limit)}
+	return &arModel{m.Model.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.

@@ -22,8 +22,9 @@ import (
 const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
 
 var (
-	AdminMultiLogin bool //是否允许后台管理员多端登陆
-	AdminPageNum    = 20 //后台分页长度
+	AdminMultiLogin      bool  //是否允许后台管理员多端登陆
+	AdminPageNum         = 20  //后台分页长度
+	NotCheckAuthAdminIds []int //无需验证权限的用户id
 )
 
 //获取验证码
@@ -152,14 +153,4 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.QxkjUser)
 	qxkjUser.LastLoginIp = r.GetClientIp()
 	qxkjUser.Update()
 	return nil, &returnData
-}
-
-//获取分页limit start
-func SetPageLimit(r *ghttp.Request) (page int, start int) {
-	page = r.GetInt("page")
-	if page == 0 {
-		page = 1
-	}
-	start = (page - 1) * AdminPageNum
-	return
 }

@@ -127,7 +127,7 @@ func AddRoleRule(iRule interface{}, roleId int64) (err error) {
 		err = e
 		return
 	}
-	rule := iRule.([]interface{})
+	rule := gconv.Strings(iRule)
 	for _, v := range rule {
 		_, err = enforcer.AddPolicy(fmt.Sprintf("g_%d", roleId), fmt.Sprintf("r_%s", v), "All")
 		if err != nil {
@@ -182,7 +182,7 @@ func EditRoleRule(iRule interface{}, roleId int64) (err error) {
 			return
 		}
 	}
-	rule := iRule.([]interface{})
+	rule := gconv.Strings(iRule)
 	for _, v := range rule {
 		_, err = enforcer.AddPolicy(fmt.Sprintf("g_%d", roleId), fmt.Sprintf("r_%s", v), "All")
 		if err != nil {
@@ -254,7 +254,7 @@ func AddUser(data map[string]interface{}) (InsertId int64, err error) {
 
 //修改用户信息
 func EditUser(data map[string]interface{}) (err error) {
-	e := checkUserData(data, "add")
+	e := checkUserData(data, "edit")
 	if e != nil {
 		err = gerror.New(e.(*gvalid.Error).FirstString())
 		return
@@ -269,8 +269,10 @@ func EditUser(data map[string]interface{}) (err error) {
 	}
 	//保存管理员信息
 	//提交了密码？密码加密
-	if _, ok := data["user_password"]; ok {
+	if val, ok := data["user_password"]; ok && gconv.String(val) != "" {
 		data["user_password"] = utils.EncryptCBC(gconv.String(data["user_password"]), utils.AdminCbcPublicKey)
+	} else {
+		delete(data, "user_password")
 	}
 	_, err = user.Model.Filter().Data(data).Save()
 	if err != nil {
@@ -286,9 +288,9 @@ func AddUserRole(roleIds interface{}, userId int64) (err error) {
 		err = e
 		return
 	}
-	rule := roleIds.([]interface{})
+	rule := gconv.Ints(roleIds)
 	for _, v := range rule {
-		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("u_%d", userId), fmt.Sprintf("g_%s", v))
+		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("u_%d", userId), fmt.Sprintf("g_%d", v))
 		if err != nil {
 			return
 		}
@@ -303,11 +305,11 @@ func EditUserRole(roleIds interface{}, userId int64) (err error) {
 		err = e
 		return
 	}
-	rule := roleIds.([]interface{})
+	rule := gconv.Ints(roleIds)
 	//删除用户旧角色信息
 	enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("u_%d", userId))
 	for _, v := range rule {
-		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("u_%d", userId), fmt.Sprintf("g_%s", v))
+		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("u_%d", userId), fmt.Sprintf("g_%d", v))
 		if err != nil {
 			return
 		}
