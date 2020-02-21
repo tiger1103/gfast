@@ -2,12 +2,12 @@ package admin
 
 import (
 	"fmt"
-	"gfast/app/model/auth_rule"
-	"gfast/app/model/role"
-	"gfast/app/model/user"
-	"gfast/app/service/auth_service"
+	"gfast/app/model/admin/auth_rule"
+	"gfast/app/model/admin/role"
+	"gfast/app/model/admin/user"
+	"gfast/app/service/admin/auth_service"
+	"gfast/app/service/admin/user_service"
 	"gfast/app/service/casbin_adapter_service"
-	"gfast/app/service/user_service"
 	"gfast/library/response"
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
@@ -34,12 +34,29 @@ func (c *Auth) MenuList(r *ghttp.Request) {
 	})
 }
 
+//菜单排序
+func (c *Auth) MenuSort(r *ghttp.Request) {
+	sorts := r.Get("sorts")
+	s := gconv.Map(sorts)
+	if s == nil {
+		response.FailJson(true, r, "排序失败")
+	}
+	for k, v := range s {
+		auth_rule.Model.Where("id=?", k).Data("weigh", v).Update()
+	}
+	response.SusJson(true, r, "排序成功")
+}
+
 //添加菜单
 func (c *Auth) AddMenu(r *ghttp.Request) {
 	if r.Method == "POST" {
-		menu := new(auth_service.MenuReq)
+		menu := new(auth_rule.MenuReq)
 		if err := r.Parse(menu); err != nil {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+		}
+		//判断菜单规则是否存在
+		if !auth_service.CheckMenuNameUnique(menu.Name, 0) {
+			response.FailJson(true, r, "菜单规则名称已经存在")
 		}
 		//保存到数据库
 		err, _ := auth_service.AddMenu(menu)
@@ -60,11 +77,15 @@ func (c *Auth) AddMenu(r *ghttp.Request) {
 
 //修改菜单
 func (c *Auth) EditMenu(r *ghttp.Request) {
-	id := r.GetRequestInt("id")
+	id := r.GetInt("id")
 	if r.Method == "POST" {
-		menu := new(auth_service.MenuReq)
+		menu := new(auth_rule.MenuReq)
 		if err := r.Parse(menu); err != nil {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+		}
+		//判断菜单规则是否存在
+		if !auth_service.CheckMenuNameUnique(menu.Name, id) {
+			response.FailJson(true, r, "菜单规则名称已经存在")
 		}
 		//保存到数据库
 		err, _ := auth_service.EditMenu(menu, id)

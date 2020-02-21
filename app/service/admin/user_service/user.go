@@ -2,9 +2,9 @@ package user_service
 
 import (
 	"fmt"
-	"gfast/app/model/role"
-	"gfast/app/model/user"
-	"gfast/app/service/auth_service"
+	"gfast/app/model/admin/role"
+	"gfast/app/model/admin/user"
+	"gfast/app/service/admin/auth_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/boot"
 	"gfast/library/utils"

@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"gfast/app/model/auth_rule"
-	"gfast/app/model/role"
-	"gfast/app/model/user"
+	"gfast/app/model/admin/auth_rule"
+	"gfast/app/model/admin/role"
+	"gfast/app/model/admin/user"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/library/utils"
 	"github.com/gogf/gf/database/gdb"
@@ -16,19 +16,6 @@ import (
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
 )
-
-//菜单对象
-type MenuReq struct {
-	IsMenu    int    `p:"ismenu" c:"ismenu" v:"min:0|max:1#菜单类型最小值为:min|菜单类型最大值为:max"`
-	Pid       int    `p:"pid" c:"pid" v:"min:0"`
-	Name      string `p:"name" c:"name" v:"required#请填写规则名称"`
-	Title     string `p:"title" c:"title" v:"required|length:1,100#请填写标题|标题长度在:min到:max位"`
-	Icon      string `p:"icon" c:"icon"`
-	Weigh     int    `p:"weigh" c:"weigh"`
-	Condition string `p:"condition" c:"condition"`
-	Remark    string `p:"remark" c:"remark"`
-	Status    int    `p:"status" c:"status"`
-}
 
 //获取菜单列表
 func GetMenuList(where string, params ...interface{}) (error, g.List) {
@@ -51,8 +38,22 @@ func GetMenuList(where string, params ...interface{}) (error, g.List) {
 	return nil, gList
 }
 
+//检查菜单规则是否存在
+func CheckMenuNameUnique(name string, id int) bool {
+	model := auth_rule.Model.Where("name=?", name)
+	if id != 0 {
+		model = model.And("id!=?", id)
+	}
+	c, err := model.Count()
+	if err != nil {
+		g.Log().Error(err)
+		return false
+	}
+	return c == 0
+}
+
 // 添加菜单操作
-func AddMenu(req *MenuReq) (err error, insertId int64) {
+func AddMenu(req *auth_rule.MenuReq) (err error, insertId int64) {
 	menuMap := gconv.Map(req)
 	now := gtime.Timestamp()
 	menuMap["createtime"] = now
@@ -64,7 +65,7 @@ func AddMenu(req *MenuReq) (err error, insertId int64) {
 }
 
 //修改菜单操作
-func EditMenu(req *MenuReq, id int) (err error, rows int64) {
+func EditMenu(req *auth_rule.MenuReq, id int) (err error, rows int64) {
 	menuMap := gconv.Map(req)
 	now := gtime.Timestamp()
 	menuMap["updatetime"] = now

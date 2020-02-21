@@ -2,12 +2,11 @@ package router
 
 import (
 	"fmt"
-	"gfast/app/model/auth_rule"
+	"gfast/app/model/admin/auth_rule"
+	"gfast/app/service/admin/user_service"
 	"gfast/app/service/casbin_adapter_service"
-	"gfast/app/service/user_service"
 	"gfast/library/response"
 	"gfast/library/utils"
-	"github.com/gogf/gf/encoding/gurl"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -29,14 +28,10 @@ func MiddlewareAuth(r *ghttp.Request) {
 			return
 		}
 	}
-	url := r.GetUrl()
-	info, err := gurl.ParseURL(url, 32)
-	if err != nil {
-		g.Log().Error(err)
-		response.FailJson(true, r, "请求地址错误")
-	}
+	url := r.Request.URL
+	g.Log().Debug(url.Path)
 	//获取地址对应的菜单id
-	gValue, err := auth_rule.Model.Where("name=?", info["path"]).Fields("id").Value()
+	gValue, err := auth_rule.Model.Where("name=?", url.Path).Fields("id").Value()
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "请求数据失败")
@@ -56,7 +51,6 @@ func MiddlewareAuth(r *ghttp.Request) {
 			response.FailJson(true, r, "没有访问权限")
 		}
 		hasAccess := false
-		g.Log().Debug(groupPolicy)
 		for _, v := range groupPolicy {
 			if enforcer.HasPolicy(v[1], fmt.Sprintf("r_%d", menuId), "All") {
 				hasAccess = true

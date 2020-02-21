@@ -2,7 +2,7 @@ package casbin_adapter_service
 
 import (
 	"fmt"
-	"gfast/app/model/casbin_rule"
+	"gfast/app/model/admin/casbin_rule"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	"github.com/casbin/casbin/v2/persist"

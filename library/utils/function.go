@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"gfast/app/model/user"
+	"gfast/app/model/admin/user"
 	"gfast/library/response"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/crypto/gaes"
@@ -146,6 +146,10 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.QxkjUser)
 	}
 	if qxkjUser == nil {
 		return errors.New("账号或密码错误"), nil
+	}
+	//判断用户状态
+	if qxkjUser.UserStatus == 0 {
+		return errors.New("用户已被冻结"), nil
 	}
 	returnData := *qxkjUser
 	//更新登陆时间及ip

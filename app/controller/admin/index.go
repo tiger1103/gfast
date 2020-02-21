@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"gfast/app/service/user_service"
+	"gfast/app/service/admin/user_service"
 	"gfast/library/response"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
