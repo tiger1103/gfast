@@ -48,6 +48,19 @@ func GetAdminList(where g.Map, page int) (total int, userList []*user.Entity, er
 
 //获取管理员的角色信息
 func GetAdminRole(userId int) (roles []*role.Entity, err error) {
+	roleIds, err := GetAdminRoleIds(userId)
+	if err != nil {
+		return
+	}
+	if roleIds != nil {
+		//获取角色信息
+		roles, err = role.Model.Where("id in(?)", roleIds).All()
+	}
+	return
+}
+
+//获取管理员对应的角色ids
+func GetAdminRoleIds(userId int) (roleIds []int, err error) {
 	enforcer, e := casbin_adapter_service.GetEnforcer()
 	if e != nil {
 		err = e
@@ -56,13 +69,11 @@ func GetAdminRole(userId int) (roles []*role.Entity, err error) {
 	//查询关联角色规则
 	groupPolicy := enforcer.GetFilteredGroupingPolicy(0, fmt.Sprintf("u_%d", userId))
 	if len(groupPolicy) > 0 {
-		roleIds := make([]int, len(groupPolicy))
+		roleIds = make([]int, len(groupPolicy))
 		//得到角色id的切片
 		for k, v := range groupPolicy {
 			roleIds[k] = gconv.Int(gstr.SubStr(v[1], 2))
 		}
-		//获取角色信息
-		roles, err = role.Model.Where("id in(?)", roleIds).All()
 	}
 	return
 }

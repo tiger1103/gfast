@@ -241,25 +241,16 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 		response.FailJson(true, r, "获取权限处理器失败")
 	}
 	gp := enforcer.GetFilteredNamedPolicy("p", 0, fmt.Sprintf("g_%d", id))
-	g.Log().Debug(gp)
-	gpMap := map[int64]int64{}
-	for _, v := range gp {
-		gpMap[gconv.Int64(gstr.SubStr(v[1], 2))] = gconv.Int64(gstr.SubStr(v[1], 2))
-	}
-	//关联选中的权限
-	for k, v := range mList {
-		if _, has := gpMap[gconv.Int64(v["id"])]; has {
-			v["isChecked"] = true
-		} else {
-			v["isChecked"] = false
-		}
-		mList[k] = v
+	gpSlice := make([]int, len(gp))
+	for k, v := range gp {
+		gpSlice[k] = gconv.Int(gstr.SubStr(v[1], 2))
 	}
 	mList = utils.PushSonToParent(mList)
 	res := g.Map{
-		"parentList": pList,
-		"menuList":   mList,
-		"role":       role,
+		"parentList":   pList,
+		"menuList":     mList,
+		"role":         role,
+		"checkedRules": gpSlice,
 	}
 	response.SusJson(true, r, "成功", res)
 }
@@ -325,7 +316,7 @@ func (c *Auth) AddUser(r *ghttp.Request) {
 
 //修改管理员
 func (c *Auth) EditUser(r *ghttp.Request) {
-	id := r.GetRequestInt64("id")
+	id := r.GetRequestInt("id")
 	if r.Method == "POST" {
 		requestData := r.GetFormMap()
 		err := auth_service.EditUser(requestData)
@@ -353,9 +344,16 @@ func (c *Auth) EditUser(r *ghttp.Request) {
 		response.FailJson(true, r, "获取角色数据失败")
 	}
 	roleList = utils.ParentSonSort(roleList, 0, 0, "parent_id", "id", "flg", "name")
+	//获取已选择的角色信息
+	checkedRoleIds, err := user_service.GetAdminRoleIds(id)
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取用户角色数据失败")
+	}
 	res := g.Map{
-		"roleList": roleList,
-		"userInfo": userEntity,
+		"roleList":       roleList,
+		"userInfo":       userEntity,
+		"checkedRoleIds": checkedRoleIds,
 	}
 	response.SusJson(true, r, "成功", res)
 }
@@ -379,7 +377,7 @@ func (c *Auth) UserList(r *ghttp.Request) {
 	users := make([]g.Map, len(userList))
 	for k, u := range userList {
 		users[k] = gconv.Map(u)
-		roles, err := user_service.GetAdminRole(gconv.Int(u.Id))
+		roles, err := user_service.GetAdminRole(u.Id)
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "获取用户角色数据失败")

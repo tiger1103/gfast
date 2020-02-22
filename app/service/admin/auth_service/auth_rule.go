@@ -300,7 +300,7 @@ func AddUserRole(roleIds interface{}, userId int64) (err error) {
 }
 
 //修改用户角色信息
-func EditUserRole(roleIds interface{}, userId int64) (err error) {
+func EditUserRole(roleIds interface{}, userId int) (err error) {
 	enforcer, e := casbin_adapter_service.GetEnforcer()
 	if e != nil {
 		err = e
