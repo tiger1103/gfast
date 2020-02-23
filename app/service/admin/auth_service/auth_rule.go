@@ -7,6 +7,7 @@ import (
 	"gfast/app/model/admin/auth_rule"
 	"gfast/app/model/admin/role"
 	"gfast/app/model/admin/user"
+	"gfast/app/service/cache_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/library/utils"
 	"github.com/gogf/gf/database/gdb"
@@ -17,25 +18,53 @@ import (
 	"github.com/gogf/gf/util/gvalid"
 )
 
-//获取菜单列表
-func GetMenuList(where string, params ...interface{}) (error, g.List) {
-	var err error
-	var list []*auth_rule.Entity
-	if where != "" {
-		list, err = auth_rule.Model.Where(where, params...).Order("weigh desc,id asc").FindAll()
-	} else {
-		list, err = auth_rule.Model.Order("weigh desc,id asc").FindAll()
-	}
+//获取isMenu==1菜单列表
+func GetIsMenuList() ([]*auth_rule.Entity, error) {
+	list, err := GetMenuList()
 	if err != nil {
-		g.Log().Error(err)
-		return err, nil
+		return nil, err
 	}
-	var gList = make(g.List, len(list))
-	for k, v := range list {
-		tMap := gconv.Map(v)
-		gList[k] = tMap
+	var gList = make([]*auth_rule.Entity, 0, len(list))
+	for _, v := range list {
+		if v.Ismenu == 1 {
+			gList = append(gList, v)
+		}
 	}
-	return nil, gList
+	return gList, nil
+}
+
+//获取isMenu=1且status=1的菜单列表
+func GetIsMenuStatusList() ([]*auth_rule.Entity, error) {
+	list, err := GetMenuList()
+	if err != nil {
+		return nil, err
+	}
+	var gList = make([]*auth_rule.Entity, 0, len(list))
+	for _, v := range list {
+		if v.Ismenu == 1 && v.Status == 1 {
+			gList = append(gList, v)
+		}
+	}
+	return gList, nil
+}
+
+//获取所有菜单
+func GetMenuList() (list []*auth_rule.Entity, err error) {
+	cache := cache_service.New()
+	//从缓存获取
+	iList := cache.Get(cache_service.AdminMenu)
+	if iList != nil {
+		list = iList.([]*auth_rule.Entity)
+		return
+	}
+	//从数据库获取
+	list, err = auth_rule.Model.Order("weigh desc,id asc").FindAll()
+	if err != nil {
+		return
+	}
+	//缓存菜单
+	cache.Set(cache_service.AdminMenu, list, 0, cache_service.AdminAuthTag)
+	return
 }
 
 //检查菜单规则是否存在
@@ -75,23 +104,19 @@ func EditMenu(req *auth_rule.MenuReq, id int) (err error, rows int64) {
 	return
 }
 
-//获取用户组列表
-func GetRoleList(where string, params ...interface{}) (err error, list g.List) {
-	var rl []*role.Entity
-	if where != "" {
-		rl, err = role.Model.Where(where, params).OrderBy("list_order asc,id asc").All()
-	} else {
-		rl, err = role.Model.OrderBy("list_order asc,id asc").All()
+//获取用户组(角色)列表
+func GetRoleList() (list []*role.Entity, err error) {
+	cache := cache_service.New()
+	//从缓存获取
+	iList := cache.Get(cache_service.AdminRole)
+	if iList != nil {
+		list = iList.([]*role.Entity)
+		return
 	}
-	if err != nil {
-		g.Log().Error(err)
-		return err, nil
-	}
-	list = make(g.List, len(rl))
-	for k, v := range rl {
-		tMap := gconv.Map(v)
-		list[k] = tMap
-	}
+	//从数据库获取
+	list, err = role.Model.OrderBy("list_order asc,id asc").All()
+	//缓存数据
+	cache.Set(cache_service.AdminRole, list, 0, cache_service.AdminAuthTag)
 	return
 }
 

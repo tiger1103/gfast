@@ -16,7 +16,7 @@ import (
 
 //获取登陆用户ID
 func GetLoginID(r *ghttp.Request) (userId int) {
-	userInfo := GetCacheAdminInfo(r)
+	userInfo := GetLoginAdminInfo(r)
 	if userInfo != nil {
 		userId = gconv.Int(userInfo["id"])
 	}
@@ -24,7 +24,7 @@ func GetLoginID(r *ghttp.Request) (userId int) {
 }
 
 //获取缓存的用户信息
-func GetCacheAdminInfo(r *ghttp.Request) (userInfo g.Map) {
+func GetLoginAdminInfo(r *ghttp.Request) (userInfo g.Map) {
 	resp := boot.AdminGfToken.GetTokenData(r)
 	userInfo = gconv.Map(resp.Get("data"))
 	return
@@ -47,14 +47,18 @@ func GetAdminList(where g.Map, page int) (total int, userList []*user.Entity, er
 }
 
 //获取管理员的角色信息
-func GetAdminRole(userId int) (roles []*role.Entity, err error) {
+func GetAdminRole(userId int, allRoleList []*role.Entity) (roles []*role.Entity, err error) {
 	roleIds, err := GetAdminRoleIds(userId)
 	if err != nil {
 		return
 	}
-	if roleIds != nil {
-		//获取角色信息
-		roles, err = role.Model.Where("id in(?)", roleIds).All()
+	roles = make([]*role.Entity, 0, len(allRoleList))
+	for _, v := range allRoleList {
+		for _, id := range roleIds {
+			if id == v.Id {
+				roles = append(roles, v)
+			}
+		}
 	}
 	return
 }
@@ -110,15 +114,16 @@ func GetAdminMenusByRoleIds(roleIds []int) (menus g.List, err error) {
 		}
 	}
 	//获取所有开启的菜单
-	err, allMenus := auth_service.GetMenuList("status=? and ismenu=?", 1, 1)
+	allMenus, err := auth_service.GetIsMenuStatusList()
 	if err != nil {
 		return
 	}
 	roleMenus := make(g.List, 0, 100)
 	for _, v := range allMenus {
-		if _, ok := menuIds[gconv.Int64(v["id"])]; ok {
-			v["index"] = v["name"]
-			roleMenus = append(roleMenus, v)
+		if _, ok := menuIds[gconv.Int64(v.Id)]; ok {
+			roleMenu := gconv.Map(v)
+			roleMenu["index"] = v.Name
+			roleMenus = append(roleMenus, roleMenu)
 		}
 	}
 	menus = utils.PushSonToParent(roleMenus, 0, "pid", "id", "subs", "", nil, false)
