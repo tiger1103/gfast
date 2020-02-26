@@ -5,7 +5,6 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gconv"
 	"reflect"
-	"strings"
 )
 
 //有层级关系的数组,父级-》子级 排序
@@ -34,7 +33,7 @@ func ParentSonSort(list g.List, params ...interface{}) g.List {
 	levelName = gconv.String(GetSliceByKey(args, 4, "flg"))
 	title = gconv.String(GetSliceByKey(args, 5, "title"))
 	breaks = gconv.Int(GetSliceByKey(args, 6, -1))
-	prefixStr = gconv.String(GetSliceByKey(args, 7, "  "))
+	prefixStr = gconv.String(GetSliceByKey(args, 7, "─"))
 	//定义一个新slice用于返回
 	var returnSlice g.List
 	for _, v := range list {
@@ -46,10 +45,10 @@ func ParentSonSort(list g.List, params ...interface{}) g.List {
 				if levelClone < 0 {
 					break
 				}
-				titlePrefix += strings.Repeat(prefixStr, 2)
+				titlePrefix += prefixStr
 				levelClone--
 			}
-			titlePrefix += "├"
+			titlePrefix = "├" + titlePrefix
 			if level == 0 {
 				v["title_prefix"] = ""
 			} else {
@@ -130,4 +129,49 @@ func GetSliceByKey(args []interface{}, key int, val interface{}) interface{} {
 		value = val
 	}
 	return value
+}
+
+//有层级关系的数组，通过父级id查找所有子级id数组
+func FindSonByParentId(list g.List, fid int, flg, flgV string) g.List {
+	newList := make(g.List, 0, len(list))
+	for _, v := range list {
+		if gconv.Int(v[flg]) == fid {
+			newList = append(newList, v)
+			fList := FindSonByParentId(list, gconv.Int(v[flgV]), flg, flgV)
+			newList = append(newList, fList...)
+		}
+	}
+	return newList
+}
+
+//有层级关系的数组，通过子级fid查找所有父级数组
+func findParentBySonPid(list g.List, id int, params ...interface{}) g.List {
+	args := make([]interface{}, 4)
+	for k, v := range params {
+		if k == 4 {
+			break
+		}
+		args[k] = v
+	}
+	var (
+		filter      = gconv.String(GetSliceByKey(args, 0, "filter")) //过滤键名
+		fPid        = gconv.String(GetSliceByKey(args, 1, "pid"))    //父级id字段键名
+		filterValue = GetSliceByKey(args, 2, nil)                    //过滤键值
+		fid         = gconv.String(GetSliceByKey(args, 3, "id"))     //id字段键名
+	)
+	rList := make(g.List, 0, len(list))
+	for _, v := range list {
+		if gconv.Int(v[fid]) == id {
+			if fv, ok := v[filter]; ok {
+				if reflect.DeepEqual(fv, filterValue) {
+					rList = append(rList, v)
+				}
+			} else {
+				rList = append(rList, v)
+			}
+			r := findParentBySonPid(list, gconv.Int(v[fPid]), filter, fPid, filterValue, fid)
+			rList = append(rList, r...)
+		}
+	}
+	return rList
 }

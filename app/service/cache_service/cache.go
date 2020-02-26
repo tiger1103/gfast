@@ -6,8 +6,11 @@ import (
 	"github.com/gogf/gf/os/gcache"
 	"github.com/gogf/gf/util/gconv"
 	"reflect"
+	"sync"
 	"time"
 )
+
+var tagSetMux sync.Mutex
 
 type CacheTagService struct {
 	tagKey interface{}
@@ -25,15 +28,10 @@ func (c *CacheTagService) cacheTagKey(key interface{}, tag interface{}) {
 		value := gcache.Get(c.tagKey)
 		if value != nil {
 			keyValue := gconv.SliceAny(value)
-			hasKey := false
 			for _, v := range keyValue {
-				if reflect.DeepEqual(key, v) {
-					hasKey = true
-					break
+				if !reflect.DeepEqual(key, v) {
+					tagValue = append(tagValue, v)
 				}
-			}
-			if !hasKey {
-				tagValue = append(tagValue, gconv.SliceAny(value)...)
 			}
 		}
 		gcache.Set(c.tagKey, tagValue, 0)
@@ -50,13 +48,17 @@ func (c *CacheTagService) setTagKey(tag interface{}) {
 // Set sets cache with <tagKey>-<value> pair, which is expired after <duration>.
 // It does not expire if <duration> <= 0.
 func (c *CacheTagService) Set(key interface{}, value interface{}, duration time.Duration, tag interface{}) {
+	tagSetMux.Lock()
 	c.cacheTagKey(key, tag)
 	gcache.Set(key, value, duration)
+	tagSetMux.Unlock()
 }
 
 // SetIfNotExist sets cache with <tagKey>-<value> pair if <tagKey> does not exist in the cache,
 // which is expired after <duration>. It does not expire if <duration> <= 0.
 func (c *CacheTagService) SetIfNotExist(key interface{}, value interface{}, duration time.Duration, tag interface{}) bool {
+	tagSetMux.Lock()
+	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
 	return gcache.SetIfNotExist(key, value, duration)
 }
@@ -65,6 +67,7 @@ func (c *CacheTagService) SetIfNotExist(key interface{}, value interface{}, dura
 //
 // It does not expire if <duration> <= 0.
 func (c *CacheTagService) Sets(data map[interface{}]interface{}, duration time.Duration, tag interface{}) {
+	tagSetMux.Lock()
 	if tag != nil {
 		for k, _ := range data {
 			c.cacheTagKey(k, tag)
@@ -73,6 +76,7 @@ func (c *CacheTagService) Sets(data map[interface{}]interface{}, duration time.D
 	} else {
 		gcache.Sets(data, duration)
 	}
+	tagSetMux.Unlock()
 }
 
 // Get returns the value of <tagKey>.
@@ -87,6 +91,8 @@ func (c *CacheTagService) Get(key interface{}) interface{} {
 //
 // It does not expire if <duration> <= 0.
 func (c *CacheTagService) GetOrSet(key interface{}, value interface{}, duration time.Duration, tag interface{}) interface{} {
+	tagSetMux.Lock()
+	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
 	return gcache.GetOrSet(key, value, duration)
 }
@@ -95,6 +101,8 @@ func (c *CacheTagService) GetOrSet(key interface{}, value interface{}, duration 
 // and returns its result if <tagKey> does not exist in the cache. The tagKey-value pair expires
 // after <duration>. It does not expire if <duration> <= 0.
 func (c *CacheTagService) GetOrSetFunc(key interface{}, f func() interface{}, duration time.Duration, tag interface{}) interface{} {
+	tagSetMux.Lock()
+	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
 	return gcache.GetOrSetFunc(key, f, duration)
 }
@@ -105,6 +113,8 @@ func (c *CacheTagService) GetOrSetFunc(key interface{}, f func() interface{}, du
 //
 // Note that the function <f> is executed within writing mutex lock.
 func (c *CacheTagService) GetOrSetFuncLock(key interface{}, f func() interface{}, duration time.Duration, tag interface{}) interface{} {
+	tagSetMux.Lock()
+	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
 	return gcache.GetOrSetFuncLock(key, f, duration)
 }
@@ -127,6 +137,7 @@ func (c *CacheTagService) Removes(keys []interface{}) {
 // Remove deletes the <tag> in the cache, and returns its value.
 func (c *CacheTagService) RemoveByTag(tag interface{}) {
 	c.setTagKey(tag)
+	tagSetMux.Lock()
 	//删除tagKey 对应的 key和值
 	keys := c.Get(c.tagKey)
 	if keys != nil {
@@ -134,6 +145,7 @@ func (c *CacheTagService) RemoveByTag(tag interface{}) {
 		c.Removes(ks)
 	}
 	c.Remove(c.tagKey)
+	tagSetMux.Unlock()
 }
 
 // Removes deletes <tags> in the cache.

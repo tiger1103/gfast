@@ -3,12 +3,14 @@ package router
 import (
 	"fmt"
 	"gfast/app/model/admin/auth_rule"
+	"gfast/app/service/admin/auth_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/library/response"
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/text/gstr"
 )
 
 //跨域处理中间件
@@ -29,14 +31,28 @@ func MiddlewareAuth(r *ghttp.Request) {
 		}
 	}
 	url := r.Request.URL
-	g.Log().Debug(url.Path)
 	//获取地址对应的菜单id
-	gValue, err := auth_rule.Model.Where("name=?", url.Path).Fields("id").Value()
+	menuList, err := auth_service.GetMenuIsStatusList()
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "请求数据失败")
 	}
-	menuId := gValue.Int()
+	var menu *auth_rule.Entity
+	for _, m := range menuList {
+		if gstr.Equal(m.Name, url.Path) {
+			menu = m
+			break
+		}
+	}
+	if menu == nil {
+		response.FailJson(true, r, "没有访问权限")
+	}
+	//若存在不需要验证的条件则跳过
+	if gstr.Equal(menu.Condition, "nocheck") {
+		r.Middleware.Next()
+		return
+	}
+	menuId := menu.Id
 	//菜单没存数据库不验证权限
 	if menuId != 0 {
 		//判断权限操作

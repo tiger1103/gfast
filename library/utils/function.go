@@ -3,7 +3,6 @@ package utils
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"gfast/app/model/admin/user"
 	"gfast/library/response"
 	"github.com/goflyfox/gtoken/gtoken"
@@ -14,7 +13,6 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
-	"github.com/gogf/gf/util/grand"
 	"github.com/gogf/gf/util/gvalid"
 	"github.com/mojocn/base64Captcha"
 )
@@ -27,30 +25,44 @@ var (
 	NotCheckAuthAdminIds []int //无需验证权限的用户id
 )
 
-//获取验证码
-func GetVerifyImg() (idKeyC string, base64stringC string) {
-	//字符,公式,验证码配置
-	var configC = base64Captcha.ConfigCharacter{
-		Height: 60,
-		Width:  240,
-		//const CaptchaModeNumber:数字,CaptchaModeAlphabet:字母,CaptchaModeArithmetic:算术,CaptchaModeNumberAlphabet:数字字母混合.
-		Mode:               base64Captcha.CaptchaModeNumberAlphabet,
-		ComplexOfNoiseText: base64Captcha.CaptchaComplexLower,
-		ComplexOfNoiseDot:  base64Captcha.CaptchaComplexLower,
-		IsShowHollowLine:   false,
-		IsShowNoiseDot:     false,
-		IsShowNoiseText:    false,
-		IsShowSlimeLine:    false,
-		IsShowSineLine:     true,
-		CaptchaLen:         4,
+//获取数字验证码
+func GetVerifyImgDigit() (idKeyC string, base64stringC string) {
+	driver := &base64Captcha.DriverDigit{80, 240, 5, 0.7, 5}
+	store := base64Captcha.DefaultMemStore
+	c := base64Captcha.NewCaptcha(driver, store)
+	idKeyC, base64stringC, err := c.Generate()
+	if err != nil {
+		g.Log().Error(err)
 	}
-	//创建字符公式验证码.
-	//GenerateCaptcha 第一个参数为空字符串,包会自动在服务器一个随机种子给你产生随机uiid.
-	var capC base64Captcha.CaptchaInterface
-	idKeyC, capC = base64Captcha.GenerateCaptcha(grand.Str(20), configC)
-	//以base64编码
-	base64stringC = base64Captcha.CaptchaWriteToBase64Encoding(capC)
-	return idKeyC, base64stringC
+	return
+}
+
+//获取字母数字混合验证码
+func GetVerifyImgString() (idKeyC string, base64stringC string) {
+	driver := &base64Captcha.DriverString{
+		Height:          80,
+		Width:           240,
+		NoiseCount:      50,
+		ShowLineOptions: 20,
+		Length:          4,
+		Source:          "abcdefghijklmnopqrstuvwxyz0123456789",
+	}
+	driver = driver.ConvertFonts()
+	store := base64Captcha.DefaultMemStore
+	c := base64Captcha.NewCaptcha(driver, store)
+	idKeyC, base64stringC, err := c.Generate()
+	if err != nil {
+		g.Log().Error(err)
+	}
+	return
+}
+
+//验证输入的验证码是否正确
+func VerifyString(id, answer string) bool {
+	driver := new(base64Captcha.DriverString)
+	store := base64Captcha.DefaultMemStore
+	c := base64Captcha.NewCaptcha(driver, store)
+	return c.Verify(id, answer, true)
 }
 
 //AdminLogin 后台用户登陆验证
@@ -70,9 +82,9 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		response.JsonExit(r, response.ErrorCode, e.String())
 	}
 	//判断验证码是否正确
-	/*if !base64Captcha.VerifyCaptchaAndIsClear(data["idKeyC"], data["idValueC"], true) {
+	if !VerifyString(data["idKeyC"], data["idValueC"]) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
-	}*/
+	}
 	password := EncryptCBC(data["password"], AdminCbcPublicKey)
 	var keys string
 	if AdminMultiLogin {
@@ -93,10 +105,6 @@ func AuthAfterFunc(r *ghttp.Request, respData gtoken.Resp) {
 	if r.Method == "OPTIONS" || respData.Success() {
 		r.Middleware.Next()
 	} else {
-		params := r.GetRequestMap()
-		no := gtime.TimestampMilliStr()
-		g.Log().Info(fmt.Sprintf("[AUTH_%s][url:%s][params:%s][data:%s]",
-			no, r.URL.Path, params, respData.Json()))
 		respData.Msg = "用户信息验证失败"
 		response := r.Response
 		options := response.DefaultCORSOptions()

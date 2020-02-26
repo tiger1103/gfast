@@ -13,7 +13,7 @@ func init() {
 	sysLoginGroup := group.Group("/sysLogin")
 	sysLoginGroup.ALL("/public", new(admin.Public))
 	systemGroup := group.Group("/system")
-	//systemGroup.Middleware(MiddlewareAuth)//后台权限验证
+	systemGroup.Middleware(MiddlewareAuth) //后台权限验证
 	systemGroup.ALL("/index", new(admin.Index))
 	systemGroup.ALL("/auth", new(admin.Auth))
 }

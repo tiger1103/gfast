@@ -48,6 +48,21 @@ func GetIsMenuStatusList() ([]*auth_rule.Entity, error) {
 	return gList, nil
 }
 
+//获取status==1的菜单列表
+func GetMenuIsStatusList() ([]*auth_rule.Entity, error) {
+	list, err := GetMenuList()
+	if err != nil {
+		return nil, err
+	}
+	var gList = make([]*auth_rule.Entity, 0, len(list))
+	for _, v := range list {
+		if v.Status == 1 {
+			gList = append(gList, v)
+		}
+	}
+	return gList, nil
+}
+
 //获取所有菜单
 func GetMenuList() (list []*auth_rule.Entity, err error) {
 	cache := cache_service.New()
@@ -219,7 +234,7 @@ func EditRoleRule(iRule interface{}, roleId int64) (err error) {
 }
 
 //删除角色权限操作
-func DeleteRoleRule(roleId int64) (err error) {
+func DeleteRoleRule(roleId int) (err error) {
 	enforcer, e := casbin_adapter_service.GetEnforcer()
 	if e != nil {
 		err = e
@@ -362,4 +377,66 @@ func checkUserData(params map[string]interface{}, t string) error {
 		return e
 	}
 	return nil
+}
+
+func DeleteRoleByIds(ids []int) (err error) {
+	//查询所有子级id
+	roleAllEntity, err := GetRoleList()
+	if err != nil {
+		g.Log().Debug(err)
+		err = gerror.New("删除失败，不存在角色信息")
+		return
+	}
+	roleAll := gconv.SliceMap(roleAllEntity)
+	sonList := make(g.List, 0, len(roleAll))
+	for _, id := range ids {
+		sonList = append(sonList, utils.FindSonByParentId(roleAll, id, "parent_id", "id")...)
+	}
+	for _, role := range sonList {
+		ids = append(ids, gconv.Int(role["id"]))
+	}
+	tx, err := g.DB("default").Begin() //开启事务
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("事务处理失败")
+		return
+	}
+	_, err = tx.Table(role.Table).Where("id in(?)", ids).Delete()
+	if err != nil {
+		g.Log().Error(err)
+		tx.Rollback()
+		err = gerror.New("删除失败")
+		return
+	}
+	//删除角色的权限
+	for _, v := range ids {
+		err = DeleteRoleRule(v)
+		if err != nil {
+			g.Log().Error(err)
+			tx.Rollback()
+			err = gerror.New("删除失败")
+			return
+		}
+	}
+	tx.Commit()
+	return
+}
+
+//删除菜单
+func DeleteMenuByIds(ids []int) (err error) {
+	//获取菜单数据
+	menus, err := GetMenuList()
+	if err != nil {
+		return
+	}
+	menuList := gconv.SliceMap(menus)
+	son := make(g.List, 0, len(menuList))
+	for _, id := range ids {
+		son = append(son, utils.FindSonByParentId(menuList, id, "pid", "id")...)
+	}
+	for _, v := range son {
+		ids = append(ids, gconv.Int(v["id"]))
+	}
+	_, err = auth_rule.Model.Where("id in (?)", ids).Delete()
+	return
 }

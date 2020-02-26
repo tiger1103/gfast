@@ -46,6 +46,7 @@ func (c *Auth) MenuSort(r *ghttp.Request) {
 	for k, v := range s {
 		auth_rule.Model.Where("id=?", k).Data("weigh", v).Update()
 	}
+	cache_service.New().RemoveByTag(cache_service.AdminAuthTag)
 	response.SusJson(true, r, "排序成功")
 }
 
@@ -126,7 +127,7 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 	if len(ids) == 0 {
 		response.FailJson(true, r, "删除失败，参数错误")
 	}
-	_, err := auth_rule.Model.Where("id in(?)", ids).Delete()
+	err := auth_service.DeleteMenuByIds(ids)
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "删除失败")
@@ -276,31 +277,14 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 
 //删除角色
 func (c *Auth) DeleteRole(r *ghttp.Request) {
-	ids := r.GetRequestArray("ids")
+	ids := r.GetInts("ids")
 	if len(ids) == 0 {
 		response.FailJson(true, r, "删除失败，参数错误")
 	}
-	tx, err := g.DB("default").Begin() //开启事务
+	err := auth_service.DeleteRoleByIds(ids)
 	if err != nil {
-		g.Log().Error(err)
-		response.FailJson(true, r, "事务处理失败")
+		response.FailJson(true, r, "删除失败，"+err.Error())
 	}
-	_, err = tx.Table(role.Table).Where("id in(?)", ids).Delete()
-	if err != nil {
-		g.Log().Error(err)
-		tx.Rollback()
-		response.FailJson(true, r, "删除失败")
-	}
-	//删除角色的权限
-	for _, v := range ids {
-		err = auth_service.DeleteRoleRule(gconv.Int64(v))
-		if err != nil {
-			g.Log().Error(err)
-			tx.Rollback()
-			response.FailJson(true, r, "删除失败")
-		}
-	}
-	tx.Commit()
 	//清除TAG缓存
 	cache_service.New().RemoveByTag(cache_service.AdminAuthTag)
 	response.SusJson(true, r, "删除成功")

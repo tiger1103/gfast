@@ -120,7 +120,7 @@ func GetAdminMenusByRoleIds(roleIds []int) (menus g.List, err error) {
 	}
 	roleMenus := make(g.List, 0, 100)
 	for _, v := range allMenus {
-		if _, ok := menuIds[gconv.Int64(v.Id)]; ok {
+		if _, ok := menuIds[gconv.Int64(v.Id)]; gstr.Equal(v.Condition, "nocheck") || ok {
 			roleMenu := gconv.Map(v)
 			roleMenu["index"] = v.Name
 			roleMenus = append(roleMenus, roleMenu)
