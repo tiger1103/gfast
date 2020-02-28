@@ -16,4 +16,7 @@ func init() {
 	systemGroup.Middleware(MiddlewareAuth) //后台权限验证
 	systemGroup.ALL("/index", new(admin.Index))
 	systemGroup.ALL("/auth", new(admin.Auth))
+	systemGroup.ALL("/cms", new(admin.CmsMenu))
+	systemGroup.ALL("/cms", new(admin.CmsNews))
+	systemGroup.ALL("/config", new(admin.Dict))
 }

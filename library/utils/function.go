@@ -166,3 +166,13 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.QxkjUser)
 	qxkjUser.Update()
 	return nil, &returnData
 }
+
+//日期字符串转时间戳（秒）
+func StrToTimestamp(dateStr string) int64 {
+	tm, err := gtime.StrToTime(dateStr)
+	if err != nil {
+		g.Log().Error(err)
+		return 0
+	}
+	return tm.Timestamp()
+}

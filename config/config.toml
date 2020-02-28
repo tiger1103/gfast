@@ -1,6 +1,7 @@
 # 数据库连接
 [database]
     link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast"
+    charset   = "utf8mb4" #数据库编码
     maxIdle      = "10" #连接池最大闲置的连接数
     maxOpen     = "10" #连接池最大打开的连接数
     maxLifetime  = "30" #(单位秒)连接对象可重复使用的时间长度
