@@ -19,4 +19,5 @@ func init() {
 	systemGroup.ALL("/cms", new(admin.CmsMenu))
 	systemGroup.ALL("/cms", new(admin.CmsNews))
 	systemGroup.ALL("/config", new(admin.Dict))
+	systemGroup.ALL("/config", new(admin.Params))
 }
