@@ -1,6 +1,7 @@
 package dict_service
 
 import (
+	"gfast/app/model/admin/sys_dict_data"
 	"gfast/app/model/admin/sys_dict_type"
 	"gfast/library/utils"
 	"github.com/gogf/gf/errors/gerror"
@@ -129,6 +130,40 @@ func GetDictById(id int) (dict *sys_dict_type.Entity, err error) {
 	if dict == nil {
 		err = gerror.New("获取字典数据失败")
 		return
+	}
+	return
+}
+
+//通过字典键类型获取选项
+func GetDictWithDataByType(dictType string) (dict g.Map, err error) {
+	dictEntity, err := sys_dict_type.Model.FindOne("dict_type", dictType)
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取字典选项失败")
+		return
+	}
+	var dictDataEntities []*sys_dict_data.Entity
+	if dictEntity != nil {
+		//获取字典数据
+		dictDataEntities, err = sys_dict_data.Model.Where("dict_type", dictType).
+			Order("dict_sort ASC,dict_code ASC").All()
+		if err != nil {
+			g.Log().Error(err)
+			err = gerror.New("获取字典选项失败")
+			return
+		}
+		values := make(g.List, len(dictDataEntities))
+		for k, v := range dictDataEntities {
+			values[k] = g.Map{
+				"key":   v.DictValue,
+				"value": v.DictLabel,
+			}
+		}
+		dict = g.Map{
+			"dict_name": dictEntity.DictName,
+			"remark":    dictEntity.Remark,
+			"values":    values,
+		}
 	}
 	return
 }

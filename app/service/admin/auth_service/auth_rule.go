@@ -67,7 +67,7 @@ func GetMenuIsStatusList() ([]*auth_rule.Entity, error) {
 func GetMenuList() (list []*auth_rule.Entity, err error) {
 	cache := cache_service.New()
 	//从缓存获取
-	iList := cache.Get(cache_service.AdminMenu)
+	iList := cache.Get(cache_service.AdminAuthMenu)
 	if iList != nil {
 		list = iList.([]*auth_rule.Entity)
 		return
@@ -78,7 +78,7 @@ func GetMenuList() (list []*auth_rule.Entity, err error) {
 		return
 	}
 	//缓存菜单
-	cache.Set(cache_service.AdminMenu, list, 0, cache_service.AdminAuthTag)
+	cache.Set(cache_service.AdminAuthMenu, list, 0, cache_service.AdminAuthTag)
 	return
 }
 
@@ -123,7 +123,7 @@ func EditMenu(req *auth_rule.MenuReq, id int) (err error, rows int64) {
 func GetRoleList() (list []*role.Entity, err error) {
 	cache := cache_service.New()
 	//从缓存获取
-	iList := cache.Get(cache_service.AdminRole)
+	iList := cache.Get(cache_service.AdminAuthRole)
 	if iList != nil {
 		list = iList.([]*role.Entity)
 		return
@@ -131,7 +131,7 @@ func GetRoleList() (list []*role.Entity, err error) {
 	//从数据库获取
 	list, err = role.Model.OrderBy("list_order asc,id asc").All()
 	//缓存数据
-	cache.Set(cache_service.AdminRole, list, 0, cache_service.AdminAuthTag)
+	cache.Set(cache_service.AdminAuthRole, list, 0, cache_service.AdminAuthTag)
 	return
 }
 

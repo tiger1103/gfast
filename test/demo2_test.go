@@ -1,9 +1,8 @@
 package test
 
 import (
-	"fmt"
-	"github.com/gogf/gf/os/gtime"
 	"testing"
+	"time"
 )
 
 func TestDemo2(t *testing.T) {
@@ -11,11 +10,19 @@ func TestDemo2(t *testing.T) {
 }
 
 func test21(t *testing.T) {
-	str := "2018.02.09 20:46:17"
-	tm, err := gtime.StrToTime(str)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(tm.Timestamp())
+	a := make(chan bool)
+	b := make(chan bool)
+	defer close(b)
+	go func() {
+		for {
+			select {
+			case <-a:
+			default:
+				<-b
+			}
+		}
+
+	}()
+	time.Sleep(1 * time.Second)
+	a <- true
 }
