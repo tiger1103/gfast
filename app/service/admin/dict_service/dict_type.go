@@ -81,8 +81,12 @@ func EditSave(req *sys_dict_type.EditReq, userId int) (int64, error) {
 func SelectListByPage(req *sys_dict_type.SelectPageReq) (total, page int, list []*sys_dict_type.Entity, err error) {
 	model := sys_dict_type.Model
 	if req != nil {
-		if req.DictType != "" {
+		if req.DictName != "" {
 			model = model.Where("dict_name like ?", "%"+req.DictName+"%")
+		}
+
+		if req.DictType != "" {
+			model = model.Where("dict_type like ?", "%"+req.DictType+"%")
 		}
 
 		if req.Status != "" {

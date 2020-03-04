@@ -8,6 +8,11 @@ const (
 	SingleCateType  = 4 //单页栏目
 )
 
+//列表搜索参数
+type ReqSearchList struct {
+	Name string `p:"name"`
+}
+
 //添加请求参数
 type ReqAdd struct {
 	ParentId            uint64 `p:"parent_id" v:"integer|min:0#父级ID不能为空|父级ID必须为大于等于0的整数"`
@@ -22,4 +27,10 @@ type ReqAdd struct {
 	Status              uint   `p:"status" v:"in:0,1#状态只能包含0或1"`
 	CateAddress         string `p:"cate_address"`
 	CateContent         string `p:"content"`
+}
+
+//修改请求参数
+type ReqEdit struct {
+	Id int `p:"id" v:"required|min:1#栏目id不能为空|栏目id参数错误"`
+	ReqAdd
 }
