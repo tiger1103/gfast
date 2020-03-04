@@ -1,8 +1,9 @@
 package test
 
 import (
+	"fmt"
+	"github.com/gogf/gf/util/grand"
 	"testing"
-	"time"
 )
 
 func TestDemo2(t *testing.T) {
@@ -10,19 +11,7 @@ func TestDemo2(t *testing.T) {
 }
 
 func test21(t *testing.T) {
-	a := make(chan bool)
-	b := make(chan bool)
-	defer close(b)
-	go func() {
-		for {
-			select {
-			case <-a:
-			default:
-				<-b
-			}
-		}
-
-	}()
-	time.Sleep(1 * time.Second)
-	a <- true
+	for i := 0; i < 10; i++ {
+		fmt.Println(grand.Letters(10))
+	}
 }
