@@ -13,7 +13,7 @@ import (
 type Params struct{}
 
 //参数列表
-func (c *Params) ParamsList(r *ghttp.Request) {
+func (c *Params) List(r *ghttp.Request) {
 	var req *sys_config.SelectPageReq
 	//获取参数
 	if err := r.Parse(&req); err != nil {
@@ -33,7 +33,7 @@ func (c *Params) ParamsList(r *ghttp.Request) {
 }
 
 //添加参数
-func (c *Params) ParamsAdd(r *ghttp.Request) {
+func (c *Params) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_config.AddReq
 		//获取参数
@@ -54,7 +54,7 @@ func (c *Params) ParamsAdd(r *ghttp.Request) {
 }
 
 //修改参数
-func (c *Params) ParamsEdit(r *ghttp.Request) {
+func (c *Params) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_config.EditReq
 		//获取参数
@@ -81,7 +81,7 @@ func (c *Params) ParamsEdit(r *ghttp.Request) {
 }
 
 //删除参数
-func (c *Params) ParamsDelete(r *ghttp.Request) {
+func (c *Params) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {
 		response.FailJson(true, r, "删除失败")

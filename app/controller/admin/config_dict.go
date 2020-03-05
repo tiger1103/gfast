@@ -14,7 +14,7 @@ import (
 type Dict struct{}
 
 //字典列表
-func (c *Dict) DictList(r *ghttp.Request) {
+func (c *Dict) List(r *ghttp.Request) {
 	var req *sys_dict_type.SelectPageReq
 	//获取参数
 	if err := r.Parse(&req); err != nil {
@@ -35,7 +35,7 @@ func (c *Dict) DictList(r *ghttp.Request) {
 }
 
 //添加字典
-func (c *Dict) DictAdd(r *ghttp.Request) {
+func (c *Dict) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_type.AddReq
 		//获取参数
@@ -56,7 +56,7 @@ func (c *Dict) DictAdd(r *ghttp.Request) {
 }
 
 //修改字典
-func (c *Dict) DictEdit(r *ghttp.Request) {
+func (c *Dict) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_type.EditReq
 		//获取参数
@@ -82,7 +82,7 @@ func (c *Dict) DictEdit(r *ghttp.Request) {
 }
 
 //字典数据列表
-func (c *Dict) DictDataList(r *ghttp.Request) {
+func (c *Dict) DataList(r *ghttp.Request) {
 	var req *sys_dict_data.SelectDataPageReq
 	//获取参数
 	if err := r.Parse(&req); err != nil {
@@ -103,7 +103,7 @@ func (c *Dict) DictDataList(r *ghttp.Request) {
 }
 
 //添加数据字典
-func (c *Dict) DictDataAdd(r *ghttp.Request) {
+func (c *Dict) DataAdd(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_data.AddDataReq
 		//获取参数
@@ -127,7 +127,7 @@ func (c *Dict) DictDataAdd(r *ghttp.Request) {
 }
 
 //修改字典数据
-func (c *Dict) DictDataEdit(r *ghttp.Request) {
+func (c *Dict) DataEdit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_data.EditDataReq
 		//获取参数
@@ -157,7 +157,7 @@ func (c *Dict) DictDataEdit(r *ghttp.Request) {
 }
 
 //删除字典
-func (c *Dict) DictDelete(r *ghttp.Request) {
+func (c *Dict) Delete(r *ghttp.Request) {
 	dictIds := r.GetInts("dictIds")
 	if len(dictIds) == 0 {
 		response.FailJson(true, r, "删除失败")
@@ -170,7 +170,7 @@ func (c *Dict) DictDelete(r *ghttp.Request) {
 }
 
 //删除字典数据
-func (c *Dict) DictDataDelete(r *ghttp.Request) {
+func (c *Dict) DataDelete(r *ghttp.Request) {
 	dictCodes := r.GetInts("dictCode")
 	if len(dictCodes) == 0 {
 		response.FailJson(true, r, "删除失败")
