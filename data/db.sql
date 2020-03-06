@@ -77,7 +77,7 @@ CREATE TABLE `qxkj_auth_rule` (
 
 LOCK TABLES `qxkj_auth_rule` WRITE;
 /*!40000 ALTER TABLE `qxkj_auth_rule` DISABLE KEYS */;
-INSERT INTO `qxkj_auth_rule` VALUES (5,'file',0,'/system/auth','权限管理','fa fa-users','','',1,1497429920,1582706271,80,1),(9,'file',5,'/system/auth/user-list','管理员管理','fa fa-user','','Admin tips',1,1497429920,1497430320,118,1),(10,'file',5,'/system/auth/adminlog','管理员日志','fa fa-list-alt','','Admin log tips',1,1497429920,1582731276,113,1),(11,'file',5,'/system/auth/role-list','角色组','fa fa-group','','Group tips',1,1497429920,1582706904,109,1),(12,'file',5,'/system/auth/menu-list','菜单规则','fa fa-bars','','Rule tips',1,1497429920,1582731459,104,1),(43,'file',9,'/system/auth/delete-admin','删除','fa fa-circle-o','','',0,1497429920,1582706783,1,1),(42,'file',9,'/system/auth/edit-user','修改','fa fa-circle-o','','',0,1497429920,1582706817,2,1),(41,'file',9,'/system/auth/add-user','添加','fa fa-circle-o','','',0,1497429920,1582726029,3,1),(47,'file',11,'/system/auth/add-role','添加角色','el-icon-document-add','','',0,1582706959,1582706959,50,1),(50,'file',12,'/system/auth/add-menu','添加菜单','el-icon-document-add','','',0,1582726105,1582726105,50,1),(46,'file',0,'/system/index/index','系统首页','el-icon-s-grid','noCheck','',1,1582704520,1582726295,100,1),(48,'file',11,'/system/auth/edit-role','修改角色','fa fa-pencil','','',0,1582706999,1582726035,50,1),(49,'file',11,'/system/auth/delete-role','删除角色','fa fa-institution','','',0,1582707051,1582726040,50,1),(51,'file',12,'/system/auth/edit-menu','修改菜单','fa fa-pencil','','',0,1582726145,1582726145,50,1),(52,'file',12,'/system/auth/delete-menu','删除菜单','fa fa-institution','','',0,1582726194,1582726194,50,1),(53,'file',12,'/system/auth/menu-sort','菜单排序','fa fa-list-ul','','',0,1582726229,1582726229,50,1),(57,'file',0,'/system/cms','CMS管理','fa fa-list','','',1,1582731636,1582731636,70,1),(58,'file',57,'/system/cms/menu-list','栏目管理','fa fa-list-ul','','',1,1582731762,1582732995,50,1),(59,'file',57,'/system/cms/news-list','内容管理','fa fa-th-list','','',1,1582731800,1582733003,50,1),(60,'file',57,'/system/cms/mode-list','模型管理','fa fa-codepen','','',1,1582731832,1582733011,50,1),(61,'file',57,'/system/cms/special-list','专题管理','fa fa-hand-pointer-o','','',1,1582732334,1582733018,50,1),(62,'file',57,'/system/cms/single-list','单页管理','fa fa-file-o','','',1,1582732373,1582733025,50,1),(63,'file',0,'/system/config','系统配置','fa fa-wrench','','',1,1582773590,1582773600,90,1),(64,'file',63,'/system/config/dict-list','字典管理','fa fa-sitemap','','',1,1582773640,1582773640,50,1),(65,'file',63,'/system/config/params-list','参数管理','fa fa-list-ul','','',1,1582773725,1582773725,50,1);
+INSERT INTO `qxkj_auth_rule` VALUES (5,'file',0,'/system/auth','权限管理','fa fa-users','','',1,1497429920,1582706271,80,1),(9,'file',5,'/system/auth/user-list','管理员管理','fa fa-user','','Admin tips',1,1497429920,1497430320,118,1),(10,'file',5,'/system/auth/adminlog','管理员日志','fa fa-list-alt','','Admin log tips',1,1497429920,1582731276,113,1),(11,'file',5,'/system/auth/role-list','角色组','fa fa-group','','Group tips',1,1497429920,1582706904,109,1),(12,'file',5,'/system/auth/menu-list','菜单规则','fa fa-bars','','Rule tips',1,1497429920,1582731459,104,1),(43,'file',9,'/system/auth/delete-admin','删除','fa fa-circle-o','','',0,1497429920,1582706783,1,1),(42,'file',9,'/system/auth/edit-user','修改','fa fa-circle-o','','',0,1497429920,1582706817,2,1),(41,'file',9,'/system/auth/add-user','添加','fa fa-circle-o','','',0,1497429920,1582726029,3,1),(47,'file',11,'/system/auth/add-role','添加角色','el-icon-document-add','','',0,1582706959,1582706959,50,1),(50,'file',12,'/system/auth/add-menu','添加菜单','el-icon-document-add','','',0,1582726105,1582726105,50,1),(46,'file',0,'/system/index/index','系统首页','el-icon-s-grid','noCheck','',1,1582704520,1582726295,100,1),(48,'file',11,'/system/auth/edit-role','修改角色','fa fa-pencil','','',0,1582706999,1582726035,50,1),(49,'file',11,'/system/auth/delete-role','删除角色','fa fa-institution','','',0,1582707051,1582726040,50,1),(51,'file',12,'/system/auth/edit-menu','修改菜单','fa fa-pencil','','',0,1582726145,1582726145,50,1),(52,'file',12,'/system/auth/delete-menu','删除菜单','fa fa-institution','','',0,1582726194,1582726194,50,1),(53,'file',12,'/system/auth/menu-sort','菜单排序','fa fa-list-ul','','',0,1582726229,1582726229,50,1),(57,'file',0,'/system/cms','CMS管理','fa fa-list','','',1,1582731636,1582731636,70,1),(58,'file',57,'/system/cms/menu-list','栏目管理','fa fa-list-ul','','',1,1582731762,1582732995,50,1),(59,'file',57,'/system/cms/news-list','内容管理','fa fa-th-list','','',1,1582731800,1582733003,50,1),(60,'file',57,'/system/cms/mode-list','模型管理','fa fa-codepen','','',1,1582731832,1582733011,50,1),(61,'file',57,'/system/cms/special-list','专题管理','fa fa-hand-pointer-o','','',1,1582732334,1582733018,50,1),(62,'file',57,'/system/cms/single-list','单页管理','fa fa-file-o','','',1,1582732373,1582733025,50,1),(63,'file',0,'/system/config','系统配置','fa fa-wrench','','',1,1582773590,1582773600,90,1),(64,'file',63,'/system/config/dict/list','字典管理','fa fa-sitemap','','',1,1582773640,1583457951,50,1),(65,'file',63,'/system/config/params/list','参数管理','fa fa-list-ul','','',1,1582773725,1583457960,50,1);
 /*!40000 ALTER TABLE `qxkj_auth_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +106,7 @@ CREATE TABLE `qxkj_cms_category` (
   `cate_address` varchar(255) NOT NULL DEFAULT '' COMMENT '跳转地址',
   `cate_content` text COMMENT '单页内容',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE `qxkj_cms_category` (
 
 LOCK TABLES `qxkj_cms_category` WRITE;
 /*!40000 ALTER TABLE `qxkj_cms_category` DISABLE KEYS */;
-INSERT INTO `qxkj_cms_category` VALUES (1,0,1,0,0,'最新发布','最新发布','最新发布','最新发布','最新发布','','','',1,'','');
+INSERT INTO `qxkj_cms_category` VALUES (1,0,1,0,0,'最新发布','最新发布','最新发布','最新发布','最新发布','','','',1,'',''),(2,1,1,0,0,'云南主要指标数据','云南主要指标数据','云南主要指标数据','云南主要指标数据','云南主要指标数据','','','',1,'',''),(3,2,1,0,0,'综合数据','综合数据','综合数据','综合数据','综合数据','','','',2,'',''),(4,0,1,0,0,'决策部署','决策部署','决策部署','决策部署','决策部署','','','',1,'',''),(5,0,1,0,0,'决策参考','决策参考','决策参考','决策参考','决策参考','','','',1,'',''),(6,0,1,0,0,'热点名词','热点名词','热点名词','热点名词','热点名词','','','',2,'',''),(7,0,1,0,0,'统计分析','统计分析','统计分析','统计分析','统计分析','','','',1,'','');
 /*!40000 ALTER TABLE `qxkj_cms_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `qxkj_role` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,6 +149,33 @@ LOCK TABLES `qxkj_role` WRITE;
 /*!40000 ALTER TABLE `qxkj_role` DISABLE KEYS */;
 INSERT INTO `qxkj_role` VALUES (1,0,1,1329633709,1582773740,0,'超级管理员','备注'),(2,0,1,1329633709,1582732392,0,'普通管理员','备注'),(3,0,1,0,0,0,'站点管理员','站点管理人员'),(4,0,1,0,0,0,'初级管理员','初级管理员'),(5,0,1,0,0,0,'高级管理员','高级管理员'),(8,3,1,0,1582860212,0,'区级管理员','');
 /*!40000 ALTER TABLE `qxkj_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qxkj_role_user`
+--
+
+DROP TABLE IF EXISTS `qxkj_role_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `qxkj_role_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色 id',
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
+  PRIMARY KEY (`id`),
+  KEY `role_id` (`role_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COMMENT='用户角色对应表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qxkj_role_user`
+--
+
+LOCK TABLES `qxkj_role_user` WRITE;
+/*!40000 ALTER TABLE `qxkj_role_user` DISABLE KEYS */;
+INSERT INTO `qxkj_role_user` VALUES (6,3,4),(8,2,5),(10,2,6),(20,4,7),(21,7,2),(23,2,10),(27,2,14),(28,2,15),(29,2,16),(47,2,20),(48,7,3),(49,2,3),(50,2,23),(51,7,22),(52,2,24),(53,5,8);
+/*!40000 ALTER TABLE `qxkj_role_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -239,7 +266,7 @@ CREATE TABLE `qxkj_sys_dict_type` (
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,8 +313,39 @@ CREATE TABLE `qxkj_user` (
 
 LOCK TABLES `qxkj_user` WRITE;
 /*!40000 ALTER TABLE `qxkj_user` DISABLE KEYS */;
-INSERT INTO `qxkj_user` VALUES (1,'admin','18687460581','超级管理员',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh669@qq.com',0,'',1581491047,'192.168.31.221'),(2,'yixiaohu','13699885599','易小虎',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh@qq.com',1,'',1582190234,'[::1]'),(3,'zs','16399669855','张三',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'zs@qq.com',0,'',1559293160,'127.0.0.1'),(4,'qlgl','13758596696','测试c',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'qlgl@qq.com',0,'',1559293134,'127.0.0.1'),(5,'test','13845696696','测试2',0,0,'9OFlt5qzzvCiZWhe7ilcLA==',1,'123@qq.com',0,'',0,''),(6,'18999998889','13755866654','刘大大',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'1223@qq.com',0,'',0,''),(7,'zmm','13788566696','张明明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'11123@qq.com',0,'',0,''),(8,'lxx','13756566696','李小小',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'123333@qq.com',0,'',1571729563,'127.0.0.1'),(10,'xmm','13588999969','小秘密',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(14,'cd_19','123154564','看金利科技',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(15,'lmm','135877545454','刘敏敏',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(16,'ldn','13899658874','李大牛',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(20,'dbc','13877555566','大百词',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(22,'yxfmlbb','15969423326','袁学飞',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh6691@qq.com',0,'',1565059554,'127.0.0.1'),(23,'wangming','13699888855','王明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(24,'zhk','13699885591','综合科',0,0,'IZNU7Pn91/++830Pi6HAWA==',1,'',0,'',1569288069,'192.168.0.146'),(28,'demo3','18699888855','测试账号1',0,1581314035,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(31,'demo','18699888856','测试账号1',0,1581314770,'9OFlt5qzzvCiZWhe7ilcLA==',1,'56@qq.com',0,'',1583137440,'192.168.31.221'),(32,'demo100','18699888859','测试账号1',0,1582103659,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(33,'demo110','18699888853','测试账号1',0,1582109337,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(34,'demo101','13855774455','测试账号1',0,1582110232,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(38,'demo103','18699888833','测试账号103',0,1582188923,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',1582188938,'[::1]');
+INSERT INTO `qxkj_user` VALUES (1,'admin','18687460581','超级管理员',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh669@qq.com',0,'',1583489149,'192.168.0.212'),(2,'yixiaohu','13699885599','易小虎',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh@qq.com',1,'',1583479226,'[::1]'),(3,'zs','16399669855','张三',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'zs@qq.com',0,'',1559293160,'127.0.0.1'),(4,'qlgl','13758596696','测试c',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'qlgl@qq.com',0,'',1559293134,'127.0.0.1'),(5,'test','13845696696','测试2',0,0,'9OFlt5qzzvCiZWhe7ilcLA==',1,'123@qq.com',0,'',0,''),(6,'18999998889','13755866654','刘大大',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'1223@qq.com',0,'',0,''),(7,'zmm','13788566696','张明明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'11123@qq.com',0,'',0,''),(8,'lxx','13756566696','李小小',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'123333@qq.com',0,'',1571729563,'127.0.0.1'),(10,'xmm','13588999969','小秘密',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(14,'cd_19','123154564','看金利科技',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(15,'lmm','135877545454','刘敏敏',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(16,'ldn','13899658874','李大牛',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(20,'dbc','13877555566','大百词',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(22,'yxfmlbb','15969423326','袁学飞',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh6691@qq.com',0,'',1565059554,'127.0.0.1'),(23,'wangming','13699888855','王明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(24,'zhk','13699885591','综合科',0,0,'IZNU7Pn91/++830Pi6HAWA==',1,'',0,'',1569288069,'192.168.0.146'),(28,'demo3','18699888855','测试账号1',0,1581314035,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(31,'demo','18699888856','测试账号1',0,1581314770,'9OFlt5qzzvCiZWhe7ilcLA==',1,'56@qq.com',0,'',1583479196,'[::1]'),(32,'demo100','18699888859','测试账号1',0,1582103659,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(33,'demo110','18699888853','测试账号1',0,1582109337,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(34,'demo101','13855774455','测试账号1',0,1582110232,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(38,'demo103','18699888833','测试账号103',0,1582188923,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',1582188938,'[::1]');
 /*!40000 ALTER TABLE `qxkj_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qxkj_user_online`
+--
+
+DROP TABLE IF EXISTS `qxkj_user_online`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `qxkj_user_online` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '' COMMENT '用户标识',
+  `token` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '' COMMENT '用户token',
+  `create_time` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名',
+  `ip` varchar(120) NOT NULL DEFAULT '' COMMENT '登录ip',
+  `explorer` varchar(30) NOT NULL DEFAULT '' COMMENT '浏览器',
+  `os` varchar(30) NOT NULL DEFAULT '' COMMENT '操作系统',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uni_token` (`token`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线状态表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qxkj_user_online`
+--
+
+LOCK TABLES `qxkj_user_online` WRITE;
+/*!40000 ALTER TABLE `qxkj_user_online` DISABLE KEYS */;
+INSERT INTO `qxkj_user_online` VALUES (7,'','vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0hT3nFciqjy6b7axafxq2mlglIfz0STCz6VzmUW2c2UWg2uTkCjU1QaUIVhVEolmg1xOdPbVFaprVYMXIHlnVfh1Uf1SaHn2cr3iRUAObntNA==',1583479226,'yixiaohu','[::1]','PostmanRuntime',''),(6,'','fCLUxFpxP3QqVAezWSiqJ34BRz5YTp2qDGmH5L5jiv7IuTjnVwU1hMxIMAIJawrfKLOMWXhGk5vUMjduD7hQoTwkNXu+AvmpunrFa/acFCxhVqabFoMv0lIaDjkmRSp5',1583479196,'demo','[::1]','PostmanRuntime',''),(5,'','vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0hXe6W23Y91YbUSoiKJzqTRE3mCF75YaFTvrPT+6ntnLE37vtyio/VgRyDQfvvQSjACALG1KNCJw+9sI7VrJCwpK0PcK52Q9j6R4A/phtLYSA==',1583479116,'yixiaohu','192.168.0.212','Chrome','Windows 10'),(4,'','fCLUxFpxP3QqVAezWSiqJ7D3QYZ7jkylPshqw8BVzfJJfAHAbwsSFhjrTyqHZEnzBfZXf/9/EWR1jYD9wj1QwXVeoad3H8JkNfWceD34KWcs4r19sCG1wKkKmjB1fbcf',1583479045,'demo','192.168.0.212','Chrome','Windows 10'),(13,'bb91260dc63d00e51728fd3f791881fb','lpe0YG9uqSN+sc8zL1tF+9Wcdo668H3tXJxqoKs0sIpULsmmu8SNCn4Y7lyrWhX9KWpeeDIeGMZIwk9rT3+BgyqG27ezTPI4INWZTmz/NEyUEmYL2KhMtJlMHgzxbjfO',1583481865,'admin','[::1]','PostmanRuntime',''),(9,'','lpe0YG9uqSN+sc8zL1tF+0bVNmHSnBiJshz6cFTW0bO1YDzPEgiMyIy2o0szcsqqcnHlqbHN8VWqUeqIbrbOg3YPUGI/PCYgYZX2bUw0eAUGr48lTOCtejKSDmygL0ui',1583479253,'admin','192.168.0.212','Chrome','Windows 10'),(15,'d3cb2f2bc7846aa0b962366bc67bb234','lpe0YG9uqSN+sc8zL1tF+0bVNmHSnBiJshz6cFTW0bO1YDzPEgiMyIy2o0szcsqq89te5+yx+6Pz8G3gLrpKoSR7JEPD8YXqGwV3JOmcA23bjYRWtWoXlfQ51WSVEVgb',1583489149,'admin','192.168.0.212','Chrome','Windows 10');
+/*!40000 ALTER TABLE `qxkj_user_online` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -299,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-03  9:43:41
+-- Dump completed on 2020-03-06 18:10:15

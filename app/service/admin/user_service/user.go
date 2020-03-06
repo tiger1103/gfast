@@ -18,15 +18,15 @@ import (
 func GetLoginID(r *ghttp.Request) (userId int) {
 	userInfo := GetLoginAdminInfo(r)
 	if userInfo != nil {
-		userId = gconv.Int(userInfo["id"])
+		userId = userInfo.Id
 	}
 	return
 }
 
 //获取缓存的用户信息
-func GetLoginAdminInfo(r *ghttp.Request) (userInfo g.Map) {
+func GetLoginAdminInfo(r *ghttp.Request) (userInfo *user.Entity) {
 	resp := boot.AdminGfToken.GetTokenData(r)
-	userInfo = gconv.Map(resp.Get("data"))
+	gconv.Struct(resp.Get("data"), &userInfo)
 	return
 }
 
@@ -96,6 +96,23 @@ func GetAdminInfoById(id int64) (userMap g.Map) {
 	return
 }
 
+//获取菜单
+func GetAllMenus() (menus g.List, err error) {
+	//获取所有开启的菜单
+	allMenus, err := auth_service.GetIsMenuStatusList()
+	if err != nil {
+		return
+	}
+	menus = make(g.List, len(allMenus))
+	for k, v := range allMenus {
+		menu := gconv.Map(v)
+		menu["index"] = v.Name
+		menus[k] = menu
+	}
+	menus = utils.PushSonToParent(menus, 0, "pid", "id", "subs", "", nil, false)
+	return
+}
+
 //获取管理员所属角色菜单
 func GetAdminMenusByRoleIds(roleIds []int) (menus g.List, err error) {
 	//获取角色对应的菜单id
@@ -118,7 +135,7 @@ func GetAdminMenusByRoleIds(roleIds []int) (menus g.List, err error) {
 	if err != nil {
 		return
 	}
-	roleMenus := make(g.List, 0, 100)
+	roleMenus := make(g.List, 0, len(allMenus))
 	for _, v := range allMenus {
 		if _, ok := menuIds[gconv.Int64(v.Id)]; gstr.Equal(v.Condition, "nocheck") || ok {
 			roleMenu := gconv.Map(v)

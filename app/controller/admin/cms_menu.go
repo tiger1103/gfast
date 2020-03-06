@@ -16,7 +16,7 @@ import (
 //cms栏目管理
 type CmsMenu struct{}
 
-func (c *CmsMenu) MenuList(r *ghttp.Request) {
+func (c *CmsMenu) List(r *ghttp.Request) {
 	var req *cms_category.ReqSearchList
 	//获取参数
 	if err := r.Parse(&req); err != nil {
@@ -28,6 +28,9 @@ func (c *CmsMenu) MenuList(r *ghttp.Request) {
 	if req != nil && req.Name != "" {
 		//按栏目名搜索
 		menus, err = cms_service.GetMenuListSearch(req)
+		if err != nil {
+			response.FailJson(true, r, err.Error())
+		}
 		list = gconv.Maps(menus)
 	} else {
 		//获取所有栏目
@@ -45,7 +48,7 @@ func (c *CmsMenu) MenuList(r *ghttp.Request) {
 }
 
 //添加栏目分类
-func (c *CmsMenu) MenuAdd(r *ghttp.Request) {
+func (c *CmsMenu) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *cms_category.ReqAdd
 		//获取参数
@@ -78,7 +81,7 @@ func (c *CmsMenu) MenuAdd(r *ghttp.Request) {
 }
 
 //修改栏目
-func (c *CmsMenu) MenuEdit(r *ghttp.Request) {
+func (c *CmsMenu) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *cms_category.ReqEdit
 		//获取参数
@@ -122,7 +125,7 @@ func (c *CmsMenu) MenuEdit(r *ghttp.Request) {
 }
 
 //栏目排序
-func (c *CmsMenu) MenuSort(r *ghttp.Request) {
+func (c *CmsMenu) Sort(r *ghttp.Request) {
 	sorts := r.Get("sorts")
 	s := gconv.Map(sorts)
 	if s == nil {

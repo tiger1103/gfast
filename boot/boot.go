@@ -41,6 +41,7 @@ func initAdminGfToken() {
 		MultiLogin:       utils.AdminMultiLogin,
 		LoginPath:        "/sysLogin/login",
 		LoginBeforeFunc:  utils.AdminLogin,
+		LoginAfterFunc:   utils.AdminLoginAfter,
 		LogoutPath:       "/sysLogin/logout",
 		AuthPaths:        g.SliceStr{"/system/*"},
 		AuthAfterFunc:    utils.AuthAfterFunc,

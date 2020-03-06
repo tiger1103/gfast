@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"gfast/app/model/admin/user"
+	"gfast/app/model/admin/user_online"
 	"gfast/library/response"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/crypto/gaes"
@@ -15,6 +16,8 @@ import (
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
 	"github.com/mojocn/base64Captcha"
+	"github.com/mssola/user_agent"
+	"strings"
 )
 
 const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
@@ -82,9 +85,9 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		response.JsonExit(r, response.ErrorCode, e.String())
 	}
 	//判断验证码是否正确
-	if !VerifyString(data["idKeyC"], data["idValueC"]) {
+	/*if !VerifyString(data["idKeyC"], data["idValueC"]) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
-	}
+	}*/
 	password := EncryptCBC(data["password"], AdminCbcPublicKey)
 	var keys string
 	if AdminMultiLogin {
@@ -95,9 +98,40 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	if err, user := signIn(data["username"], password, r); err != nil {
 		response.JsonExit(r, response.ErrorCode, err.Error())
 	} else {
+		r.SetParam("userInfo", user)
 		return keys, user
 	}
 	return keys, nil
+}
+
+// 后台登录返回方法
+func AdminLoginAfter(r *ghttp.Request, respData gtoken.Resp) {
+	if !respData.Success() {
+		r.Response.WriteJson(respData)
+	} else {
+		token := respData.GetString("token")
+		uuid := respData.GetString("uuid")
+		var userInfo *user.Entity
+		r.GetParamVar("userInfo").Struct(&userInfo)
+		//保存用户在线状态token到数据库
+		userAgent := r.Header.Get("User-Agent")
+		ua := user_agent.New(userAgent)
+		os := ua.OS()
+		explorer, _ := ua.Browser()
+		entity := user_online.Entity{
+			Uuid:       uuid,
+			Token:      token,
+			CreateTime: gconv.Uint64(gtime.Timestamp()),
+			UserName:   userInfo.UserName,
+			Ip:         r.GetClientIp(),
+			Explorer:   explorer,
+			Os:         os,
+		}
+		entity.Save()
+		r.Response.WriteJson(gtoken.Succ(g.Map{
+			"token": token,
+		}))
+	}
 }
 
 //gtoken验证后返回
@@ -116,6 +150,20 @@ func AuthAfterFunc(r *ghttp.Request, respData gtoken.Resp) {
 
 //后台退出登陆
 func AdminLoginOut(r *ghttp.Request) bool {
+	//删除在线用户状态
+	authHeader := r.Header.Get("Authorization")
+	if authHeader != "" {
+		parts := strings.SplitN(authHeader, " ", 2)
+		if len(parts) == 2 && parts[0] == "Bearer" && parts[1] != "" {
+			//删除在线用户状态操作
+			user_online.Model.Delete("token", parts[1])
+		}
+	}
+	authHeader = r.GetString("token")
+	if authHeader != "" {
+		//删除在线用户状态操作
+		user_online.Model.Delete("token", authHeader)
+	}
 	return true
 }
 
