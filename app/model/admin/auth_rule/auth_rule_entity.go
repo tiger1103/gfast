@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_auth_rule.
+// Entity is the golang structure for table auth_rule.
 type Entity struct {
 	Id         uint   `orm:"id,primary"  json:"id"`         //
 	Type       string `orm:"type"        json:"type"`       // menu为菜单,file为权限节点

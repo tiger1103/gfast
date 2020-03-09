@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-// arModel is a active record design model for table qxkj_role operations.
+// arModel is a active record design model for table _role operations.
 type arModel struct {
 	Model *gdb.Model
 }
 
 var (
-	// Table is the table name of qxkj_role.
-	Table = "qxkj_role"
-	// Model is the model object of qxkj_role.
+	// Table is the table name of _role.
+	Table = "role"
+	// Model is the model object of _role.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 )
 

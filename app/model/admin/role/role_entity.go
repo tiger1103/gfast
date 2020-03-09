@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_role.
+// Entity is the golang structure for table _role.
 type Entity struct {
 	Id         int     `orm:"id,primary"  json:"id"`          //
 	ParentId   int     `orm:"parent_id"   json:"parent_id"`   // 父角色ID
@@ -21,8 +21,8 @@ type Entity struct {
 	Remark     string  `orm:"remark"      json:"remark"`      // 备注
 }
 
-// QxkjRole is alias of Entity, which some developers say they just want.
-type QxkjRole = Entity
+// Role is alias of Entity, which some developers say they just want.
+type Role = Entity
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.

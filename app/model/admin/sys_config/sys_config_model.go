@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-// arModel is a active record design model for table qxkj_sys_config operations.
+// arModel is a active record design model for table sys_config operations.
 type arModel struct {
 	M *gdb.Model
 }
 
 var (
-	// Table is the table name of qxkj_sys_config.
-	Table = "qxkj_sys_config"
-	// Model is the model object of qxkj_sys_config.
+	// Table is the table name of sys_config.
+	Table = "sys_config"
+	// Model is the model object of sys_config.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 )
 

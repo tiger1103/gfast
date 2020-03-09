@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_sys_dict_data.
+// Entity is the golang structure for table sys_dict_data.
 type Entity struct {
 	DictCode   int64  `orm:"dict_code,primary" json:"dict_code"`   // 字典编码
 	DictSort   int    `orm:"dict_sort"         json:"dict_sort"`   // 字典排序

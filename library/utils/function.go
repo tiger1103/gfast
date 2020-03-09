@@ -195,23 +195,23 @@ func DecryptCBC(plainText, publicKey string) string {
 }
 
 // 用户登录，成功返回用户信息，否则返回nil
-func signIn(username, password string, r *ghttp.Request) (error, *user.QxkjUser) {
-	qxkjUser, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
+func signIn(username, password string, r *ghttp.Request) (error, *user.User) {
+	user, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
 	if err != nil && err != sql.ErrNoRows {
 		return err, nil
 	}
-	if qxkjUser == nil {
+	if user == nil {
 		return errors.New("账号或密码错误"), nil
 	}
 	//判断用户状态
-	if qxkjUser.UserStatus == 0 {
+	if user.UserStatus == 0 {
 		return errors.New("用户已被冻结"), nil
 	}
-	returnData := *qxkjUser
+	returnData := *user
 	//更新登陆时间及ip
-	qxkjUser.LastLoginTime = gconv.Int(gtime.Timestamp())
-	qxkjUser.LastLoginIp = r.GetClientIp()
-	qxkjUser.Update()
+	user.LastLoginTime = gconv.Int(gtime.Timestamp())
+	user.LastLoginIp = r.GetClientIp()
+	user.Update()
 	return nil, &returnData
 }
 

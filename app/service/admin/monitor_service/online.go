@@ -1,4 +1,4 @@
-package surveillance_service
+package monitor_service
 
 import (
 	"gfast/app/model/admin/user_online"
@@ -88,4 +88,28 @@ func GetUuidUserKeyByToken(token string) (uuid, userKey string) {
 	userKey = decryptToken.GetString("userKey")
 	uuid = decryptToken.GetString("uuid")
 	return
+}
+
+//强制退出操作
+func ForceLogout(ids []int) error {
+	for _, id := range ids {
+		entity, err := user_online.Model.FindOne("id", id)
+		if err != nil {
+			g.Log().Error(err)
+		}
+		if err != nil || entity == nil {
+			return gerror.New("获取用户在线信息失败")
+		}
+		_, userKey := GetUuidUserKeyByToken(entity.Token)
+		if userKey == "" {
+			return gerror.New("用户信息获取失败")
+		}
+		userKey = boot.AdminGfToken.CacheKey + userKey
+		_, err = g.Redis().Do("DEL", userKey)
+		if err != nil {
+			return err
+		}
+		entity.Delete()
+	}
+	return nil
 }

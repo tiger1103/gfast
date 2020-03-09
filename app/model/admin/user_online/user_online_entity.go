@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_user_online.
+// Entity is the golang structure for table user_online.
 type Entity struct {
 	Id         uint   `orm:"id,primary"   json:"id"`          //
 	Uuid       string `orm:"uuid"         json:"uuid"`        // 用户标识

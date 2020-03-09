@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_cms_category.
+// Entity is the golang structure for table cms_category.
 type Entity struct {
 	Id             uint64  `orm:"id,primary"      json:"id"`              // 分类id
 	ParentId       uint64  `orm:"parent_id"       json:"parent_id"`       // 分类父id

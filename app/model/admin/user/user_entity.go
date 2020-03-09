@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_user.
+// Entity is the golang structure for table user.
 type Entity struct {
 	Id            int    `orm:"id,primary"       json:"id"`              //
 	UserName      string `orm:"user_name,unique" json:"user_name"`       // 用户名
@@ -26,8 +26,8 @@ type Entity struct {
 	LastLoginIp   string `orm:"last_login_ip"    json:"last_login_ip"`   // 最后登录ip
 }
 
-// QxkjUser is alias of Entity, which some developers say they just want.
-type QxkjUser = Entity
+// User is alias of Entity, which some developers say they just want.
+type User = Entity
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.

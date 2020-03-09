@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-// arModel is a active record design model for table qxkj_auth_rule operations.
+// arModel is a active record design model for table auth_rule operations.
 type arModel struct {
 	M *gdb.Model
 }
 
 var (
-	// Table is the table name of qxkj_auth_rule.
-	Table = "qxkj_auth_rule"
-	// Model is the model object of qxkj_auth_rule.
+	// Table is the table name of auth_rule.
+	Table = "auth_rule"
+	// Model is the model object of auth_rule.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 )
 

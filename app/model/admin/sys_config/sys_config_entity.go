@@ -9,7 +9,7 @@ import (
 	"github.com/gogf/gf/database/gdb"
 )
 
-// Entity is the golang structure for table qxkj_sys_config.
+// Entity is the golang structure for table sys_config.
 type Entity struct {
 	ConfigId    uint   `orm:"config_id,primary" json:"config_id"`    // 参数主键
 	ConfigName  string `orm:"config_name"       json:"config_name"`  // 参数名称

@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-// arModel is a active record design model for table qxkj_cms_category operations.
+// arModel is a active record design model for table cms_category operations.
 type arModel struct {
 	M *gdb.Model
 }
 
 var (
-	// Table is the table name of qxkj_cms_category.
-	Table = "qxkj_cms_category"
-	// Model is the model object of qxkj_cms_category.
+	// Table is the table name of cms_category.
+	Table = "cms_category"
+	// Model is the model object of cms_category.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 )
 
