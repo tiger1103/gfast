@@ -234,7 +234,7 @@ CREATE TABLE `sys_dict_data` (
   `update_time` bigint(20) unsigned DEFAULT '0' COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COMMENT='字典数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +243,7 @@ CREATE TABLE `sys_dict_data` (
 
 LOCK TABLES `sys_dict_data` WRITE;
 /*!40000 ALTER TABLE `sys_dict_data` DISABLE KEYS */;
-INSERT INTO `sys_dict_data` VALUES (1,0,'男','0','sys_user_sex','','default',1,1,31,1582884113,0,0,'备注信息'),(2,0,'女','0','sys_user_sex','','default',1,1,31,1582884125,31,1582885784,'备注信息'),(3,0,'保密','0','sys_user_sex','','default',1,1,31,1582884871,31,1582885799,'备注信息'),(4,0,'男','0','sys_user_sex','','default',1,1,31,1582899746,0,0,'备注信息'),(5,0,'男','0','sys_user_sex','','default',1,1,31,1582899747,0,0,'备注信息'),(6,0,'男','0','sys_user_sex','','default',1,1,31,1582899748,0,0,'备注信息'),(7,0,'男','0','sys_user_sex','','default',1,1,31,1582899748,0,0,'备注信息'),(8,0,'男','0','sys_user_sex','','default',1,1,31,1582899749,0,0,'备注信息'),(9,0,'男','0','sys_user_sex','','default',1,1,31,1582899750,0,0,'备注信息'),(10,0,'男','0','sys_user_sex','','default',1,1,31,1582899751,0,0,'备注信息'),(11,0,'男','0','sys_user_sex','','default',1,1,31,1582899752,0,0,'备注信息'),(12,0,'男','0','sys_user_sex','','default',1,1,31,1582899752,0,0,'备注信息'),(24,0,'作为频道页，不可作为栏目发布文章，可添加下级分类','1','cms_category_type','','default',1,1,31,1583131942,0,0,'作为频道页，不可作为栏目发布文章，可添加下级分类'),(25,0,'作为发布栏目，可添加文章','2','cms_category_type','','default',0,1,31,1583132032,0,0,'作为发布栏目，可添加文章'),(26,0,'不直接发布内容，用于跳转页面','3','cms_category_type','','default',0,1,31,1583132125,0,0,'不直接发布内容，用于跳转页面'),(27,0,'单页面模式，分类直接显示为文章','4','cms_category_type','','default',0,1,31,1583132145,0,0,'单页面模式，分类直接显示为文章');
+INSERT INTO `sys_dict_data` VALUES (1,0,'男','0','sys_user_sex','','default',0,1,31,1582884113,31,1583763043,'备注信息'),(2,0,'女','0','sys_user_sex','','default',0,1,31,1582884125,31,1583763046,'备注信息'),(3,0,'保密','0','sys_user_sex','','default',1,1,31,1582884871,31,1583763050,'备注信息'),(24,0,'作为频道页，不可作为栏目发布文章，可添加下级分类','1','cms_category_type','','default',1,1,31,1583131942,0,0,'作为频道页，不可作为栏目发布文章，可添加下级分类'),(25,0,'作为发布栏目，可添加文章','2','cms_category_type','','default',0,1,31,1583132032,0,0,'作为发布栏目，可添加文章'),(26,0,'不直接发布内容，用于跳转页面','3','cms_category_type','','default',0,1,31,1583132125,0,0,'不直接发布内容，用于跳转页面'),(27,0,'单页面模式，分类直接显示为文章','4','cms_category_type','','default',0,1,31,1583132145,0,0,'单页面模式，分类直接显示为文章'),(28,0,'正常','0','sys_job_status','','default',1,1,31,1583762727,0,0,''),(29,0,'暂停','1','sys_job_status','','default',0,1,31,1583762751,31,1583763095,''),(30,0,'默认','DEFAULT','sys_job_group','','default',1,1,31,1583762854,0,0,''),(31,0,'系统','SYSTEM','sys_job_group','','default',0,1,31,1583762889,0,0,'');
 /*!40000 ALTER TABLE `sys_dict_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ CREATE TABLE `sys_dict_type` (
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +275,7 @@ CREATE TABLE `sys_dict_type` (
 
 LOCK TABLES `sys_dict_type` WRITE;
 /*!40000 ALTER TABLE `sys_dict_type` DISABLE KEYS */;
-INSERT INTO `sys_dict_type` VALUES (1,'用户性别','sys_user_sex',1,31,1582789177,0,0,'用于选择用户性别'),(2,'分类类型','cms_category_type',1,31,1582789253,31,1583131577,'文章分类类型'),(3,'菜单状态2','sys_show_hide2',1,31,1582789296,0,0,'菜单状态列表'),(4,'菜单状态3','sys_show_hide3',1,31,1582789303,0,0,'菜单状态列表'),(5,'菜单状态4','sys_show_hide4',1,31,1582789307,0,0,'菜单状态列表'),(6,'菜单状态5','sys_show_hide5',1,31,1582789313,0,0,'菜单状态列表'),(7,'菜单状态6','sys_show_hide6',1,31,1582789321,0,0,'菜单状态列表'),(8,'菜单状态7','sys_show_hide7',1,31,1582789326,0,0,'菜单状态列表'),(9,'菜单状态8','sys_show_hide8',1,31,1582789332,0,0,'菜单状态列表'),(10,'菜单状态9','sys_show_hide9',1,31,1582789337,0,0,'菜单状态列表'),(11,'菜单状态10','sys_show_hide10',1,31,1582789344,0,0,'菜单状态列表'),(12,'菜单状态11','sys_show_hide11',1,31,1582789349,0,0,'菜单状态列表');
+INSERT INTO `sys_dict_type` VALUES (1,'用户性别','sys_user_sex',1,31,1582789177,0,0,'用于选择用户性别'),(2,'分类类型','cms_category_type',1,31,1582789253,31,1583131577,'文章分类类型'),(3,'任务状态','sys_job_status',1,31,1582789296,31,1583762542,'任务状态列表'),(13,'任务分组','sys_job_group',1,31,1583762785,0,0,'');
 /*!40000 ALTER TABLE `sys_dict_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +348,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','18687460581','超级管理员',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh669@qq.com',0,'',1583744648,'[::1]'),(2,'yixiaohu','13699885599','易小虎',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh@qq.com',1,'',1583479226,'[::1]'),(3,'zs','16399669855','张三',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'zs@qq.com',0,'',1559293160,'127.0.0.1'),(4,'qlgl','13758596696','测试c',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'qlgl@qq.com',0,'',1559293134,'127.0.0.1'),(5,'test','13845696696','测试2',0,0,'9OFlt5qzzvCiZWhe7ilcLA==',1,'123@qq.com',0,'',0,''),(6,'18999998889','13755866654','刘大大',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'1223@qq.com',0,'',0,''),(7,'zmm','13788566696','张明明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'11123@qq.com',0,'',0,''),(8,'lxx','13756566696','李小小',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'123333@qq.com',0,'',1571729563,'127.0.0.1'),(10,'xmm','13588999969','小秘密',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(14,'cd_19','123154564','看金利科技',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(15,'lmm','135877545454','刘敏敏',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(16,'ldn','13899658874','李大牛',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(20,'dbc','13877555566','大百词',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(22,'yxfmlbb','15969423326','袁学飞',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh6691@qq.com',0,'',1565059554,'127.0.0.1'),(23,'wangming','13699888855','王明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(24,'zhk','13699885591','综合科',0,0,'IZNU7Pn91/++830Pi6HAWA==',1,'',0,'',1569288069,'192.168.0.146'),(28,'demo3','18699888855','测试账号1',0,1581314035,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(31,'demo','18699888856','测试账号1',0,1581314770,'9OFlt5qzzvCiZWhe7ilcLA==',1,'56@qq.com',0,'',1583745118,'192.168.0.212'),(32,'demo100','18699888859','测试账号1',0,1582103659,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(33,'demo110','18699888853','测试账号1',0,1582109337,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(34,'demo101','13855774455','测试账号1',0,1582110232,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(38,'demo103','18699888833','测试账号103',0,1582188923,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',1582188938,'[::1]');
+INSERT INTO `user` VALUES (1,'admin','18687460581','超级管理员',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh669@qq.com',0,'',1583744648,'[::1]'),(2,'yixiaohu','13699885599','易小虎',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh@qq.com',1,'',1583479226,'[::1]'),(3,'zs','16399669855','张三',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'zs@qq.com',0,'',1559293160,'127.0.0.1'),(4,'qlgl','13758596696','测试c',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'qlgl@qq.com',0,'',1559293134,'127.0.0.1'),(5,'test','13845696696','测试2',0,0,'9OFlt5qzzvCiZWhe7ilcLA==',1,'123@qq.com',0,'',0,''),(6,'18999998889','13755866654','刘大大',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'1223@qq.com',0,'',0,''),(7,'zmm','13788566696','张明明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'11123@qq.com',0,'',0,''),(8,'lxx','13756566696','李小小',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'123333@qq.com',0,'',1571729563,'127.0.0.1'),(10,'xmm','13588999969','小秘密',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(14,'cd_19','123154564','看金利科技',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(15,'lmm','135877545454','刘敏敏',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(16,'ldn','13899658874','李大牛',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(20,'dbc','13877555566','大百词',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(22,'yxfmlbb','15969423326','袁学飞',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh6691@qq.com',0,'',1565059554,'127.0.0.1'),(23,'wangming','13699888855','王明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(24,'zhk','13699885591','综合科',0,0,'IZNU7Pn91/++830Pi6HAWA==',1,'',0,'',1569288069,'192.168.0.146'),(28,'demo3','18699888855','测试账号1',0,1581314035,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(31,'demo','18699888856','测试账号1',0,1581314770,'9OFlt5qzzvCiZWhe7ilcLA==',1,'56@qq.com',0,'',1583762268,'192.168.31.221'),(32,'demo100','18699888859','测试账号1',0,1582103659,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(33,'demo110','18699888853','测试账号1',0,1582109337,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(34,'demo101','13855774455','测试账号1',0,1582110232,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(38,'demo103','18699888833','测试账号103',0,1582188923,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',1582188938,'[::1]');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +370,7 @@ CREATE TABLE `user_online` (
   `os` varchar(30) NOT NULL DEFAULT '' COMMENT '操作系统',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_token` (`token`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线状态表';
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线状态表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +379,7 @@ CREATE TABLE `user_online` (
 
 LOCK TABLES `user_online` WRITE;
 /*!40000 ALTER TABLE `user_online` DISABLE KEYS */;
-INSERT INTO `user_online` VALUES (19,'974f72669e489d89abdf929c9d8fa288','fCLUxFpxP3QqVAezWSiqJ7D3QYZ7jkylPshqw8BVzfJJfAHAbwsSFhjrTyqHZEnzCXkFfQFo/9my2rcE0RSDdkAUap/un1TfxQqAcAX8O6d+ASrLuMl8lgceLxtdiihe',1583745118,'demo','192.168.0.212','Chrome','Windows 10'),(17,'70965993534b37da57ba93e952a8f7b7','lpe0YG9uqSN+sc8zL1tF+9Wcdo668H3tXJxqoKs0sIpULsmmu8SNCn4Y7lyrWhX9MxGyhMP0ksnUkaC1HHCvEPkUIHqjarQw70N/9E8CebISLbUvwzZTcQygi/ruaJIa',1583744649,'admin','[::1]','PostmanRuntime','');
+INSERT INTO `user_online` VALUES (20,'8adc454b79ee32c3d541dd3f1741aff8','fCLUxFpxP3QqVAezWSiqJ8OtDAKMoyVj/rWfOL9EvCCwCUvixJbwCD5Ukvqulmm7//dgfo2xvENltgSUQzsMjDh8mJUfquABLuMvcdRrDXsGLkaeS/8JPNqO7sd1HCQY',1583762268,'demo','192.168.31.221','Chrome','Windows 10');
 /*!40000 ALTER TABLE `user_online` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -392,4 +392,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-09 18:15:55
+-- Dump completed on 2020-03-09 23:07:26

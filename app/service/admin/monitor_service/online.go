@@ -96,20 +96,21 @@ func ForceLogout(ids []int) error {
 		entity, err := user_online.Model.FindOne("id", id)
 		if err != nil {
 			g.Log().Error(err)
+			return gerror.New("获取在线用户信息失败")
 		}
-		if err != nil || entity == nil {
-			return gerror.New("获取用户在线信息失败")
+		if entity == nil {
+			continue
 		}
+		entity.Delete()
 		_, userKey := GetUuidUserKeyByToken(entity.Token)
 		if userKey == "" {
-			return gerror.New("用户信息获取失败")
+			continue
 		}
 		userKey = boot.AdminGfToken.CacheKey + userKey
 		_, err = g.Redis().Do("DEL", userKey)
 		if err != nil {
 			return err
 		}
-		entity.Delete()
 	}
 	return nil
 }

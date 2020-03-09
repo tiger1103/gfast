@@ -32,6 +32,7 @@ func init() {
 
 		group.Group("/monitor", func(group *ghttp.RouterGroup) {
 			group.ALL("/online", new(admin.MonitorOnline))
+			group.ALL("/job", new(admin.MonitorJob))
 		})
 	})
 
