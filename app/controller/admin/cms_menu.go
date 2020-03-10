@@ -69,7 +69,7 @@ func (c *CmsMenu) Add(r *ghttp.Request) {
 	}
 	list := gconv.Maps(menus)
 	list = utils.PushSonToParent(list, 0, "parent_id")
-	typeChecker, err := dict_service.GetDictWithDataByType("cms_category_type", "")
+	typeChecker, err := dict_service.GetDictWithDataByType("cms_category_type", "", "")
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
@@ -111,7 +111,7 @@ func (c *CmsMenu) Edit(r *ghttp.Request) {
 	}
 	list := gconv.Maps(menus)
 	list = utils.PushSonToParent(list, 0, "parent_id")
-	typeChecker, err := dict_service.GetDictWithDataByType("cms_category_type", gconv.String(menuInfo.CateType))
+	typeChecker, err := dict_service.GetDictWithDataByType("cms_category_type", gconv.String(menuInfo.CateType), "")
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}

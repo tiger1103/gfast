@@ -302,7 +302,7 @@ CREATE TABLE `sys_job` (
   `update_time` bigint(20) unsigned DEFAULT '0' COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`,`job_name`,`job_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定时任务调度表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='定时任务调度表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +311,38 @@ CREATE TABLE `sys_job` (
 
 LOCK TABLES `sys_job` WRITE;
 /*!40000 ALTER TABLE `sys_job` DISABLE KEYS */;
+INSERT INTO `sys_job` VALUES (1,'测试任务1','','DEFAULT','test1','* * * * * *',1,0,1,1,1583805259,0,0,''),(2,'测试任务2','hello|gfast','DEFAULT','test2','* * * * * *',1,0,1,1,1583805312,1,1583809723,'备注'),(6,'测试任务666','hello|gfast','DEFAULT','test2','* * * * * *',1,0,1,1,1583811085,1,1583811184,'备注');
 /*!40000 ALTER TABLE `sys_job` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_login_log`
+--
+
+DROP TABLE IF EXISTS `sys_login_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_login_log` (
+  `info_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '访问ID',
+  `login_name` varchar(50) DEFAULT '' COMMENT '登录账号',
+  `ipaddr` varchar(50) DEFAULT '' COMMENT '登录IP地址',
+  `login_location` varchar(255) DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) DEFAULT '' COMMENT '操作系统',
+  `status` tinyint(4) DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
+  `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
+  `login_time` bigint(20) DEFAULT '0' COMMENT '访问时间',
+  PRIMARY KEY (`info_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统访问记录';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_login_log`
+--
+
+LOCK TABLES `sys_login_log` WRITE;
+/*!40000 ALTER TABLE `sys_login_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_login_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -392,4 +423,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-09 23:07:26
+-- Dump completed on 2020-03-10 18:03:43

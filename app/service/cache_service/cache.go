@@ -136,8 +136,8 @@ func (c *CacheTagService) Removes(keys []interface{}) {
 
 // Remove deletes the <tag> in the cache, and returns its value.
 func (c *CacheTagService) RemoveByTag(tag interface{}) {
-	c.setTagKey(tag)
 	tagSetMux.Lock()
+	c.setTagKey(tag)
 	//删除tagKey 对应的 key和值
 	keys := c.Get(c.tagKey)
 	if keys != nil {

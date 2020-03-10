@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 )
 
@@ -139,7 +140,7 @@ func GetDictById(id int) (dict *sys_dict_type.Entity, err error) {
 }
 
 //通过字典键类型获取选项
-func GetDictWithDataByType(dictType, defaultValue string) (dict g.Map, err error) {
+func GetDictWithDataByType(dictType, defaultValue, emptyLabel string) (dict g.Map, err error) {
 	dictEntity, err := sys_dict_type.Model.FindOne("dict_type", dictType)
 	if err != nil {
 		g.Log().Error(err)
@@ -160,10 +161,10 @@ func GetDictWithDataByType(dictType, defaultValue string) (dict g.Map, err error
 		for k, v := range dictDataEntities {
 			isDefault := 0
 			if defaultValue != "" {
-				if defaultValue == v.DictValue {
+				if gstr.Equal(defaultValue, v.DictValue) {
 					isDefault = 1
 				}
-			} else {
+			} else if emptyLabel == "" {
 				isDefault = v.IsDefault
 			}
 			values[k] = g.Map{
@@ -171,6 +172,9 @@ func GetDictWithDataByType(dictType, defaultValue string) (dict g.Map, err error
 				"value":     v.DictLabel,
 				"isDefault": isDefault,
 			}
+		}
+		if emptyLabel != "" {
+			values = append(g.List{g.Map{"isDefault": 0, "key": "", "value": emptyLabel}}, values...)
 		}
 		dict = g.Map{
 			"dict_name": dictEntity.DictName,

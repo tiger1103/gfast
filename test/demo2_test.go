@@ -2,7 +2,6 @@ package test
 
 import (
 	"fmt"
-	"github.com/gogf/gf/frame/g"
 	"testing"
 )
 
@@ -11,15 +10,8 @@ func TestDemo2(t *testing.T) {
 }
 
 func test21(t *testing.T) {
-	c := make(chan bool)
-	for i := 0; i < 10000; i++ {
-		go func() {
-			i, e := g.Redis().Do("get", "GToken:adminIJ1xz+Wve+ZONVMFfXJQMw==50607842719694a7380dc72aacc4a0b4")
-			if e != nil {
-				fmt.Println(e)
-			}
-			fmt.Println(string(i.([]byte)))
-		}()
-	}
-	<-c
+	s := []int{1, 2, 3}
+	s1 := []int{0}
+	s1 = append(s1, s...)
+	fmt.Println(s1)
 }

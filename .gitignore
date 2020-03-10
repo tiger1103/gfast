@@ -17,6 +17,5 @@ cbuild
 */.DS_Store
 main
 .vscode
-go.sum
 *.exe
 tmp
