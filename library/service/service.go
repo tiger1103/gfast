@@ -1,4 +1,4 @@
-package utils
+package service
 
 import (
 	"database/sql"
@@ -7,10 +7,9 @@ import (
 	"gfast/app/model/admin/user"
 	"gfast/app/model/admin/user_online"
 	"gfast/library/response"
+	"gfast/library/utils"
 	"github.com/goflyfox/gtoken/gtoken"
-	"github.com/gogf/gf/crypto/gaes"
 	"github.com/gogf/gf/crypto/gmd5"
-	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
@@ -20,8 +19,6 @@ import (
 	"github.com/mssola/user_agent"
 	"strings"
 )
-
-const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
 
 var (
 	AdminMultiLogin      bool  //是否允许后台管理员多端登陆
@@ -89,7 +86,7 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	/*if !VerifyString(data["idKeyC"], data["idValueC"]) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
 	}*/
-	password := EncryptCBC(data["password"], AdminCbcPublicKey)
+	password := utils.EncryptCBC(data["password"], utils.AdminCbcPublicKey)
 	var keys string
 	if AdminMultiLogin {
 		keys = data["username"] + password + gmd5.MustEncryptString(r.GetClientIp())
@@ -172,33 +169,6 @@ func AdminLoginOut(r *ghttp.Request) bool {
 	return true
 }
 
-//字符串加密
-func EncryptCBC(plainText, publicKey string) string {
-	key := []byte(publicKey)
-	b, e := gaes.EncryptCBC([]byte(plainText), key, key)
-	if e != nil {
-		g.Log().Error(e.Error())
-		return ""
-	}
-	return gbase64.EncodeToString(b)
-}
-
-//字符串解密
-func DecryptCBC(plainText, publicKey string) string {
-	key := []byte(publicKey)
-	plainTextByte, e := gbase64.DecodeString(plainText)
-	if e != nil {
-		g.Log().Error(e.Error())
-		return ""
-	}
-	b, e := gaes.DecryptCBC(plainTextByte, key, key)
-	if e != nil {
-		g.Log().Error(e.Error())
-		return ""
-	}
-	return gbase64.EncodeToString(b)
-}
-
 // 用户登录，成功返回用户信息，否则返回nil
 func signIn(username, password string, r *ghttp.Request) (error, *user.User) {
 	user, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
@@ -225,7 +195,7 @@ func loginLog(status int, username, ip, userAgent, msg string) {
 	var log sys_login_log.Entity
 	log.LoginName = username
 	log.Ipaddr = ip
-	log.LoginLocation = GetCityByIp(log.Ipaddr)
+	log.LoginLocation = utils.GetCityByIp(log.Ipaddr)
 	ua := user_agent.New(userAgent)
 	log.Browser, _ = ua.Browser()
 	log.Os = ua.OS()

@@ -7,7 +7,7 @@ import (
 	"gfast/app/service/admin/user_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/library/response"
-	"gfast/library/utils"
+	"gfast/library/service"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
@@ -24,7 +24,7 @@ func Auth(r *ghttp.Request) {
 	//获取登陆用户id
 	adminId := user_service.GetLoginID(r)
 	//获取无需验证权限的用户id
-	for _, v := range utils.NotCheckAuthAdminIds {
+	for _, v := range service.NotCheckAuthAdminIds {
 		if v == adminId {
 			r.Middleware.Next()
 			return

@@ -7,6 +7,7 @@ import (
 	"gfast/app/service/admin/auth_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/boot"
+	"gfast/library/service"
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -32,18 +33,7 @@ func GetLoginAdminInfo(r *ghttp.Request) (userInfo *user.Entity) {
 
 //获取管理员列表
 func GetAdminList(where g.Map, page int) (total int, userList []*user.Entity, err error) {
-	userModel := user.Model
-	if v, ok := where["keyWords"]; ok {
-		keyWords := gconv.String(v)
-		if keyWords != "" {
-			keyWords = "%" + keyWords + "%"
-			userModel = userModel.Where("user_name like ? or mobile like ? or user_nickname like ?",
-				keyWords, keyWords, keyWords)
-		}
-	}
-	total, err = userModel.Count()
-	userList, err = userModel.ForPage(page, utils.AdminPageNum).OrderBy("id asc").All()
-	return
+	return user.GetAdminList(where, page, service.AdminPageNum)
 }
 
 //获取管理员的角色信息
@@ -78,20 +68,6 @@ func GetAdminRoleIds(userId int) (roleIds []int, err error) {
 		for k, v := range groupPolicy {
 			roleIds[k] = gconv.Int(gstr.SubStr(v[1], 2))
 		}
-	}
-	return
-}
-
-//根据用户id获取用户信息
-func GetAdminInfoById(id int64) (userMap g.Map) {
-	//获取用户角色信息
-	if id != 0 {
-		userInfo, err := user.Model.Where("id=?", id).One()
-		if err != nil {
-			g.Log().Error(err)
-			return
-		}
-		userMap = gconv.Map(userInfo)
 	}
 	return
 }

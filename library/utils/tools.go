@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"github.com/gogf/gf/crypto/gaes"
+	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/encoding/gcharset"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/frame/g"
@@ -9,6 +11,35 @@ import (
 	"net"
 	"time"
 )
+
+const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
+
+//字符串加密
+func EncryptCBC(plainText, publicKey string) string {
+	key := []byte(publicKey)
+	b, e := gaes.EncryptCBC([]byte(plainText), key, key)
+	if e != nil {
+		g.Log().Error(e.Error())
+		return ""
+	}
+	return gbase64.EncodeToString(b)
+}
+
+//字符串解密
+func DecryptCBC(plainText, publicKey string) string {
+	key := []byte(publicKey)
+	plainTextByte, e := gbase64.DecodeString(plainText)
+	if e != nil {
+		g.Log().Error(e.Error())
+		return ""
+	}
+	b, e := gaes.DecryptCBC(plainTextByte, key, key)
+	if e != nil {
+		g.Log().Error(e.Error())
+		return ""
+	}
+	return gbase64.EncodeToString(b)
+}
 
 //服务端ip
 func GetLocalIP() (ip string, err error) {

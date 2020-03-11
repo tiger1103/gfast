@@ -3,6 +3,7 @@ package sys_oper_log
 import (
 	"gfast/app/model/admin/auth_rule"
 	"gfast/app/model/admin/user"
+	"gfast/library/service"
 	"gfast/library/utils"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/errors/gerror"
@@ -110,7 +111,7 @@ func ListByPage(req *SelectPageReq) (total, page int, list []*Entity, err error)
 	}
 	page = req.PageNum
 	if req.PageSize == 0 {
-		req.PageSize = utils.AdminPageNum
+		req.PageSize = service.AdminPageNum
 	}
 	list, err = model.Page(page, req.PageSize).FieldsEx("oper_param,json_result").Order(order).All()
 	if err != nil {

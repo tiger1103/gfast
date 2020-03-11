@@ -4,7 +4,7 @@ import (
 	"gfast/app/service/admin/auth_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/library/response"
-	"gfast/library/utils"
+	"gfast/library/service"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gconv"
@@ -25,7 +25,7 @@ func (c *Index) Index(r *ghttp.Request) {
 		userId := userEntity.Id
 		delete(userInfo, "user_password")
 		//获取无需验证权限的用户id
-		for _, v := range utils.NotCheckAuthAdminIds {
+		for _, v := range service.NotCheckAuthAdminIds {
 			if v == userId {
 				isSuperAdmin = true
 				break

@@ -3,7 +3,7 @@ package monitor_service
 import (
 	"gfast/app/model/admin/user_online"
 	"gfast/boot"
-	"gfast/library/utils"
+	"gfast/library/service"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/errors/gerror"
@@ -14,35 +14,13 @@ import (
 
 //获取在线用户列表
 func GetOnlineListPage(req *user_online.ReqListSearch) (total, page int, list []*user_online.Entity, err error) {
-	model := user_online.Model
-	if req != nil {
-		if req.Ip != "" {
-			model = model.Where("ip like ?", "%"+req.Ip+"%")
-		}
-		if req.Username != "" {
-			model = model.Where("user_name like ?", "%"+req.Username+"%")
-		}
-	}
-	total, err = model.Count()
-	if err != nil {
-		g.Log().Error(err)
-		err = gerror.New("获取总行数失败")
-		return
-	}
 	if req.PageNum == 0 {
 		req.PageNum = 1
 	}
-	page = req.PageNum
 	if req.PageSize == 0 {
-		req.PageSize = utils.AdminPageNum
+		req.PageSize = service.AdminPageNum
 	}
-	list, err = model.FieldsEx("token").Page(page, req.PageSize).Order("create_time DESC").All()
-	if err != nil {
-		g.Log().Error(err)
-		err = gerror.New("获取数据失败")
-		return
-	}
-	return
+	return user_online.GetOnlineListPage(req)
 }
 
 //通过token获取登录用户数据
@@ -93,7 +71,7 @@ func GetUuidUserKeyByToken(token string) (uuid, userKey string) {
 //强制退出操作
 func ForceLogout(ids []int) error {
 	for _, id := range ids {
-		entity, err := user_online.Model.FindOne("id", id)
+		entity, err := user_online.GetInfoById(id)
 		if err != nil {
 			g.Log().Error(err)
 			return gerror.New("获取在线用户信息失败")
