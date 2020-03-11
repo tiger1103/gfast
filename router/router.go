@@ -2,6 +2,7 @@ package router
 
 import (
 	"gfast/app/controller/admin"
+	"gfast/hook"
 	"gfast/middleWare"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -10,13 +11,16 @@ import (
 // 统一路由注册.
 func init() {
 	s := g.Server()
-	s.Use(middleWare.MiddlewareCORS)
+	s.Use(middleWare.CORS)
 	group := s.Group("/")
 	group.Group("/sysLogin", func(group *ghttp.RouterGroup) {
 		group.ALL("/public", new(admin.Public))
 	})
 	group.Group("/system", func(group *ghttp.RouterGroup) {
-		group.Middleware(middleWare.MiddlewareAuth) //后台权限验证
+		group.Middleware(middleWare.Auth) //后台权限验证
+		//后台操作日志记录
+		group.Hook("/*", ghttp.HOOK_AFTER_OUTPUT, hook.OperationLog)
+
 		group.ALL("/index", new(admin.Index))
 		group.ALL("/auth", new(admin.Auth))
 
@@ -34,6 +38,8 @@ func init() {
 			group.ALL("/online", new(admin.MonitorOnline))
 			group.ALL("/job", new(admin.MonitorJob))
 			group.ALL("/server", new(admin.MonitorServer))
+			group.ALL("/operlog", new(admin.MonitorOperationLog))
+			group.ALL("/loginlog", new(admin.MonitorLoginLog))
 		})
 	})
 

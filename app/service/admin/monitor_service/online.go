@@ -20,7 +20,7 @@ func GetOnlineListPage(req *user_online.ReqListSearch) (total, page int, list []
 			model = model.Where("ip like ?", "%"+req.Ip+"%")
 		}
 		if req.Username != "" {
-			model = model.Where("username like ?", "%"+req.Username+"%")
+			model = model.Where("user_name like ?", "%"+req.Username+"%")
 		}
 	}
 	total, err = model.Count()

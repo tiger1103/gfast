@@ -40,7 +40,7 @@ CREATE TABLE `auth_rule` (
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `pid` (`pid`),
   KEY `weigh` (`weigh`)
-) ENGINE=MyISAM AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单节点表';
+) ENGINE=MyISAM AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单节点表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +49,7 @@ CREATE TABLE `auth_rule` (
 
 LOCK TABLES `auth_rule` WRITE;
 /*!40000 ALTER TABLE `auth_rule` DISABLE KEYS */;
-INSERT INTO `auth_rule` VALUES (5,'file',0,'/system/auth','权限管理','fa fa-users','','',1,1497429920,1582706271,80,1),(9,'file',5,'/system/auth/user-list','管理员管理','fa fa-user','','Admin tips',1,1497429920,1497430320,118,1),(10,'file',5,'/system/auth/adminlog','管理员日志','fa fa-list-alt','','Admin log tips',1,1497429920,1582731276,113,1),(11,'file',5,'/system/auth/role-list','角色组','fa fa-group','','Group tips',1,1497429920,1582706904,109,1),(12,'file',5,'/system/auth/menu-list','菜单规则','fa fa-bars','','Rule tips',1,1497429920,1582731459,104,1),(43,'file',9,'/system/auth/delete-admin','删除','fa fa-circle-o','','',0,1497429920,1582706783,1,1),(42,'file',9,'/system/auth/edit-user','修改','fa fa-circle-o','','',0,1497429920,1582706817,2,1),(41,'file',9,'/system/auth/add-user','添加','fa fa-circle-o','','',0,1497429920,1582726029,3,1),(47,'file',11,'/system/auth/add-role','添加角色','el-icon-document-add','','',0,1582706959,1582706959,50,1),(50,'file',12,'/system/auth/add-menu','添加菜单','el-icon-document-add','','',0,1582726105,1582726105,50,1),(46,'file',0,'/system/index/index','系统首页','el-icon-s-grid','noCheck','',1,1582704520,1582726295,100,1),(48,'file',11,'/system/auth/edit-role','修改角色','fa fa-pencil','','',0,1582706999,1582726035,50,1),(49,'file',11,'/system/auth/delete-role','删除角色','fa fa-institution','','',0,1582707051,1582726040,50,1),(51,'file',12,'/system/auth/edit-menu','修改菜单','fa fa-pencil','','',0,1582726145,1582726145,50,1),(52,'file',12,'/system/auth/delete-menu','删除菜单','fa fa-institution','','',0,1582726194,1582726194,50,1),(53,'file',12,'/system/auth/menu-sort','菜单排序','fa fa-list-ul','','',0,1582726229,1582726229,50,1),(57,'file',0,'/system/cms','CMS管理','fa fa-list','','',1,1582731636,1582731636,70,1),(58,'file',57,'/system/cms/menu-list','栏目管理','fa fa-list-ul','','',1,1582731762,1582732995,50,1),(59,'file',57,'/system/cms/news-list','内容管理','fa fa-th-list','','',1,1582731800,1582733003,50,1),(60,'file',57,'/system/cms/mode-list','模型管理','fa fa-codepen','','',1,1582731832,1582733011,50,1),(61,'file',57,'/system/cms/special-list','专题管理','fa fa-hand-pointer-o','','',1,1582732334,1582733018,50,1),(62,'file',57,'/system/cms/single-list','单页管理','fa fa-file-o','','',1,1582732373,1582733025,50,1),(63,'file',0,'/system/config','系统配置','fa fa-wrench','','',1,1582773590,1582773600,90,1),(64,'file',63,'/system/config/dict/list','字典管理','fa fa-sitemap','','',1,1582773640,1583457951,50,1),(65,'file',63,'/system/config/params/list','参数管理','fa fa-list-ul','','',1,1582773725,1583457960,50,1),(66,'file',0,'/system/monitor','系统监控','fa fa-video-camera','','',1,1583745179,1583745179,75,1),(67,'file',66,'/system/monitor/online/list','在线用户','fa fa-list-ul','','',1,1583745243,1583745243,50,1),(68,'file',67,'/system/monitor/online/force-logout','强退用户','fa fa-chevron-right','','',0,1583745300,1583745300,50,1);
+INSERT INTO `auth_rule` VALUES (5,'file',0,'/system/auth','权限管理','fa fa-users','','',1,1497429920,1582706271,80,1),(9,'file',5,'/system/auth/user-list','管理员管理','fa fa-user','','Admin tips',1,1497429920,1497430320,118,1),(10,'file',5,'/system/auth/adminlog','管理员日志','fa fa-list-alt','','Admin log tips',1,1497429920,1582731276,113,1),(11,'file',5,'/system/auth/role-list','角色组','fa fa-group','','Group tips',1,1497429920,1582706904,109,1),(12,'file',5,'/system/auth/menu-list','菜单规则','fa fa-bars','','Rule tips',1,1497429920,1582731459,104,1),(43,'file',9,'/system/auth/delete-admin','删除','fa fa-circle-o','','',0,1497429920,1582706783,1,1),(42,'file',9,'/system/auth/edit-user','修改','fa fa-circle-o','','',0,1497429920,1582706817,2,1),(41,'file',9,'/system/auth/add-user','添加','fa fa-circle-o','','',0,1497429920,1582726029,3,1),(47,'file',11,'/system/auth/add-role','添加角色','el-icon-document-add','','',0,1582706959,1582706959,50,1),(50,'file',12,'/system/auth/add-menu','添加菜单','el-icon-document-add','','',0,1582726105,1582726105,50,1),(46,'file',0,'/system/index/index','系统首页','el-icon-s-grid','noCheck','',1,1582704520,1582726295,100,1),(48,'file',11,'/system/auth/edit-role','修改角色','fa fa-pencil','','',0,1582706999,1582726035,50,1),(49,'file',11,'/system/auth/delete-role','删除角色','fa fa-institution','','',0,1582707051,1582726040,50,1),(51,'file',12,'/system/auth/edit-menu','修改菜单','fa fa-pencil','','',0,1582726145,1582726145,50,1),(52,'file',12,'/system/auth/delete-menu','删除菜单','fa fa-institution','','',0,1582726194,1582726194,50,1),(53,'file',12,'/system/auth/menu-sort','菜单排序','fa fa-list-ul','','',0,1582726229,1582726229,50,1),(57,'file',0,'/system/cms','CMS管理','fa fa-list','','',1,1582731636,1582731636,70,1),(58,'file',57,'/system/cms/menu-list','栏目管理','fa fa-list-ul','','',1,1582731762,1582732995,50,1),(59,'file',57,'/system/cms/news-list','内容管理','fa fa-th-list','','',1,1582731800,1582733003,50,1),(60,'file',57,'/system/cms/mode-list','模型管理','fa fa-codepen','','',1,1582731832,1582733011,50,1),(61,'file',57,'/system/cms/special-list','专题管理','fa fa-hand-pointer-o','','',1,1582732334,1582733018,50,1),(62,'file',57,'/system/cms/single-list','单页管理','fa fa-file-o','','',1,1582732373,1582733025,50,1),(63,'file',0,'/system/config','系统配置','fa fa-wrench','','',1,1582773590,1582773600,90,1),(64,'file',63,'/system/config/dict/list','字典管理','fa fa-sitemap','','',1,1582773640,1583457951,50,1),(65,'file',63,'/system/config/params/list','参数管理','fa fa-list-ul','','',1,1582773725,1583457960,50,1),(66,'file',0,'/system/monitor','系统监控','fa fa-video-camera','','',1,1583745179,1583745179,75,1),(67,'file',66,'/system/monitor/online/list','在线用户','fa fa-list-ul','','',1,1583745243,1583745243,50,1),(68,'file',67,'/system/monitor/online/force-logout','强退用户','fa fa-chevron-right','','',0,1583745300,1583745300,50,1),(69,'file',66,'/system/monitor/job/list','定时任务','fa fa-caret-square-o-right','','',1,1583910055,1583910055,50,1),(70,'file',69,'/system/monitor/job/add','添加任务','fa fa-plus','','',0,1583910115,1583910115,50,1),(71,'file',69,'/system/monitor/job/edit','修改任务','fa fa-pencil','','',0,1583910178,1583910178,50,1),(72,'file',69,'/system/monitor/job/start','启动任务','fa fa-play','','',0,1583910216,1583910216,50,1),(73,'file',69,'/system/monitor/job/stop','停止任务','fa fa-square','','',0,1583910258,1583910258,50,1),(74,'file',69,'/system/monitor/job/delete','删除任务','fa fa-institution','','',0,1583910310,1583910310,50,1),(75,'file',66,'/system/monitor/server/info','服务监控','el-icon-video-camera-solid','','',1,1583912579,1583912579,50,1),(76,'file',66,'/system/monitor/loginlog/list','登录日志','fa fa-stack-exchange','','',1,1583912674,1583912674,50,1),(77,'file',76,'/system/monitor/loginlog/delete','删除登录日志','fa fa-trash-o','','',0,1583912733,1583912733,50,1),(78,'file',76,'/system/monitor/loginlog/clear','清空登录日志','el-icon-close','','',0,1583912761,1583912761,50,1),(79,'file',66,'/system/monitor/operlog/list','操作日志','el-icon-finished','','',1,1583913013,1583913013,50,1),(80,'file',79,'/system/monitor/operlog/detail','操作日志详情','fa fa-list-ul','','',0,1583920512,1583920512,50,1),(81,'file',79,'/system/monitor/operlog/delete','删除操作日志','fa fa-trash-o','','',0,1583920563,1583920563,50,1),(82,'file',79,'/system/monitor/operlog/clear','清空操作日志','fa fa-university','','',0,1583920599,1583920599,50,1);
 /*!40000 ALTER TABLE `auth_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +234,7 @@ CREATE TABLE `sys_dict_data` (
   `update_time` bigint(20) unsigned DEFAULT '0' COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COMMENT='字典数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +243,7 @@ CREATE TABLE `sys_dict_data` (
 
 LOCK TABLES `sys_dict_data` WRITE;
 /*!40000 ALTER TABLE `sys_dict_data` DISABLE KEYS */;
-INSERT INTO `sys_dict_data` VALUES (1,0,'男','0','sys_user_sex','','default',0,1,31,1582884113,31,1583763043,'备注信息'),(2,0,'女','0','sys_user_sex','','default',0,1,31,1582884125,31,1583763046,'备注信息'),(3,0,'保密','0','sys_user_sex','','default',1,1,31,1582884871,31,1583763050,'备注信息'),(24,0,'作为频道页，不可作为栏目发布文章，可添加下级分类','1','cms_category_type','','default',1,1,31,1583131942,0,0,'作为频道页，不可作为栏目发布文章，可添加下级分类'),(25,0,'作为发布栏目，可添加文章','2','cms_category_type','','default',0,1,31,1583132032,0,0,'作为发布栏目，可添加文章'),(26,0,'不直接发布内容，用于跳转页面','3','cms_category_type','','default',0,1,31,1583132125,0,0,'不直接发布内容，用于跳转页面'),(27,0,'单页面模式，分类直接显示为文章','4','cms_category_type','','default',0,1,31,1583132145,0,0,'单页面模式，分类直接显示为文章'),(28,0,'正常','0','sys_job_status','','default',1,1,31,1583762727,0,0,''),(29,0,'暂停','1','sys_job_status','','default',0,1,31,1583762751,31,1583763095,''),(30,0,'默认','DEFAULT','sys_job_group','','default',1,1,31,1583762854,0,0,''),(31,0,'系统','SYSTEM','sys_job_group','','default',0,1,31,1583762889,0,0,'');
+INSERT INTO `sys_dict_data` VALUES (1,0,'男','0','sys_user_sex','','default',0,1,31,1582884113,31,1583763043,'备注信息'),(2,0,'女','0','sys_user_sex','','default',0,1,31,1582884125,31,1583763046,'备注信息'),(3,0,'保密','0','sys_user_sex','','default',1,1,31,1582884871,31,1583763050,'备注信息'),(24,0,'作为频道页，不可作为栏目发布文章，可添加下级分类','1','cms_category_type','','default',1,1,31,1583131942,0,0,'作为频道页，不可作为栏目发布文章，可添加下级分类'),(25,0,'作为发布栏目，可添加文章','2','cms_category_type','','default',0,1,31,1583132032,0,0,'作为发布栏目，可添加文章'),(26,0,'不直接发布内容，用于跳转页面','3','cms_category_type','','default',0,1,31,1583132125,0,0,'不直接发布内容，用于跳转页面'),(27,0,'单页面模式，分类直接显示为文章','4','cms_category_type','','default',0,1,31,1583132145,0,0,'单页面模式，分类直接显示为文章'),(28,0,'正常','0','sys_job_status','','default',1,1,31,1583762727,0,0,''),(29,0,'暂停','1','sys_job_status','','default',0,1,31,1583762751,31,1583763095,''),(30,0,'默认','DEFAULT','sys_job_group','','default',1,1,31,1583762854,0,0,''),(31,0,'系统','SYSTEM','sys_job_group','','default',0,1,31,1583762889,0,0,''),(32,0,'成功','1','admin_login_status','','default',0,1,31,1583891238,31,1583891244,''),(33,0,'失败','0','admin_login_status','','default',0,1,31,1583891262,0,0,''),(34,0,'成功','1','sys_oper_log_status','','default',0,1,31,1583917929,0,0,''),(35,0,'失败','0','sys_oper_log_status','','default',0,1,31,1583917942,0,0,'');
 /*!40000 ALTER TABLE `sys_dict_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ CREATE TABLE `sys_dict_type` (
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='字典类型表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +275,7 @@ CREATE TABLE `sys_dict_type` (
 
 LOCK TABLES `sys_dict_type` WRITE;
 /*!40000 ALTER TABLE `sys_dict_type` DISABLE KEYS */;
-INSERT INTO `sys_dict_type` VALUES (1,'用户性别','sys_user_sex',1,31,1582789177,0,0,'用于选择用户性别'),(2,'分类类型','cms_category_type',1,31,1582789253,31,1583131577,'文章分类类型'),(3,'任务状态','sys_job_status',1,31,1582789296,31,1583762542,'任务状态列表'),(13,'任务分组','sys_job_group',1,31,1583762785,0,0,'');
+INSERT INTO `sys_dict_type` VALUES (1,'用户性别','sys_user_sex',1,31,1582789177,0,0,'用于选择用户性别'),(2,'分类类型','cms_category_type',1,31,1582789253,31,1583131577,'文章分类类型'),(3,'任务状态','sys_job_status',1,31,1582789296,31,1583762542,'任务状态列表'),(13,'任务分组','sys_job_group',1,31,1583762785,0,0,''),(14,'管理员登录状态','admin_login_status',1,31,1583891209,0,0,''),(15,'操作日志状态','sys_oper_log_status',1,31,1583917888,0,0,'');
 /*!40000 ALTER TABLE `sys_dict_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,6 +346,44 @@ LOCK TABLES `sys_login_log` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sys_oper_log`
+--
+
+DROP TABLE IF EXISTS `sys_oper_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_oper_log` (
+  `oper_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
+  `title` varchar(50) DEFAULT '' COMMENT '模块标题',
+  `business_type` int(2) DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `method` varchar(100) DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(10) DEFAULT '' COMMENT '请求方式',
+  `operator_type` int(1) DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `oper_name` varchar(50) DEFAULT '' COMMENT '操作人员',
+  `dept_name` varchar(50) DEFAULT '' COMMENT '部门名称',
+  `oper_url` varchar(255) DEFAULT '' COMMENT '请求URL',
+  `oper_ip` varchar(50) DEFAULT '' COMMENT '主机地址',
+  `oper_location` varchar(255) DEFAULT '' COMMENT '操作地点',
+  `oper_param` text COMMENT '请求参数',
+  `json_result` text COMMENT '返回参数',
+  `status` int(1) DEFAULT '0' COMMENT '操作状态（0正常 1异常）',
+  `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
+  `oper_time` bigint(20) DEFAULT '0' COMMENT '操作时间',
+  PRIMARY KEY (`oper_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='操作日志记录';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_oper_log`
+--
+
+LOCK TABLES `sys_oper_log` WRITE;
+/*!40000 ALTER TABLE `sys_oper_log` DISABLE KEYS */;
+INSERT INTO `sys_oper_log` VALUES (1,'',0,'/system/monitor/operlog/clear','POST',1,'admin','','/system/monitor/operlog/clear','192.168.0.212','','{}','{\"code\":0,\"msg\":\"清除成功\"}',1,'',1583920443),(2,'菜单规则',0,'/system/auth/menu-list','GET',1,'demo','','/system/auth/menu-list','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920465),(3,'添加菜单',0,'/system/auth/add-menu','GET',1,'demo','','/system/auth/add-menu','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920465),(4,'添加菜单',0,'/system/auth/add-menu','POST',1,'demo','','/system/auth/add-menu','192.168.0.212','','{\"condition\":\"\",\"icon\":\"fa fa-list-ul\",\"ismenu\":0,\"name\":\"/system/monitor/operlog/detail\",\"pid\":79,\"remark\":\"\",\"status\":1,\"title\":\"操作日志详情\",\"weigh\":50}','{\"code\":0,\"msg\":\"添加菜单成功\"}',1,'',1583920513),(5,'菜单规则',0,'/system/auth/menu-list','GET',1,'demo','','/system/auth/menu-list','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920513),(6,'添加菜单',0,'/system/auth/add-menu','GET',1,'demo','','/system/auth/add-menu','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920513),(7,'添加菜单',0,'/system/auth/add-menu','POST',1,'demo','','/system/auth/add-menu','192.168.0.212','','{\"condition\":\"\",\"icon\":\"fa fa-trash-o\",\"ismenu\":0,\"name\":\"/system/monitor/operlog/delete\",\"pid\":79,\"remark\":\"\",\"status\":1,\"title\":\"删除操作日志\",\"weigh\":50}','{\"code\":0,\"msg\":\"添加菜单成功\"}',1,'',1583920563),(8,'菜单规则',0,'/system/auth/menu-list','GET',1,'demo','','/system/auth/menu-list','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920563),(9,'添加菜单',0,'/system/auth/add-menu','GET',1,'demo','','/system/auth/add-menu','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920563),(10,'添加菜单',0,'/system/auth/add-menu','POST',1,'demo','','/system/auth/add-menu','192.168.0.212','','{\"condition\":\"\",\"icon\":\"fa fa-university\",\"ismenu\":0,\"name\":\"/system/monitor/operlog/clear\",\"pid\":79,\"remark\":\"\",\"status\":1,\"title\":\"清空操作日志\",\"weigh\":50}','{\"code\":0,\"msg\":\"添加菜单成功\"}',1,'',1583920600),(11,'添加菜单',0,'/system/auth/add-menu','GET',1,'demo','','/system/auth/add-menu','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920600),(12,'菜单规则',0,'/system/auth/menu-list','GET',1,'demo','','/system/auth/menu-list','192.168.0.212','','{}','{\"code\":0,\"msg\":\"成功\"}',1,'',1583920600);
+/*!40000 ALTER TABLE `sys_oper_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -379,7 +417,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','18687460581','超级管理员',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh669@qq.com',0,'',1583744648,'[::1]'),(2,'yixiaohu','13699885599','易小虎',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh@qq.com',1,'',1583479226,'[::1]'),(3,'zs','16399669855','张三',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'zs@qq.com',0,'',1559293160,'127.0.0.1'),(4,'qlgl','13758596696','测试c',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'qlgl@qq.com',0,'',1559293134,'127.0.0.1'),(5,'test','13845696696','测试2',0,0,'9OFlt5qzzvCiZWhe7ilcLA==',1,'123@qq.com',0,'',0,''),(6,'18999998889','13755866654','刘大大',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'1223@qq.com',0,'',0,''),(7,'zmm','13788566696','张明明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'11123@qq.com',0,'',0,''),(8,'lxx','13756566696','李小小',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'123333@qq.com',0,'',1571729563,'127.0.0.1'),(10,'xmm','13588999969','小秘密',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(14,'cd_19','123154564','看金利科技',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(15,'lmm','135877545454','刘敏敏',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(16,'ldn','13899658874','李大牛',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(20,'dbc','13877555566','大百词',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(22,'yxfmlbb','15969423326','袁学飞',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh6691@qq.com',0,'',1565059554,'127.0.0.1'),(23,'wangming','13699888855','王明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(24,'zhk','13699885591','综合科',0,0,'IZNU7Pn91/++830Pi6HAWA==',1,'',0,'',1569288069,'192.168.0.146'),(28,'demo3','18699888855','测试账号1',0,1581314035,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(31,'demo','18699888856','测试账号1',0,1581314770,'9OFlt5qzzvCiZWhe7ilcLA==',1,'56@qq.com',0,'',1583762268,'192.168.31.221'),(32,'demo100','18699888859','测试账号1',0,1582103659,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(33,'demo110','18699888853','测试账号1',0,1582109337,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(34,'demo101','13855774455','测试账号1',0,1582110232,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(38,'demo103','18699888833','测试账号103',0,1582188923,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',1582188938,'[::1]');
+INSERT INTO `user` VALUES (1,'admin','18687460581','超级管理员',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh669@qq.com',0,'',1583894086,'192.168.0.212'),(2,'yixiaohu','13699885599','易小虎',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh@qq.com',1,'',1583479226,'[::1]'),(3,'zs','16399669855','张三',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'zs@qq.com',0,'',1559293160,'127.0.0.1'),(4,'qlgl','13758596696','测试c',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'qlgl@qq.com',0,'',1559293134,'127.0.0.1'),(5,'test','13845696696','测试2',0,0,'9OFlt5qzzvCiZWhe7ilcLA==',1,'123@qq.com',0,'',0,''),(6,'18999998889','13755866654','刘大大',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'1223@qq.com',0,'',0,''),(7,'zmm','13788566696','张明明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'11123@qq.com',0,'',0,''),(8,'lxx','13756566696','李小小',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'123333@qq.com',0,'',1571729563,'127.0.0.1'),(10,'xmm','13588999969','小秘密',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(14,'cd_19','123154564','看金利科技',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(15,'lmm','135877545454','刘敏敏',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(16,'ldn','13899658874','李大牛',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(20,'dbc','13877555566','大百词',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(22,'yxfmlbb','15969423326','袁学飞',0,1557715675,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'yxh6691@qq.com',0,'',1565059554,'127.0.0.1'),(23,'wangming','13699888855','王明',0,0,'IJ1xz+Wve+ZONVMFfXJQMw==',1,'',0,'',0,''),(24,'zhk','13699885591','综合科',0,0,'IZNU7Pn91/++830Pi6HAWA==',1,'',0,'',1569288069,'192.168.0.146'),(28,'demo3','18699888855','测试账号1',0,1581314035,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(31,'demo','18699888856','测试账号1',0,1581314770,'9OFlt5qzzvCiZWhe7ilcLA==',1,'56@qq.com',0,'',1583894004,'192.168.0.212'),(32,'demo100','18699888859','测试账号1',0,1582103659,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(33,'demo110','18699888853','测试账号1',0,1582109337,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(34,'demo101','13855774455','测试账号1',0,1582110232,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',0,''),(38,'demo103','18699888833','测试账号103',0,1582188923,'9OFlt5qzzvCiZWhe7ilcLA==',1,'',0,'',1582188938,'[::1]');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -401,7 +439,7 @@ CREATE TABLE `user_online` (
   `os` varchar(30) NOT NULL DEFAULT '' COMMENT '操作系统',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_token` (`token`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线状态表';
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线状态表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -410,7 +448,7 @@ CREATE TABLE `user_online` (
 
 LOCK TABLES `user_online` WRITE;
 /*!40000 ALTER TABLE `user_online` DISABLE KEYS */;
-INSERT INTO `user_online` VALUES (20,'8adc454b79ee32c3d541dd3f1741aff8','fCLUxFpxP3QqVAezWSiqJ8OtDAKMoyVj/rWfOL9EvCCwCUvixJbwCD5Ukvqulmm7//dgfo2xvENltgSUQzsMjDh8mJUfquABLuMvcdRrDXsGLkaeS/8JPNqO7sd1HCQY',1583762268,'demo','192.168.31.221','Chrome','Windows 10');
+INSERT INTO `user_online` VALUES (20,'8adc454b79ee32c3d541dd3f1741aff8','fCLUxFpxP3QqVAezWSiqJ8OtDAKMoyVj/rWfOL9EvCCwCUvixJbwCD5Ukvqulmm7//dgfo2xvENltgSUQzsMjDh8mJUfquABLuMvcdRrDXsGLkaeS/8JPNqO7sd1HCQY',1583762268,'demo','192.168.31.221','Chrome','Windows 10'),(29,'70965993534b37da57ba93e952a8f7b7','lpe0YG9uqSN+sc8zL1tF+9Wcdo668H3tXJxqoKs0sIpULsmmu8SNCn4Y7lyrWhX9MxGyhMP0ksnUkaC1HHCvEPkUIHqjarQw70N/9E8CebISLbUvwzZTcQygi/ruaJIa',1583894060,'admin','[::1]','PostmanRuntime',''),(28,'eeaf0b8a58270d48100ec1b01876115c','fCLUxFpxP3QqVAezWSiqJ7D3QYZ7jkylPshqw8BVzfJJfAHAbwsSFhjrTyqHZEnzZwFT0YRIfumQTxnJAjCUHKpnrXWMqRHjXbV4yPu0tn7dHESK+gRr5ODilRyUkc5h',1583894004,'demo','192.168.0.212','Chrome','Windows 10'),(30,'d3cb2f2bc7846aa0b962366bc67bb234','lpe0YG9uqSN+sc8zL1tF+0bVNmHSnBiJshz6cFTW0bO1YDzPEgiMyIy2o0szcsqq89te5+yx+6Pz8G3gLrpKoSR7JEPD8YXqGwV3JOmcA23bjYRWtWoXlfQ51WSVEVgb',1583894086,'admin','192.168.0.212','PostmanRuntime','');
 /*!40000 ALTER TABLE `user_online` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -423,4 +461,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-10 18:03:43
+-- Dump completed on 2020-03-11 17:57:36

@@ -14,13 +14,13 @@ import (
 )
 
 //跨域处理中间件
-func MiddlewareCORS(r *ghttp.Request) {
+func CORS(r *ghttp.Request) {
 	r.Response.CORSDefault()
 	r.Middleware.Next()
 }
 
 //权限判断处理中间件
-func MiddlewareAuth(r *ghttp.Request) {
+func Auth(r *ghttp.Request) {
 	//获取登陆用户id
 	adminId := user_service.GetLoginID(r)
 	//获取无需验证权限的用户id

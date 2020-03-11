@@ -3,6 +3,7 @@ package utils
 import (
 	"database/sql"
 	"errors"
+	"gfast/app/model/admin/sys_login_log"
 	"gfast/app/model/admin/user"
 	"gfast/app/model/admin/user_online"
 	"gfast/library/response"
@@ -95,10 +96,14 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	} else {
 		keys = data["username"] + password
 	}
+	ip := r.GetClientIp()
+	userAgent := r.Header.Get("User-Agent")
 	if err, user := signIn(data["username"], password, r); err != nil {
+		go loginLog(0, data["username"], ip, userAgent, err.Error())
 		response.JsonExit(r, response.ErrorCode, err.Error())
 	} else {
 		r.SetParam("userInfo", user)
+		go loginLog(1, data["username"], ip, userAgent, "登录成功")
 		return keys, user
 	}
 	return keys, nil
@@ -215,12 +220,17 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.User) {
 	return nil, &returnData
 }
 
-//日期字符串转时间戳（秒）
-func StrToTimestamp(dateStr string) int64 {
-	tm, err := gtime.StrToTime(dateStr)
-	if err != nil {
-		g.Log().Error(err)
-		return 0
-	}
-	return tm.Timestamp()
+//登录日志记录
+func loginLog(status int, username, ip, userAgent, msg string) {
+	var log sys_login_log.Entity
+	log.LoginName = username
+	log.Ipaddr = ip
+	log.LoginLocation = GetCityByIp(log.Ipaddr)
+	ua := user_agent.New(userAgent)
+	log.Browser, _ = ua.Browser()
+	log.Os = ua.OS()
+	log.Status = status
+	log.Msg = msg
+	log.LoginTime = gtime.Timestamp()
+	log.Save()
 }

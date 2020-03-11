@@ -26,11 +26,13 @@ func RJson(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	r.Response.WriteJson(g.Map{
+	result := g.Map{
 		"code": code,
 		"msg":  msg,
 		"data": responseData,
-	})
+	}
+	r.SetParam("apiReturnRes", result)
+	r.Response.WriteJson(result)
 }
 
 //成功返回JSON
