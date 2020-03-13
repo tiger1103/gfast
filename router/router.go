@@ -27,6 +27,7 @@ func init() {
 		group.Group("/cms", func(group *ghttp.RouterGroup) {
 			group.ALL("/menu", new(admin.CmsMenu))
 			group.ALL("/news", new(admin.CmsNews))
+			group.ALL("/model", new(admin.CmsModel))
 		})
 
 		group.Group("/config", func(group *ghttp.RouterGroup) {

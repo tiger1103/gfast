@@ -23,7 +23,7 @@ type ReqSearchList struct {
 
 //添加请求参数
 type ReqAdd struct {
-	ParentId            uint64 `p:"parent_id" v:"integer|min:0#父级ID不能为空|父级ID必须为大于等于0的整数"`
+	ParentId            int64  `p:"parent_id" v:"integer|min:0#父级ID不能为空|父级ID必须为大于等于0的整数"`
 	Name                string `p:"name" v:"required#栏目名称不能为空"`
 	Alias               string `p:"alias"`
 	CateType            uint   `p:"cate_type" v:"required|in:1,2,3,4#请选择栏目类型|栏目类型只能在1-4之间"`
@@ -56,24 +56,10 @@ func GetList() (list []*Entity, err error) {
 	if err != nil {
 		g.Log().Error()
 		err = gerror.New("获取菜单数据失败")
+		return
 	}
 	//缓存数据
 	cache.Set(cache_service.AdminCmsMenu, list, 0, cache_service.AdminCmsTag)
-	return
-}
-
-//获取频道列表
-func GetListChannel() (list []*Entity, err error) {
-	listAll, err := GetList()
-	if err != nil {
-		return
-	}
-	list = make([]*Entity, 0, len(listAll))
-	for _, v := range listAll {
-		if v.Status == 1 && v.CateType == ChannelCateType {
-			list = append(list, v)
-		}
-	}
 	return
 }
 

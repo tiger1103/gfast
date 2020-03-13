@@ -9,6 +9,7 @@ require (
 	github.com/mojocn/base64Captcha v1.3.0
 	github.com/mssola/user_agent v0.5.1
 	github.com/shirou/gopsutil v2.20.2+incompatible
+	github.com/stretchr/testify v1.5.1 // indirect
 )
 
 go 1.14
