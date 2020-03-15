@@ -5,7 +5,7 @@ require (
 	github.com/casbin/casbin/v2 v2.1.2
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/goflyfox/gtoken v1.3.12
-	github.com/gogf/gf v1.11.5
+	github.com/gogf/gf v1.11.6
 	github.com/mojocn/base64Captcha v1.3.0
 	github.com/mssola/user_agent v0.5.1
 	github.com/shirou/gopsutil v2.20.2+incompatible

@@ -37,8 +37,7 @@ func GetPublishableMenuList() (list []*cms_category.Entity, err error) {
 
 //获取所有菜单列表
 func GetMenuList() (list []*cms_category.Entity, err error) {
-	return
-	//return cms_category.GetList()
+	return cms_category.GetList()
 }
 
 //保存栏目操作
