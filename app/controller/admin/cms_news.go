@@ -25,9 +25,9 @@ func (c *CmsNews) Add(r *ghttp.Request) {
 		if err := r.Parse(&req); err != nil {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 		}
-		menuIds := r.GetInts("menuIds")
+		cateIds := r.GetInts("cateIds")
 		userId := user_service.GetLoginID(r)
-		ids, err := cms_service.AddNews(req, menuIds, userId)
+		ids, err := cms_service.AddNews(req, cateIds, userId)
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}

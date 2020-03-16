@@ -176,3 +176,13 @@ func DeleteByIds(ids []int) error {
 	}
 	return nil
 }
+
+//通过key获取配置信息
+func GetByKey(key string) (config *Entity, err error) {
+	config, err = Model.FindOne("config_key", key)
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取配置失败")
+	}
+	return
+}

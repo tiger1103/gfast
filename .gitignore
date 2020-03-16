@@ -19,3 +19,4 @@ main
 .vscode
 *.exe
 tmp
+resource/pub_upload/

@@ -31,20 +31,20 @@ type ReqAddParams struct {
 }
 
 //添加文章操作
-func AddNews(req *ReqAddParams, menuIds []int, userId int) (insId []int64, err error) {
-	if len(menuIds) == 0 {
+func AddNews(req *ReqAddParams, cateIds []int, userId int) (insId []int64, err error) {
+	if len(cateIds) == 0 {
 		err = gerror.New("栏目不能为空")
 		return
 	}
 	tx, err := g.DB().Begin()
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("保存失败")
+		err = gerror.New("添加失败")
 		return
 	}
-	for _, menuId := range menuIds {
+	for _, cateId := range cateIds {
 		entity := &Entity{
-			CateId:        gconv.Uint(menuId),
+			CateId:        gconv.Uint(cateId),
 			UserId:        gconv.Uint64(userId),
 			NewsStatus:    req.NewsStatus,
 			IsTop:         req.IsTop,
@@ -60,16 +60,16 @@ func AddNews(req *ReqAddParams, menuIds []int, userId int) (insId []int64, err e
 			IsJump:        req.IsJump,
 			JumpUrl:       req.JumpUrl,
 		}
-		res, err := entity.Save()
-		if err != nil {
-			g.Log().Error(err)
+		res, e := entity.Save()
+		if e != nil {
+			g.Log().Error(e)
 			err = gerror.New("添加文章失败")
 			tx.Rollback()
 			return
 		}
-		id, err := res.LastInsertId()
-		if err != nil {
-			g.Log().Error(err)
+		id, e := res.LastInsertId()
+		if e != nil {
+			g.Log().Error(e)
 			err = gerror.New("添加文章失败")
 			tx.Rollback()
 			return

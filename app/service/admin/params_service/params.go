@@ -2,6 +2,7 @@ package params_service
 
 import (
 	"gfast/app/model/admin/sys_config"
+	"gfast/app/service/cache_service"
 )
 
 //保存参数
@@ -37,4 +38,20 @@ func CheckConfigKeyUnique(configKey string, configId int64) error {
 //删除参数
 func DeleteByIds(ids []int) error {
 	return sys_config.DeleteByIds(ids)
+}
+
+//通过key获取参数
+func GetConfigByKey(key string) (config *sys_config.Entity, err error) {
+	cache := cache_service.New()
+	cf := cache.Get(key)
+	if cf != nil {
+		config = cf.(*sys_config.Entity)
+		return
+	}
+	config, err = sys_config.GetByKey(key)
+	if err != nil {
+		return
+	}
+	cache.Set(key, config, 0, cache_service.AdminSysConfigTag)
+	return
 }

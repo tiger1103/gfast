@@ -4,6 +4,7 @@ import (
 	"gfast/app/model/admin/sys_config"
 	"gfast/app/service/admin/params_service"
 	"gfast/app/service/admin/user_service"
+	"gfast/app/service/cache_service"
 	"gfast/library/response"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -49,6 +50,7 @@ func (c *Params) Add(r *ghttp.Request) {
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}
+		cache_service.New().Remove(req.ConfigKey)
 		response.SusJson(true, r, "添加参数成功")
 	}
 }
@@ -70,6 +72,7 @@ func (c *Params) Edit(r *ghttp.Request) {
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}
+		cache_service.New().Remove(req.ConfigKey)
 		response.SusJson(true, r, "修改参数成功")
 	}
 	id := r.GetInt("id")
@@ -90,5 +93,6 @@ func (c *Params) Delete(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, "删除失败")
 	}
+	cache_service.New().RemoveByTag(cache_service.AdminSysConfigTag)
 	response.SusJson(true, r, "删除成功")
 }

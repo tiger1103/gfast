@@ -11,4 +11,5 @@ const (
 const (
 	AdminAuthTag = iota
 	AdminCmsTag
+	AdminSysConfigTag
 )

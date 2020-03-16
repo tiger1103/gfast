@@ -8,13 +8,12 @@ import (
 	"database/sql"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/frame/gmvc"
 	"time"
 )
 
 // arModel is a active record design model for table cms_news operations.
 type arModel struct {
-	gmvc.M
+	M *gdb.Model
 }
 
 var (
@@ -22,54 +21,6 @@ var (
 	Table = "cms_news"
 	// Model is the model object of cms_news.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
-	// Columns defines and stores column names for table cms_news.
-	Columns = struct {
-		Id            string //
-		CateId        string // 栏目id
-		NewsFormat    string // 内容格式;1:html;2:md
-		UserId        string // 发表者用户id
-		NewsStatus    string // 状态;1:已发布;0:未发布;
-		IsTop         string // 是否置顶;1:置顶;0:不置顶
-		Recommended   string // 是否推荐;1:推荐;0:不推荐
-		NewsHits      string // 查看数
-		NewsLike      string // 点赞数
-		CreateTime    string // 创建时间
-		UpdateTime    string // 更新时间
-		PublishedTime string // 发布时间
-		DeleteTime    string // 删除时间
-		NewsTitle     string // post标题
-		NewsKeywords  string // seo keywords
-		NewsExcerpt   string // post摘要
-		NewsSource    string // 转载文章的来源
-		NewsContent   string // 文章内容
-		Thumbnail     string // 缩略图
-		IsJump        string // 是否跳转地址
-		JumpUrl       string // 跳转地址
-		IsPushed      string // 是否已推送
-	}{
-		Id:            "id",
-		CateId:        "cate_id",
-		NewsFormat:    "news_format",
-		UserId:        "user_id",
-		NewsStatus:    "news_status",
-		IsTop:         "is_top",
-		Recommended:   "recommended",
-		NewsHits:      "news_hits",
-		NewsLike:      "news_like",
-		CreateTime:    "create_time",
-		UpdateTime:    "update_time",
-		PublishedTime: "published_time",
-		DeleteTime:    "delete_time",
-		NewsTitle:     "news_title",
-		NewsKeywords:  "news_keywords",
-		NewsExcerpt:   "news_excerpt",
-		NewsSource:    "news_source",
-		NewsContent:   "news_content",
-		Thumbnail:     "thumbnail",
-		IsJump:        "is_jump",
-		JumpUrl:       "jump_url",
-		IsPushed:      "is_pushed",
-	}
 )
 
 // FindOne is a convenience method for Model.FindOne.
@@ -88,12 +39,6 @@ func FindAll(where ...interface{}) ([]*Entity, error) {
 // See Model.FindValue.
 func FindValue(fieldsAndWhere ...interface{}) (gdb.Value, error) {
 	return Model.FindValue(fieldsAndWhere...)
-}
-
-// FindArray is a convenience method for Model.FindArray.
-// See Model.FindArray.
-func FindArray(fieldsAndWhere ...interface{}) ([]gdb.Value, error) {
-	return Model.FindArray(fieldsAndWhere...)
 }
 
 // FindCount is a convenience method for Model.FindCount.
@@ -277,6 +222,53 @@ func (m *arModel) Data(data ...interface{}) *arModel {
 	return &arModel{m.M.Data(data...)}
 }
 
+// Insert does "INSERT INTO ..." statement for the model.
+// The optional parameter <data> is the same as the parameter of Model.Data function,
+// see Model.Data.
+func (m *arModel) Insert(data ...interface{}) (result sql.Result, err error) {
+	return m.M.Insert(data...)
+}
+
+// Replace does "REPLACE INTO ..." statement for the model.
+// The optional parameter <data> is the same as the parameter of Model.Data function,
+// see Model.Data.
+func (m *arModel) Replace(data ...interface{}) (result sql.Result, err error) {
+	return m.M.Replace(data...)
+}
+
+// Save does "INSERT INTO ... ON DUPLICATE KEY UPDATE..." statement for the model.
+// It updates the record if there's primary or unique index in the saving data,
+// or else it inserts a new record into the table.
+//
+// The optional parameter <data> is the same as the parameter of Model.Data function,
+// see Model.Data.
+func (m *arModel) Save(data ...interface{}) (result sql.Result, err error) {
+	return m.M.Save(data...)
+}
+
+// Update does "UPDATE ... " statement for the model.
+//
+// If the optional parameter <dataAndWhere> is given, the dataAndWhere[0] is the updated
+// data field, and dataAndWhere[1:] is treated as where condition fields.
+// Also see Model.Data and Model.Where functions.
+func (m *arModel) Update(dataAndWhere ...interface{}) (result sql.Result, err error) {
+	return m.M.Update(dataAndWhere...)
+}
+
+// Delete does "DELETE FROM ... " statement for the model.
+// The optional parameter <where> is the same as the parameter of Model.Where function,
+// see Model.Where.
+func (m *arModel) Delete(where ...interface{}) (result sql.Result, err error) {
+	return m.M.Delete(where...)
+}
+
+// Count does "SELECT COUNT(x) FROM ..." statement for the model.
+// The optional parameter <where> is the same as the parameter of Model.Where function,
+// see Model.Where.
+func (m *arModel) Count(where ...interface{}) (int, error) {
+	return m.M.Count(where...)
+}
+
 // All does "SELECT FROM ..." statement for the model.
 // It retrieves the records from table and returns the result as []*Entity.
 // It returns nil if there's no record retrieved with the given conditions from table.
@@ -312,6 +304,16 @@ func (m *arModel) One(where ...interface{}) (*Entity, error) {
 	return entity, nil
 }
 
+// Value retrieves a specified record value from table and returns the result as interface type.
+// It returns nil if there's no record found with the given conditions from table.
+//
+// If the optional parameter <fieldsAndWhere> is given, the fieldsAndWhere[0] is the selected fields
+// and fieldsAndWhere[1:] is treated as where condition fields.
+// Also see Model.Fields and Model.Where functions.
+func (m *arModel) Value(fieldsAndWhere ...interface{}) (gdb.Value, error) {
+	return m.M.Value(fieldsAndWhere...)
+}
+
 // FindOne retrieves and returns a single Record by Model.WherePri and Model.One.
 // Also see Model.WherePri and Model.One.
 func (m *arModel) FindOne(where ...interface{}) (*Entity, error) {
@@ -338,6 +340,18 @@ func (m *arModel) FindAll(where ...interface{}) ([]*Entity, error) {
 		return nil, err
 	}
 	return entities, nil
+}
+
+// FindValue retrieves and returns single field value by Model.WherePri and Model.Value.
+// Also see Model.WherePri and Model.Value.
+func (m *arModel) FindValue(fieldsAndWhere ...interface{}) (gdb.Value, error) {
+	return m.M.FindValue(fieldsAndWhere...)
+}
+
+// FindCount retrieves and returns the record number by Model.WherePri and Model.Count.
+// Also see Model.WherePri and Model.Count.
+func (m *arModel) FindCount(where ...interface{}) (int, error) {
+	return m.M.FindCount(where...)
 }
 
 // Chunk iterates the table with given size and callback function.
