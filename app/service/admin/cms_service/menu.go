@@ -2,6 +2,8 @@ package cms_service
 
 import (
 	"gfast/app/model/admin/cms_category"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/util/gconv"
 )
 
 //获取频道列表
@@ -21,15 +23,22 @@ func GetMenuListChannel() (list []*cms_category.Entity, err error) {
 }
 
 //获取可发布文章栏目
-func GetPublishableMenuList() (list []*cms_category.Entity, err error) {
+func GetPublishableMenuList() (list g.List, err error) {
 	menuList, err := GetMenuList()
 	if err != nil {
 		return
 	}
-	list = make([]*cms_category.Entity, 0, len(menuList))
+	list = make(g.List, 0)
 	for _, menu := range menuList {
 		if menu.Status == 1 {
-			list = append(list, menu)
+			mapMenu := gconv.Map(menu)
+			//可发布栏目
+			if menu.CateType == cms_category.PublishCateType {
+				mapMenu["checkAble"] = true
+			} else {
+				mapMenu["checkAble"] = false
+			}
+			list = append(list, mapMenu)
 		}
 	}
 	return

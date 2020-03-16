@@ -67,8 +67,18 @@ func (c *CmsMenu) Add(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	menuTop := []*cms_category.Entity{
+		{
+			Id:       0,
+			ParentId: -1,
+			Status:   1,
+			Name:     "最顶级",
+			CateType: 1,
+		},
+	}
+	menus = append(menuTop, menus...)
 	list := gconv.Maps(menus)
-	list = utils.PushSonToParent(list, 0, "parent_id")
+	list = utils.PushSonToParent(list, -1, "parent_id")
 	typeChecker, err := dict_service.GetDictWithDataByType("cms_category_type", "", "")
 	if err != nil {
 		response.FailJson(true, r, err.Error())
@@ -109,8 +119,18 @@ func (c *CmsMenu) Edit(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	menuTop := []*cms_category.Entity{
+		{
+			Id:       0,
+			ParentId: -1,
+			Status:   1,
+			Name:     "最顶级",
+			CateType: 1,
+		},
+	}
+	menus = append(menuTop, menus...)
 	list := gconv.Maps(menus)
-	list = utils.PushSonToParent(list, 0, "parent_id")
+	list = utils.PushSonToParent(list, -1, "parent_id")
 	typeChecker, err := dict_service.GetDictWithDataByType("cms_category_type", gconv.String(menuInfo.CateType), "")
 	if err != nil {
 		response.FailJson(true, r, err.Error())
