@@ -3,6 +3,7 @@ package params_service
 import (
 	"gfast/app/model/admin/sys_config"
 	"gfast/app/service/cache_service"
+	"github.com/gogf/gf/errors/gerror"
 )
 
 //保存参数
@@ -42,6 +43,10 @@ func DeleteByIds(ids []int) error {
 
 //通过key获取参数
 func GetConfigByKey(key string) (config *sys_config.Entity, err error) {
+	if key == "" {
+		err = gerror.New("参数key不能为空")
+		return
+	}
 	cache := cache_service.New()
 	cf := cache.Get(key)
 	if cf != nil {

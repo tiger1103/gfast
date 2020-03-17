@@ -12,28 +12,61 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
+const upPath = "/pub_upload/"
+
 var uploadPath string
 
 //上传得文件信息
 type FileInfo struct {
-	FileName string
-	FileSize int64
-	FileUrl  string
-	fileType string
+	FileName string `json:"fileName"`
+	FileSize int64  `json:"fileSize"`
+	FileUrl  string `json:"fileUrl"`
+	FileType string `json:"fileType"`
 }
 
 func init() {
-	uploadPath = g.Cfg().GetString("server.ServerRoot") + "/pub_upload/"
+	uploadPath = g.Cfg().GetString("server.ServerRoot") + upPath
 }
 
 //上传图片
 func UpImg(file *ghttp.UploadFile) (fileInfo *FileInfo, err error) {
+	return upByType(file, "img")
+}
+
+//上传文件
+func UpFile(file *ghttp.UploadFile) (fileInfo *FileInfo, err error) {
+	return upByType(file, "file")
+}
+
+//批量上传图片
+func UpImgs(files []*ghttp.UploadFile) (fileInfos []*FileInfo, err error) {
+	return UpBathByType(files, "img")
+}
+
+//批量上传文件
+func UpFiles(files []*ghttp.UploadFile) (fileInfos []*FileInfo, err error) {
+	return UpBathByType(files, "file")
+}
+
+//文件上传 img|file
+func upByType(file *ghttp.UploadFile, fType string) (fileInfo *FileInfo, err error) {
 	if file == nil {
 		err = gerror.New("未上传任何文件")
 		return
 	}
+	var (
+		typeKey string
+		sizeKey string
+	)
+	if fType == "img" {
+		typeKey = "sys.uploadFile.imageType"
+		sizeKey = "sys.uploadFile.imageSize"
+	} else if fType == "file" {
+		typeKey = "sys.uploadFile.fileType"
+		sizeKey = "sys.uploadFile.fileSize"
+	}
 	//获取上传类型配置
-	config, err := getUpConfig("sys.uploadFile.imageType")
+	config, err := getUpConfig(typeKey)
 	if err != nil {
 		return
 	}
@@ -44,7 +77,7 @@ func UpImg(file *ghttp.UploadFile) (fileInfo *FileInfo, err error) {
 		return
 	}
 	//获取上传大小配置
-	config, err = getUpConfig("sys.uploadFile.imageSize")
+	config, err = getUpConfig(sizeKey)
 	if err != nil {
 		return
 	}
@@ -53,7 +86,7 @@ func UpImg(file *ghttp.UploadFile) (fileInfo *FileInfo, err error) {
 		return
 	}
 	if !rightSize {
-		gerror.New("上传文件超过最大尺寸：" + config.ConfigValue)
+		err = gerror.New("上传文件超过最大尺寸：" + config.ConfigValue)
 		return
 	}
 	path := getUpPath()
@@ -65,7 +98,69 @@ func UpImg(file *ghttp.UploadFile) (fileInfo *FileInfo, err error) {
 		FileName: file.Filename,
 		FileSize: file.Size,
 		FileUrl:  getUrl(path, fileName),
-		fileType: file.Header.Get("Content-type"),
+		FileType: file.Header.Get("Content-type"),
+	}
+	return
+}
+
+//批量上传 img|file
+func UpBathByType(files []*ghttp.UploadFile, fType string) (fileInfos []*FileInfo, err error) {
+	if len(files) == 0 {
+		err = gerror.New("未上传任何文件")
+		return
+	}
+	var (
+		typeKey string
+		sizeKey string
+	)
+	if fType == "img" {
+		typeKey = "sys.uploadFile.imageType"
+		sizeKey = "sys.uploadFile.imageSize"
+	} else if fType == "file" {
+		typeKey = "sys.uploadFile.fileType"
+		sizeKey = "sys.uploadFile.fileSize"
+	}
+	//获取上传类型配置
+	configType, err := getUpConfig(typeKey)
+	if err != nil {
+		return
+	}
+	//获取上传大小配置
+	configSize, err := getUpConfig(sizeKey)
+	if err != nil {
+		return
+	}
+	for _, file := range files {
+		//检测文件类型
+		rightType := checkFileType(file.Filename, configType.ConfigValue)
+		if !rightType {
+			err = gerror.New("上传文件类型错误，只能包含后缀为：" + configType.ConfigValue + "的文件。")
+			return
+		}
+		var rightSize bool
+		rightSize, err = checkSize(configSize.ConfigValue, file.Size)
+		if err != nil {
+			return
+		}
+		if !rightSize {
+			err = gerror.New("上传文件超过最大尺寸：" + configSize.ConfigValue)
+			return
+		}
+	}
+	path := getUpPath()
+	for _, file := range files {
+		var fileName string
+		fileName, err = file.Save(path, true)
+		if err != nil {
+			return
+		}
+		fileInfo := &FileInfo{
+			FileName: file.Filename,
+			FileSize: file.Size,
+			FileUrl:  getUrl(path, fileName),
+			FileType: file.Header.Get("Content-type"),
+		}
+		fileInfos = append(fileInfos, fileInfo)
 	}
 	return
 }
@@ -111,7 +206,7 @@ func getUpConfig(key string) (config *sys_config.Entity, err error) {
 
 //判断上传文件类型是否合法
 func checkFileType(fileName, typeString string) bool {
-	suffix := gstr.SubStr(fileName, gstr.Pos(fileName, ".")+1)
+	suffix := gstr.SubStr(fileName, gstr.SearchArray(gstr.Split(fileName, ""), ".")+1)
 	imageType := gstr.Split(typeString, ",")
 	rightType := false
 	for _, v := range imageType {
@@ -129,6 +224,6 @@ func getUpPath() (upPath string) {
 }
 
 func getUrl(path, fileName string) string {
-	url := gstr.SubStr(path, gstr.Pos(path, "/pub_upload/")+1) + fileName
+	url := gstr.SubStr(path, gstr.Pos(path, upPath)+1) + fileName
 	return url
 }
