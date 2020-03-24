@@ -131,13 +131,16 @@ func GetSliceByKey(args []interface{}, key int, val interface{}) interface{} {
 	return value
 }
 
-//有层级关系的数组，通过父级id查找所有子级id数组
-func FindSonByParentId(list g.List, fid int, flg, flgV string) g.List {
+//有层级关系的切片，通过父级id查找所有子级id数组
+//parentId 父级id
+//parentIndex 父级索引名称
+//idIndex id索引名称
+func FindSonByParentId(list g.List, parentId int, parentIndex, idIndex string) g.List {
 	newList := make(g.List, 0, len(list))
 	for _, v := range list {
-		if gconv.Int(v[flg]) == fid {
+		if gconv.Int(v[parentIndex]) == parentId {
 			newList = append(newList, v)
-			fList := FindSonByParentId(list, gconv.Int(v[flgV]), flg, flgV)
+			fList := FindSonByParentId(list, gconv.Int(v[idIndex]), parentIndex, idIndex)
 			newList = append(newList, fList...)
 		}
 	}

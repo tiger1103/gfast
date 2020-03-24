@@ -1,8 +1,7 @@
 package test
 
 import (
-	"fmt"
-	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/database/gdb"
 	"testing"
 )
 
@@ -11,7 +10,5 @@ func TestDemo2(t *testing.T) {
 }
 
 func test21(t *testing.T) {
-	str := "字s符s串.中文测试"
-	fmt.Println(gstr.SearchArray(gstr.Split(str, ""), "."))
-	fmt.Println(gstr.SubStr(str, gstr.SearchArray(gstr.Split(str, ""), ".")+1))
+	gdb.Instance()
 }

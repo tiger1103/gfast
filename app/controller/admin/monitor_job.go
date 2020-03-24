@@ -68,9 +68,14 @@ func (c *MonitorJob) Add(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	jobPolicy, err := dict_service.GetDictWithDataByType("sys_job_policy", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
 	res := g.Map{
 		"jobStatus": jobStatus,
 		"jobGroup":  jobGroup,
+		"jobPolicy": jobPolicy,
 	}
 	response.SusJson(true, r, "添加任务", res)
 }
@@ -104,9 +109,14 @@ func (c *MonitorJob) Edit(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	jobPolicy, err := dict_service.GetDictWithDataByType("sys_job_policy", gconv.String(job.MisfirePolicy), "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
 	res := g.Map{
 		"jobStatus": jobStatus,
 		"jobGroup":  jobGroup,
+		"jobPolicy": jobPolicy,
 		"jobInfo":   job,
 	}
 	response.SusJson(true, r, "添加任务", res)

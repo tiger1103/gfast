@@ -23,8 +23,15 @@ func GetMenuListChannel() (list []*cms_category.Entity, err error) {
 }
 
 //获取可发布文章栏目
-func GetPublishableMenuList() (list g.List, err error) {
+func GetPublishableMenuList(catId ...int) (list g.List, err error) {
 	menuList, err := GetMenuList()
+	var catIdMap map[int]int
+	if len(catId) > 0 {
+		catIdMap = make(map[int]int, len(catId))
+		for _, v := range catId {
+			catIdMap[v] = v
+		}
+	}
 	if err != nil {
 		return
 	}
@@ -37,6 +44,11 @@ func GetPublishableMenuList() (list g.List, err error) {
 				mapMenu["checkAble"] = true
 			} else {
 				mapMenu["checkAble"] = false
+			}
+			if _, ok := catIdMap[gconv.Int(menu.Id)]; ok {
+				mapMenu["checked"] = true
+			} else {
+				mapMenu["checked"] = false
 			}
 			list = append(list, mapMenu)
 		}
@@ -67,4 +79,8 @@ func GetMenuListSearch(req *cms_category.ReqSearchList) (menus []*cms_category.E
 //根据栏目ID获取栏目信息
 func GetMenuInfoById(id int) (menu *cms_category.Entity, err error) {
 	return cms_category.GetInfoById(id)
+}
+
+func DeleteMenuByIds(ids []int) (err error) {
+	return cms_category.DeleteByIds(ids)
 }

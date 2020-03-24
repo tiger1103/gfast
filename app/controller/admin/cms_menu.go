@@ -157,3 +157,15 @@ func (c *CmsMenu) Sort(r *ghttp.Request) {
 	cache_service.New().RemoveByTag(cache_service.AdminCmsTag)
 	response.SusJson(true, r, "排序成功")
 }
+
+func (c *CmsMenu) Delete(r *ghttp.Request) {
+	ids := r.GetInts("ids")
+	if len(ids) == 0 {
+		response.FailJson(true, r, "删除失败")
+	}
+	err := cms_service.DeleteMenuByIds(ids)
+	if err != nil {
+		response.FailJson(true, r, "删除失败")
+	}
+	response.SusJson(true, r, "删除信息成功", ids)
+}

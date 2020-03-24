@@ -158,3 +158,12 @@ func GetListSearch(req *ReqSearchList) (menus []*Entity, err error) {
 	}
 	return
 }
+
+func DeleteByIds(ids []int) error {
+	_, err := Model.Delete("id in (?)", ids)
+	if err != nil {
+		g.Log().Error(err)
+		return gerror.New("删除失败")
+	}
+	return nil
+}
