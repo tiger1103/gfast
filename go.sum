@@ -26,8 +26,8 @@ github.com/goflyfox/gtoken v1.3.12 h1:ewet3ZzkfBIuOKkJ2T9uErheDAu/TxnyrmMmEaof2F
 github.com/goflyfox/gtoken v1.3.12/go.mod h1:KPGDYrhvNzcfqFJz4/rE6x0SyURAuAxfRNhwMxGbFxk=
 github.com/gogf/gf v1.11.5 h1:e6HB9x1QZ6EFD3eEWXDCsFeVs7KxNtmWQRVNh2c0+bQ=
 github.com/gogf/gf v1.11.5/go.mod h1:iuHZkqyEfxFtpwRYboAU7409O/sfdy79YTpY8si332I=
-github.com/gogf/gf v1.11.6 h1:UfYtAQkhXmZtYFMGant1Tdh8azZrWUJrYTGAyS3FloA=
-github.com/gogf/gf v1.11.6/go.mod h1:q6WSyX5jyJbUki7l66lpfsXvf2GeDEOgXNRz9Nb61qo=
+github.com/gogf/gf v1.11.7 h1:rHt9g7OP3NPkkgQpN73zA9TJ4ItlQGworY1Jxb6mgQE=
+github.com/gogf/gf v1.11.7/go.mod h1:q6WSyX5jyJbUki7l66lpfsXvf2GeDEOgXNRz9Nb61qo=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF08vX0COfcOBJRhZ8lUbR+ZWIs0Y5g=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=

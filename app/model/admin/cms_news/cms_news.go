@@ -223,7 +223,7 @@ func ListByPage(req *ReqListSearchParams) (total, page int, list gdb.Result, err
 
 //通过文章id获取文章信息
 func GetById(id int) (news *Entity, err error) {
-	news, err = Model.FindOne("id", id)
+	news, err = Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
 	}

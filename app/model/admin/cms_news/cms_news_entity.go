@@ -45,6 +45,11 @@ func (r *Entity) Insert() (result sql.Result, err error) {
 	return Model.Data(r).Insert()
 }
 
+// InsertIgnore does "INSERT IGNORE INTO ..." statement for inserting current object into table.
+func (r *Entity) InsertIgnore() (result sql.Result, err error) {
+	return Model.Data(r).InsertIgnore()
+}
+
 // Replace does "REPLACE...INTO..." statement for inserting current object into table.
 // If there's already another same record in the table (it checks using primary key or unique index),
 // it deletes it and insert this one.
