@@ -24,6 +24,8 @@ github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gG
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/goflyfox/gtoken v1.3.12 h1:ewet3ZzkfBIuOKkJ2T9uErheDAu/TxnyrmMmEaof2F8=
 github.com/goflyfox/gtoken v1.3.12/go.mod h1:KPGDYrhvNzcfqFJz4/rE6x0SyURAuAxfRNhwMxGbFxk=
+github.com/goflyfox/gtoken v1.3.14 h1:nQZDLbkQ/O0jAgAsP83jz+cofkuSDHWGha41p77LYEM=
+github.com/goflyfox/gtoken v1.3.14/go.mod h1:Tr2qiuVA9dnOPfLzTLch/QGuaonSKcoVrHxY0T4Tvmc=
 github.com/gogf/gf v1.11.5 h1:e6HB9x1QZ6EFD3eEWXDCsFeVs7KxNtmWQRVNh2c0+bQ=
 github.com/gogf/gf v1.11.5/go.mod h1:iuHZkqyEfxFtpwRYboAU7409O/sfdy79YTpY8si332I=
 github.com/gogf/gf v1.11.7 h1:rHt9g7OP3NPkkgQpN73zA9TJ4ItlQGworY1Jxb6mgQE=

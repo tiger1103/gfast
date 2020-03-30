@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
@@ -48,8 +49,8 @@ func (c *MonitorServer) Info(r *ghttp.Request) {
 	v, err := mem.VirtualMemory()
 	if err == nil {
 		memTotal = v.Total / 1024 / 1024
-		memFree = v.Free / 1024 / 1024
 		memUsed = v.Used / 1024 / 1024
+		memFree = memTotal - memUsed
 		memUsage, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", v.UsedPercent), 64)
 	}
 
@@ -61,7 +62,7 @@ func (c *MonitorServer) Info(r *ghttp.Request) {
 	var gomem runtime.MemStats
 	runtime.ReadMemStats(&gomem)
 	goUsed = gomem.Sys / 1024 / 1024
-
+	goUsage = gconv.Float64(fmt.Sprintf("%.2f", gconv.Float64(goUsed)/gconv.Float64(memTotal)*100))
 	sysComputerIp := "" //服务器IP
 
 	ip, err := utils.GetLocalIP()
