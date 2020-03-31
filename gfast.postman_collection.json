@@ -1,0 +1,3706 @@
+{
+	"info": {
+		"_postman_id": "d62cc260-fabc-469d-adc7-90d7b75d6c25",
+		"name": "gfast",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "后台相关",
+			"item": [
+				{
+					"name": "权限相关",
+					"item": [
+						{
+							"name": "添加用户组",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/auth/add-role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"add-role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加菜单",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/auth/add-menu",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"add-menu"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加菜单操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ismenu",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "pid",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "hello",
+											"type": "text"
+										},
+										{
+											"key": "icon",
+											"value": "fa fa-circle-o",
+											"type": "text"
+										},
+										{
+											"key": "weigh",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "condition",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "test/test2",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/add-menu",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"add-menu"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改菜单",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0iGiPGspGiYXXv/qqV37mqn3At/fFZkEAYF5BUYDCfe2GsljjscTOksl5H5CuBMYp4=",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "44",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/edit-menu",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"edit-menu"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "44",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改菜单操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer fCLUxFpxP3QqVAezWSiqJ3GncQ8+IDCUmQ4Jx0ZXmprP8s0CJWAp0vpiewwE7Eq/q0p93XU1viIdl46sC1063Q==",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ismenu",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "pid",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "测试菜单",
+											"type": "text"
+										},
+										{
+											"key": "icon",
+											"value": "fa fa-circle-o",
+											"type": "text"
+										},
+										{
+											"key": "weigh",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "condition",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "test/test",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "44",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/edit-menu",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"edit-menu"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "菜单列表",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/menu-list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"menu-list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除菜单",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0iGiPGspGiYXXv/qqV37mqn3At/fFZkEAYF5BUYDCfe2GsljjscTOksl5H5CuBMYp4=",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "44",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "45",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "46",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/delete-menu",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"delete-menu"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加用户组操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "parent_id",
+											"value": "31",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "bbbbbbbbbbbbbbb",
+											"type": "text"
+										},
+										{
+											"key": "rule[]",
+											"value": "40",
+											"type": "text"
+										},
+										{
+											"key": "rule[]",
+											"value": "41",
+											"type": "text"
+										},
+										{
+											"key": "rule[]",
+											"value": "42",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注",
+											"type": "text"
+										},
+										{
+											"key": "list_order",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "27",
+											"type": "text",
+											"disabled": true
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/add-role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"add-role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改用户组",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0haKrjwBmYXNeVwGWgA4upyHcVwRodoVVou33BDe91i2Oqk52U1e77xT5zRlIywHJs=",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/edit-role?id=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"edit-role"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "用户组列表",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/auth/role-list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"role-list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除用户组",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0haKrjwBmYXNeVwGWgA4upyHcVwRodoVVou33BDe91i2Oqk52U1e77xT5zRlIywHJs=",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "27",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "26",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/delete-role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"delete-role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改用户组操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0haKrjwBmYXNeVwGWgA4upyHcVwRodoVVou33BDe91i2Oqk52U1e77xT5zRlIywHJs=",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "parent_id",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "超级管理员",
+											"type": "text"
+										},
+										{
+											"key": "rule[]",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "rule[]",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "rule[]",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注",
+											"type": "text"
+										},
+										{
+											"key": "list_order",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/edit-role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"edit-role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加管理员",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/add-user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"add-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加管理员操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"user_name\":\"demo103\",\"mobile\":\"18699888833\",\"user_nickname\":\"测试账号103\",\"user_password\":\"123456\",\"user_status\":1,\"role_id\":[]}"
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/add-user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"add-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改管理员",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0haKrjwBmYXNeVwGWgA4upyHcVwRodoVVou33BDe91i2Oqk52U1e77xT5zRlIywHJs=",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/edit-user?id=31",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"edit-user"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "31"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改管理员操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0haKrjwBmYXNeVwGWgA4upyHcVwRodoVVou33BDe91i2Oqk52U1e77xT5zRlIywHJs=",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "user_name",
+											"value": "demo",
+											"type": "text"
+										},
+										{
+											"key": "mobile",
+											"value": "18699888856",
+											"type": "text"
+										},
+										{
+											"key": "user_nickname",
+											"value": "测试账号1",
+											"type": "text"
+										},
+										{
+											"key": "user_password",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "user_status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "role_id[]",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "role_id[]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "31",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/edit-user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"edit-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "管理员列表",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/user-list?page=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"user-list"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除管理员",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer vioSknvS6SgsiXgxjbbHVNHdgC87adZccwHWRT4fO0haKrjwBmYXNeVwGWgA4upyHcVwRodoVVou33BDe91i2Oqk52U1e77xT5zRlIywHJs=",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"ids\":[35,36,37]}"
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/delete-admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"delete-admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "菜单排序操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"sorts\":{\"40\":\"100\",\"41\":\"110\",\"42\":\"112\"}}"
+								},
+								"url": {
+									"raw": "{{host}}/system/auth/menu-sort",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"auth",
+										"menu-sort"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "cms相关",
+					"item": [
+						{
+							"name": "栏目管理",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/menu/list?name=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"menu",
+										"list"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": ""
+										}
+									]
+								},
+								"description": "栏目列表"
+							},
+							"response": []
+						},
+						{
+							"name": "信息管理",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/news/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "栏目添加",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/menu/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"menu",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "栏目添加操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "parent_id",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "alias",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "cate_type",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "input_seo_title",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "input_seo_keywords",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "input_seo_description",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "thumbnail",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "cate_address",
+											"value": "",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/menu/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"menu",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "栏目修改",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/menu/edit?id=3",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"menu",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "栏目修改操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "7",
+											"type": "text"
+										},
+										{
+											"key": "parent_id",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "alias",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "cate_type",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "input_seo_title",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "input_seo_keywords",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "input_seo_description",
+											"value": "统计分析",
+											"type": "text"
+										},
+										{
+											"key": "thumbnail",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "cate_address",
+											"value": "",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/menu/edit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"menu",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "栏目排序操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"sorts\":{\"5\":\"100\",\"6\":\"110\",\"7\":\"112\"}}",
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/menu/sort",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"menu",
+										"sort"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "模型管理",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/model/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"model",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加信息",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/news/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加信息操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "文章标题xxxx",
+											"description": "标题字段",
+											"type": "text"
+										},
+										{
+											"key": "cateIds[]",
+											"value": "3",
+											"description": "栏目id（一篇文章可同时发布到多个栏目）",
+											"type": "text"
+										},
+										{
+											"key": "cateIds[]",
+											"value": "6",
+											"description": "栏目id（一篇文章可同时发布到多个栏目）",
+											"type": "text"
+										},
+										{
+											"key": "keywords",
+											"value": "测试,关键字",
+											"description": "文章关键词",
+											"type": "text"
+										},
+										{
+											"key": "source",
+											"value": "文章来源",
+											"description": "文章来源",
+											"type": "text"
+										},
+										{
+											"key": "excerpt",
+											"value": "摘要内容",
+											"description": "文章摘要",
+											"type": "text"
+										},
+										{
+											"key": "isJump",
+											"value": "0",
+											"description": "0文章信息，1跳转地址",
+											"type": "text"
+										},
+										{
+											"key": "jumpUrl",
+											"value": "https://www.baidu.com",
+											"description": "跳转地址",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "文章内容信息",
+											"description": "文章内容",
+											"type": "text"
+										},
+										{
+											"key": "thumbnail",
+											"value": "pub_upload/2020-03-23/c1i3y86r0mokjocetn.jpg",
+											"description": "缩略图",
+											"type": "text"
+										},
+										{
+											"key": "publishedTime",
+											"value": "2020-03-16 15:24:32",
+											"description": "发布时间",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"description": "文章状态 0不显示 1显示",
+											"type": "text"
+										},
+										{
+											"key": "isTop",
+											"value": "0",
+											"description": "是否置顶0否  1是",
+											"type": "text"
+										},
+										{
+											"key": "recommended",
+											"value": "0",
+											"description": "是否推荐 0否  1是",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/news/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "信息列表",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/news/list?cateId[]=1&cateId[]=6&page=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"list"
+									],
+									"query": [
+										{
+											"key": "cateId[]",
+											"value": "1",
+											"description": "栏目id（可多选）"
+										},
+										{
+											"key": "cateId[]",
+											"value": "6",
+											"description": "栏目id（可多选）"
+										},
+										{
+											"key": "pubTimeStart",
+											"value": "2020-3-20",
+											"description": "发布起始时间",
+											"disabled": true
+										},
+										{
+											"key": "pubTimeEnd",
+											"value": "2020-3-22",
+											"description": "发布截至时间",
+											"disabled": true
+										},
+										{
+											"key": "keyWords",
+											"value": "测试",
+											"description": "关键字",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "当前页码"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改信息",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/cms/news/edit?id=4",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改信息操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "4",
+											"description": "文章id",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "文章标题",
+											"description": "标题字段",
+											"type": "text"
+										},
+										{
+											"key": "cateIds[]",
+											"value": "3",
+											"description": "栏目id（一篇文章可同时发布到多个栏目）",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cateIds[]",
+											"value": "6",
+											"description": "栏目id（一篇文章可同时发布到多个栏目）",
+											"type": "text"
+										},
+										{
+											"key": "keywords",
+											"value": "测试,关键字",
+											"description": "文章关键词",
+											"type": "text"
+										},
+										{
+											"key": "source",
+											"value": "文章来源",
+											"description": "文章来源",
+											"type": "text"
+										},
+										{
+											"key": "excerpt",
+											"value": "摘要内容",
+											"description": "文章摘要",
+											"type": "text"
+										},
+										{
+											"key": "isJump",
+											"value": "0",
+											"description": "0文章信息，1跳转地址",
+											"type": "text"
+										},
+										{
+											"key": "jumpUrl",
+											"value": "https://www.baidu.com",
+											"description": "跳转地址",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "文章内容信息",
+											"description": "文章内容",
+											"type": "text"
+										},
+										{
+											"key": "thumbnail",
+											"value": "pub_upload/2020-03-23/c1i3y86r0mokjocetn.jpg",
+											"description": "缩略图",
+											"type": "text"
+										},
+										{
+											"key": "publishedTime",
+											"value": "2020-03-16 15:24:32",
+											"description": "发布时间",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"description": "文章状态 0不显示 1显示",
+											"type": "text"
+										},
+										{
+											"key": "isTop",
+											"value": "0",
+											"description": "是否置顶0否  1是",
+											"type": "text"
+										},
+										{
+											"key": "recommended",
+											"value": "0",
+											"description": "是否推荐 0否  1是",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/news/edit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除信息操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/cms/news/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"cms",
+										"news",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "系统配置",
+					"item": [
+						{
+							"name": "字典管理列表",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/dict/list?page=1&status=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"list"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "status",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加字典",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictName",
+											"value": "菜单状态13",
+											"type": "text"
+										},
+										{
+											"key": "dictType",
+											"value": "sys_show_hide13",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": " 1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "菜单状态列表",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改字典",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/dict/edit?id=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改字典提交",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictName",
+											"value": "分类类型",
+											"type": "text"
+										},
+										{
+											"key": "dictType",
+											"value": "cms_category_type",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "文章分类类型",
+											"type": "text"
+										},
+										{
+											"key": "dictId",
+											"value": "2",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/edit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "字典数据列表",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/dict/data-list?page=1&dictType=cms_category_type",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"data-list"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "dictType",
+											"value": "cms_category_type"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加字典数据",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictLabel",
+											"value": "单页面模式，分类直接显示为文章",
+											"type": "text"
+										},
+										{
+											"key": "dictValue",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "dictType",
+											"value": "cms_category_type",
+											"type": "text"
+										},
+										{
+											"key": "cssClass",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "dictSort",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "listClass",
+											"value": "default",
+											"type": "text"
+										},
+										{
+											"key": "isDefault",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "单页面模式，分类直接显示为文章",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/data-add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"data-add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "字典数据添加页参数获取",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/dict/data-add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"data-add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "字典数据修改页参数获取",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/dict-data/edit?dictCode=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict-data",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "dictCode",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改字典数据操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictCode",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "dictLabel",
+											"value": "保密",
+											"type": "text"
+										},
+										{
+											"key": "dictValue",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "dictType",
+											"value": "sys_user_sex",
+											"type": "text"
+										},
+										{
+											"key": "cssClass",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "dictSort",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "listClass",
+											"value": "default",
+											"type": "text"
+										},
+										{
+											"key": "isDefault",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注信息",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/data-edit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"data-edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加字典数据操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictLabel",
+											"value": "男",
+											"type": "text"
+										},
+										{
+											"key": "dictValue",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "dictType",
+											"value": "sys_user_sex",
+											"type": "text"
+										},
+										{
+											"key": "cssClass",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "dictSort",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "listClass",
+											"value": "default",
+											"type": "text"
+										},
+										{
+											"key": "isDefault",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注信息",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/data-add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"data-add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除字典数据",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictCode[]",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "dictCode[]",
+											"value": "14",
+											"type": "text"
+										},
+										{
+											"key": "dictCode[]",
+											"value": "15",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/data-delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"data-delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除字典",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dictIds[]",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "dictIds[]",
+											"value": "14",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/dict/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"dict",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加参数",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "configName",
+											"value": "图片上传-图片大小",
+											"type": "text"
+										},
+										{
+											"key": "configKey",
+											"value": "sys.uploadFile.imageSize",
+											"type": "text"
+										},
+										{
+											"key": "configValue",
+											"value": "30M",
+											"type": "text"
+										},
+										{
+											"key": "configType",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "图片上传大小限制",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/params/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"params",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "参数列表",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/params/list?page=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"params",
+										"list"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改参数页",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/config/params/edit?id=4",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"params",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改参数操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "configId",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "configName",
+											"value": "图片上传-图片大小",
+											"type": "text"
+										},
+										{
+											"key": "configKey",
+											"value": "sys.uploadFile.imageSize",
+											"type": "text"
+										},
+										{
+											"key": "configValue",
+											"value": "50M",
+											"type": "text"
+										},
+										{
+											"key": "configType",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "图片上传大小限制",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/params/edit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"params",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加参数操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "configName",
+											"value": "图片上传-图片大小234",
+											"type": "text"
+										},
+										{
+											"key": "configKey",
+											"value": "sys.uploadFile.imageSize234",
+											"type": "text"
+										},
+										{
+											"key": "configValue",
+											"value": "30M",
+											"type": "text"
+										},
+										{
+											"key": "configType",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "图片上传大小限制",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/params/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"params",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除参数操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "6",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "7",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/system/config/params/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"config",
+										"params",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "系统监控",
+					"item": [
+						{
+							"name": "在线用户",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/online/list?username=admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"online",
+										"list"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "admin"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "强退在线用户",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/online/force-logout?ids[]=18&ids[]=19&ids[]=17",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"online",
+										"force-logout"
+									],
+									"query": [
+										{
+											"key": "ids[]",
+											"value": "18"
+										},
+										{
+											"key": "ids[]",
+											"value": "19"
+										},
+										{
+											"key": "ids[]",
+											"value": "17"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加任务",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/job/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加任务操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "jobName",
+											"value": "测试任务2",
+											"description": "任务名称",
+											"type": "text"
+										},
+										{
+											"key": "jobGroup",
+											"value": "DEFAULT",
+											"description": "任务分组",
+											"type": "text"
+										},
+										{
+											"key": "invokeTarget",
+											"value": "test2",
+											"description": "执行方法名",
+											"type": "text"
+										},
+										{
+											"key": "jobParams",
+											"value": "hello|gfast",
+											"description": "执行参数",
+											"type": "text"
+										},
+										{
+											"key": "cronExpression",
+											"value": "* * * * * *",
+											"description": "cron表达式",
+											"type": "text"
+										},
+										{
+											"key": "misfirePolicy",
+											"value": "1",
+											"description": "执行策略",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注",
+											"description": "备注",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"description": "执行状态",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/job/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "任务列表",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/job/list?page=1&jobName=测试",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"list"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "jobName",
+											"value": "测试"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改任务",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/job/edit?id=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"edit"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改任务操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "jobId",
+											"value": "6",
+											"description": "任务id",
+											"type": "text"
+										},
+										{
+											"key": "jobName",
+											"value": "测试任务666",
+											"description": "任务名称",
+											"type": "text"
+										},
+										{
+											"key": "jobGroup",
+											"value": "DEFAULT",
+											"description": "任务分组",
+											"type": "text"
+										},
+										{
+											"key": "invokeTarget",
+											"value": "test2",
+											"description": "执行方法名",
+											"type": "text"
+										},
+										{
+											"key": "jobParams",
+											"value": "hello|gfast",
+											"description": "执行参数",
+											"type": "text"
+										},
+										{
+											"key": "cronExpression",
+											"value": "* * * * * *",
+											"description": "cron表达式",
+											"type": "text"
+										},
+										{
+											"key": "misfirePolicy",
+											"value": "1",
+											"description": "执行策略",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "备注",
+											"description": "备注",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"description": "执行状态",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/job/edit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除任务操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/job/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "启动任务操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/job/start",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"start"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "停止任务操作",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "6",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/job/stop",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"job",
+										"stop"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "服务监控",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/server/info",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"server",
+										"info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "登录日志",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/loginlog/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"loginlog",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除登录日志",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/loginlog/delete?name=90",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"loginlog",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "90"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "清空登录日志",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/loginlog/clear",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"loginlog",
+										"clear"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "操作日志",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/operlog/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"operlog",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "操作日志详情",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/system/monitor/operlog/detail?id=74",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"operlog",
+										"detail"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "74"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除操作日志",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "ids[]",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "ids[]",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/operlog/delete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"operlog",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "清空操作日志",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/system/monitor/operlog/clear",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"system",
+										"monitor",
+										"operlog",
+										"clear"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "后台登陆",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "yxh123456",
+									"type": "text"
+								},
+								{
+									"key": "idKeyC",
+									"value": "Tdg7CDVn1BHok6xvGKnj",
+									"type": "text"
+								},
+								{
+									"key": "idValueC",
+									"value": "txkh",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/sysLogin/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sysLogin",
+								"login"
+							]
+						},
+						"description": "后台登陆"
+					},
+					"response": []
+				},
+				{
+					"name": "退出登陆",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/sysLogin/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sysLogin",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "后台首页",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/system/index/index",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"system",
+								"index",
+								"index"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取验证码图片",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/sysLogin/public/verify",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sysLogin",
+								"public",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "单文件上传操作",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Administrator/Desktop/img/timg.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/system/upload/up-img",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"system",
+								"upload",
+								"up-img"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "批量上传图片操作",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file[]",
+									"type": "file",
+									"src": "/C:/Users/Administrator/Desktop/炸洋芋/ek.jpg"
+								},
+								{
+									"key": "file[]",
+									"type": "file",
+									"src": "/C:/Users/Administrator/Desktop/炸洋芋/胡辣.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/system/upload/up-imgs",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"system",
+								"upload",
+								"up-imgs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "单图上传操作",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Administrator/Desktop/炸洋芋/麻辣.jpg"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/system/upload/up-img",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"system",
+								"upload",
+								"up-img"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "单文件上传操作",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Administrator/Desktop/昆明市保障性住房管理系统操作手册.docx"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/system/upload/up-file",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"system",
+								"upload",
+								"up-file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "批量上传文件操作",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file[]",
+									"type": "file",
+									"src": "/C:/Users/Administrator/Desktop/要务平台操作说明书.docx"
+								},
+								{
+									"key": "file[]",
+									"type": "file",
+									"src": "/D:/soft/navicate1208.zip"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/system/upload/up-files",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"system",
+								"upload",
+								"up-files"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -38,6 +38,10 @@ go run main.go 直接访问http://localhost:8200
 账号：demo  密码：123456
 
 项目为前后端分离，前端地址：[vue-gfast-admin](https://gitee.com/tiger1103/vue-gfast-admin)
+
+##接口文件
+gfast.postman_collection.json 导入postman
+
 ## 演示图
 
 <table>
