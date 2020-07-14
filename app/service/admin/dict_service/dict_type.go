@@ -2,7 +2,10 @@ package dict_service
 
 import (
 	"gfast/app/model/admin/sys_dict_type"
+	"gfast/app/service/cache_service"
+	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/util/gconv"
 )
 
 //检查字典类型是否唯一
@@ -43,4 +46,23 @@ func GetDictWithDataByType(dictType, defaultValue, emptyLabel string) (dict g.Ma
 //删除字典
 func DeleteDictByIds(ids []int) error {
 	return sys_dict_type.DeleteDictByIds(ids)
+}
+
+func GetAllDictType() (list []*sys_dict_type.Entity, err error) {
+	cache := cache_service.New()
+	//从缓存获取
+	data := cache.Get(gconv.String(cache_service.AdminConfigDict) + "_dict_type_all")
+	if data != nil {
+		list = data.([]*sys_dict_type.Entity)
+		return
+	}
+	list, err = sys_dict_type.GetAllDictType()
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取字典类型数据出错")
+		return
+	}
+	//缓存
+	cache.Set(gconv.String(cache_service.AdminConfigDict)+"_dict_type_all", list, 0, cache_service.AdminSysConfigTag)
+	return
 }

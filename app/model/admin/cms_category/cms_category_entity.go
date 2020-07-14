@@ -17,6 +17,7 @@ type Entity struct {
 	DeleteTime     uint    `orm:"delete_time"     json:"delete_time"`     // 删除时间
 	ListOrder      float64 `orm:"list_order"      json:"list_order"`      // 排序
 	Name           string  `orm:"name"            json:"name"`            // 分类名称
+	Alias          string  `orm:"alias"            json:"alias"`          // 分类别名
 	Description    string  `orm:"description"     json:"description"`     // 分类描述
 	SeoTitle       string  `orm:"seo_title"       json:"seo_title"`       //
 	SeoKeywords    string  `orm:"seo_keywords"    json:"seo_keywords"`    //

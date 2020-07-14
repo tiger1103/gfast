@@ -20,18 +20,19 @@ import (
 
 //添加文章参数
 type ReqAddParams struct {
-	NewsStatus    uint   `p:"status"    v:"in:0,1#状态只能为0或1"`       // 状态;1:已发布;0:未发布;
-	IsTop         uint   `p:"IsTop"         v:"in:0,1#置顶只能为0或1"`   // 是否置顶;1:置顶;0:不置顶
-	Recommended   uint   `p:"recommended"    v:"in:0,1#推荐只能为0或1"`  // 是否推荐;1:推荐;0:不推荐
-	PublishedTime string `p:"published_time"`                      // 发布时间
-	NewsTitle     string `p:"title"     v:"required#标题不能为空"`       // post标题
-	NewsKeywords  string `p:"keywords"`                            // seo keywords
-	NewsExcerpt   string `p:"excerpt"`                             // post摘要
-	NewsSource    string `p:"source"  `                            // 转载文章的来源
-	NewsContent   string `p:"content"   v:"required#文章内容不能为空"`     // 文章内容
-	Thumbnail     string `p:"thumbnail"    `                       // 缩略图
-	IsJump        uint   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"` // 是否跳转地址
-	JumpUrl       string `p:"JumpUrl"      `                       // 跳转地址
+	NewsStatus uint `p:"status"    v:"in:0,1#状态只能为0或1"` // 状态;1:已发布;0:未发布;
+	//IsTop         uint   `p:"IsTop"         v:"in:0,1#置顶只能为0或1"`   // 是否置顶;1:置顶;0:不置顶
+	//Recommended   uint   `p:"recommended"    v:"in:0,1#推荐只能为0或1"`  // 是否推荐;1:推荐;0:不推荐
+	Attr          []int  `p:attr`                                                           //文章标记 置顶 推荐
+	PublishedTime string `p:"published_time"`                                               // 发布时间
+	NewsTitle     string `p:"title"     v:"required#标题不能为空"`                                // post标题
+	NewsKeywords  string `p:"keywords"`                                                     // seo keywords
+	NewsExcerpt   string `p:"excerpt"`                                                      // post摘要
+	NewsSource    string `p:"source"  `                                                     // 转载文章的来源
+	NewsContent   string `p:"content"   v:"required-if:IsJump,0#文章内容不能为空"`                  // 文章内容
+	Thumbnail     string `p:"thumbnail"    `                                                // 缩略图
+	IsJump        uint   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"`                          // 是否跳转地址
+	JumpUrl       string `p:"JumpUrl"      v:"required-if:IsJump,1|url#跳转地址不能为空|跳转地址格式不正确"` // 跳转地址
 }
 
 //文章搜索参数
@@ -61,21 +62,28 @@ func AddNews(req *ReqAddParams, cateIds []int, userId int) (insId int64, err err
 		err = gerror.New("添加失败")
 		return
 	}
+	nowTime := gconv.Uint(gtime.Timestamp())
 	entity := &Entity{
 		UserId:        gconv.Uint64(userId),
 		NewsStatus:    req.NewsStatus,
-		IsTop:         req.IsTop,
-		Recommended:   req.Recommended,
-		CreateTime:    gconv.Uint(gtime.Timestamp()),
+		CreateTime:    nowTime,
+		UpdateTime:    nowTime,
 		PublishedTime: gconv.Uint(utils.StrToTimestamp(req.PublishedTime)),
 		NewsTitle:     req.NewsTitle,
 		NewsKeywords:  req.NewsKeywords,
 		NewsExcerpt:   req.NewsExcerpt,
-		NewsSource:    req.NewsExcerpt,
+		NewsSource:    req.NewsSource,
 		NewsContent:   req.NewsContent,
 		Thumbnail:     req.Thumbnail,
 		IsJump:        req.IsJump,
 		JumpUrl:       req.JumpUrl,
+	}
+	for _, v := range req.Attr {
+		if v == 1 {
+			entity.IsTop = 1
+		} else if v == 2 {
+			entity.Recommended = 1
+		}
 	}
 	res, e := entity.Save()
 	if e != nil {
@@ -129,18 +137,23 @@ func EditNews(req *ReqEditParams, cateIds []int) (err error) {
 		return
 	}
 	entity.NewsStatus = req.NewsStatus
-	entity.IsTop = req.IsTop
-	entity.Recommended = req.Recommended
 	entity.UpdateTime = gconv.Uint(gtime.Timestamp())
 	entity.PublishedTime = gconv.Uint(utils.StrToTimestamp(req.PublishedTime))
 	entity.NewsTitle = req.NewsTitle
 	entity.NewsKeywords = req.NewsKeywords
 	entity.NewsExcerpt = req.NewsExcerpt
-	entity.NewsSource = req.NewsExcerpt
+	entity.NewsSource = req.NewsSource
 	entity.NewsContent = req.NewsContent
 	entity.Thumbnail = req.Thumbnail
 	entity.IsJump = req.IsJump
 	entity.JumpUrl = req.JumpUrl
+	for _, v := range req.Attr {
+		if v == 1 {
+			entity.IsTop = 1
+		} else if v == 2 {
+			entity.Recommended = 1
+		}
+	}
 	_, err = entity.Update()
 	if err != nil {
 		g.Log().Error(err)

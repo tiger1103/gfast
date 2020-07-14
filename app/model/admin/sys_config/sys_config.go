@@ -32,7 +32,7 @@ type SelectPageReq struct {
 	ConfigType string `p:"configType"` //状态
 	BeginTime  string `p:"beginTime"`  //开始时间
 	EndTime    string `p:"endTime"`    //结束时间
-	PageNum    int    `p:"page"`       //当前页码
+	PageNum    int    `p:"pageNum"`    //当前页码
 	PageSize   int    `p:"pageSize"`   //每页数
 }
 
@@ -44,7 +44,9 @@ func AddSave(req *AddReq, userId int) (id int64, err error) {
 	entity.ConfigType = req.ConfigType
 	entity.ConfigValue = req.ConfigValue
 	entity.Remark = req.Remark
-	entity.CreateTime = gconv.Uint64(gtime.Timestamp())
+	time := gconv.Uint64(gtime.Timestamp())
+	entity.CreateTime = time
+	entity.UpdateTime = time
 	entity.CreateBy = gconv.Uint(userId)
 	result, err := entity.Insert()
 	if err != nil {
@@ -119,17 +121,17 @@ func SelectListByPage(req *SelectPageReq) (total, page int, list []*Entity, err 
 			model = model.Where("config_name like ?", "%"+req.ConfigName+"%")
 		}
 		if req.ConfigType != "" {
-			model.Where("status = ", gconv.Int(req.ConfigType))
+			model = model.Where("status = ", gconv.Int(req.ConfigType))
 		}
 		if req.ConfigKey != "" {
-			model.Where("config_key like ?", "%"+req.ConfigKey+"%")
+			model = model.Where("config_key like ?", "%"+req.ConfigKey+"%")
 		}
 		if req.BeginTime != "" {
 			model = model.Where("create_time >= ? ", utils.StrToTimestamp(req.BeginTime))
 		}
 
 		if req.EndTime != "" {
-			model = model.Where("create_time<=？", utils.StrToTimestamp(req.EndTime))
+			model = model.Where("create_time<=?", utils.StrToTimestamp(req.EndTime))
 		}
 	}
 	total, err = model.Count()

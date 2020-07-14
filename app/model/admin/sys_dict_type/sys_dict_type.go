@@ -2,6 +2,7 @@ package sys_dict_type
 
 import (
 	"gfast/app/model/admin/sys_dict_data"
+	"gfast/app/service/cache_service"
 	"gfast/library/service"
 	"gfast/library/utils"
 	"github.com/gogf/gf/errors/gerror"
@@ -34,7 +35,7 @@ type SelectPageReq struct {
 	Status    string `p:"status"`    //字典状态
 	BeginTime string `p:"beginTime"` //开始时间
 	EndTime   string `p:"endTime"`   //结束时间
-	PageNum   int    `p:"page"`      //当前页码
+	PageNum   int    `p:"PageNum"`   //当前页码
 	PageSize  int    `p:"pageSize"`  //每页数
 }
 
@@ -168,7 +169,20 @@ func SelectListByPage(req *SelectPageReq) (total, page int, list []*Entity, err 
 
 //通过字典键类型获取选项
 func GetDictWithDataByType(dictType, defaultValue, emptyLabel string) (dict g.Map, err error) {
-	dictEntity, err := Model.FindOne("dict_type", dictType)
+	//初始化dict的值
+	dict = g.Map{
+		"dict_name": "",
+		"remark":    "",
+		"values":    g.Slice{},
+	}
+	cache := cache_service.New()
+	//从缓存获取
+	data := cache.Get(gconv.String(cache_service.AdminConfigDict) + "_" + dictType)
+	if data != nil {
+		dict = data.(g.Map)
+		return
+	}
+	dictEntity, err := Model.FindOne(g.Map{"dict_type": dictType, "status": 1})
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取字典选项失败")
@@ -198,6 +212,7 @@ func GetDictWithDataByType(dictType, defaultValue, emptyLabel string) (dict g.Ma
 				"key":       v.DictValue,
 				"value":     v.DictLabel,
 				"isDefault": isDefault,
+				"remark":    v.Remark,
 			}
 		}
 		if emptyLabel != "" {
@@ -208,6 +223,8 @@ func GetDictWithDataByType(dictType, defaultValue, emptyLabel string) (dict g.Ma
 			"remark":    dictEntity.Remark,
 			"values":    values,
 		}
+		//缓存
+		cache.Set(gconv.String(cache_service.AdminConfigDict)+"_"+dictType, dict, 0, cache_service.AdminSysConfigTag)
 	}
 	return
 }
@@ -225,4 +242,10 @@ func DeleteDictByIds(ids []int) error {
 		v.Delete()
 	}
 	return nil
+}
+
+//获取所有字典类型
+func GetAllDictType() (list []*Entity, err error) {
+	list, err = Model.Where("status", 1).Order("dict_id ASC").All()
+	return
 }

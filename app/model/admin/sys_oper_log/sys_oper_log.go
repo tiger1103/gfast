@@ -22,7 +22,7 @@ type SelectPageReq struct {
 	Status    string `p:"status"`        //操作状态
 	BeginTime string `p:"beginTime"`     //数据范围
 	EndTime   string `p:"endTime"`       //开始时间
-	PageNum   int    `p:"page"`          //当前页码
+	PageNum   int    `p:"pageNum"`       //当前页码
 	PageSize  int    `p:"pageSize"`      //每页数
 	SortName  string `p:"orderByColumn"` //排序字段
 	SortOrder string `p:"isAsc"`         //排序方式
@@ -113,7 +113,7 @@ func ListByPage(req *SelectPageReq) (total, page int, list []*Entity, err error)
 	if req.PageSize == 0 {
 		req.PageSize = service.AdminPageNum
 	}
-	list, err = model.Page(page, req.PageSize).FieldsEx("oper_param,json_result").Order(order).All()
+	list, err = model.Page(page, req.PageSize).Order(order).All()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取数据失败")

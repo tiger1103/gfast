@@ -122,9 +122,19 @@ func (c *MonitorJob) Edit(r *ghttp.Request) {
 	response.SusJson(true, r, "添加任务", res)
 }
 
+//详情
+func (c *MonitorJob) Details(r *ghttp.Request) {
+	id := r.GetInt64("id")
+	job, err := monitor_service.GetJobInfoById(id)
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	response.SusJson(true, r, "success", job)
+}
+
 //删除计划任务
 func (c *MonitorJob) Delete(r *ghttp.Request) {
-	ids := r.GetInts("ids")
+	ids := r.GetInts("id")
 	err := monitor_service.DeleteJobByIds(ids)
 	if err != nil {
 		response.FailJson(true, r, err.Error())

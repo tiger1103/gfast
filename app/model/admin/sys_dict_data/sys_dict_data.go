@@ -17,7 +17,7 @@ type AddDataReq struct {
 	DictType  string `p:"dictType"  v:"required#字典类型不能为空"`
 	DictSort  int    `p:"dictSort"  v:"integer#排序只能为整数"`
 	CssClass  string `p:"cssClass"`
-	ListClass string `p:"listClass" v:"required#回显样式不能为空"`
+	ListClass string `p:"listClass"`
 	IsDefault int    `p:"isDefault" v:"required|in:0,1#系统默认不能为空|默认值只能为0或1"`
 	Status    int    `p:"status"    v:"required|in:0,1#状态不能为空|状态只能为0或1"`
 	Remark    string `p:"remark"`
@@ -30,10 +30,10 @@ type EditDataReq struct {
 
 //分页请求参数
 type SelectDataPageReq struct {
-	DictType  string `p:"dictType"`  //字典名称
+	DictType  string `p:"dictType"`  //字典类型
 	DictLabel string `p:"dictLabel"` //字典标签
 	Status    string `p:"status"`    //状态
-	PageNum   int    `p:"page"`      //当前页码
+	PageNum   int    `p:"pageNum"`   //当前页码
 	PageSize  int    `p:"pageSize"`  //每页数
 }
 
@@ -49,7 +49,9 @@ func AddSaveData(req *AddDataReq, userId int) (int64, error) {
 	entity.IsDefault = req.IsDefault
 	entity.ListClass = req.ListClass
 	entity.Remark = req.Remark
-	entity.CreateTime = gconv.Uint64(gtime.Timestamp())
+	time := gconv.Uint64(gtime.Timestamp())
+	entity.CreateTime = time
+	entity.UpdateTime = time
 	entity.CreateBy = userId
 	result, err := entity.Insert()
 	if err != nil {

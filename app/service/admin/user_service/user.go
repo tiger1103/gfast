@@ -1,19 +1,112 @@
 package user_service
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
+	"gfast/app/model/admin/auth_rule"
 	"gfast/app/model/admin/role"
+	"gfast/app/model/admin/sys_dept"
+	"gfast/app/model/admin/sys_post"
 	"gfast/app/model/admin/user"
+	"gfast/app/model/admin/user_post"
 	"gfast/app/service/admin/auth_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/boot"
 	"gfast/library/service"
 	"gfast/library/utils"
+	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 )
+
+type EditParams struct {
+	Id           int    `p:"id" v:"required#用户id不能为空"`
+	UserNickname string `p:"user_nickname" v:"required#用户昵称不能为空" orm:"user_nickname"` // 用户昵称
+	Mobile       string `p:"mobile" v:"required|phone#手机号不能为空|手机号格式错误" orm:"mobile,unique"`
+	UserEmail    string `p:"user_email" v:"email#邮箱格式错误" orm:"user_email"`
+	Sex          int    `p:"sex" orm:"sex"`
+}
+
+type UpdatePwdReq struct {
+	OldPassword string `p:"oldPassword" v:"required#旧密码不能为空"`
+	NewPassword string `p:"newPassword" v:"required#新密码不能为空"`
+}
+
+/**
+修改密码
+*/
+func UpdatePwd(r *ghttp.Request, data *UpdatePwdReq) error {
+
+	currentUser, err := GetCurrentUserInfo(r)
+
+	if err != nil {
+		return err
+	}
+
+	OldPassword := utils.EncryptCBC(gconv.String(data.OldPassword), utils.AdminCbcPublicKey)
+
+	if OldPassword != currentUser["user_password"].(string) {
+		return errors.New("原始密码错误!")
+	}
+
+	return ResetUserPwd(&user.ResetPwdReq{
+		Id:       currentUser["id"].(int),
+		Password: data.NewPassword,
+	})
+}
+
+/**
+用户中心修改用户信息
+*/
+func Edit(info *EditParams) (sql.Result, error) {
+	return user.Model.Where("id", info.Id).Data(info).Update()
+}
+
+// 获取单前登录用户的信息
+func GetCurrentUserInfo(r *ghttp.Request) (map[string]interface{}, error) {
+	id := GetLoginID(r)
+	userEntity, err := user.GetUserById(id)
+	if err != nil {
+		return nil, err
+	}
+	userInfo := gconv.Map(userEntity)
+	//delete(userInfo, "user_password")
+	userInfo["roles"] = make([]string, 0)
+	userInfo["posts"] = new([]*user_post.Entity)
+	userInfo["dept_info"] = nil
+	allRoles, err := auth_service.GetRoleList()
+	if err != nil {
+		return nil, err
+	}
+	roles, err := GetAdminRole(userEntity.Id, allRoles)
+	if err != nil {
+		return nil, err
+	}
+	//角色
+	userInfo["roles"] = roles
+	//岗位
+	posts, err := GetPostsByUserId(userEntity.Id)
+	if err != nil {
+		return nil, err
+	}
+	userInfo["posts"] = posts
+	//部门
+	if dept_info, err := sys_dept.GetDeptById(userEntity.DeptId); err != nil {
+		return nil, err
+	} else {
+		userInfo["dept_info"] = dept_info
+	}
+
+	return userInfo, nil
+
+}
+
+func GetPostsByUserId(id int) ([]*sys_post.Entity, error) {
+	return user_post.GetPostsByUserId(id)
+}
 
 //获取登陆用户ID
 func GetLoginID(r *ghttp.Request) (userId int) {
@@ -31,9 +124,35 @@ func GetLoginAdminInfo(r *ghttp.Request) (userInfo *user.Entity) {
 	return
 }
 
+//获取当前登录用户信息，直接从数据库获取
+func GetCurrentUser(r *ghttp.Request) (userInfo *user.Entity, err error) {
+	id := GetLoginID(r)
+	userInfo, err = user.GetUserById(id)
+	return
+}
+
 //获取管理员列表
-func GetAdminList(where g.Map, page int) (total int, userList []*user.Entity, err error) {
-	return user.GetAdminList(where, page, service.AdminPageNum)
+func GetAdminList(req *user.SearchReq) (total, page int, userList []*user.Entity, err error) {
+	if req.PageSize == 0 {
+		req.PageSize = service.AdminPageNum
+	}
+	var depts []*sys_dept.Dept
+	if req.DeptId != "" {
+		depts, err = sys_dept.GetList(&sys_dept.SearchParams{Status: "1"})
+		if err != nil {
+			g.Log().Debug(err)
+			err = gerror.New("获取部门信息失败")
+			return
+		}
+		mDepts := gconv.SliceMap(depts)
+		deptId := gconv.Int(req.DeptId)
+		req.DeptIds = append(req.DeptIds, deptId)
+		childrenIds := utils.FindSonByParentId(mDepts, deptId, "parentId", "deptId")
+		for _, d := range childrenIds {
+			req.DeptIds = append(req.DeptIds, gconv.Int(d["deptId"]))
+		}
+	}
+	return user.GetAdminList(req)
 }
 
 //获取管理员的角色信息
@@ -72,6 +191,10 @@ func GetAdminRoleIds(userId int) (roleIds []int, err error) {
 	return
 }
 
+func GetAdminPosts(userId int) (postIds []int64, err error) {
+	return user_post.GetAdminPosts(userId)
+}
+
 //获取菜单
 func GetAllMenus() (menus g.List, err error) {
 	//获取所有开启的菜单
@@ -82,10 +205,10 @@ func GetAllMenus() (menus g.List, err error) {
 	menus = make(g.List, len(allMenus))
 	for k, v := range allMenus {
 		menu := gconv.Map(v)
-		menu["index"] = v.Name
+		menu = setMenuMap(menu, v)
 		menus[k] = menu
 	}
-	menus = utils.PushSonToParent(menus, 0, "pid", "id", "subs", "", nil, false)
+	menus = utils.PushSonToParent(menus, 0, "pid", "id", "children", "", nil, true)
 	return
 }
 
@@ -115,10 +238,49 @@ func GetAdminMenusByRoleIds(roleIds []int) (menus g.List, err error) {
 	for _, v := range allMenus {
 		if _, ok := menuIds[gconv.Int64(v.Id)]; gstr.Equal(v.Condition, "nocheck") || ok {
 			roleMenu := gconv.Map(v)
-			roleMenu["index"] = v.Name
+			roleMenu = setMenuMap(roleMenu, v)
 			roleMenus = append(roleMenus, roleMenu)
 		}
 	}
-	menus = utils.PushSonToParent(roleMenus, 0, "pid", "id", "subs", "", nil, false)
+	menus = utils.PushSonToParent(roleMenus, 0, "pid", "id", "children", "", nil, true)
 	return
+}
+
+//组合返回menu前端数据
+func setMenuMap(menu g.Map, entity *auth_rule.Entity) g.Map {
+	menu["index"] = entity.Name
+	menu["name"] = gstr.UcFirst(entity.Path)
+	menu["menuName"] = entity.Title
+	if entity.MenuType != 0 {
+		menu["component"] = entity.Name
+		menu["path"] = entity.Path
+	} else {
+		menu["path"] = "/" + entity.Path
+		menu["component"] = "Layout"
+	}
+	menu["meta"] = g.MapStrStr{
+		"icon":  entity.Icon,
+		"title": entity.Title,
+	}
+	if entity.AlwaysShow == 1 {
+		menu["hidden"] = false
+	} else {
+		menu["hidden"] = true
+	}
+	if entity.AlwaysShow == 1 && entity.MenuType == 0 {
+		menu["alwaysShow"] = true
+	} else {
+		menu["alwaysShow"] = false
+	}
+	return menu
+}
+
+func ChangeUserStatus(req *user.StatusReq) error {
+	return user.ChangeUserStatus(req)
+}
+
+func ResetUserPwd(req *user.ResetPwdReq) error {
+	//密码加密
+	req.Password = utils.EncryptCBC(gconv.String(req.Password), utils.AdminCbcPublicKey)
+	return user.ResetUserPwd(req)
 }

@@ -2,6 +2,7 @@ package cms_category
 
 import (
 	"gfast/app/service/cache_service"
+	"github.com/gogf/gf/container/gset"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/text/gstr"
@@ -18,7 +19,8 @@ const (
 
 //列表搜索参数
 type ReqSearchList struct {
-	Name string `p:"name"`
+	Name   string `p:"name"`
+	Status string `p:"status"`
 }
 
 //添加请求参数
@@ -70,12 +72,20 @@ func AddSave(req *ReqAdd) (id int64, err error) {
 	entity.CateType = req.CateType
 	entity.Status = req.Status
 	entity.Name = req.Name
+	entity.Alias = req.Alias
 	entity.Description = req.Description
 	entity.SeoTitle = req.InputSeoTitle
 	entity.SeoKeywords = req.InputSeoKeywords
 	entity.SeoDescription = req.InputSeoDescription
 	entity.CateAddress = req.CateAddress
 	entity.CateContent = req.CateContent
+	moreFields := g.Map{}
+	if req.Thumbnail != "" {
+		moreFields["thumb"] = req.Thumbnail
+	}
+	if len(moreFields) != 0 {
+		entity.More = gconv.String(moreFields)
+	}
 	res, err := entity.Insert()
 	if err != nil {
 		g.Log().Error(err)
@@ -121,12 +131,20 @@ func EditSave(req *ReqEdit) (id int64, err error) {
 	entity.CateType = req.CateType
 	entity.Status = req.Status
 	entity.Name = req.Name
+	entity.Alias = req.Alias
 	entity.Description = req.Description
 	entity.SeoTitle = req.InputSeoTitle
 	entity.SeoKeywords = req.InputSeoKeywords
 	entity.SeoDescription = req.InputSeoDescription
 	entity.CateAddress = req.CateAddress
 	entity.CateContent = req.CateContent
+	moreFields := g.Map{}
+	if req.Thumbnail != "" {
+		moreFields["thumb"] = req.Thumbnail
+	}
+	if len(moreFields) != 0 {
+		entity.More = gconv.String(moreFields)
+	}
 	res, err := entity.Update()
 	if err != nil {
 		g.Log().Error(err)
@@ -146,12 +164,19 @@ func EditSave(req *ReqEdit) (id int64, err error) {
 func GetListSearch(req *ReqSearchList) (menus []*Entity, err error) {
 	menus, err = GetList()
 	if req != nil {
+		filterKey := gset.New(false)
+		for key, entity := range menus {
+			if req.Name != "" && !gstr.Contains(entity.Name, req.Name) {
+				filterKey.Add(key)
+			}
+			if req.Status != "" && gconv.Uint(req.Status) != entity.Status {
+				filterKey.Add(key)
+			}
+		}
 		searchMenus := make([]*Entity, 0, len(menus))
-		if req.Name != "" {
-			for _, entity := range menus {
-				if gstr.Contains(entity.Name, req.Name) {
-					searchMenus = append(searchMenus, entity)
-				}
+		for key, entity := range menus {
+			if !filterKey.Contains(key) {
+				searchMenus = append(searchMenus, entity)
 			}
 		}
 		menus = searchMenus

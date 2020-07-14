@@ -66,8 +66,14 @@ func VerifyString(id, answer string) bool {
 	return c.Verify(id, answer, true)
 }
 
+func FrontLogin(r *ghttp.Request) (string, interface{}) {
+	g.Log().Println("front login test...")
+	return "test", nil
+}
+
 //AdminLogin 后台用户登陆验证
 func AdminLogin(r *ghttp.Request) (string, interface{}) {
+
 	data := r.GetFormMapStrStr()
 	rules := map[string]string{
 		"idValueC": "required",
@@ -79,13 +85,14 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		"username": "账号不能为空",
 		"password": "密码不能为空",
 	}
+
 	if e := gvalid.CheckMap(data, rules, msgs); e != nil {
 		response.JsonExit(r, response.ErrorCode, e.String())
 	}
 	//判断验证码是否正确
-	/*if !VerifyString(data["idKeyC"], data["idValueC"]) {
+	if !VerifyString(data["idKeyC"], data["idValueC"]) {
 		response.JsonExit(r, response.ErrorCode, "验证码输入错误")
-	}*/
+	}
 	password := utils.EncryptCBC(data["password"], utils.AdminCbcPublicKey)
 	var keys string
 	if AdminMultiLogin {
@@ -99,6 +106,10 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 		go loginLog(0, data["username"], ip, userAgent, err.Error())
 		response.JsonExit(r, response.ErrorCode, err.Error())
 	} else {
+		//判断是否后台用户
+		if user.IsAdmin != 1 {
+			response.JsonExit(r, response.ErrorCode, "抱歉!此用户不属于后台管理员!")
+		}
 		r.SetParam("userInfo", user)
 		go loginLog(1, data["username"], ip, userAgent, "登录成功")
 		return keys, user

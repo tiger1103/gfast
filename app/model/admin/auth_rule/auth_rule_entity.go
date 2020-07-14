@@ -11,19 +11,21 @@ import (
 
 // Entity is the golang structure for table auth_rule.
 type Entity struct {
-	Id         uint   `orm:"id,primary"  json:"id"`         //
-	Type       string `orm:"type"        json:"type"`       // menu为菜单,file为权限节点
-	Pid        uint   `orm:"pid"         json:"pid"`        // 父ID
-	Name       string `orm:"name,unique" json:"name"`       // 规则名称
-	Title      string `orm:"title"       json:"title"`      // 规则名称
-	Icon       string `orm:"icon"        json:"icon"`       // 图标
-	Condition  string `orm:"condition"   json:"condition"`  // 条件
-	Remark     string `orm:"remark"      json:"remark"`     // 备注
-	Ismenu     uint   `orm:"ismenu"      json:"ismenu"`     // 是否为菜单
-	Createtime uint   `orm:"createtime"  json:"createtime"` // 创建时间
-	Updatetime uint   `orm:"updatetime"  json:"updatetime"` // 更新时间
-	Weigh      int    `orm:"weigh"       json:"weigh"`      // 权重
-	Status     uint   `orm:"status"      json:"status"`     // 状态
+	Id         uint   `orm:"id,primary"  json:"id"`           //
+	Pid        uint   `orm:"pid"         json:"pid"`          // 父ID
+	Name       string `orm:"name,unique" json:"name"`         // 规则名称
+	Title      string `orm:"title"       json:"title"`        // 规则名称
+	Icon       string `orm:"icon"        json:"icon"`         // 图标
+	Condition  string `orm:"condition"   json:"condition"`    // 条件
+	Remark     string `orm:"remark"      json:"remark"`       // 备注
+	MenuType   uint   `orm:"menu_type"      json:"menu_type"` // 类型 0目录 1菜单 2按钮
+	Createtime uint   `orm:"createtime"  json:"createtime"`   // 创建时间
+	Updatetime uint   `orm:"updatetime"  json:"updatetime"`   // 更新时间
+	Weigh      int    `orm:"weigh"       json:"weigh"`        // 权重
+	Status     uint   `orm:"status"      json:"status"`       // 状态
+	AlwaysShow uint   `orm:"always_show"   json:"alwaysShow"` //显示状态 0隐藏 1显示
+	Path       string `orm:"path"     json:"path"`            //路由地址
+	IsFrame    uint   `orm:"is_frame"  json:"isFrame"`        //是否外链 1是 0否
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

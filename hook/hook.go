@@ -24,8 +24,9 @@ func OperationLog(r *ghttp.Request) {
 		return
 	}
 	var menu *auth_rule.Entity
+	path := gstr.TrimLeft(url.Path, "/")
 	for _, m := range menuList {
-		if gstr.Equal(m.Name, url.Path) {
+		if gstr.Equal(m.Name, path) {
 			menu = m
 			break
 		}

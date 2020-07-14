@@ -1,6 +1,6 @@
 # 数据库连接
 [database]
-    link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast"
+    link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast_open"
     charset   = "utf8mb4" #数据库编码
     maxIdle      = "10" #连接池最大闲置的连接数
     maxOpen     = "10" #连接池最大打开的连接数
@@ -9,7 +9,7 @@
 
 #web服务器配置
 [server]
-    Address          = ":8080"
+    Address          = ":8200"
     ServerRoot       = "./public/resource"
     AccessLogEnabled = true
     ErrorLogEnabled  = true
@@ -19,6 +19,7 @@
     SessionPath      = "./data/session"
     SessionMaxAge    = "24h"
     DumpRouterMap    = true
+    NameToUriType = 3
 
 
 # Redis数据库配置
@@ -44,10 +45,18 @@
 
 #casbin配置
 [casbin]
-modelFile="./config/casbin_conf/rbac_model.conf"
-policyFile="./config/casbin_conf/rbac_policy.csv"
+    modelFile="./config/casbin_conf/rbac_model.conf"
+    policyFile="./config/casbin_conf/rbac_policy.csv"
 
 #后台相关配置
 [adminInfo]
-notCheckAuthAdminIds = [1,2,31]  #无需验证后台权限的用户id
-pageNum = 5  #后台列表分页长度
+    notCheckAuthAdminIds = [1,31]  #无需验证后台权限的用户id
+    pageNum = 5  #后台列表分页长度
+
+# Gen
+[gen]
+    author        = "gfast"
+    moduleName    = "module"
+    packageName   = "gfast"
+    autoRemovePre = true
+    tablePrefix   = "t_,sys_"

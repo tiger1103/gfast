@@ -4,8 +4,13 @@ import (
 	"fmt"
 	"gfast/app/model/admin/auth_rule"
 	"gfast/app/model/admin/role"
+	"gfast/app/model/admin/sys_dept"
 	"gfast/app/model/admin/user"
+	"gfast/app/model/admin/user_post"
 	"gfast/app/service/admin/auth_service"
+	"gfast/app/service/admin/dept_service"
+	"gfast/app/service/admin/dict_service"
+	"gfast/app/service/admin/post_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/app/service/cache_service"
 	"gfast/app/service/casbin_adapter_service"
@@ -23,16 +28,46 @@ type Auth struct{}
 
 //菜单列表
 func (c *Auth) MenuList(r *ghttp.Request) {
-	//获取菜单信息
-	listEntities, err := auth_service.GetMenuList()
+	var req *auth_rule.ReqSearch
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+	}
+	var listEntities []*auth_rule.Entity
+	var err error
+	if req != nil {
+		listEntities, err = auth_service.GetMenuListSearch(req)
+	} else {
+		//获取菜单信息
+		listEntities, err = auth_service.GetMenuList()
+	}
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取数据失败")
 	}
 	list := gconv.SliceMap(listEntities)
-	list = utils.PushSonToParent(list)
+	if req != nil {
+		for k := range list {
+			list[k]["children"] = nil
+		}
+	} else {
+		list = utils.PushSonToParent(list, 0, "pid", "id", "children", "", nil, true)
+	}
+	//菜单显示状态
+	visibleOptions, err := dict_service.GetDictWithDataByType("sys_show_hide", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	//菜单正常or停用状态
+	statusOptions, err := dict_service.GetDictWithDataByType("sys_normal_disable", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+
 	response.SusJson(true, r, "成功", g.Map{
-		"list": list,
+		"list":           list,
+		"visibleOptions": visibleOptions,
+		"statusOptions":  statusOptions,
 	})
 }
 
@@ -61,6 +96,10 @@ func (c *Auth) AddMenu(r *ghttp.Request) {
 		if !auth_service.CheckMenuNameUnique(menu.Name, 0) {
 			response.FailJson(true, r, "菜单规则名称已经存在")
 		}
+		//判断路由是否已经存在
+		if !auth_service.CheckMenuPathUnique(menu.Path, 0) {
+			response.FailJson(true, r, "路由地址已经存在")
+		}
 		//保存到数据库
 		err, _ := auth_service.AddMenu(menu)
 		if err != nil {
@@ -76,14 +115,12 @@ func (c *Auth) AddMenu(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, "获取数据失败")
 	}
-	list := gconv.SliceMap(listEntities)
-	list = utils.ParentSonSort(list)
-	response.SusJson(true, r, "成功", g.Map{"parentList": list})
+	response.SusJson(true, r, "成功", g.Map{"parentList": listEntities})
 }
 
 //修改菜单
 func (c *Auth) EditMenu(r *ghttp.Request) {
-	id := r.GetInt("id")
+	id := r.GetInt("menuId")
 	if r.Method == "POST" {
 		menu := new(auth_rule.MenuReq)
 		if err := r.Parse(menu); err != nil {
@@ -92,6 +129,10 @@ func (c *Auth) EditMenu(r *ghttp.Request) {
 		//判断菜单规则是否存在
 		if !auth_service.CheckMenuNameUnique(menu.Name, id) {
 			response.FailJson(true, r, "菜单规则名称已经存在")
+		}
+		//判断路由是否已经存在
+		if !auth_service.CheckMenuPathUnique(menu.Path, id) {
+			response.FailJson(true, r, "路由地址已经存在")
 		}
 		//保存到数据库
 		err, _ := auth_service.EditMenu(menu, id)
@@ -139,16 +180,27 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 
 //角色列表
 func (c *Auth) RoleList(r *ghttp.Request) {
+	var req *role.SelectPageReq
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+	}
 	//获取角色列表
-	listEntities, err := auth_service.GetRoleList()
+	total, page, list, err := auth_service.GetRoleListSearch(req)
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取数据失败")
 	}
-	list := gconv.SliceMap(listEntities)
-	list = utils.PushSonToParent(list, 0, "parent_id", "id", "children", "", nil, false)
+	//菜单正常or停用状态
+	statusOptions, err := dict_service.GetDictWithDataByType("sys_normal_disable", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
 	response.SusJson(true, r, "成功", g.Map{
-		"list": list,
+		"currentPage": page,
+		"total":       total,
+		"list":        list,
+		"searchTypes": statusOptions,
 	})
 }
 
@@ -158,6 +210,7 @@ func (c *Auth) AddRole(r *ghttp.Request) {
 	if r.Method == "POST" {
 		//获取表单提交的数据
 		res := r.GetFormMap()
+
 		tx, err := g.DB("default").Begin() //开启事务
 		if err != nil {
 			g.Log().Error(err)
@@ -171,43 +224,43 @@ func (c *Auth) AddRole(r *ghttp.Request) {
 			response.FailJson(true, r, err.Error())
 		}
 		//添加角色权限
-		err = auth_service.AddRoleRule(res["rule"], insertId)
+		err = auth_service.AddRoleRule(res["menuIds"], insertId)
 		if err != nil {
 			tx.Rollback() //回滚
 			g.Log().Error(err.Error())
-			response.FailJson(true, r, "添加用户组失败")
+			response.FailJson(true, r, "添加角色失败")
 		}
 		tx.Commit()
 		//清除TAG缓存
 		cache_service.New().RemoveByTag(cache_service.AdminAuthTag)
-		response.SusJson(true, r, "添加用户组成功")
+		response.SusJson(true, r, "添加角色成功")
 	}
-	//获取父级组
-	pListEntities, err := auth_service.GetRoleList()
-	if err != nil {
-		g.Log().Error(err)
-		response.FailJson(true, r, "获取父级数据失败")
-	}
-	pList := gconv.SliceMap(pListEntities)
-	pList = utils.ParentSonSort(pList, 0, 0, "parent_id", "id", "flg", "name")
+
 	//获取菜单信息
 	mListEntities, err := auth_service.GetMenuList()
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取菜单数据失败")
 	}
-	mList := gconv.SliceMap(mListEntities)
+	var mList g.ListStrAny
+	for _, entity := range mListEntities {
+		m := g.Map{
+			"id":    entity.Id,
+			"pid":   entity.Pid,
+			"label": entity.Title,
+		}
+		mList = append(mList, m)
+	}
 	mList = utils.PushSonToParent(mList)
 	res := g.Map{
-		"parentList": pList,
-		"menuList":   mList,
+		"menuList": mList,
 	}
 	response.SusJson(true, r, "成功", res)
 }
 
 //修改角色
 func (c *Auth) EditRole(r *ghttp.Request) {
-	id := r.GetRequestInt64("id")
+	id := r.GetRequestInt64("roleId")
 	if r.Method == "POST" {
 		//获取表单提交的数据
 		res := r.GetFormMap()
@@ -223,7 +276,7 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 			response.FailJson(true, r, err.Error())
 		}
 		//添加角色权限
-		err = auth_service.EditRoleRule(res["rule"], id)
+		err = auth_service.EditRoleRule(res["menuIds"], id)
 		if err != nil {
 			tx.Rollback() //回滚
 			g.Log().Error(err.Error())
@@ -239,14 +292,7 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, "获取角色数据失败")
 	}
-	//获取父级组
-	pListEntities, err := auth_service.GetRoleList()
-	if err != nil {
-		g.Log().Error(err)
-		response.FailJson(true, r, "获取父级数据失败")
-	}
-	pList := gconv.SliceMap(pListEntities)
-	pList = utils.ParentSonSort(pList, 0, 0, "parent_id", "id", "flg", "name")
+
 	//获取菜单信息
 	mListEntities, err := auth_service.GetMenuList()
 	if err != nil {
@@ -264,10 +310,19 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 	for k, v := range gp {
 		gpSlice[k] = gconv.Int(gstr.SubStr(v[1], 2))
 	}
-	mList := gconv.SliceMap(mListEntities)
+
+	var mList g.ListStrAny
+	for _, entity := range mListEntities {
+		m := g.Map{
+			"id":    entity.Id,
+			"pid":   entity.Pid,
+			"label": entity.Title,
+		}
+		mList = append(mList, m)
+	}
+
 	mList = utils.PushSonToParent(mList)
 	res := g.Map{
-		"parentList":   pList,
 		"menuList":     mList,
 		"role":         role,
 		"checkedRules": gpSlice,
@@ -293,16 +348,26 @@ func (c *Auth) DeleteRole(r *ghttp.Request) {
 //添加管理员
 func (c *Auth) AddUser(r *ghttp.Request) {
 	if r.Method == "POST" {
-		requestData := r.GetFormMap()
-		InsertId, err := auth_service.AddUser(requestData)
+		var req *user.AddUserReq
+		if err := r.Parse(&req); err != nil {
+			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+		}
+
+		InsertId, err := auth_service.AddUser(req)
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}
 		//设置用户所属角色信息
-		err = auth_service.AddUserRole(requestData["role_id"], InsertId)
+		err = auth_service.AddUserRole(req.PostIds, InsertId)
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "设置用户权限失败")
+		}
+		//设置用户岗位
+		err = auth_service.AddUserPost(req.PostIds, InsertId)
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "设置用户岗位信息失败")
 		}
 		response.SusJson(true, r, "添加管理员成功")
 	}
@@ -312,31 +377,44 @@ func (c *Auth) AddUser(r *ghttp.Request) {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取角色数据失败")
 	}
-	roleList := gconv.SliceMap(roleListEntities)
-	roleList = utils.ParentSonSort(roleList, 0, 0, "parent_id", "id", "flg", "name")
+	//获取岗位信息
+	posts, err := post_service.GetUsedPost()
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
 	res := g.Map{
-		"roleList": roleList,
+		"roleList": roleListEntities,
+		"posts":    posts,
 	}
 	response.SusJson(true, r, "成功", res)
 }
 
 //修改管理员
 func (c *Auth) EditUser(r *ghttp.Request) {
-	id := r.GetRequestInt("id")
 	if r.Method == "POST" {
-		requestData := r.GetFormMap()
-		err := auth_service.EditUser(requestData)
+		var req *user.EditUserReq
+		if err := r.Parse(&req); err != nil {
+			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+		}
+		err := auth_service.EditUser(req)
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}
 		//设置用户所属角色信息
-		err = auth_service.EditUserRole(requestData["role_id"], id)
+		err = auth_service.EditUserRole(req.RoleIds, req.UserId)
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "设置用户权限失败")
 		}
+		//设置用户岗位数据
+		err = auth_service.AddUserPost(req.PostIds, gconv.Int64(req.UserId))
+		if err != nil {
+			g.Log().Error(err)
+			response.FailJson(true, r, "设置用户岗位信息失败")
+		}
 		response.SusJson(true, r, "修改管理员成功")
 	}
+	id := r.GetRequestInt("id")
 	//用户用户信息
 	userEntity, err := user.Model.Where("id=?", id).One()
 	if err != nil {
@@ -349,34 +427,46 @@ func (c *Auth) EditUser(r *ghttp.Request) {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取角色数据失败")
 	}
-	roleList := gconv.SliceMap(roleListEntities)
-	roleList = utils.ParentSonSort(roleList, 0, 0, "parent_id", "id", "flg", "name")
+
 	//获取已选择的角色信息
 	checkedRoleIds, err := user_service.GetAdminRoleIds(id)
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取用户角色数据失败")
 	}
+	if checkedRoleIds == nil {
+		checkedRoleIds = g.SliceInt{}
+	}
+	//获取岗位信息
+	posts, err := post_service.GetUsedPost()
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	checkedPosts, err := user_service.GetAdminPosts(id)
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	if checkedPosts == nil {
+		checkedPosts = []int64{}
+	}
 	res := g.Map{
-		"roleList":       roleList,
+		"roleList":       roleListEntities,
 		"userInfo":       userEntity,
 		"checkedRoleIds": checkedRoleIds,
+		"posts":          posts,
+		"checkedPosts":   checkedPosts,
 	}
 	response.SusJson(true, r, "成功", res)
 }
 
 //用户列表
 func (c *Auth) UserList(r *ghttp.Request) {
-	keyWords := r.GetString("keywords")
-	page := r.GetInt("page")
-	if page == 0 {
-		page = 1
+	var req *user.SearchReq
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 	}
-	var where = map[string]interface{}{}
-	if keyWords != "" {
-		where["keyWords"] = keyWords
-	}
-	total, userList, err := user_service.GetAdminList(where, page)
+	total, page, userList, err := user_service.GetAdminList(req)
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取用户列表数据失败")
@@ -388,25 +478,49 @@ func (c *Auth) UserList(r *ghttp.Request) {
 		g.Log().Error(err)
 		response.FailJson(true, r, "获取用户角色数据失败")
 	}
+	//获取所有部门信息
+	depts, err := dept_service.GetList(&sys_dept.SearchParams{})
+	if err != nil {
+		g.Log().Error(err)
+		response.FailJson(true, r, "获取部门数据失败")
+	}
 	for k, u := range userList {
+		var dept *sys_dept.Dept
 		users[k] = gconv.Map(u)
+		for _, d := range depts {
+			if u.DeptId == d.DeptID {
+				dept = d
+			}
+		}
+		users[k]["dept"] = dept
 		roles, err := user_service.GetAdminRole(u.Id, allRoles)
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "获取用户角色数据失败")
 		}
-		roleInfo := make(map[int]string, len(roles))
+		roleInfo := make([]g.Map, 0, len(roles))
 		for _, r := range roles {
-			roleInfo[r.Id] = r.Name
+			roleInfo = append(roleInfo, g.Map{"roleId": r.Id, "name": r.Name})
 		}
+		users[k]["user_status"] = gconv.String(u.UserStatus)
 		users[k]["roleInfo"] = roleInfo
 	}
-	//获取用户对应角色
-
+	//用户状态
+	statusOptions, err := dict_service.GetDictWithDataByType("sys_normal_disable", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	//用户性别
+	userGender, err := dict_service.GetDictWithDataByType("sys_user_sex", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
 	res := g.Map{
-		"total":       total,
-		"currentPage": page,
-		"userList":    users,
+		"total":         total,
+		"currentPage":   page,
+		"userList":      users,
+		"statusOptions": statusOptions,
+		"userGender":    userGender,
 	}
 	response.SusJson(true, r, "成功", res)
 }
@@ -430,5 +544,66 @@ func (c *Auth) DeleteAdmin(r *ghttp.Request) {
 			enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("u_%d", v))
 		}
 	}
+	//删除用户对应的岗位
+	_, err = user_post.Delete(user_post.Columns.UserId+" in (?)", ids)
+	if err != nil {
+		g.Log().Error(err)
+	}
 	response.SusJson(true, r, "删除成功")
+}
+
+//设置角色状态
+func (c *Auth) StatusSetRole(r *ghttp.Request) {
+	var req *role.StatusSetReq
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+	}
+	err := auth_service.StatusSetRole(req)
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	response.SusJson(true, r, "状态设置成功")
+}
+
+//角色数据权限分配
+func (c *Auth) RoleDataScope(r *ghttp.Request) {
+	var req *role.DataScopeReq
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+	}
+	err := auth_service.RoleDataScope(req)
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	response.SusJson(true, r, "数据权限设置成功", req)
+}
+
+//修改用户状态
+func (c *Auth) ChangeUserStatus(r *ghttp.Request) {
+	var req *user.StatusReq
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+	}
+	if err := user_service.ChangeUserStatus(req); err != nil {
+		response.FailJson(true, r, err.Error())
+	} else {
+		response.SusJson(true, r, "用户状态设置成功")
+	}
+}
+
+//重置用户密码
+func (c *Auth) ResetUserPwd(r *ghttp.Request) {
+	var req *user.ResetPwdReq
+	//获取参数
+	if err := r.Parse(&req); err != nil {
+		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
+	}
+	if err := user_service.ResetUserPwd(req); err != nil {
+		response.FailJson(true, r, err.Error())
+	} else {
+		response.SusJson(true, r, "用户密码重置成功")
+	}
 }

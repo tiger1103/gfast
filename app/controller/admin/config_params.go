@@ -2,6 +2,7 @@ package admin
 
 import (
 	"gfast/app/model/admin/sys_config"
+	"gfast/app/service/admin/dict_service"
 	"gfast/app/service/admin/params_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/app/service/cache_service"
@@ -24,11 +25,16 @@ func (c *Params) List(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	//系统内置选项
+	sysOptions, err := dict_service.GetDictWithDataByType("sys_yes_no", "", "")
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
 	result := g.Map{
 		"currentPage": page,
 		"total":       total,
 		"list":        list,
-		"searchTypes": map[string]string{"": "所有", "0": "否", "1": "是"},
+		"searchTypes": sysOptions,
 	}
 	response.SusJson(true, r, "字典列表", result)
 }
@@ -80,7 +86,7 @@ func (c *Params) Edit(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
-	response.SusJson(true, r, "ok", g.Map{"params": params})
+	response.SusJson(true, r, "ok", params)
 }
 
 //删除参数

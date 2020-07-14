@@ -11,14 +11,14 @@ import (
 
 // Entity is the golang structure for table _role.
 type Entity struct {
-	Id         int     `orm:"id,primary"  json:"id"`          //
-	ParentId   int     `orm:"parent_id"   json:"parent_id"`   // 父角色ID
-	Status     int     `orm:"status"      json:"status"`      // 状态;0:禁用;1:正常
-	CreateTime int     `orm:"create_time" json:"create_time"` // 创建时间
-	UpdateTime int     `orm:"update_time" json:"update_time"` // 更新时间
-	ListOrder  float64 `orm:"list_order"  json:"list_order"`  // 排序
-	Name       string  `orm:"name"        json:"name"`        // 角色名称
-	Remark     string  `orm:"remark"      json:"remark"`      // 备注
+	Id         int     `orm:"id,primary"  json:"id"`             //
+	Status     int     `orm:"status"      json:"status"`         // 状态;0:禁用;1:正常
+	CreateTime int     `orm:"create_time" json:"create_time"`    // 创建时间
+	UpdateTime int     `orm:"update_time" json:"update_time"`    // 更新时间
+	ListOrder  float64 `orm:"list_order"  json:"list_order"`     // 排序
+	Name       string  `orm:"name"        json:"name"`           // 角色名称
+	Remark     string  `orm:"remark"      json:"remark"`         // 备注
+	DataScope  int     `orm:"data_scope"      json:"data_scope"` // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
 }
 
 // Role is alias of Entity, which some developers say they just want.

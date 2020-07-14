@@ -70,6 +70,7 @@ func upByType(file *ghttp.UploadFile, fType string) (fileInfo *FileInfo, err err
 	if err != nil {
 		return
 	}
+
 	//检测文件类型
 	rightType := checkFileType(file.Filename, config.ConfigValue)
 	if !rightType {
@@ -206,7 +207,7 @@ func getUpConfig(key string) (config *sys_config.Entity, err error) {
 
 //判断上传文件类型是否合法
 func checkFileType(fileName, typeString string) bool {
-	suffix := gstr.SubStr(fileName, gstr.SearchArray(gstr.Split(fileName, ""), ".")+1)
+	suffix := gstr.SubStrRune(fileName, gstr.PosRRune(fileName, ".")+1, gstr.LenRune(fileName)-1)
 	imageType := gstr.Split(typeString, ",")
 	rightType := false
 	for _, v := range imageType {

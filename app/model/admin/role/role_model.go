@@ -13,7 +13,7 @@ import (
 
 // arModel is a active record design model for table _role operations.
 type arModel struct {
-	Model *gdb.Model
+	M *gdb.Model
 }
 
 var (
@@ -25,59 +25,59 @@ var (
 
 // TX sets the transaction for current operation.
 func (m *arModel) TX(tx *gdb.TX) *arModel {
-	return &arModel{m.Model.TX(tx)}
+	return &arModel{m.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
 func (m *arModel) Master() *arModel {
-	return &arModel{m.Model.Master()}
+	return &arModel{m.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
 func (m *arModel) Slave() *arModel {
-	return &arModel{m.Model.Slave()}
+	return &arModel{m.M.Slave()}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
 func (m *arModel) LeftJoin(joinTable string, on string) *arModel {
-	return &arModel{m.Model.LeftJoin(joinTable, on)}
+	return &arModel{m.M.LeftJoin(joinTable, on)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
 func (m *arModel) RightJoin(joinTable string, on string) *arModel {
-	return &arModel{m.Model.RightJoin(joinTable, on)}
+	return &arModel{m.M.RightJoin(joinTable, on)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
 func (m *arModel) InnerJoin(joinTable string, on string) *arModel {
-	return &arModel{m.Model.InnerJoin(joinTable, on)}
+	return &arModel{m.M.InnerJoin(joinTable, on)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
 func (m *arModel) Fields(fields string) *arModel {
-	return &arModel{m.Model.Fields(fields)}
+	return &arModel{m.M.Fields(fields)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
 func (m *arModel) FieldsEx(fields string) *arModel {
-	return &arModel{m.Model.FieldsEx(fields)}
+	return &arModel{m.M.FieldsEx(fields)}
 }
 
 // Option sets the extra operation option for the model.
 func (m *arModel) Option(option int) *arModel {
-	return &arModel{m.Model.Option(option)}
+	return &arModel{m.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
 func (m *arModel) OmitEmpty() *arModel {
-	return &arModel{m.Model.OmitEmpty()}
+	return &arModel{m.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
 func (m *arModel) Filter() *arModel {
-	return &arModel{m.Model.Filter()}
+	return &arModel{m.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -92,27 +92,27 @@ func (m *arModel) Filter() *arModel {
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
 func (m *arModel) Where(where interface{}, args ...interface{}) *arModel {
-	return &arModel{m.Model.Where(where, args...)}
+	return &arModel{m.M.Where(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
 func (m *arModel) And(where interface{}, args ...interface{}) *arModel {
-	return &arModel{m.Model.And(where, args...)}
+	return &arModel{m.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
 func (m *arModel) Or(where interface{}, args ...interface{}) *arModel {
-	return &arModel{m.Model.Or(where, args...)}
+	return &arModel{m.M.Or(where, args...)}
 }
 
 // GroupBy sets the "GROUP BY" statement for the model.
 func (m *arModel) GroupBy(groupBy string) *arModel {
-	return &arModel{m.Model.GroupBy(groupBy)}
+	return &arModel{m.M.GroupBy(groupBy)}
 }
 
 // OrderBy sets the "ORDER BY" statement for the model.
 func (m *arModel) OrderBy(orderBy string) *arModel {
-	return &arModel{m.Model.OrderBy(orderBy)}
+	return &arModel{m.M.OrderBy(orderBy)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
@@ -120,25 +120,25 @@ func (m *arModel) OrderBy(orderBy string) *arModel {
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
 func (m *arModel) Limit(limit ...int) *arModel {
-	return &arModel{m.Model.Limit(limit...)}
+	return &arModel{m.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
 func (m *arModel) Offset(offset int) *arModel {
-	return &arModel{m.Model.Offset(offset)}
+	return &arModel{m.M.Offset(offset)}
 }
 
 // ForPage sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
 func (m *arModel) ForPage(page, limit int) *arModel {
-	return &arModel{m.Model.ForPage(page, limit)}
+	return &arModel{m.M.ForPage(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
 func (m *arModel) Batch(batch int) *arModel {
-	return &arModel{m.Model.Batch(batch)}
+	return &arModel{m.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -154,7 +154,7 @@ func (m *arModel) Batch(batch int) *arModel {
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
 func (m *arModel) Cache(expire time.Duration, name ...string) *arModel {
-	return &arModel{m.Model.Cache(expire, name...)}
+	return &arModel{m.M.Cache(expire, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -165,46 +165,46 @@ func (m *arModel) Cache(expire time.Duration, name ...string) *arModel {
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
 func (m *arModel) Data(data ...interface{}) *arModel {
-	return &arModel{m.Model.Data(data...)}
+	return &arModel{m.M.Data(data...)}
 }
 
 // Insert does "INSERT INTO ..." statement for the model.
 func (m *arModel) Insert() (result sql.Result, err error) {
-	return m.Model.Insert()
+	return m.M.Insert()
 }
 
 // Replace does "REPLACE INTO ..." statement for the model.
 func (m *arModel) Replace() (result sql.Result, err error) {
-	return m.Model.Replace()
+	return m.M.Replace()
 }
 
 // Save does "INSERT INTO ... ON DUPLICATE KEY UPDATE..." statement for the model.
 // It updates the record if there's primary or unique index in the saving data,
 // or else it inserts a new record into the table.
 func (m *arModel) Save() (result sql.Result, err error) {
-	return m.Model.Save()
+	return m.M.Save()
 }
 
 // Update does "UPDATE ... " statement for the model.
 func (m *arModel) Update() (result sql.Result, err error) {
-	return m.Model.Update()
+	return m.M.Update()
 }
 
 // Delete does "DELETE FROM ... " statement for the model.
 func (m *arModel) Delete() (result sql.Result, err error) {
-	return m.Model.Delete()
+	return m.M.Delete()
 }
 
 // Count does "SELECT COUNT(x) FROM ..." statement for the model.
 func (m *arModel) Count() (int, error) {
-	return m.Model.Count()
+	return m.M.Count()
 }
 
 // All does "SELECT FROM ..." statement for the model.
 // It retrieves the records from table and returns the result as []*Entity.
 // It returns nil if there's no record retrieved with the given conditions from table.
 func (m *arModel) All() ([]*Entity, error) {
-	all, err := m.Model.All()
+	all, err := m.M.All()
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +218,7 @@ func (m *arModel) All() ([]*Entity, error) {
 // One retrieves one record from table and returns the result as *Entity.
 // It returns nil if there's no record retrieved with the given conditions from table.
 func (m *arModel) One() (*Entity, error) {
-	one, err := m.Model.One()
+	one, err := m.M.One()
 	if err != nil {
 		return nil, err
 	}
@@ -232,12 +232,12 @@ func (m *arModel) One() (*Entity, error) {
 // Value retrieves a specified record value from table and returns the result as interface type.
 // It returns nil if there's no record found with the given conditions from table.
 func (m *arModel) Value() (gdb.Value, error) {
-	return m.Model.Value()
+	return m.M.Value()
 }
 
 // Chunk iterates the table with given size and callback function.
 func (m *arModel) Chunk(limit int, callback func(entities []*Entity, err error) bool) {
-	m.Model.Chunk(limit, func(result gdb.Result, err error) bool {
+	m.M.Chunk(limit, func(result gdb.Result, err error) bool {
 		var entities []*Entity
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
@@ -245,4 +245,16 @@ func (m *arModel) Chunk(limit int, callback func(entities []*Entity, err error) 
 		}
 		return callback(entities, err)
 	})
+}
+
+// Page sets the paging number for the model.
+// The parameter <page> is started from 1 for paging.
+// Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
+func (m *arModel) Page(page, limit int) *arModel {
+	return &arModel{m.M.Page(page, limit)}
+}
+
+// Order sets the "ORDER BY" statement for the model.
+func (m *arModel) Order(orderBy string) *arModel {
+	return &arModel{m.M.Order(orderBy)}
 }

@@ -5,6 +5,7 @@ const (
 	AdminAuthMenu = iota
 	AdminAuthRole
 	AdminCmsMenu
+	AdminConfigDict
 )
 
 //缓存TAG标签

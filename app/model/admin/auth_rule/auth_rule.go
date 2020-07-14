@@ -3,6 +3,7 @@ package auth_rule
 import (
 	"gfast/app/service/cache_service"
 	"gfast/library/utils"
+	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
@@ -10,15 +11,18 @@ import (
 
 //菜单对象
 type MenuReq struct {
-	IsMenu    int    `p:"ismenu" c:"ismenu" v:"min:0|max:1#菜单类型最小值为:min|菜单类型最大值为:max"`
-	Pid       int    `p:"pid" c:"pid" v:"min:0"`
-	Name      string `p:"name" c:"name" v:"required#请填写规则名称"`
-	Title     string `p:"title" c:"title" v:"required|length:1,100#请填写标题|标题长度在:min到:max位"`
-	Icon      string `p:"icon" c:"icon"`
-	Weigh     int    `p:"weigh" c:"weigh"`
-	Condition string `p:"condition" c:"condition"`
-	Remark    string `p:"remark" c:"remark"`
-	Status    int    `p:"status" c:"status"`
+	MenuType   uint   `p:"menuType"  v:"min:0|max:2#菜单类型最小值为:min|菜单类型最大值为:max"`
+	Pid        uint   `p:"parentId"  v:"min:0"`
+	Name       string `p:"component" v:"required#请填写规则名称"`
+	Title      string `p:"menuName"  v:"required|length:1,100#请填写标题|标题长度在:min到:max位"`
+	Icon       string `p:"icon"`
+	Weigh      int    `p:"orderNum" `
+	Condition  string `p:"condition" `
+	Remark     string `p:"remark" `
+	Status     uint   `p:"status" `
+	AlwaysShow uint   `p:"visible"`
+	Path       string `p:"path"`
+	IsFrame    uint   `p:"is_frame"`
 }
 
 //获取所有菜单
@@ -54,26 +58,73 @@ func CheckMenuNameUnique(name string, id int) bool {
 	return c == 0
 }
 
+//检查菜单路由地址是否已经存在
+func CheckMenuPathUnique(path string, id int) bool {
+	model := Model.Where("path=?", path).Where("menu_type<>?", 2)
+	if id != 0 {
+		model = model.And("id!=?", id)
+	}
+	c, err := model.Count()
+	if err != nil {
+		g.Log().Error(err)
+		return false
+	}
+	return c == 0
+}
+
 // 添加菜单操作
 func Add(req *MenuReq) (err error, insertId int64) {
-	menuMap := gconv.Map(req)
+	if req == nil {
+		err = gerror.New("参数错误")
+		return
+	}
 	now := gtime.Timestamp()
-	menuMap["createtime"] = now
-	menuMap["updatetime"] = now
-	res, e := Model.Insert(menuMap)
+	entity := new(Entity)
+	entity.Title = req.Title
+	entity.Status = req.Status
+	entity.MenuType = req.MenuType
+	entity.Path = req.Path
+	entity.AlwaysShow = req.AlwaysShow
+	entity.Icon = req.Icon
+	entity.Name = req.Name
+	entity.IsFrame = req.IsFrame
+	entity.Pid = req.Pid
+	entity.Createtime = gconv.Uint(now)
+	entity.Updatetime = gconv.Uint(now)
+
+	res, e := entity.Insert()
 	err = e
-	insertId, _ = res.LastInsertId()
+	if err != nil {
+		return
+	}
+	insertId, err = res.LastInsertId()
 	return
 }
 
 //修改菜单操作
 func Edit(req *MenuReq, id int) (err error, rows int64) {
-	menuMap := gconv.Map(req)
+	var entity *Entity
+	entity, err = Model.FindOne(id)
+	if err != nil {
+		return
+	}
 	now := gtime.Timestamp()
-	menuMap["updatetime"] = now
-	res, e := Model.Where("id=?", id).Update(menuMap)
+	entity.Updatetime = gconv.Uint(now)
+	entity.Title = req.Title
+	entity.Status = req.Status
+	entity.MenuType = req.MenuType
+	entity.Path = req.Path
+	entity.AlwaysShow = req.AlwaysShow
+	entity.Icon = req.Icon
+	entity.Name = req.Name
+	entity.IsFrame = req.IsFrame
+	entity.Pid = req.Pid
+	res, e := entity.Update()
 	err = e
-	rows, _ = res.RowsAffected()
+	if err != nil {
+		return
+	}
+	rows, err = res.RowsAffected()
 	return
 }
 
@@ -94,4 +145,9 @@ func DeleteByIds(ids []int) (err error) {
 	}
 	_, err = Model.Where("id in (?)", ids).Delete()
 	return
+}
+
+type ReqSearch struct {
+	Status string `p:"status" `
+	Title  string `p:"menuName" `
 }

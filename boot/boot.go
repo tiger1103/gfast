@@ -1,6 +1,7 @@
 package boot
 
 import (
+	"fmt"
 	"gfast/library/service"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/frame/g"
@@ -10,12 +11,14 @@ import (
 var AdminGfToken *gtoken.GfToken
 
 func init() {
+	showLogo()
 	g.Log().SetFlags(glog.F_ASYNC | glog.F_TIME_DATE | glog.F_TIME_TIME | glog.F_FILE_LONG)
-	g.Server().SetPort(8200)
+	//g.Server().SetPort(8200)
 	g.Server().AddStaticPath("/public", g.Cfg().GetString("server.ServerRoot"))
 	//后台初始化配置
 	initAdmin()
-
+	//前台初始化
+	initFront()
 }
 
 func initAdmin() {
@@ -25,6 +28,17 @@ func initAdmin() {
 	service.AdminPageNum = g.Cfg().GetInt("adminInfo.pageNum")
 	// 设置并启动后台gtoken处理
 	initAdminGfToken()
+}
+
+func initFront() {
+	gtoken := &gtoken.GfToken{
+		LoginPath:       "/front/login",
+		LoginBeforeFunc: service.FrontLogin,
+		LogoutPath:      "/front/logout",
+		AuthPaths:       g.SliceStr{"/front/*"},
+		AuthAfterFunc:   service.AuthAfterFunc,
+	}
+	gtoken.Start()
 }
 
 func initAdminGfToken() {
@@ -48,4 +62,8 @@ func initAdminGfToken() {
 		LogoutBeforeFunc: service.AdminLoginOut,
 	}
 	AdminGfToken.Start()
+}
+
+func showLogo() {
+	fmt.Println(" .----------------.  .----------------.  .----------------.  .----------------.  .----------------. \n| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |\n| |    ______    | || |  _________   | || |      __      | || |    _______   | || |  _________   | |\n| |  .' ___  |   | || | |_   ___  |  | || |     /  \\     | || |   /  ___  |  | || | |  _   _  |  | |\n| | / .'   \\_|   | || |   | |_  \\_|  | || |    / /\\ \\    | || |  |  (__ \\_|  | || | |_/ | | \\_|  | |\n| | | |    ____  | || |   |  _|      | || |   / ____ \\   | || |   '.___`-.   | || |     | |      | |\n| | \\ `.___]  _| | || |  _| |_       | || | _/ /    \\ \\_ | || |  |`\\____) |  | || |    _| |_     | |\n| |  `._____.'   | || | |_____|      | || ||____|  |____|| || |  |_______.'  | || |   |_____|    | |\n| |              | || |              | || |              | || |              | || |              | |\n| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |\n '----------------'  '----------------'  '----------------'  '----------------'  '----------------' ")
 }

@@ -24,6 +24,9 @@ type Entity struct {
 	Avatar        string `orm:"avatar"           json:"avatar"`          // 用户头像
 	LastLoginTime int    `orm:"last_login_time"  json:"last_login_time"` // 最后登录时间
 	LastLoginIp   string `orm:"last_login_ip"    json:"last_login_ip"`   // 最后登录ip
+	DeptId        int64  `orm:"dept_id"       json:"dept_id"`            //所属部门id
+	Remark        string `orm:"remark"           json:"remark"`          // 备注
+	IsAdmin       int    `orm:"is_admin"         json:"is_admin"`        // 是否后台管理员 1 是  0   否
 }
 
 // User is alias of Entity, which some developers say they just want.
