@@ -83,7 +83,7 @@ func (c *{{.table.BusinessName|UcFirst}}) Edit(r *ghttp.Request) {
 
 
 // 删除
-func (c *PlugAd) Delete(r *ghttp.Request) {
+func (c *{{.table.BusinessName|UcFirst}}) Delete(r *ghttp.Request) {
 	var req *{{.table.BusinessName}}Model.RemoveReq
 	//获取参数
 	if err := r.Parse(&req); err != nil {

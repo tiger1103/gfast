@@ -15,8 +15,8 @@ func AddSave(req *{{.table.BusinessName}}Model.AddReq) error {
 }
 
 // 删除
-func DeleteByIDs(Ids []int) error {
-	return {{.table.BusinessName}}Model.DeleteByIDs(Ids)
+func DeleteByIds(Ids []int) error {
+	return {{.table.BusinessName}}Model.DeleteByIds(Ids)
 }
 
 //修改

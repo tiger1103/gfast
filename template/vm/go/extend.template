@@ -8,9 +8,14 @@ package {{.table.BusinessName}}
 import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/os/gtime"
 )
 
+{{$pk:=""}}
+{{$pkGoField:=""}}
+{{range $index, $column := .table.Columns}} {{if eq $column.IsPk "1"}}
+    {{$pk = $column.ColumnName}}
+    {{$pkGoField = $column.GoField}}
+{{end}}{{end}}
 
 // AddReq 用于存储新增请求的请求参数
 type AddReq struct {
@@ -22,6 +27,10 @@ type AddReq struct {
 type EditReq struct {
 	{{.table.PkColumn.GoField}}    {{.table.PkColumn.GoType}}  `p:"{{.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"` {{range $index, $column := .table.Columns}} {{if eq $column.IsEdit "1"}}
 	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
+}
+
+type RemoveReq struct {
+	Ids []int `p:"ids"` //删除id
 }
 
 // SelectPageReq 用于存储分页查询的请求参数
@@ -56,7 +65,7 @@ func AddSave(req *AddReq) error {
 	if err != nil {
 		return err
 	}
-	_, err := result.LastInsertId()
+	_, err = result.LastInsertId()
 	if err != nil {
 		return err
 	}
@@ -74,9 +83,9 @@ func DeleteByIds(Ids []int) error {
 }
 
 // 根据ID来修改信息
-func EditSave(editReq *EditReq) error {
+func EditSave(req *EditReq) error {
 	// 先根据ID来查询要修改的记录
-	entity, err := GetByID(editReq.PlugAdID)
+	entity, err := GetByID(req.{{$pkGoField}})
 	if err != nil {
 		return err
 	}
@@ -116,17 +125,13 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 		err = gerror.New("获取总记录数失败")
 		return
 	}
-	if req.PageNo == 0 {
-		req.PageNo = 1
+	if req.PageNum == 0 {
+		req.PageNum = 1
 	}
-	page = req.PageNo
+	page = req.PageNum
 	if req.PageSize == 0 {
 		req.PageSize = 10
 	}
-	{{$pk:=""}}
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsPk "1"}}
-		{{$pk = $column.ColumnName}}
-	{{end}}{{end}}
 	// 分页排序查询
 	list, err = model.Page(int(page), int(req.PageSize)).Order("{{$pk}} asc").All()
 	if err != nil {
@@ -140,7 +145,7 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 
 
 // 获取所有数据
-func SelectListByPage(req *SelectPageReq) (list []*Entity, err error) {
+func SelectListAll(req *SelectPageReq) (list []*Entity, err error) {
 	model := Model
 	if req != nil {
 	{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
@@ -156,11 +161,6 @@ func SelectListByPage(req *SelectPageReq) (list []*Entity, err error) {
 			}
 		{{end}} {{end}} {{end}} {{end}}
 	}
-
-	{{$pk:=""}}
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsPk "1"}}
-		{{$pk = $column.ColumnName}}
-	{{end}}{{end}}
 	// 查询
 	list, err = model.Order("{{$pk}} asc").All()
 	if err != nil {
