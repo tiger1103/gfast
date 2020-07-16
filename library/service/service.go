@@ -20,6 +20,9 @@ import (
 	"strings"
 )
 
+//版本号
+const Version = "1.0.01"
+
 var (
 	AdminMultiLogin      bool  //是否允许后台管理员多端登陆
 	AdminPageNum         = 20  //后台分页长度
@@ -47,6 +50,7 @@ func GetVerifyImgString() (idKeyC string, base64stringC string) {
 		ShowLineOptions: 20,
 		Length:          4,
 		Source:          "abcdefghijklmnopqrstuvwxyz0123456789",
+		Fonts:           []string{"chromohv.ttf"},
 	}
 	driver = driver.ConvertFonts()
 	store := base64Captcha.DefaultMemStore

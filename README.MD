@@ -1,6 +1,9 @@
 ## 平台简介
-基于GF(Go Frame)的后台管理系统
-
+* 基于GF(Go Frame)的后台管理系统
+* 前端采用ruoyi-ui 、Vue、Element UI。
+* 后端采用GO语言 框架 GF(Go Frame)。
+* 阿里云优惠券：[点我进入](https://www.aliyun.com/minisite/goods?userCode=fcor2omk )，腾讯云优惠券：[点我领取](https://cloud.tencent.com/act/cps/redirect?redirect=1062&cps_key=20b1c3842f74986b2894e2c5fcde7ea2&from=console )  
+* 本项目由奇讯科技团队开发。
 
 ## 内置功能
 
@@ -19,6 +22,7 @@
 13. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
 14. 在线构建器：拖动表单元素生成相应的HTML代码。
 15. 文件上传,缓存标签等。
+16. 正在开发中的功能：cms管理、模型管理、工作流引擎
 
 ## 演示地址
 [http://47.107.158.252:8200/](http://47.107.158.252:8200/)
