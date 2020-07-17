@@ -7,6 +7,7 @@ import (
 	"gfast/middleWare"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/swaggo/swag"
 )
 
 // 统一路由注册.
@@ -62,6 +63,15 @@ func init() {
 			group.ALL("/gen", new(admin.Gen))
 		})
 
+	})
+
+	group.GET("/swagger.json", func(r *ghttp.Request) {
+		jsonStr, err := swag.ReadDoc()
+		if err != nil {
+			r.Response.Write(err)
+			return
+		}
+		r.Response.WriteJson(jsonStr)
 	})
 
 	group.Group("/front", func(group *ghttp.RouterGroup) {

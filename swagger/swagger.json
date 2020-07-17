@@ -1,0 +1,259 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "gfast 在线API文档",
+        "title": "gfast API文档",
+        "contact": {},
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "localhost",
+    "basePath": "/system",
+    "paths": {
+        "/system/dept/addDept": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门"
+                ],
+                "summary": "添加部门",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sys_dept.AddParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 0, \"message\": \"添加成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dept/delDept/{id}": {
+            "delete": {
+                "description": "删除数据",
+                "tags": [
+                    "部门"
+                ],
+                "summary": "删除部门",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 0, \"message\": \"删除成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dept/editDept": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门"
+                ],
+                "summary": "修改部门",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/sys_dept.EditParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 0, \"message\": \"修改成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dept/list": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "分页列表",
+                "tags": [
+                    "部门"
+                ],
+                "summary": "分页部门列表数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "deptName",
+                        "name": "deptName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码",
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "description": "数据集",
+                    "type": "object"
+                },
+                "msg": {
+                    "description": "消息",
+                    "type": "string"
+                }
+            }
+        },
+        "sys_dept.AddParams": {
+            "type": "object",
+            "properties": {
+                "ancestors": {
+                    "type": "string"
+                },
+                "createBy": {
+                    "type": "string"
+                },
+                "createTime": {
+                    "type": "string"
+                },
+                "delFlag": {
+                    "type": "string"
+                },
+                "deptName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "leader": {
+                    "type": "string"
+                },
+                "orderNum": {
+                    "type": "integer"
+                },
+                "parentId": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updateBy": {
+                    "type": "string"
+                },
+                "updateTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "sys_dept.EditParams": {
+            "type": "object",
+            "properties": {
+                "ancestors": {
+                    "type": "string"
+                },
+                "createBy": {
+                    "type": "string"
+                },
+                "createTime": {
+                    "type": "string"
+                },
+                "delFlag": {
+                    "type": "string"
+                },
+                "deptId": {
+                    "type": "integer"
+                },
+                "deptName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "leader": {
+                    "type": "string"
+                },
+                "orderNum": {
+                    "type": "integer"
+                },
+                "parentId": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updateBy": {
+                    "type": "string"
+                },
+                "updateTime": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

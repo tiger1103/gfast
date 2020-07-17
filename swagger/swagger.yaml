@@ -1,0 +1,167 @@
+basePath: /system
+definitions:
+  response.Response:
+    properties:
+      code:
+        description: 代码
+        example: 200
+        type: integer
+      data:
+        description: 数据集
+        type: object
+      msg:
+        description: 消息
+        type: string
+    type: object
+  sys_dept.AddParams:
+    properties:
+      ancestors:
+        type: string
+      createBy:
+        type: string
+      createTime:
+        type: string
+      delFlag:
+        type: string
+      deptName:
+        type: string
+      email:
+        type: string
+      leader:
+        type: string
+      orderNum:
+        type: integer
+      parentId:
+        type: integer
+      phone:
+        type: string
+      status:
+        type: string
+      updateBy:
+        type: string
+      updateTime:
+        type: string
+    type: object
+  sys_dept.EditParams:
+    properties:
+      ancestors:
+        type: string
+      createBy:
+        type: string
+      createTime:
+        type: string
+      delFlag:
+        type: string
+      deptId:
+        type: integer
+      deptName:
+        type: string
+      email:
+        type: string
+      leader:
+        type: string
+      orderNum:
+        type: integer
+      parentId:
+        type: integer
+      phone:
+        type: string
+      status:
+        type: string
+      updateBy:
+        type: string
+      updateTime:
+        type: string
+    type: object
+host: localhost
+info:
+  contact: {}
+  description: gfast 在线API文档
+  license: {}
+  title: gfast API文档
+  version: "1.0"
+paths:
+  /system/dept/addDept:
+    post:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dept.AddParams'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 添加部门
+      tags:
+      - 部门
+  /system/dept/delDept/{id}:
+    delete:
+      description: 删除数据
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: '{"code": 0, "message": "删除成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 删除部门
+      tags:
+      - 部门
+  /system/dept/editDept:
+    post:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dept.EditParams'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "修改成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 修改部门
+      tags:
+      - 部门
+  /system/dept/list:
+    get:
+      description: 分页列表
+      parameters:
+      - description: deptName
+        in: query
+        name: deptName
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 分页部门列表数据
+      tags:
+      - 部门
+swagger: "2.0"

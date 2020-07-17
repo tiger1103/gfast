@@ -1,7 +1,6 @@
 package response
 
 import (
-	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
 
@@ -9,6 +8,15 @@ const (
 	SuccessCode int = 0
 	ErrorCode   int = -1
 )
+
+type Response struct {
+	// 代码
+	Code int `json:"code" example:"200"`
+	// 数据集
+	Data interface{} `json:"data"`
+	// 消息
+	Msg string `json:"msg"`
+}
 
 // 返回JSON数据并退出当前HTTP执行函数。
 func JsonExit(r *ghttp.Request, code int, msg string, data ...interface{}) {
@@ -26,10 +34,10 @@ func RJson(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	result := g.Map{
-		"code": code,
-		"msg":  msg,
-		"data": responseData,
+	result := Response{
+		Code: code,
+		Msg:  msg,
+		Data: responseData,
 	}
 	r.SetParam("apiReturnRes", result)
 	r.Response.WriteJson(result)

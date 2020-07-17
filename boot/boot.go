@@ -3,6 +3,7 @@ package boot
 import (
 	"fmt"
 	"gfast/library/service"
+	_ "gfast/swagger"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/glog"

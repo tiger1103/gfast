@@ -13,6 +13,14 @@ import (
 //菜单用户组用户管理
 type Dept struct{}
 
+// @Summary 分页部门列表数据
+// @Description 分页列表
+// @Tags 部门
+// @Param deptName query string false "deptName"
+// @Param status query string false "status"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/dept/list [get]
+// @Security
 func (c *Dept) List(r *ghttp.Request) {
 
 	var searchParams *sys_dept.SearchParams
@@ -34,9 +42,15 @@ func (c *Dept) List(r *ghttp.Request) {
 
 }
 
-/**
-新增
-*/
+// @Summary 添加部门
+// @Description 获取JSON
+// @Tags 部门
+// @Accept  application/json
+// @Product application/json
+// @Param data body sys_dept.AddParams true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/dept/addDept [post]
+// @Security Bearer
 func (c *Dept) AddDept(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var addParams *sys_dept.AddParams
@@ -52,9 +66,15 @@ func (c *Dept) AddDept(r *ghttp.Request) {
 	}
 }
 
-/**
-编辑
-*/
+// @Summary 修改部门
+// @Description 获取JSON
+// @Tags 部门
+// @Accept  application/json
+// @Product application/json
+// @Param data body sys_dept.EditParams true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "修改成功"}"
+// @Router /system/dept/editDept [post]
+// @Security Bearer
 func (c *Dept) EditDept(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var editParams *sys_dept.EditParams
@@ -68,7 +88,6 @@ func (c *Dept) EditDept(r *ghttp.Request) {
 		response.SusJson(true, r, "编辑成功")
 
 	}
-
 	id := r.GetInt64("id")
 	if id == 0 {
 		response.FailJson(true, r, "参数错误")
@@ -78,7 +97,6 @@ func (c *Dept) EditDept(r *ghttp.Request) {
 	} else {
 		response.SusJson(true, r, "success", dept)
 	}
-
 }
 
 /**
@@ -97,9 +115,12 @@ func (c *Dept) Exclude(r *ghttp.Request) {
 	}
 }
 
-/**
-删除
-*/
+// @Summary 删除部门
+// @Description 删除数据
+// @Tags 部门
+// @Param id path int true "id"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "删除成功"}"
+// @Router /system/dept/delDept/{id} [delete]
 func (c *Dept) DelDept(r *ghttp.Request) {
 	id := r.GetInt64("id")
 	if id == 0 {
