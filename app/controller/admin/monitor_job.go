@@ -14,7 +14,13 @@ import (
 
 type MonitorJob struct{}
 
-//任务列表
+// @Summary 任务列表
+// @Description 任务列表
+// @Tags 定时任务
+// @Param data body sys_job.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/list [get]
+// @Security
 func (c *MonitorJob) List(r *ghttp.Request) {
 	var req *sys_job.SelectPageReq
 	//获取参数
@@ -44,7 +50,13 @@ func (c *MonitorJob) List(r *ghttp.Request) {
 	response.SusJson(true, r, "任务列表", result)
 }
 
-//添加任务
+// @Summary 添加任务
+// @Description 添加任务
+// @Tags 定时任务
+// @Param data body sys_job.ReqAdd true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/add [post]
+// @Security
 func (c *MonitorJob) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_job.ReqAdd
@@ -80,7 +92,13 @@ func (c *MonitorJob) Add(r *ghttp.Request) {
 	response.SusJson(true, r, "添加任务", res)
 }
 
-//修改任务
+// @Summary 修改任务
+// @Description 修改任务
+// @Tags 定时任务
+// @Param data body sys_job.ReqEdit true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/edit [post]
+// @Security
 func (c *MonitorJob) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_job.ReqEdit
@@ -122,7 +140,13 @@ func (c *MonitorJob) Edit(r *ghttp.Request) {
 	response.SusJson(true, r, "添加任务", res)
 }
 
-//详情
+// @Summary 详情
+// @Description 详情
+// @Tags 定时任务
+// @Param id body integer true "id"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/details [post]
+// @Security
 func (c *MonitorJob) Details(r *ghttp.Request) {
 	id := r.GetInt64("id")
 	job, err := monitor_service.GetJobInfoById(id)
@@ -132,7 +156,13 @@ func (c *MonitorJob) Details(r *ghttp.Request) {
 	response.SusJson(true, r, "success", job)
 }
 
-//删除计划任务
+// @Summary 删除计划任务
+// @Description 删除计划任务
+// @Tags 定时任务
+// @Param ids body integer true "ids[]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/delete [delete]
+// @Security
 func (c *MonitorJob) Delete(r *ghttp.Request) {
 	ids := r.GetInts("id")
 	err := monitor_service.DeleteJobByIds(ids)
@@ -142,7 +172,13 @@ func (c *MonitorJob) Delete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//启动任务
+// @Summary 启动任务
+// @Description 启动任务
+// @Tags 定时任务
+// @Param id body integer true "id"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/start [post]
+// @Security
 func (c *MonitorJob) Start(r *ghttp.Request) {
 	id := r.GetInt64("id")
 	job, err := monitor_service.GetJobInfoById(id)
@@ -156,7 +192,13 @@ func (c *MonitorJob) Start(r *ghttp.Request) {
 	response.SusJson(true, r, "定时任务管理启动成功")
 }
 
-//停止任务
+// @Summary 停止任务
+// @Description 停止任务
+// @Tags 定时任务
+// @Param id body integer true "id"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/job/stop [post]
+// @Security
 func (c *MonitorJob) Stop(r *ghttp.Request) {
 	id := r.GetInt64("id")
 	job, err := monitor_service.GetJobInfoById(id)

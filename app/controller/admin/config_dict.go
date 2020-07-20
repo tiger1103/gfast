@@ -14,7 +14,13 @@ import (
 
 type Dict struct{}
 
-//字典列表
+// @Summary 字典列表
+// @Description 字典列表
+// @Tags 字典管理
+// @Param data body sys_dict_type.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/list [get]
+// @Security
 func (c *Dict) List(r *ghttp.Request) {
 	var req *sys_dict_type.SelectPageReq
 	//获取参数
@@ -40,7 +46,13 @@ func (c *Dict) List(r *ghttp.Request) {
 	response.SusJson(true, r, "字典列表", result)
 }
 
-//添加字典
+// @Summary 添加字典
+// @Description 添加字典
+// @Tags 字典管理
+// @Param data body sys_dict_type.AddReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/add [post]
+// @Security
 func (c *Dict) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_type.AddReq
@@ -63,7 +75,13 @@ func (c *Dict) Add(r *ghttp.Request) {
 	}
 }
 
-//修改字典
+// @Summary 修改字典
+// @Description 修改字典
+// @Tags 字典管理
+// @Param data body sys_dict_type.EditReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/edit [post]
+// @Security
 func (c *Dict) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_type.EditReq
@@ -91,7 +109,13 @@ func (c *Dict) Edit(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", entity)
 }
 
-//字典数据列表
+// @Summary 字典数据列表
+// @Description 字典数据列表
+// @Tags 字典管理
+// @Param data body sys_dict_data.SelectDataPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/dataList [get]
+// @Security
 func (c *Dict) DataList(r *ghttp.Request) {
 	var req *sys_dict_data.SelectDataPageReq
 	//获取参数
@@ -119,7 +143,13 @@ func (c *Dict) DataList(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", result)
 }
 
-//添加数据字典
+// @Summary 添加数据字典
+// @Description 添加数据字典
+// @Tags 字典管理
+// @Param data body sys_dict_data.AddDataReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/dataAdd [post]
+// @Security
 func (c *Dict) DataAdd(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_data.AddDataReq
@@ -138,7 +168,13 @@ func (c *Dict) DataAdd(r *ghttp.Request) {
 	}
 }
 
-//修改字典数据
+// @Summary 修改字典数据
+// @Description 修改字典数据
+// @Tags 字典管理
+// @Param data body sys_dict_data.EditDataReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/dataEdit [post]
+// @Security
 func (c *Dict) DataEdit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_dict_data.EditDataReq
@@ -164,7 +200,13 @@ func (c *Dict) DataEdit(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", dictData)
 }
 
-//删除字典
+// @Summary 删除字典
+// @Description 删除字典
+// @Tags 字典管理
+// @Param dictIds body string true "dictIds[1,2,3]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/delete [delete]
+// @Security
 func (c *Dict) Delete(r *ghttp.Request) {
 	dictIds := r.GetInts("dictIds")
 	if len(dictIds) == 0 {
@@ -179,7 +221,13 @@ func (c *Dict) Delete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//删除字典数据
+// @Summary 删除字典数据
+// @Description 删除字典数据
+// @Tags 字典管理
+// @Param ids body integer  true "ids[1,2,3...]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/dataDelete [delete]
+// @Security
 func (c *Dict) DataDelete(r *ghttp.Request) {
 	dictCodes := r.GetInts("ids")
 	if len(dictCodes) == 0 {
@@ -194,9 +242,12 @@ func (c *Dict) DataDelete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-/**
-状态
-*/
+// @Summary 字典状态
+// @Description 字典状态
+// @Tags 字典管理
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/dict/sysNormalDisable [post]
+// @Security
 func (c *Dict) SysNormalDisable(r *ghttp.Request) {
 	//菜单正常or停用状态
 	statusOptions, err := dict_service.GetDictWithDataByType("sys_normal_disable", "", "")

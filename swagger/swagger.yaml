@@ -1,5 +1,97 @@
 basePath: /system
 definitions:
+  auth_rule.MenuReq:
+    properties:
+      alwaysShow:
+        type: integer
+      condition:
+        type: string
+      icon:
+        type: string
+      isFrame:
+        type: integer
+      menuType:
+        type: integer
+      name:
+        type: string
+      path:
+        type: string
+      pid:
+        type: integer
+      remark:
+        type: string
+      status:
+        type: integer
+      title:
+        type: string
+      weigh:
+        type: integer
+    type: object
+  auth_rule.ReqSearch:
+    properties:
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  gen_table.EditReq:
+    properties:
+      businessName:
+        type: string
+      className:
+        type: string
+      columns:
+        type: string
+      functionAuthor:
+        type: string
+      functionName:
+        type: string
+      moduleName:
+        type: string
+      packageName:
+        type: string
+      params:
+        type: string
+      remark:
+        type: string
+      tableComment:
+        type: string
+      tableId:
+        type: integer
+      tableName:
+        type: string
+      tplCategory:
+        type: string
+      treeCode:
+        type: string
+      treeName:
+        type: string
+      treeParentCode:
+        type: string
+      userName:
+        type: string
+    type: object
+  gen_table.SelectPageReq:
+    properties:
+      beginTime:
+        description: 开始时间
+        type: string
+      endTime:
+        description: 结束时间
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      tableComment:
+        description: 表描述
+        type: string
+      tableName:
+        description: 表名称
+        type: string
+    type: object
   response.Response:
     properties:
       code:
@@ -12,6 +104,97 @@ definitions:
       msg:
         description: 消息
         type: string
+    type: object
+  role.DataScopeReq:
+    properties:
+      dataScope:
+        type: integer
+      deptIds:
+        items:
+          type: integer
+        type: array
+      roleId:
+        type: integer
+    type: object
+  role.SelectPageReq:
+    properties:
+      beginTime:
+        description: 开始时间
+        type: string
+      endTime:
+        description: 结束时间
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      roleName:
+        description: 参数名称
+        type: string
+      status:
+        description: 状态
+        type: string
+    type: object
+  role.StatusSetReq:
+    properties:
+      roleId:
+        type: integer
+      status:
+        type: integer
+    type: object
+  sys_config.AddReq:
+    properties:
+      configKey:
+        type: string
+      configName:
+        type: string
+      configType:
+        type: integer
+      configValue:
+        type: string
+      remark:
+        type: string
+    type: object
+  sys_config.EditReq:
+    properties:
+      configId:
+        type: integer
+      configKey:
+        type: string
+      configName:
+        type: string
+      configType:
+        type: integer
+      configValue:
+        type: string
+      remark:
+        type: string
+    type: object
+  sys_config.SelectPageReq:
+    properties:
+      beginTime:
+        description: 开始时间
+        type: string
+      configKey:
+        description: 参数键名
+        type: string
+      configName:
+        description: 参数名称
+        type: string
+      configType:
+        description: 状态
+        type: string
+      endTime:
+        description: 结束时间
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
     type: object
   sys_dept.AddParams:
     properties:
@@ -73,6 +256,413 @@ definitions:
       updateTime:
         type: string
     type: object
+  sys_dept.SearchParams:
+    properties:
+      deptName:
+        type: string
+      status:
+        type: string
+    type: object
+  sys_dict_data.AddDataReq:
+    properties:
+      cssClass:
+        type: string
+      dictLabel:
+        type: string
+      dictSort:
+        type: integer
+      dictType:
+        type: string
+      dictValue:
+        type: string
+      isDefault:
+        type: integer
+      listClass:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+    type: object
+  sys_dict_data.EditDataReq:
+    properties:
+      cssClass:
+        type: string
+      dictCode:
+        type: integer
+      dictLabel:
+        type: string
+      dictSort:
+        type: integer
+      dictType:
+        type: string
+      dictValue:
+        type: string
+      isDefault:
+        type: integer
+      listClass:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+    type: object
+  sys_dict_data.SelectDataPageReq:
+    properties:
+      dictLabel:
+        description: 字典标签
+        type: string
+      dictType:
+        description: 字典类型
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      status:
+        description: 状态
+        type: string
+    type: object
+  sys_dict_type.AddReq:
+    properties:
+      dictName:
+        type: string
+      dictType:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+    type: object
+  sys_dict_type.EditReq:
+    properties:
+      dictId:
+        type: integer
+      dictName:
+        type: string
+      dictType:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+    type: object
+  sys_dict_type.SelectPageReq:
+    properties:
+      beginTime:
+        description: 开始时间
+        type: string
+      dictName:
+        description: 字典名称
+        type: string
+      dictType:
+        description: 字典类型
+        type: string
+      endTime:
+        description: 结束时间
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      status:
+        description: 字典状态
+        type: string
+    type: object
+  sys_job.ReqAdd:
+    properties:
+      concurrent:
+        type: integer
+      cronExpression:
+        type: string
+      invokeTarget:
+        type: string
+      jobGroup:
+        type: string
+      jobName:
+        type: string
+      jobParams:
+        description: 任务参数
+        type: string
+      misfirePolicy:
+        type: integer
+      remark:
+        type: string
+      status:
+        type: integer
+    type: object
+  sys_job.ReqEdit:
+    properties:
+      concurrent:
+        type: integer
+      cronExpression:
+        type: string
+      invokeTarget:
+        type: string
+      jobGroup:
+        type: string
+      jobId:
+        type: integer
+      jobName:
+        type: string
+      jobParams:
+        description: 任务参数
+        type: string
+      misfirePolicy:
+        type: integer
+      remark:
+        type: string
+      status:
+        type: integer
+    type: object
+  sys_job.SelectPageReq:
+    properties:
+      jobGroup:
+        description: 任务组名
+        type: string
+      jobName:
+        description: 任务名称
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      status:
+        description: 状态（0正常 1暂停）
+        type: string
+    type: object
+  sys_login_log.SelectPageReq:
+    properties:
+      beginTime:
+        description: 数据范围
+        type: string
+      endTime:
+        description: 开始时间
+        type: string
+      ipaddr:
+        description: 登录地址
+        type: string
+      loginName:
+        description: 登陆名
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      sortName:
+        description: 排序字段
+        type: string
+      sortOrder:
+        description: 排序方式
+        type: string
+      status:
+        description: 状态
+        type: string
+    type: object
+  sys_oper_log.SelectPageReq:
+    properties:
+      beginTime:
+        description: 数据范围
+        type: string
+      endTime:
+        description: 开始时间
+        type: string
+      operName:
+        description: 操作人员
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      sortName:
+        description: 排序字段
+        type: string
+      sortOrder:
+        description: 排序方式
+        type: string
+      status:
+        description: 操作状态
+        type: string
+      title:
+        description: 系统模块
+        type: string
+    type: object
+  sys_post.AddParams:
+    properties:
+      postCode:
+        type: string
+      postName:
+        type: string
+      postSort:
+        type: integer
+      remark:
+        type: string
+      status:
+        type: string
+    type: object
+  sys_post.EditParams:
+    properties:
+      postCode:
+        type: string
+      postId:
+        type: integer
+      postName:
+        type: string
+      postSort:
+        type: integer
+      remark:
+        type: string
+      status:
+        type: string
+    type: object
+  sys_post.SearchParams:
+    properties:
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      postCode:
+        description: 岗位编码
+        type: string
+      postName:
+        description: 岗位名称
+        type: string
+      status:
+        description: 状态
+        type: string
+    type: object
+  user.AddUserReq:
+    properties:
+      deptId:
+        description: 所属部门
+        type: integer
+      email:
+        description: 邮箱
+        type: string
+      isAdmin:
+        description: 是否后台管理员 1 是  0   否
+        type: integer
+      nickName:
+        type: string
+      password:
+        type: string
+      phonenumber:
+        type: string
+      postIds:
+        items:
+          type: integer
+        type: array
+      remark:
+        type: string
+      roleIds:
+        items:
+          type: integer
+        type: array
+      sex:
+        type: integer
+      status:
+        type: integer
+      userName:
+        type: string
+    type: object
+  user.EditUserReq:
+    properties:
+      deptId:
+        description: 所属部门
+        type: integer
+      email:
+        description: 邮箱
+        type: string
+      isAdmin:
+        description: 是否后台管理员 1 是  0   否
+        type: integer
+      nickName:
+        type: string
+      phonenumber:
+        type: string
+      postIds:
+        items:
+          type: integer
+        type: array
+      remark:
+        type: string
+      roleIds:
+        items:
+          type: integer
+        type: array
+      sex:
+        type: integer
+      status:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  user.ResetPwdReq:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+    type: object
+  user.SearchReq:
+    properties:
+      beginTime:
+        type: string
+      deptId:
+        description: 部门id
+        type: string
+      deptIds:
+        description: 所属部门id数据
+        items:
+          type: integer
+        type: array
+      endTime:
+        type: string
+      keyWords:
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      phonenumber:
+        type: string
+      status:
+        type: string
+    type: object
+  user.StatusReq:
+    properties:
+      id:
+        type: integer
+      userStatus:
+        type: integer
+    type: object
+  user_online.ReqListSearch:
+    properties:
+      ip:
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      username:
+        type: string
+    type: object
 host: localhost
 info:
   contact: {}
@@ -81,6 +671,604 @@ info:
   title: gfast API文档
   version: "1.0"
 paths:
+  /system/Auth/userList:
+    get:
+      description: 分页列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.SearchReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 用户列表
+      tags:
+      - 用户管理
+  /system/auth/addMenu:
+    post:
+      consumes:
+      - application/json
+      description: 添加菜单
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/auth_rule.MenuReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 添加菜单
+      tags:
+      - 菜单管理
+  /system/auth/addRole:
+    post:
+      consumes:
+      - application/json
+      description: 添加角色
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 添加角色
+      tags:
+      - 角色管理
+  /system/auth/addUser:
+    post:
+      consumes:
+      - application/json
+      description: 添加用户
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.AddUserReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 添加用户
+      tags:
+      - 用户管理
+  /system/auth/changeUserStatus:
+    post:
+      consumes:
+      - application/json
+      description: 修改用户状态
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.StatusReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 修改用户状态
+      tags:
+      - 用户管理
+  /system/auth/deleteAdmin:
+    delete:
+      consumes:
+      - application/json
+      description: 删除管理员
+      parameters:
+      - description: ids[1,2,3...]
+        in: path
+        name: ids
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 删除管理员
+      tags:
+      - 用户管理
+  /system/auth/deleteMenu:
+    delete:
+      consumes:
+      - application/json
+      description: 删除菜单
+      parameters:
+      - description: ids[1,2,3]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: '{"code": 0, "message": "修改成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 删除菜单
+      tags:
+      - 菜单管理
+  /system/auth/deleteRole:
+    delete:
+      consumes:
+      - application/json
+      description: 删除角色
+      parameters:
+      - description: ids[1,2,3]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 删除角色
+      tags:
+      - 角色管理
+  /system/auth/editMenu:
+    post:
+      consumes:
+      - application/json
+      description: 修改菜单
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/auth_rule.MenuReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "修改成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 修改菜单
+      tags:
+      - 菜单管理
+  /system/auth/editRole:
+    post:
+      consumes:
+      - application/json
+      description: 修改角色
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 修改角色
+      tags:
+      - 角色管理
+  /system/auth/editUser:
+    post:
+      consumes:
+      - application/json
+      description: 编辑用户
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.EditUserReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 编辑用户
+      tags:
+      - 用户管理
+  /system/auth/menuList:
+    get:
+      description: 获取菜单列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/auth_rule.ReqSearch'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 分页列表
+      tags:
+      - 菜单管理
+  /system/auth/resetUserPwd:
+    post:
+      consumes:
+      - application/json
+      description: 重置用户密码
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.ResetPwdReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 重置用户密码
+      tags:
+      - 用户管理
+  /system/auth/roleDataScope:
+    post:
+      consumes:
+      - application/json
+      description: 角色数据权限分配
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/role.DataScopeReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 角色数据权限分配
+      tags:
+      - 用户管理
+  /system/auth/roleList:
+    get:
+      description: 分页列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/role.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 角色列表
+      tags:
+      - 角色管理
+  /system/auth/statusSetRole:
+    post:
+      consumes:
+      - application/json
+      description: 设置角色状态
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/role.StatusSetReq'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 设置角色状态
+      tags:
+      - 用户管理
+  /system/config/dict/add:
+    post:
+      description: 添加字典
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dict_type.AddReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加字典
+      tags:
+      - 字典管理
+  /system/config/dict/dataAdd:
+    post:
+      description: 添加数据字典
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dict_data.AddDataReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加数据字典
+      tags:
+      - 字典管理
+  /system/config/dict/dataDelete:
+    delete:
+      description: 删除字典数据
+      parameters:
+      - description: ids[1,2,3...]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除字典数据
+      tags:
+      - 字典管理
+  /system/config/dict/dataEdit:
+    post:
+      description: 修改字典数据
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dict_data.EditDataReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改字典数据
+      tags:
+      - 字典管理
+  /system/config/dict/dataList:
+    get:
+      description: 字典数据列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dict_data.SelectDataPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 字典数据列表
+      tags:
+      - 字典管理
+  /system/config/dict/delete:
+    delete:
+      description: 删除字典
+      parameters:
+      - description: dictIds[1,2,3]
+        in: body
+        name: dictIds
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除字典
+      tags:
+      - 字典管理
+  /system/config/dict/edit:
+    post:
+      description: 修改字典
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dict_type.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改字典
+      tags:
+      - 字典管理
+  /system/config/dict/list:
+    get:
+      description: 字典列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dict_type.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 字典列表
+      tags:
+      - 字典管理
+  /system/config/dict/sysNormalDisable:
+    post:
+      description: 字典状态
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 字典状态
+      tags:
+      - 字典管理
+  /system/config/params/add:
+    post:
+      description: 添加参数
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_config.AddReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加参数
+      tags:
+      - 参数管理
+  /system/config/params/delete:
+    delete:
+      description: 删除参数
+      parameters:
+      - description: ids[1,2,3...]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除参数
+      tags:
+      - 参数管理
+  /system/config/params/edit:
+    post:
+      description: 修改参数
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_config.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改参数
+      tags:
+      - 参数管理
+  /system/config/params/list:
+    get:
+      description: 参数列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_config.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 参数列表
+      tags:
+      - 参数管理
   /system/dept/addDept:
     post:
       consumes:
@@ -146,14 +1334,12 @@ paths:
     get:
       description: 分页列表
       parameters:
-      - description: deptName
-        in: query
-        name: deptName
-        type: string
-      - description: status
-        in: query
-        name: status
-        type: string
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_dept.SearchParams'
       responses:
         "0":
           description: '{"code": 200, "data": [...]}'
@@ -164,4 +1350,749 @@ paths:
       summary: 分页部门列表数据
       tags:
       - 部门
+  /system/index/getInfo:
+    get:
+      description: 获取登录用户信息
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 获取登录用户信息
+      tags:
+      - 公共
+  /system/index/getRouters:
+    get:
+      description: 获取后台菜单
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 获取后台菜单
+      tags:
+      - 公共
+  /system/monitor/job/add:
+    post:
+      description: 添加任务
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_job.ReqAdd'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加任务
+      tags:
+      - 定时任务
+  /system/monitor/job/delete:
+    delete:
+      description: 删除计划任务
+      parameters:
+      - description: ids[]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除计划任务
+      tags:
+      - 定时任务
+  /system/monitor/job/details:
+    post:
+      description: 详情
+      parameters:
+      - description: id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 详情
+      tags:
+      - 定时任务
+  /system/monitor/job/edit:
+    post:
+      description: 修改任务
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_job.ReqEdit'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改任务
+      tags:
+      - 定时任务
+  /system/monitor/job/list:
+    get:
+      description: 任务列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_job.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 任务列表
+      tags:
+      - 定时任务
+  /system/monitor/job/start:
+    post:
+      description: 启动任务
+      parameters:
+      - description: id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 启动任务
+      tags:
+      - 定时任务
+  /system/monitor/job/stop:
+    post:
+      description: 停止任务
+      parameters:
+      - description: id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 停止任务
+      tags:
+      - 定时任务
+  /system/monitor/loginlog/clear:
+    post:
+      description: 清空登录日志
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 清空登录日志
+      tags:
+      - 登录日志
+  /system/monitor/loginlog/delete:
+    delete:
+      description: 删除登录日志
+      parameters:
+      - description: ids[]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除登录日志
+      tags:
+      - 登录日志
+  /system/monitor/loginlog/list:
+    get:
+      description: 登录日志列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_login_log.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 登录日志列表
+      tags:
+      - 登录日志
+  /system/monitor/online/forceLogout:
+    post:
+      description: 强制退出
+      parameters:
+      - description: ids[]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 强制退出
+      tags:
+      - 在线用户
+  /system/monitor/online/list:
+    get:
+      description: 用户状态列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_online.ReqListSearch'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 用户状态列表
+      tags:
+      - 在线用户
+  /system/monitor/operlog/clear:
+    post:
+      description: 清空日志
+      parameters:
+      - description: ids[]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 清空日志
+      tags:
+      - 操作日志
+  /system/monitor/operlog/delete:
+    delete:
+      description: 删除日志
+      parameters:
+      - description: ids[]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除日志
+      tags:
+      - 操作日志
+  /system/monitor/operlog/detail:
+    post:
+      description: 操作详细
+      parameters:
+      - description: id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 操作详细
+      tags:
+      - 操作日志
+  /system/monitor/operlog/list:
+    get:
+      description: 操作日志列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_oper_log.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 操作日志列表
+      tags:
+      - 操作日志
+  /system/monitor/server/info:
+    get:
+      description: 服务监控
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 服务监控
+      tags:
+      - 服务监控
+  /system/post/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加岗位
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_post.AddParams'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "添加成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 添加岗位
+      tags:
+      - 岗位
+  /system/post/delete:
+    get:
+      description: 删除数据
+      parameters:
+      - description: ids[1,2,3...]
+        in: path
+        name: ids
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: '{"code": 0, "message": "删除成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 删除岗位
+      tags:
+      - 岗位
+  /system/post/edit:
+    post:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_post.EditParams'
+      responses:
+        "200":
+          description: '{"code": 0, "message": "修改成功"}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 修改岗位
+      tags:
+      - 岗位
+  /system/post/list:
+    post:
+      description: 分页列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/sys_post.SearchParams'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 分页岗位列表数据
+      tags:
+      - 岗位
+  /system/public/verify:
+    post:
+      description: 获取验证码图片信息
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 获取验证码图片信息
+      tags:
+      - 公共
+  /system/tools/gen/columnList:
+    post:
+      description: 根据表格ID获取表格字段列表数据
+      parameters:
+      - description: tableId
+        in: body
+        name: tableId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 根据表格ID获取表格字段列表数据
+      tags:
+      - 系统工具
+  /system/tools/gen/dataList:
+    get:
+      description: 查询数据库列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/gen_table.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 查询数据库列表
+      tags:
+      - 系统工具
+  /system/tools/gen/delete:
+    delete:
+      description: 删除表格数据
+      parameters:
+      - description: ids[1,2,3...]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除表格数据
+      tags:
+      - 系统工具
+  /system/tools/gen/editSave:
+    post:
+      description: 编辑表格信息
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/gen_table.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 编辑表格信息
+      tags:
+      - 系统工具
+  /system/tools/gen/importTableSave:
+    post:
+      description: 导入表结构操作
+      parameters:
+      - description: tables
+        in: body
+        name: tables
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 导入表结构操作
+      tags:
+      - 系统工具
+  /system/tools/gen/preview:
+    post:
+      description: 代码生成预览
+      parameters:
+      - description: tableId
+        in: body
+        name: tableId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 代码生成预览
+      tags:
+      - 系统工具
+  /system/tools/gen/tableList:
+    post:
+      description: 表列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/gen_table.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 表列表
+      tags:
+      - 系统工具
+  /system/upload/ckEditorUp:
+    post:
+      description: CkEditor编辑器上传附件
+      parameters:
+      - description: upFile
+        in: body
+        name: upFile
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: CkEditor编辑器上传附件
+      tags:
+      - 公共
+  /system/upload/upFile:
+    post:
+      description: 单文件上传
+      parameters:
+      - description: file
+        in: body
+        name: file
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 单文件上传
+      tags:
+      - 公共
+  /system/upload/upFiles:
+    post:
+      description: 批量上传文件
+      parameters:
+      - description: file
+        in: body
+        name: file
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 批量上传文件
+      tags:
+      - 公共
+  /system/upload/upImg:
+    post:
+      description: 单图片上传
+      parameters:
+      - description: file
+        in: body
+        name: file
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 单图片上传
+      tags:
+      - 公共
+  /system/upload/upImgs:
+    post:
+      description: 批量上传图片
+      parameters:
+      - description: file
+        in: body
+        name: file
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 批量上传图片
+      tags:
+      - 公共
+  /system/user/avatar:
+    post:
+      description: 头像上传上传
+      parameters:
+      - description: avatarfile
+        in: body
+        name: avatarfile
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 头像上传上传
+      tags:
+      - 个人中心
+  /system/user/edit:
+    post:
+      description: 修改用户信息
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改用户信息
+      tags:
+      - 个人中心
+  /system/user/profile:
+    post:
+      description: 获取当前登录用户详情
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 获取当前登录用户详情
+      tags:
+      - 个人中心
+  /system/user/updatePwd:
+    post:
+      description: 修改密码
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改密码
+      tags:
+      - 个人中心
 swagger: "2.0"

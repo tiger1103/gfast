@@ -11,7 +11,13 @@ import (
 
 type Upload struct{}
 
-//CkEditor编辑器上传附件
+// @Summary CkEditor编辑器上传附件
+// @Description CkEditor编辑器上传附件
+// @Tags 公共
+// @Param upFile body string  true "upFile"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/upload/ckEditorUp [post]
+// @Security
 func (c *Upload) CkEditorUp(r *ghttp.Request) {
 	upFile := r.GetUploadFile("upload")
 	fType := gstr.ToLower(r.GetString("type"))
@@ -30,7 +36,13 @@ func (c *Upload) CkEditorUp(r *ghttp.Request) {
 	}
 }
 
-//单图片上传
+// @Summary 单图片上传
+// @Description 单图片上传
+// @Tags 公共
+// @Param file body string  true "file"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/upload/upImg [post]
+// @Security
 func (c *Upload) UpImg(r *ghttp.Request) {
 	upFile := r.GetUploadFile("file")
 	info, err := upload_service.UpImg(upFile)
@@ -43,7 +55,13 @@ func (c *Upload) UpImg(r *ghttp.Request) {
 	response.SusJson(true, r, "上传成功", res)
 }
 
-//批量上传图片
+// @Summary 批量上传图片
+// @Description 批量上传图片
+// @Tags 公共
+// @Param file body string  true "file"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/upload/upImgs [post]
+// @Security
 func (c *Upload) UpImgs(r *ghttp.Request) {
 	upFiles := r.GetUploadFiles("file")
 	infos, err := upload_service.UpImgs(upFiles)
@@ -56,7 +74,13 @@ func (c *Upload) UpImgs(r *ghttp.Request) {
 	response.SusJson(true, r, "上传成功", res)
 }
 
-//单文件上传
+// @Summary 单文件上传
+// @Description 单文件上传
+// @Tags 公共
+// @Param file body string  true "file"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/upload/upFile [post]
+// @Security
 func (c *Upload) UpFile(r *ghttp.Request) {
 	upFile := r.GetUploadFile("file")
 	info, err := upload_service.UpFile(upFile)
@@ -69,7 +93,13 @@ func (c *Upload) UpFile(r *ghttp.Request) {
 	response.SusJson(true, r, "上传成功", res)
 }
 
-//批量上传文件
+// @Summary 批量上传文件
+// @Description 批量上传文件
+// @Tags 公共
+// @Param file body string  true "file"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/upload/upFiles [post]
+// @Security
 func (c *Upload) UpFiles(r *ghttp.Request) {
 	upFiles := r.GetUploadFiles("file")
 	infos, err := upload_service.UpFiles(upFiles)

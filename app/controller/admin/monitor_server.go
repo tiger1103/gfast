@@ -23,6 +23,12 @@ type MonitorServer struct{}
 
 var StartTime = gtime.Datetime()
 
+// @Summary 服务监控
+// @Description 服务监控
+// @Tags 服务监控
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/server/info [get]
+// @Security
 func (c *MonitorServer) Info(r *ghttp.Request) {
 	cpuNum := runtime.NumCPU() //核心数
 

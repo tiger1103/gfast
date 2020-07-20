@@ -11,6 +11,13 @@ import (
 
 type Post struct{}
 
+// @Summary 分页岗位列表数据
+// @Description 分页列表
+// @Tags 岗位
+// @Param data body sys_post.SearchParams true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/post/list [post]
+// @Security
 func (c *Post) List(r *ghttp.Request) {
 	var req *sys_post.SearchParams
 
@@ -33,6 +40,15 @@ func (c *Post) List(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", result)
 }
 
+// @Summary 添加岗位
+// @Description 添加岗位
+// @Tags 岗位
+// @Accept  application/json
+// @Product application/json
+// @Param data body sys_post.AddParams true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/post/add [post]
+// @Security Bearer
 func (c *Post) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 
@@ -50,6 +66,15 @@ func (c *Post) Add(r *ghttp.Request) {
 	}
 }
 
+// @Summary 修改岗位
+// @Description 获取JSON
+// @Tags 岗位
+// @Accept  application/json
+// @Product application/json
+// @Param data body sys_post.EditParams true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "修改成功"}"
+// @Router /system/post/edit [post]
+// @Security Bearer
 func (c *Post) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var editParams *sys_post.EditParams
@@ -78,6 +103,12 @@ func (c *Post) Edit(r *ghttp.Request) {
 
 }
 
+// @Summary 删除岗位
+// @Description 删除数据
+// @Tags 岗位
+// @Param ids path integer true "ids[1,2,3...]"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "删除成功"}"
+// @Router /system/post/delete [get]
 func (c *Post) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {

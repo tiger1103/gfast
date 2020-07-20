@@ -26,7 +26,13 @@ import (
 //菜单用户组用户管理
 type Auth struct{}
 
-//菜单列表
+// @Summary 分页列表
+// @Description 获取菜单列表
+// @Tags 菜单管理
+// @Param data body auth_rule.ReqSearch true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/auth/menuList [get]
+// @Security
 func (c *Auth) MenuList(r *ghttp.Request) {
 	var req *auth_rule.ReqSearch
 	//获取参数
@@ -85,7 +91,15 @@ func (c *Auth) MenuSort(r *ghttp.Request) {
 	response.SusJson(true, r, "排序成功")
 }
 
-//添加菜单
+// @Summary 添加菜单
+// @Description 添加菜单
+// @Tags 菜单管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body auth_rule.MenuReq true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/addMenu [post]
+// @Security Bearer
 func (c *Auth) AddMenu(r *ghttp.Request) {
 	if r.Method == "POST" {
 		menu := new(auth_rule.MenuReq)
@@ -118,7 +132,15 @@ func (c *Auth) AddMenu(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", g.Map{"parentList": listEntities})
 }
 
-//修改菜单
+// @Summary 修改菜单
+// @Description 修改菜单
+// @Tags 菜单管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body auth_rule.MenuReq true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "修改成功"}"
+// @Router /system/auth/editMenu [post]
+// @Security Bearer
 func (c *Auth) EditMenu(r *ghttp.Request) {
 	id := r.GetInt("menuId")
 	if r.Method == "POST" {
@@ -162,7 +184,15 @@ func (c *Auth) EditMenu(r *ghttp.Request) {
 	})
 }
 
-//删除菜单
+// @Summary 删除菜单
+// @Description 删除菜单
+// @Tags 菜单管理
+// @Accept  application/json
+// @Product application/json
+// @Param ids body integer  true "ids[1,2,3]"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "修改成功"}"
+// @Router /system/auth/deleteMenu [delete]
+// @Security Bearer
 func (c *Auth) DeleteMenu(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {
@@ -178,7 +208,13 @@ func (c *Auth) DeleteMenu(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//角色列表
+// @Summary 角色列表
+// @Description 分页列表
+// @Tags 角色管理
+// @Param data body role.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/auth/roleList [get]
+// @Security
 func (c *Auth) RoleList(r *ghttp.Request) {
 	var req *role.SelectPageReq
 	//获取参数
@@ -204,7 +240,15 @@ func (c *Auth) RoleList(r *ghttp.Request) {
 	})
 }
 
-//添加角色
+// @Summary 添加角色
+// @Description 添加角色
+// @Tags 角色管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body string  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/addRole [post]
+// @Security Bearer
 func (c *Auth) AddRole(r *ghttp.Request) {
 	//添加操作
 	if r.Method == "POST" {
@@ -258,7 +302,15 @@ func (c *Auth) AddRole(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", res)
 }
 
-//修改角色
+// @Summary 修改角色
+// @Description 修改角色
+// @Tags 角色管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body string  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/editRole [post]
+// @Security Bearer
 func (c *Auth) EditRole(r *ghttp.Request) {
 	id := r.GetRequestInt64("roleId")
 	if r.Method == "POST" {
@@ -330,7 +382,15 @@ func (c *Auth) EditRole(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", res)
 }
 
-//删除角色
+// @Summary 删除角色
+// @Description 删除角色
+// @Tags 角色管理
+// @Accept  application/json
+// @Product application/json
+// @Param ids body integer  true "ids[1,2,3]"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/deleteRole [delete]
+// @Security Bearer
 func (c *Auth) DeleteRole(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {
@@ -345,7 +405,15 @@ func (c *Auth) DeleteRole(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//添加管理员
+// @Summary 添加用户
+// @Description 添加用户
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body user.AddUserReq  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/addUser [post]
+// @Security Bearer
 func (c *Auth) AddUser(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *user.AddUserReq
@@ -389,7 +457,15 @@ func (c *Auth) AddUser(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", res)
 }
 
-//修改管理员
+// @Summary 编辑用户
+// @Description 编辑用户
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body user.EditUserReq  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/editUser [post]
+// @Security Bearer
 func (c *Auth) EditUser(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *user.EditUserReq
@@ -459,7 +535,13 @@ func (c *Auth) EditUser(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", res)
 }
 
-//用户列表
+// @Summary 用户列表
+// @Description 分页列表
+// @Tags 用户管理
+// @Param data body user.SearchReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/Auth/userList [get]
+// @Security
 func (c *Auth) UserList(r *ghttp.Request) {
 	var req *user.SearchReq
 	//获取参数
@@ -525,7 +607,15 @@ func (c *Auth) UserList(r *ghttp.Request) {
 	response.SusJson(true, r, "成功", res)
 }
 
-//删除管理员
+// @Summary 删除管理员
+// @Description 删除管理员
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param ids path integer  true "ids[1,2,3...]"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/deleteAdmin [delete]
+// @Security Bearer
 func (c *Auth) DeleteAdmin(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) > 0 {
@@ -552,7 +642,15 @@ func (c *Auth) DeleteAdmin(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//设置角色状态
+// @Summary 设置角色状态
+// @Description 设置角色状态
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body role.StatusSetReq  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/statusSetRole [post]
+// @Security Bearer
 func (c *Auth) StatusSetRole(r *ghttp.Request) {
 	var req *role.StatusSetReq
 	//获取参数
@@ -566,7 +664,15 @@ func (c *Auth) StatusSetRole(r *ghttp.Request) {
 	response.SusJson(true, r, "状态设置成功")
 }
 
-//角色数据权限分配
+// @Summary 角色数据权限分配
+// @Description 角色数据权限分配
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body role.DataScopeReq  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/roleDataScope [post]
+// @Security Bearer
 func (c *Auth) RoleDataScope(r *ghttp.Request) {
 	var req *role.DataScopeReq
 	//获取参数
@@ -580,7 +686,15 @@ func (c *Auth) RoleDataScope(r *ghttp.Request) {
 	response.SusJson(true, r, "数据权限设置成功", req)
 }
 
-//修改用户状态
+// @Summary 修改用户状态
+// @Description 修改用户状态
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body user.StatusReq  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/changeUserStatus [post]
+// @Security Bearer
 func (c *Auth) ChangeUserStatus(r *ghttp.Request) {
 	var req *user.StatusReq
 	//获取参数
@@ -594,7 +708,15 @@ func (c *Auth) ChangeUserStatus(r *ghttp.Request) {
 	}
 }
 
-//重置用户密码
+// @Summary 重置用户密码
+// @Description 重置用户密码
+// @Tags 用户管理
+// @Accept  application/json
+// @Product application/json
+// @Param data body user.ResetPwdReq  true "data"
+// @Success 200 {object} response.Response	"{"code": 0, "message": "添加成功"}"
+// @Router /system/auth/resetUserPwd [post]
+// @Security Bearer
 func (c *Auth) ResetUserPwd(r *ghttp.Request) {
 	var req *user.ResetPwdReq
 	//获取参数

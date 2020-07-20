@@ -16,7 +16,13 @@ import (
 
 type Gen struct{}
 
-//查询数据库列表
+// @Summary 查询数据库列表
+// @Description 查询数据库列表
+// @Tags 系统工具
+// @Param data body gen_table.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/dataList [get]
+// @Security
 func (c *Gen) DataList(r *ghttp.Request) {
 	var req *gen_table.SelectPageReq
 	//获取参数
@@ -34,7 +40,13 @@ func (c *Gen) DataList(r *ghttp.Request) {
 	})
 }
 
-//表列表
+// @Summary 表列表
+// @Description 表列表
+// @Tags 系统工具
+// @Param data body gen_table.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/tableList [post]
+// @Security
 func (c *Gen) TableList(r *ghttp.Request) {
 	var req *gen_table.SelectPageReq
 	//获取参数
@@ -51,7 +63,13 @@ func (c *Gen) TableList(r *ghttp.Request) {
 	})
 }
 
-//导入表结构操作
+// @Summary 导入表结构操作
+// @Description 导入表结构操作
+// @Tags 系统工具
+// @Param tables body string  true "tables"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/importTableSave [post]
+// @Security
 func (c *Gen) ImportTableSave(r *ghttp.Request) {
 	tables := r.GetString("tables")
 	if tables == "" {
@@ -74,7 +92,13 @@ func (c *Gen) ImportTableSave(r *ghttp.Request) {
 	response.SusJson(true, r, "导入数据表成功")
 }
 
-//根据表格ID获取表格字段列表数据
+// @Summary 根据表格ID获取表格字段列表数据
+// @Description 根据表格ID获取表格字段列表数据
+// @Tags 系统工具
+// @Param tableId body integer   true "tableId"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/columnList [post]
+// @Security
 func (c *Gen) ColumnList(r *ghttp.Request) {
 	tableId := r.GetInt64("tableId")
 	if tableId == 0 {
@@ -103,7 +127,13 @@ func (c *Gen) ColumnList(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", res)
 }
 
-//编辑表格信息
+// @Summary 编辑表格信息
+// @Description 编辑表格信息
+// @Tags 系统工具
+// @Param data body gen_table.EditReq  true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/editSave [post]
+// @Security
 func (c *Gen) EditSave(r *ghttp.Request) {
 	var req *gen_table.EditReq
 	//获取参数
@@ -119,7 +149,13 @@ func (c *Gen) EditSave(r *ghttp.Request) {
 	response.SusJson(true, r, "设置成功")
 }
 
-//删除表格数据
+// @Summary 删除表格数据
+// @Description 删除表格数据
+// @Tags 系统工具
+// @Param ids body integer   true "ids[1,2,3...]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/delete [delete]
+// @Security
 func (c *Gen) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {
@@ -132,7 +168,13 @@ func (c *Gen) Delete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//代码生成预览
+// @Summary 代码生成预览
+// @Description 代码生成预览
+// @Tags 系统工具
+// @Param tableId body integer   true "tableId"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/tools/gen/preview [post]
+// @Security
 func (c *Gen) Preview(r *ghttp.Request) {
 	tableId := r.GetInt64("tableId")
 	if tableId == 0 {

@@ -12,7 +12,12 @@ import (
 
 type Index struct{}
 
-//获取登录用户信息
+// @Summary 获取登录用户信息
+// @Description 获取登录用户信息
+// @Tags 公共
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/index/getInfo [get]
+// @Security
 func (c *Index) GetInfo(r *ghttp.Request) {
 	//获取用户信息
 	userEntity, err := user_service.GetCurrentUser(r)
@@ -57,7 +62,12 @@ func (c *Index) GetInfo(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", result)
 }
 
-//获取后台菜单
+// @Summary 获取后台菜单
+// @Description 获取后台菜单
+// @Tags 公共
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/index/getRouters [get]
+// @Security
 func (c *Index) GetRouters(r *ghttp.Request) {
 	//获取用户信息
 	userEntity := user_service.GetLoginAdminInfo(r)

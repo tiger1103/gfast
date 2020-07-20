@@ -12,7 +12,13 @@ import (
 
 type MonitorOperationLog struct{}
 
-//操作日志列表
+// @Summary 操作日志列表
+// @Description 操作日志列表
+// @Tags 操作日志
+// @Param data body sys_oper_log.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/operlog/list [get]
+// @Security
 func (c *MonitorOperationLog) List(r *ghttp.Request) {
 	var req *sys_oper_log.SelectPageReq
 	//获取参数
@@ -37,7 +43,13 @@ func (c *MonitorOperationLog) List(r *ghttp.Request) {
 	response.SusJson(true, r, "操作日志列表", result)
 }
 
-//操作详细
+// @Summary 操作详细
+// @Description 操作详细
+// @Tags 操作日志
+// @Param id body integer  true "id"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/operlog/detail [post]
+// @Security
 func (c *MonitorOperationLog) Detail(r *ghttp.Request) {
 	id := r.GetInt64("id")
 	log, err := monitor_service.GetOperationLogById(id)
@@ -49,7 +61,13 @@ func (c *MonitorOperationLog) Detail(r *ghttp.Request) {
 	})
 }
 
-//删除日志
+// @Summary 删除日志
+// @Description 删除日志
+// @Tags 操作日志
+// @Param ids body integer  true "ids[]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/operlog/delete [delete]
+// @Security
 func (c *MonitorOperationLog) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	err := monitor_service.DeleteOperationLogByIds(ids)
@@ -59,7 +77,13 @@ func (c *MonitorOperationLog) Delete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//清空日志
+// @Summary 清空日志
+// @Description 清空日志
+// @Tags 操作日志
+// @Param ids body integer  true "ids[]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/operlog/clear [post]
+// @Security
 func (c *MonitorOperationLog) Clear(r *ghttp.Request) {
 	err := monitor_service.ClearOperationLog()
 	if err != nil {

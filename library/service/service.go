@@ -21,7 +21,7 @@ import (
 )
 
 //版本号
-const Version = "1.0.01"
+const Version = "1.0.02"
 
 var (
 	AdminMultiLogin      bool  //是否允许后台管理员多端登陆

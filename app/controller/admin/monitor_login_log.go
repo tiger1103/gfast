@@ -12,7 +12,13 @@ import (
 
 type MonitorLoginLog struct{}
 
-//登录日志列表
+// @Summary 登录日志列表
+// @Description 登录日志列表
+// @Tags 登录日志
+// @Param data body sys_login_log.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/loginlog/list [get]
+// @Security
 func (c *MonitorLoginLog) List(r *ghttp.Request) {
 	var req *sys_login_log.SelectPageReq
 	//获取参数
@@ -37,7 +43,13 @@ func (c *MonitorLoginLog) List(r *ghttp.Request) {
 	response.SusJson(true, r, "登录日志列表", result)
 }
 
-//删除登录日志
+// @Summary 删除登录日志
+// @Description 删除登录日志
+// @Tags 登录日志
+// @Param ids body integer true "ids[]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/loginlog/delete [delete]
+// @Security
 func (c *MonitorLoginLog) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	err := monitor_service.DeleteLoginLogByIds(ids)
@@ -47,7 +59,12 @@ func (c *MonitorLoginLog) Delete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-//清空登录日志
+// @Summary 清空登录日志
+// @Description 清空登录日志
+// @Tags 登录日志
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/loginlog/clear [post]
+// @Security
 func (c *MonitorLoginLog) Clear(r *ghttp.Request) {
 	err := monitor_service.ClearLoginLog()
 	if err != nil {

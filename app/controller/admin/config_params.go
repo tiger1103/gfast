@@ -14,7 +14,13 @@ import (
 
 type Params struct{}
 
-//参数列表
+// @Summary 参数列表
+// @Description 参数列表
+// @Tags 参数管理
+// @Param data body sys_config.SelectPageReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/params/list [get]
+// @Security
 func (c *Params) List(r *ghttp.Request) {
 	var req *sys_config.SelectPageReq
 	//获取参数
@@ -39,7 +45,13 @@ func (c *Params) List(r *ghttp.Request) {
 	response.SusJson(true, r, "字典列表", result)
 }
 
-//添加参数
+// @Summary 添加参数
+// @Description 添加参数
+// @Tags 参数管理
+// @Param data body sys_config.AddReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/params/add [post]
+// @Security
 func (c *Params) Add(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_config.AddReq
@@ -61,7 +73,13 @@ func (c *Params) Add(r *ghttp.Request) {
 	}
 }
 
-//修改参数
+// @Summary 修改参数
+// @Description 修改参数
+// @Tags 参数管理
+// @Param data body sys_config.EditReq true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/params/edit [post]
+// @Security
 func (c *Params) Edit(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *sys_config.EditReq
@@ -89,7 +107,13 @@ func (c *Params) Edit(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", params)
 }
 
-//删除参数
+// @Summary 删除参数
+// @Description 删除参数
+// @Tags 参数管理
+// @Param ids body integer  true "ids[1,2,3...]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/config/params/delete [delete]
+// @Security
 func (c *Params) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {

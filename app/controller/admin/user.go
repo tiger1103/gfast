@@ -12,7 +12,13 @@ import (
 
 type User struct{}
 
-//头像上传上传
+// @Summary 头像上传上传
+// @Description 头像上传上传
+// @Tags 个人中心
+// @Param avatarfile body string  true "avatarfile"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/user/avatar [post]
+// @Security
 func (c *User) Avatar(r *ghttp.Request) {
 	upFile := r.GetUploadFile("avatarfile")
 	info, err := upload_service.UpImg(upFile)
@@ -31,9 +37,12 @@ func (c *User) Avatar(r *ghttp.Request) {
 	response.SusJson(true, r, "上传成功", res)
 }
 
-/**
-获取当前登录用户详情
-*/
+// @Summary 获取当前登录用户详情
+// @Description 获取当前登录用户详情
+// @Tags 个人中心
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/user/profile [post]
+// @Security
 func (c *User) Profile(r *ghttp.Request) {
 	//获取用户信息
 	userInfo, err := user_service.GetCurrentUserInfo(r)
@@ -47,9 +56,12 @@ func (c *User) Profile(r *ghttp.Request) {
 	response.SusJson(true, r, "ok", userInfo)
 }
 
-/**
-修改用户信息
-*/
+// @Summary 修改用户信息
+// @Description 修改用户信息
+// @Tags 个人中心
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/user/edit [post]
+// @Security
 func (c *User) Edit(r *ghttp.Request) {
 
 	if r.Method == "POST" {
@@ -67,9 +79,12 @@ func (c *User) Edit(r *ghttp.Request) {
 
 }
 
-/**
-修改密码
-*/
+// @Summary 修改密码
+// @Description 修改密码
+// @Tags 个人中心
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/user/updatePwd [post]
+// @Security
 func (c *User) UpdatePwd(r *ghttp.Request) {
 	if r.Method == "POST" {
 		var req *user_service.UpdatePwdReq

@@ -11,7 +11,13 @@ import (
 
 type MonitorOnline struct{}
 
-//用户状态列表
+// @Summary 用户状态列表
+// @Description 用户状态列表
+// @Tags 在线用户
+// @Param data body user_online.ReqListSearch true "data"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/online/list [get]
+// @Security
 func (c *MonitorOnline) List(r *ghttp.Request) {
 	var req *user_online.ReqListSearch
 	//获取参数
@@ -30,7 +36,13 @@ func (c *MonitorOnline) List(r *ghttp.Request) {
 	response.SusJson(true, r, "用户在线状态", result)
 }
 
-//强制退出
+// @Summary 强制退出
+// @Description 强制退出
+// @Tags 在线用户
+// @Param ids body integer  true "ids[]"
+// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Router /system/monitor/online/forceLogout [post]
+// @Security
 func (c *MonitorOnline) ForceLogout(r *ghttp.Request) {
 	ids := r.GetInts("ids")
 	if len(ids) == 0 {

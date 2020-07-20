@@ -16,8 +16,7 @@ type Dept struct{}
 // @Summary 分页部门列表数据
 // @Description 分页列表
 // @Tags 部门
-// @Param deptName query string false "deptName"
-// @Param status query string false "status"
+// @Param data body sys_dept.SearchParams true "data"
 // @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
 // @Router /system/dept/list [get]
 // @Security
