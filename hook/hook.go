@@ -5,6 +5,7 @@ import (
 	"gfast/app/service/admin/auth_service"
 	"gfast/app/service/admin/monitor_service"
 	"gfast/app/service/admin/user_service"
+	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
@@ -31,5 +32,5 @@ func OperationLog(r *ghttp.Request) {
 			break
 		}
 	}
-	go monitor_service.OperationLogAdd(user, menu, url, r.GetMap(), r.Method, r.GetClientIp())
+	go monitor_service.OperationLogAdd(user, menu, url, r.GetMap(), r.Method, utils.GetClientIp(r))
 }

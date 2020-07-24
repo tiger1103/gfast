@@ -63,6 +63,15 @@ func GetLocalIP() (ip string, err error) {
 	return
 }
 
+//获取客户端IP
+func GetClientIp(r *ghttp.Request) string {
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
+		ip = r.GetClientIp()
+	}
+	return ip
+}
+
 //获取相差时间
 func GetHourDiffer(startTime, endTime string) int64 {
 	var hour int64

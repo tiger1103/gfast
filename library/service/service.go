@@ -100,11 +100,11 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	password := utils.EncryptCBC(data["password"], utils.AdminCbcPublicKey)
 	var keys string
 	if AdminMultiLogin {
-		keys = data["username"] + password + gmd5.MustEncryptString(r.GetClientIp())
+		keys = data["username"] + password + gmd5.MustEncryptString(utils.GetClientIp(r))
 	} else {
 		keys = data["username"] + password
 	}
-	ip := r.GetClientIp()
+	ip := utils.GetClientIp(r)
 	userAgent := r.Header.Get("User-Agent")
 	if err, user := signIn(data["username"], password, r); err != nil {
 		go loginLog(0, data["username"], ip, userAgent, err.Error())
@@ -140,7 +140,7 @@ func AdminLoginAfter(r *ghttp.Request, respData gtoken.Resp) {
 			Token:      token,
 			CreateTime: gconv.Uint64(gtime.Timestamp()),
 			UserName:   userInfo.UserName,
-			Ip:         r.GetClientIp(),
+			Ip:         utils.GetClientIp(r),
 			Explorer:   explorer,
 			Os:         os,
 		}
@@ -200,7 +200,7 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.User) {
 	returnData := *user
 	//更新登陆时间及ip
 	user.LastLoginTime = gconv.Int(gtime.Timestamp())
-	user.LastLoginIp = r.GetClientIp()
+	user.LastLoginIp = utils.GetClientIp(r)
 	user.Update()
 	return nil, &returnData
 }
