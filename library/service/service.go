@@ -13,6 +13,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
 	"github.com/mojocn/base64Captcha"
@@ -67,6 +68,7 @@ func VerifyString(id, answer string) bool {
 	driver := new(base64Captcha.DriverString)
 	store := base64Captcha.DefaultMemStore
 	c := base64Captcha.NewCaptcha(driver, store)
+	answer = gstr.ToLower(answer)
 	return c.Verify(id, answer, true)
 }
 

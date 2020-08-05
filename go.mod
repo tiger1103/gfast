@@ -7,7 +7,7 @@ require (
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/goflyfox/gtoken v1.3.17
 	github.com/gogf/gf v1.13.1
-	github.com/mojocn/base64Captcha v1.3.0
+	github.com/mojocn/base64Captcha v1.3.1
 	github.com/mssola/user_agent v0.5.1
 	github.com/shirou/gopsutil v2.20.2+incompatible
 	github.com/stretchr/testify v1.5.1 // indirect
