@@ -4,12 +4,8 @@ import (
 	"gfast/app/model/admin/user_online"
 	"gfast/boot"
 	"gfast/library/service"
-	"github.com/goflyfox/gtoken/gtoken"
-	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/os/gcache"
-	"github.com/gogf/gf/util/gconv"
 )
 
 //获取在线用户列表
@@ -20,41 +16,7 @@ func GetOnlineListPage(req *user_online.ReqListSearch) (total, page int, list []
 	if req.PageSize == 0 {
 		req.PageSize = service.AdminPageNum
 	}
-	return user_online.GetOnlineListPage(req)
-}
-
-//通过token获取登录用户数据
-func GetOnlineInfo(token string) g.Map {
-	uuid, userKey := GetUuidUserKeyByToken(token)
-	cacheKey := boot.AdminGfToken.CacheKey + userKey
-	switch boot.AdminGfToken.CacheMode {
-	case gtoken.CacheModeCache:
-		userCacheValue := gcache.Get(cacheKey)
-		if userCacheValue == nil {
-			return nil
-		}
-		return gconv.Map(userCacheValue)
-	case gtoken.CacheModeRedis:
-		var userCache g.Map
-		userCacheJson, err := g.Redis().Do("GET", cacheKey)
-		if err != nil {
-			g.Log().Error("[GToken]cache get error", err)
-			return nil
-		}
-		if userCacheJson == nil {
-			return nil
-		}
-		err = gjson.DecodeTo(userCacheJson, &userCache)
-		if err != nil {
-			g.Log().Error("[GToken]cache get json error", err)
-			return nil
-		}
-		if uuid != userCache["uuid"] {
-			return nil
-		}
-		return userCache
-	}
-	return nil
+	return user_online.GetOnlineListPage(req, false)
 }
 
 //通过token获取uuid和userKey

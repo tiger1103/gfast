@@ -84,7 +84,8 @@ go run main.go 直接访问http://localhost:8200
     </tr>
 </table>
 
-##交流QQ群
-QQ群二维码  <img src="https://gitee.com/tiger1103/gfast/raw/master/public/qqcode.png"/>
+## 交流QQ群  
 
-快来加入群聊【Gfast框架交流群】(群号865697297)，发现精彩内容。
+> <img src="https://gitee.com/tiger1103/gfast/raw/master/public/qqcode.png"/>  
+
+> 快来加入群聊【Gfast框架交流群】(群号865697297)，发现精彩内容。  

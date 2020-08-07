@@ -21,9 +21,9 @@ func CORS(r *ghttp.Request) {
 
 //权限判断处理中间件
 func Auth(r *ghttp.Request) {
-	if r.Method != "GET" {
+	/*if r.Method != "GET" {
 		response.FailJson(true, r, "演示系统禁止操作")
-	}
+	}*/
 	//获取登陆用户id
 	adminId := user_service.GetLoginID(r)
 	//获取无需验证权限的用户id

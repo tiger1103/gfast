@@ -180,7 +180,7 @@ func JobStart(job *Entity) error {
 	rs := gcron.Search(job.InvokeTarget)
 	if rs == nil {
 		if job.MisfirePolicy == 1 {
-			task, err := gcron.Add(job.CronExpression, f.Run, job.InvokeTarget)
+			task, err := gcron.AddSingleton(job.CronExpression, f.Run, job.InvokeTarget)
 			if err != nil || task == nil {
 				return err
 			}
@@ -208,7 +208,7 @@ func JobStop(job *Entity) error {
 	}
 	rs := gcron.Search(job.InvokeTarget)
 	if rs != nil {
-		gcron.Stop(job.InvokeTarget)
+		gcron.Remove(job.InvokeTarget)
 	}
 	job.Status = 1
 	job.Update()

@@ -15,7 +15,7 @@ type ReqListSearch struct {
 }
 
 //获取在线用户列表
-func GetOnlineListPage(req *ReqListSearch) (total, page int, list []*Entity, err error) {
+func GetOnlineListPage(req *ReqListSearch, hasToken bool) (total, page int, list []*Entity, err error) {
 	page = req.PageNum
 	model := Model
 	if req.Ip != "" {
@@ -30,8 +30,11 @@ func GetOnlineListPage(req *ReqListSearch) (total, page int, list []*Entity, err
 		err = gerror.New("获取总行数失败")
 		return
 	}
-
-	list, err = model.FieldsEx("token").Page(page, req.PageSize).Order("create_time DESC").All()
+	if !hasToken {
+		list, err = model.FieldsEx("token").Page(page, req.PageSize).Order("create_time DESC").All()
+	} else {
+		list, err = model.Page(page, req.PageSize).Order("create_time DESC").All()
+	}
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取数据失败")
