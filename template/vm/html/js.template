@@ -40,7 +40,7 @@ export function update{{.table.BusinessName|UcFirst}}(data) {
 export function del{{.table.BusinessName|UcFirst}}(ids) {
     return request({
         url: '/{{.table.ModuleName}}/{{.table.BusinessName}}/delete',
-        method: 'delete'
+        method: 'delete',
         data:{ids:ids}
     })
 }

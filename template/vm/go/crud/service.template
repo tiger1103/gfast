@@ -2,7 +2,7 @@
 // 生成日期：{{.table.CreateTime}}
 // 生成人：{{.table.FunctionAuthor}}
 // ==========================================================================
-package {{.table.BusinessName}}
+package {{.table.BusinessName}}_service
 
 import (
 	{{.table.BusinessName}}Model "{{.table.PackageName}}/app/model/{{.table.ModuleName}}/{{.table.BusinessName}}"

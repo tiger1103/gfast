@@ -8,6 +8,8 @@ import (
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gview"
+	"github.com/gogf/gf/text/gregex"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
@@ -200,25 +202,42 @@ func (c *Gen) Preview(r *ghttp.Request) {
 	vueKey := "vm/html/" + entity.BusinessName + "_vue.js.vm"
 	vueValue := ""
 
-	g.View().BindFuncMap(g.Map{
+	view := gview.New()
+	view.BindFuncMap(g.Map{
 		"UcFirst": func(str string) string {
 			return gstr.UcFirst(str)
 		},
 	})
-	if tmpController, err := r.Response.ParseTpl("vm/go/controller.template", g.Map{"table": entity}); err == nil {
+	view.SetConfigWithMap(g.Map{
+		"Paths":      []string{"template"},
+		"Delimiters": []string{"{{", "}}"},
+	})
+	//树形菜单选项
+	var options g.Map
+	if entity.TplCategory == "tree" {
+		options = gjson.New(entity.Options).ToMap()
+	}
+	g.Log().Debug(options)
+	if tmpController, err := view.Parse("vm/go/"+entity.TplCategory+"/controller.template", g.Map{"table": entity}); err == nil {
 		controllerValue = tmpController
 	}
-	if tmpService, err := r.Response.ParseTpl("vm/go/service.template", g.Map{"table": entity}); err == nil {
+	if tmpService, err := view.Parse("vm/go/"+entity.TplCategory+"/service.template", g.Map{"table": entity, "options": options}); err == nil {
 		serviceValue = tmpService
 	}
-	if tmpExtend, err := r.Response.ParseTpl("vm/go/extend.template", g.Map{"table": entity}); err == nil {
+	if tmpExtend, err := view.Parse("vm/go/"+entity.TplCategory+"/extend.template", g.Map{"table": entity}); err == nil {
 		extendValue = tmpExtend
+		if extendByte, err := gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(extendValue)); err == nil {
+			extendValue = gconv.String(extendByte)
+		}
 	}
-	if tmpExtend, err := r.Response.ParseTpl("vm/html/js.template", g.Map{"table": entity}); err == nil {
+	if tmpExtend, err := view.Parse("vm/html/js.template", g.Map{"table": entity}); err == nil {
 		apiJsValue = tmpExtend
 	}
-	if tmpExtend, err := r.Response.ParseTpl("vm/html/vue.template", g.Map{"table": entity}); err == nil {
+	if tmpExtend, err := view.Parse("vm/html/vue.template", g.Map{"table": entity}); err == nil {
 		vueValue = tmpExtend
+		if vueByte, err := gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(vueValue)); err == nil {
+			vueValue = gconv.String(vueByte)
+		}
 	}
 
 	response.SusJson(true, r, "ok", g.Map{

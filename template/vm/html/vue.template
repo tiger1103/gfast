@@ -53,8 +53,8 @@
             {{ $x := $column.IsList }}
             {{ if eq $x "1"}}
                 <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.GoField}}" :show-overflow-tooltip="true" />
-            {{- end }}
-            {{- end }}
+            {{end }}
+            {{end }}
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                     <el-button
@@ -90,12 +90,12 @@
               default-expand-all
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
             >
-               {{range $index,$column:=.table.Columns}}
-                   {{ $x := $column.IsList }}
-                   {{ if eq $x "1"}}
-                       <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.GoField}}" :show-overflow-tooltip="true" />
-                   {{- end }}
-               {{- end }}
+       {{range $index,$column:=.table.Columns}}
+           {{ $x := $column.IsList }}
+           {{ if eq $x "1"}}
+               <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.GoField}}" :show-overflow-tooltip="true" />
+           {{ end }}
+       {{ end }}
               <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                   <el-button
@@ -173,7 +173,7 @@
     import { list{{.table.BusinessName|UcFirst}}, get{{.table.BusinessName|UcFirst}}, del{{.table.BusinessName|UcFirst}}, add{{.table.BusinessName|UcFirst}}, update{{.table.BusinessName|UcFirst}} } from '@/api/{{.table.ModuleName}}/{{.table.BusinessName}}'
 
     export default {
-        name: 'Config',
+        name: '{{.table.BusinessName|UcFirst}}',
         data() {
             return {
                 // 遮罩层
@@ -235,7 +235,7 @@
             /** 查询参数列表 */
             getList() {
                 this.loading = true
-                list{{.table.ModuleName|UcFirst}}(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+                list{{.table.BusinessName|UcFirst}}(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
                         this.{{.table.ModuleName}}List = response.data.list
                         this.total = response.data.count
                         this.loading = false
@@ -298,7 +298,7 @@
             },
             // 多选框选中数据
             handleSelectionChange(selection) {
-                this.ids = selection.map(item => item.{{$pk}}
+                this.ids = selection.map(item => item.{{$pk}})
                 this.single = selection.length !== 1
                 this.multiple = !selection.length
             },
@@ -306,7 +306,7 @@
             handleUpdate(row) {
                 this.reset()
                 const {{$pk}} = row.{{$pk}} || this.ids
-                get{{.table.ModuleName|UcFirst}}({{$pk}}).then(response => {
+                get{{.table.BusinessName|UcFirst}}({{$pk}}).then(response => {
                     this.form = response.data
                     this.open = true
                     this.title = '修改{{.table.TableComment}}'
@@ -318,7 +318,7 @@
                 this.$refs['form'].validate(valid => {
                     if (valid) {
                         if (this.form.{{$pk}} !== undefined) {
-                            update{{.table.ModuleName|UcFirst}}(this.form).then(response => {
+                            update{{.table.BusinessName|UcFirst}}(this.form).then(response => {
                                 if (response.code === 200) {
                                     this.msgSuccess('修改成功')
                                     this.open = false
@@ -328,7 +328,7 @@
                                 }
                             })
                         } else {
-                            add{{.table.ModuleName|UcFirst}}(this.form).then(response => {
+                            add{{.table.BusinessName|UcFirst}}(this.form).then(response => {
                                 if (response.code === 200) {
                                     this.msgSuccess('新增成功')
                                     this.open = false
@@ -343,13 +343,13 @@
             },
             /** 删除按钮操作 */
             handleDelete(row) {
-                const Ids = row.{{.PkJsonField}} || this.ids
+                const Ids = row.{{$pk}} || this.ids
                 this.$confirm('是否确认删除编号为"' + Ids + '"的数据项?', '警告', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(function() {
-                    return del{{.table.ModuleName|UcFirst}}(Ids)
+                    return del{{.table.BusinessName|UcFirst}}(Ids)
                 }).then(() => {
                     this.getList()
                     this.msgSuccess('删除成功')

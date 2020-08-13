@@ -41,7 +41,7 @@ func GetVerifyImgString() (idKeyC string, base64stringC string) {
 		NoiseCount:      50,
 		ShowLineOptions: 20,
 		Length:          4,
-		Source:          "abcdefghijklmnopqrstuvwxyz0123456789",
+		Source:          "abcdefghjkmnpqrstuvwxyz23456789",
 		Fonts:           []string{"chromohv.ttf"},
 	}
 	driver = driver.ConvertFonts()
@@ -63,12 +63,7 @@ func VerifyString(id, answer string) bool {
 	return c.Verify(id, answer, true)
 }
 
-func FrontLogin(r *ghttp.Request) (string, interface{}) {
-	g.Log().Println("front login test...")
-	return "test", nil
-}
-
-// 后台登录返回方法
+// 登录返回方法
 func LoginAfter(r *ghttp.Request, respData gtoken.Resp) {
 	if !respData.Success() {
 		r.Response.WriteJson(respData)
@@ -153,7 +148,7 @@ func signIn(username, password string, r *ghttp.Request) (error, *user.User) {
 }
 
 //登录日志记录
-func loginLog(status int, username, ip, userAgent, msg string, module string) {
+func loginLog(status int, username, ip, userAgent, msg, module string) {
 	var log sys_login_log.Entity
 	log.LoginName = username
 	log.Ipaddr = ip

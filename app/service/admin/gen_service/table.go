@@ -145,6 +145,8 @@ func InitColumnField(column *gen_table_column.Entity, table *gen_table.Entity) {
 	columnName := column.ColumnName
 	column.TableId = table.TableId
 	column.CreateBy = table.CreateBy
+	column.CreateTime = gtime.Now()
+	column.UpdateTime = column.CreateTime
 	//设置字段名
 	column.GoField = ConvertToCamelCase(columnName)
 	column.HtmlField = ConvertToCamelCase1(columnName)
@@ -316,6 +318,7 @@ func InitTable(table *gen_table.Entity, operName string) {
 	table.CreateBy = operName
 	table.TplCategory = "crud"
 	table.CreateTime = gtime.Now()
+	table.UpdateTime = table.CreateTime
 }
 
 //表名转换成类名

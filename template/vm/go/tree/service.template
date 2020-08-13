@@ -1,0 +1,66 @@
+// ==========================================================================
+// 生成日期：{{.table.CreateTime}}
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+package {{.table.BusinessName}}_service
+
+import (
+	{{.table.BusinessName}}Model "{{.table.PackageName}}/app/model/{{.table.ModuleName}}/{{.table.BusinessName}}"
+)
+
+
+// 添加
+func AddSave(req *{{.table.BusinessName}}Model.ReqAdd) error {
+	return {{.table.BusinessName}}Model.AddSave(req)
+}
+
+// 删除
+func DeleteByIds(ids []int) (err error) {
+    ids, err = GetChildrenIds(ids)
+    	if err != nil {
+    		return
+    	}
+	return {{.table.BusinessName}}Model.DeleteByIds(ids)
+}
+
+//修改
+func EditSave(ReqEdit *{{.table.BusinessName}}Model.ReqEdit) error {
+	return {{.table.BusinessName}}Model.EditSave(ReqEdit)
+}
+
+// 根据ID查询
+func GetInfoById(id int64) (*{{.table.BusinessName}}Model.Entity, error) {
+	return {{.table.BusinessName}}Model.GetByID(id)
+}
+
+// 列表查询
+func GetListSearch(req *{{.table.BusinessName}}Model.ReqSearchList) (list []*{{.table.BusinessName}}Model.Entity, err error) {
+	return {{.table.BusinessName}}Model.GetListSearch(req)
+}
+
+
+
+//通过ID获取子级ID
+func GetChildrenIds(ids []int) ([]int, error) {
+	//获取所有
+	menus, err := GetList()
+	if err != nil {
+		return nil, err
+	}
+	menuList := make(g.List, len(menus))
+	for k, menu := range menus {
+		menuList[k] = gconv.Map(menu)
+	}
+	for _, id := range ids {
+		children := utils.FindSonByParentId(menuList, id, "{{index .options "tree_code"}}", "{{index .options "tree_parent_code"}}")
+		for _, cid := range children {
+			ids = append(ids, gconv.Int(cid["{{index .options "tree_code"}}"]))
+		}
+	}
+	return ids, nil
+}
+
+//获取所有数据列表
+func GetList() (list []*{{.table.BusinessName}}Model.Entity, err error) {
+	return {{.table.BusinessName}}Model.GetList()
+}
