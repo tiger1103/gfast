@@ -61,8 +61,8 @@ github.com/go-openapi/swag v0.19.9 h1:1IxuqvBUU3S2Bi4YC7tlP9SJF1gVpCvqN0T2Qof4az
 github.com/go-openapi/swag v0.19.9/go.mod h1:ao+8BpOPyKdpQz3AOJfbeEVpLmWAvlT1IfTe5McPyhY=
 github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
-github.com/goflyfox/gtoken v1.3.17 h1:/HgPG7iArkJMn8SVXcDya5+6xXvWJEpR0bxnjigq2u8=
-github.com/goflyfox/gtoken v1.3.17/go.mod h1:a9Q08qaHzoS+ko/AFrCBnq4KCesnRFZ/3eLIiERRhtU=
+github.com/goflyfox/gtoken v1.3.18 h1:LD9FFWJxYRVlCw+Xw07UT/PBkLJC60hD3kQr+9KVF2A=
+github.com/goflyfox/gtoken v1.3.18/go.mod h1:a9Q08qaHzoS+ko/AFrCBnq4KCesnRFZ/3eLIiERRhtU=
 github.com/gogf/gf v1.12.1/go.mod h1:5ItmC5B/St8P4hp0/waKmnvHwAfAJ1uspMvR2wUD4UA=
 github.com/gogf/gf v1.13.3 h1:wdyNAzOSztDkabTEqRmPeJJT93p2qBK/jPK5x+8CRSE=
 github.com/gogf/gf v1.13.3/go.mod h1:dGX0/BElXDBYbdJGascqfrWScj8IMeOietDjVD6/5Fc=

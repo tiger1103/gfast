@@ -195,8 +195,8 @@ func (c *Gen) Preview(r *ghttp.Request) {
 	controllerValue := ""
 	serviceKey := "vm/go/" + entity.BusinessName + "_service.go.vm"
 	serviceValue := ""
-	extendKey := "vm/go/" + entity.BusinessName + "_extend.go.vm"
-	extendValue := ""
+	modelKey := "vm/go/" + entity.BusinessName + "_model.go.vm"
+	modelValue := ""
 	apiJsKey := "vm/html/" + entity.BusinessName + "_api.js.vm"
 	apiJsValue := ""
 	vueKey := "vm/html/" + entity.BusinessName + "_vue.js.vm"
@@ -206,6 +206,9 @@ func (c *Gen) Preview(r *ghttp.Request) {
 	view.BindFuncMap(g.Map{
 		"UcFirst": func(str string) string {
 			return gstr.UcFirst(str)
+		},
+		"add": func(a, b int) int {
+			return a + b
 		},
 	})
 	view.SetConfigWithMap(g.Map{
@@ -217,34 +220,38 @@ func (c *Gen) Preview(r *ghttp.Request) {
 	if entity.TplCategory == "tree" {
 		options = gjson.New(entity.Options).ToMap()
 	}
-	g.Log().Debug(options)
 	if tmpController, err := view.Parse("vm/go/"+entity.TplCategory+"/controller.template", g.Map{"table": entity}); err == nil {
 		controllerValue = tmpController
 	}
 	if tmpService, err := view.Parse("vm/go/"+entity.TplCategory+"/service.template", g.Map{"table": entity, "options": options}); err == nil {
 		serviceValue = tmpService
 	}
-	if tmpExtend, err := view.Parse("vm/go/"+entity.TplCategory+"/extend.template", g.Map{"table": entity}); err == nil {
-		extendValue = tmpExtend
-		if extendByte, err := gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(extendValue)); err == nil {
-			extendValue = gconv.String(extendByte)
-		}
+	if tmpModel, err := view.Parse("vm/go/"+entity.TplCategory+"/model.template", g.Map{"table": entity}); err == nil {
+		modelValue = tmpModel
+		modelValue, err = c.trimBreak(modelValue)
 	}
-	if tmpExtend, err := view.Parse("vm/html/js.template", g.Map{"table": entity}); err == nil {
-		apiJsValue = tmpExtend
+	if tmpJs, err := view.Parse("vm/html/js.template", g.Map{"table": entity}); err == nil {
+		apiJsValue = tmpJs
 	}
-	if tmpExtend, err := view.Parse("vm/html/vue.template", g.Map{"table": entity}); err == nil {
-		vueValue = tmpExtend
-		if vueByte, err := gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(vueValue)); err == nil {
-			vueValue = gconv.String(vueByte)
-		}
+	if tmpVue, err := view.Parse("vm/html/vue_"+entity.TplCategory+".template", g.Map{"table": entity, "options": options}); err == nil {
+		vueValue = tmpVue
+		vueValue, err = c.trimBreak(vueValue)
 	}
 
 	response.SusJson(true, r, "ok", g.Map{
-		extendKey:     extendValue,
+		modelKey:      modelValue,
 		serviceKey:    serviceValue,
 		controllerKey: controllerValue,
 		apiJsKey:      apiJsValue,
 		vueKey:        vueValue,
 	})
+}
+
+//剔除多余的换行
+func (c *Gen) trimBreak(str string) (s string, err error) {
+	var b []byte
+	if b, err = gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(str)); err == nil {
+		s = gconv.String(b)
+	}
+	return
 }
