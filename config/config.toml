@@ -1,6 +1,11 @@
 # 数据库连接
 [database]
-    link = "mysql:root:123456@tcp(127.0.0.1:3306)/gfast_open"
+    type    =   "mysql"
+    host    =   "192.168.0.212"
+    port    =   "3306"
+    user    =   "devuser"
+    pass    =   "123456"
+    name    =   "gfast"
     charset   = "utf8mb4" #数据库编码
     maxIdle      = "10" #连接池最大闲置的连接数
     maxOpen     = "10" #连接池最大打开的连接数
