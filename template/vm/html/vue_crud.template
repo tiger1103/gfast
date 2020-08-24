@@ -16,7 +16,7 @@
 {{if eq $column.HtmlType "input"}}
       <el-form-item label="{{$comment}}" prop="{{$column.ColumnName}}">
         <el-input
-          v-model="queryParams.{$column.ColumnName}}"
+          v-model="queryParams.{{$column.ColumnName}}"
           placeholder="请输入{{$comment}}"
           clearable
           size="small"
@@ -262,7 +262,7 @@ export default {
           {{range  $index,$column := $columns}}
           {{$velocityCount := add $index 1}}
           {{if eq $column.IsQuery "1"}}
-          {{$column.ColumnName}}: null
+          {{$column.ColumnName}}: null,
           {{end}}
           {{end}}
         },
@@ -362,7 +362,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const {{$pkColumnName}} = row.{{$pkColumnName}} || this.ids
-      get{{.table.BusinessName}}({{$pkColumnName}}).then(response => {
+      get{{.table.BusinessName|UcFirst}}({{$pkColumnName}}).then(response => {
         this.form = response.data;
 {{range  $index,$column := $columns}}
 {{if eq $column.HtmlType  "checkbox"}}
