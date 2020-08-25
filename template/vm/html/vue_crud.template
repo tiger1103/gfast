@@ -28,9 +28,9 @@
         <el-select v-model="queryParams.{{$column.ColumnName}}" placeholder="请选择{{$comment}}" clearable size="small">
           <el-option
             v-for="dict in {{$column.ColumnName}}Options"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
+            :key="dict.key"
+            :label="dict.value"
+            :value="dict.key"
           />
         </el-select>
       </el-form-item>
@@ -86,7 +86,6 @@
           @click="handleDelete"
         >删除</el-button>
       </el-col>
-	  <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="{{.table.BusinessName}}List" @selection-change="handleSelectionChange">
@@ -152,9 +151,9 @@
                       <el-select v-model="form.{{$field}}" placeholder="请选择{{$comment}}">
                         <el-option
                           v-for="dict in {{$field}}Options"
-                          :key="dict.dictValue"
-                          :label="dict.dictLabel"
-                          {{if or (eq $column.GoType "int") (eq $column.GoType "int64")}}:value="parseInt(dict.dictValue)"{{else}}:value="dict.dictValue"{{end}}
+                          :key="dict.key"
+                          :label="dict.value"
+                          {{if or (eq $column.GoType "int") (eq $column.GoType "int64")}}:value="parseInt(dict.key)"{{else}}:value="dict.key"{{end}}
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -169,9 +168,9 @@
                       <el-checkbox-group v-model="form.{{$field}}">
                         <el-checkbox
                           v-for="dict in {{$field}}Options"
-                          :key="dict.dictValue"
-                          :label="dict.dictValue">
-                          {{"{{"}}dict.dictLabel{{"}}"}}
+                          :key="dict.key"
+                          :label="dict.key">
+                          {{"{{"}}dict.value{{"}}"}}
                         </el-checkbox>
                       </el-checkbox-group>
                     </el-form-item>
@@ -186,9 +185,9 @@
                       <el-radio-group v-model="form.{{$field}}">
                         <el-radio
                           v-for="dict in {{$field}}Options"
-                          :key="dict.dictValue"
-                          {{if or (eq $column.GoType "int")  (eq $column.GoType  "int64")}}:label="parseInt(dict.dictValue)"{{else}}:label="dict.dictValue"{{end}}
-                        >{{"{{"}}dict.dictLabel{{"}}"}}</el-radio>
+                          :key="dict.key"
+                          {{if or (eq $column.GoType "int")  (eq $column.GoType  "int64")}}:label="parseInt(dict.key)"{{else}}:label="dict.key"{{end}}
+                        >{{"{{"}}dict.value{{"}}"}}</el-radio>
                       </el-radio-group>
                     </el-form-item>
             {{else if and (eq $column.HtmlType "radio") $dictType }}
@@ -298,8 +297,8 @@ export default {
         getList() {
           this.loading = true;
           list{{.table.BusinessName|UcFirst}}(this.queryParams).then(response => {
-            this.{{.table.BusinessName}}List = response.rows;
-            this.total = response.total;
+            this.{{.table.BusinessName}}List = response.data.list;
+            this.total = response.data.total;
             this.loading = false;
           });
         },
