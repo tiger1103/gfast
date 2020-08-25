@@ -108,13 +108,13 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 		{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
 		{{if eq $column.QueryType "LIKE"}}
 			if req.{{$column.GoField}} != "" {
-				model.Where("{{$column.ColumnName}} like ?", "%"+req.{{$column.GoField}}+"%")
+				model = model.Where("{{$column.ColumnName}} like ?", "%"+req.{{$column.GoField}}+"%")
 			} {{else if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
 			if req.{{$column.GoField}} != "" {
-				model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
+				model = model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
 			} {{else if eq $column.GoType "int" "int64"}}
 			if req.{{$column.GoField}} != 0 {
-				model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
+				model = model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
 			}
 		{{end}} {{end}} {{end}} {{end}}
 	}
