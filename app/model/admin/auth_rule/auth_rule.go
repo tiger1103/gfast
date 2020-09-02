@@ -23,8 +23,6 @@ type MenuReq struct {
 	AlwaysShow uint   `p:"visible"`
 	Path       string `p:"path"`
 	IsFrame    uint   `p:"is_frame"`
-	ModuleType string `p:"moduleType"  v:required#所属模块不能为空`
-	ModelId    uint   `p:"modelId"`
 }
 
 //获取所有菜单
@@ -90,8 +88,6 @@ func Add(req *MenuReq) (err error, insertId int64) {
 	entity.Icon = req.Icon
 	entity.Name = req.Name
 	entity.IsFrame = req.IsFrame
-	entity.ModuleType = req.ModuleType
-	entity.ModelId = req.ModelId
 	entity.Pid = req.Pid
 	entity.Createtime = gconv.Uint(now)
 	entity.Updatetime = gconv.Uint(now)
@@ -123,8 +119,6 @@ func Edit(req *MenuReq, id int) (err error, rows int64) {
 	entity.Icon = req.Icon
 	entity.Name = req.Name
 	entity.IsFrame = req.IsFrame
-	entity.ModuleType = req.ModuleType
-	entity.ModelId = req.ModelId
 	entity.Pid = req.Pid
 	entity.Weigh = req.Weigh
 	res, e := entity.Update()
