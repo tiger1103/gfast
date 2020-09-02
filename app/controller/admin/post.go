@@ -3,6 +3,7 @@ package admin
 import (
 	"gfast/app/model/admin/sys_post"
 	"gfast/app/service/admin/post_service"
+	"gfast/app/service/admin/user_service"
 	"gfast/library/response"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -15,7 +16,7 @@ type Post struct{}
 // @Description 分页列表
 // @Tags 岗位
 // @Param data body sys_post.SearchParams true "data"
-// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
+// @Success 0 {object} response.Response "{"code": 0, "data": [...]}"
 // @Router /system/post/list [post]
 // @Security
 func (c *Post) List(r *ghttp.Request) {
@@ -57,7 +58,7 @@ func (c *Post) Add(r *ghttp.Request) {
 		if err := r.Parse(&addParams); err != nil {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 		}
-
+		addParams.AddUser = user_service.GetLoginID(r)
 		if _, err := post_service.Add(addParams); err != nil {
 			response.FailJson(true, r, err.Error())
 		}
@@ -82,7 +83,7 @@ func (c *Post) Edit(r *ghttp.Request) {
 		if err := r.Parse(&editParams); err != nil {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 		}
-
+		editParams.UpUser = user_service.GetLoginID(r)
 		if _, err := post_service.Edit(editParams); err != nil {
 			response.FailJson(true, r, err.Error())
 		}

@@ -11,6 +11,7 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gconv"
 )
 
 // Fill with you ideas below.
@@ -38,11 +39,13 @@ type AddParams struct {
 	PostSort int    `p:"postSort" v:"required#岗位排序不能为空"`
 	Status   string `p:"status" v:"required#状态不能为空"`
 	Remark   string `p:"remark"`
+	AddUser  int
 }
 
 type EditParams struct {
 	PostId int64 `p:"postId" v:"required#id必须"`
 	AddParams
+	UpUser int
 }
 
 func List(req *SearchParams) (total, page int, list gdb.Result, err error) {
@@ -105,14 +108,13 @@ func GetUsedPost() (list []*Entity, err error) {
 添加
 */
 func Add(addParams *AddParams) (result sql.Result, err error) {
-	//g.Log().Println(addParams)
 	entity := &Entity{
 		PostCode:   addParams.PostCode,
 		PostName:   addParams.PostName,
 		PostSort:   addParams.PostSort,
 		Status:     addParams.Status,
 		Remark:     addParams.Remark,
-		CreateBy:   "",
+		CreateBy:   gconv.String(addParams.AddUser),
 		CreateTime: gtime.Now(),
 	}
 
@@ -121,17 +123,19 @@ func Add(addParams *AddParams) (result sql.Result, err error) {
 }
 
 func Edit(editParams *EditParams) (result sql.Result, err error) {
-	entity := &Entity{
-		PostId:     editParams.PostId,
-		PostCode:   editParams.PostCode,
-		PostName:   editParams.PostName,
-		PostSort:   editParams.PostSort,
-		Status:     editParams.Status,
-		Remark:     editParams.Remark,
-		UpdateBy:   "",
-		UpdateTime: gtime.Now(),
+	var entity *Entity
+	entity, err = Model.FindOne(editParams.PostId)
+	entity.PostId = editParams.PostId
+	entity.PostCode = editParams.PostCode
+	entity.PostName = editParams.PostName
+	entity.PostSort = editParams.PostSort
+	entity.Status = editParams.Status
+	entity.Remark = editParams.Remark
+	entity.UpdateBy = gconv.String(editParams.UpUser)
+	entity.UpdateTime = gtime.Now()
+	if entity.CreateTime == nil {
+		entity.CreateTime = entity.UpdateTime
 	}
-
 	return entity.Update()
 }
 
