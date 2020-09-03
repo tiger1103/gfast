@@ -25,6 +25,7 @@ type Entity struct {
 	Status     uint   `orm:"status"      json:"status"`       // 状态
 	AlwaysShow uint   `orm:"always_show"   json:"alwaysShow"` //显示状态 0隐藏 1显示
 	Path       string `orm:"path"     json:"path"`            //路由地址
+	Component  string `orm:"component"     json:"component"`  //组件路径
 	IsFrame    uint   `orm:"is_frame"  json:"isFrame"`        //是否外链 1是 0否
 }
 

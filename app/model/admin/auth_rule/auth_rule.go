@@ -13,7 +13,7 @@ import (
 type MenuReq struct {
 	MenuType   uint   `p:"menuType"  v:"min:0|max:2#菜单类型最小值为:min|菜单类型最大值为:max"`
 	Pid        uint   `p:"parentId"  v:"min:0"`
-	Name       string `p:"component" v:"required#请填写规则名称"`
+	Name       string `p:"name" v:"required#请填写规则名称"`
 	Title      string `p:"menuName"  v:"required|length:1,100#请填写标题|标题长度在:min到:max位"`
 	Icon       string `p:"icon"`
 	Weigh      int    `p:"orderNum" `
@@ -22,6 +22,7 @@ type MenuReq struct {
 	Status     uint   `p:"status" `
 	AlwaysShow uint   `p:"visible"`
 	Path       string `p:"path"`
+	Component  string `p:"component" v:"required-if:menuType,1#组件路径不能为空"`
 	IsFrame    uint   `p:"is_frame"`
 }
 
@@ -84,6 +85,7 @@ func Add(req *MenuReq) (err error, insertId int64) {
 	entity.Status = req.Status
 	entity.MenuType = req.MenuType
 	entity.Path = req.Path
+	entity.Component = req.Component
 	entity.AlwaysShow = req.AlwaysShow
 	entity.Icon = req.Icon
 	entity.Name = req.Name
@@ -115,6 +117,7 @@ func Edit(req *MenuReq, id int) (err error, rows int64) {
 	entity.Status = req.Status
 	entity.MenuType = req.MenuType
 	entity.Path = req.Path
+	entity.Component = req.Component
 	entity.AlwaysShow = req.AlwaysShow
 	entity.Icon = req.Icon
 	entity.Name = req.Name

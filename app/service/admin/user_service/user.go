@@ -252,7 +252,7 @@ func setMenuMap(menu g.Map, entity *auth_rule.Entity) g.Map {
 	menu["name"] = gstr.UcFirst(entity.Path)
 	menu["menuName"] = entity.Title
 	if entity.MenuType != 0 {
-		menu["component"] = entity.Name
+		menu["component"] = entity.Component
 		menu["path"] = entity.Path
 	} else {
 		menu["path"] = "/" + entity.Path
