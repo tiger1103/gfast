@@ -124,3 +124,13 @@ func DeleteByIds(ids []int) error {
 	}
 	return nil
 }
+
+func GetCategoryAll() (entity []*Entity, err error) {
+	entity, err = Model.Where(Columns.CStatus, 1).Order(Columns.CSort + " ASC," + Columns.CId + " ASC").All()
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取模型分类数据失败")
+		return
+	}
+	return
+}

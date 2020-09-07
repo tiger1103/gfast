@@ -110,6 +110,10 @@ func (c *Auth) AddMenu(r *ghttp.Request) {
 		if !auth_service.CheckMenuNameUnique(menu.Name, 0) {
 			response.FailJson(true, r, "菜单规则名称已经存在")
 		}
+		//判断路由是否已经存在
+		if !auth_service.CheckMenuPathUnique(menu.Path, 0) {
+			response.FailJson(true, r, "路由地址已经存在")
+		}
 		//保存到数据库
 		err, _ := auth_service.AddMenu(menu)
 		if err != nil {
@@ -147,6 +151,10 @@ func (c *Auth) EditMenu(r *ghttp.Request) {
 		//判断菜单规则是否存在
 		if !auth_service.CheckMenuNameUnique(menu.Name, id) {
 			response.FailJson(true, r, "菜单规则名称已经存在")
+		}
+		//判断路由是否已经存在
+		if !auth_service.CheckMenuPathUnique(menu.Path, id) {
+			response.FailJson(true, r, "路由地址已经存在")
 		}
 		//保存到数据库
 		err, _ := auth_service.EditMenu(menu, id)

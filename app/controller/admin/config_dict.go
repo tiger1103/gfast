@@ -242,30 +242,22 @@ func (c *Dict) DataDelete(r *ghttp.Request) {
 	response.SusJson(true, r, "删除成功")
 }
 
-// @Summary 字典状态
-// @Description 字典状态
+// @Summary 获取字典对应选项
+// @Description 获取字典对应选项
 // @Tags 字典管理
+// @Param dictType query string true "dictType"
 // @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
 // @Router /system/config/dict/sysNormalDisable [post]
 // @Security
-func (c *Dict) SysNormalDisable(r *ghttp.Request) {
+func (c *Dict) GetDicts(r *ghttp.Request) {
+	dictType := r.GetString("dictType")
 	//菜单正常or停用状态
-	statusOptions, err := dict_service.GetDictWithDataByType("sys_normal_disable", "", "")
+	statusOptions, err := dict_service.GetDictWithDataByType(dictType, "", "")
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
-	response.SusJson(true, r, "", statusOptions)
+	response.SusJson(true, r, "ok", statusOptions)
 
-}
-
-func (c *Dict) SysCommonStatus(r *ghttp.Request) {
-	//获取相关选项
-	logStatus, err := dict_service.GetDictWithDataByType("sys_oper_log_status", "", "全部")
-	if err != nil {
-		response.FailJson(true, r, err.Error())
-	}
-
-	response.SusJson(true, r, "ok", logStatus)
 }
 
 // 获取字典选择框列表

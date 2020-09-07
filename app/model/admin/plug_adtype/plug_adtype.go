@@ -17,14 +17,14 @@ type AddReq struct {
 
 // EditReq 用于存储修改广告位请求参数
 type EditReq struct {
-	AdtypeID int64 `p:"adtypeID" v:"required|min:1#主键ID不能为空|主键ID值错误"`
+	AdtypeID int64 `p:"adTypeID" v:"required|min:1#主键ID不能为空|主键ID值错误"`
 	AddReq
 }
 
 // SelectPageReq 用于存储分页查询广告位的请求参数
 type SelectPageReq struct {
 	AdtypeName string `p:"adTypeName"` // 广告位名称
-	PageNo     int64  `p:"pageNo"`     // 当前页
+	PageNo     int64  `p:"pageNum"`    // 当前页
 	PageSize   int64  `p:"pageSize"`   // 每页显示记录数
 }
 
@@ -33,24 +33,24 @@ func GetAdtypeByID(id int64) (*Entity, error) {
 	entity, err := Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("根据ID查询广告位记录出错")
+		return nil, gerror.New("根据ID查询广告位记录出错")
 	}
 	if entity == nil {
-		err = gerror.New("根据ID未能查询到广告位记录")
+		return nil, gerror.New("根据ID未能查询到广告位记录")
 	}
 	return entity, nil
 }
 
-// 根据广告位的名称来判断是否已存在相同名称的广告位
-func CheakAdtypeNameUnique(adtypeName string, adTypeId int64) error {
+// 根据广告位的名称和ID来判断是否已存在相同名称的广告位
+func CheakAdtypeNameUnique(adTypeName string, adTypeId int64) error {
 	var (
 		entity *Entity
 		err    error
 	)
 	if adTypeId == 0 {
-		entity, err = Model.FindOne(Columns.AdtypeName, adtypeName)
+		entity, err = Model.FindOne(Columns.AdtypeName, adTypeName)
 	} else {
-		entity, err = Model.Where(Columns.AdtypeName, adtypeName).And(Columns.AdtypeId+"!=?", adTypeId).FindOne()
+		entity, err = Model.Where(Columns.AdtypeName, adTypeName).And(Columns.AdtypeId+"!=?", adTypeId).FindOne()
 	}
 	if err != nil {
 		g.Log().Error(err)
@@ -70,7 +70,7 @@ func AddSave(req *AddReq) error {
 	_, err := entity.Insert()
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("保存广告位失败")
+		return gerror.New("保存广告位失败")
 	}
 	return nil
 }
@@ -90,7 +90,8 @@ func EditSave(editReq *EditReq) error {
 	// 先根据ID来查询要修改的广告位记录
 	entity, err := GetAdtypeByID(editReq.AdtypeID)
 	if err != nil {
-		return err
+		g.Log().Error(err)
+		return gerror.New("查询要修改的记录时出错")
 	}
 	// 修改实体
 	entity.AdtypeName = editReq.AdtypeName

@@ -26,6 +26,7 @@ type ReqSearchList struct {
 //添加请求参数
 type ReqAdd struct {
 	ParentId            int64  `p:"parent_id" v:"integer|min:0#父级ID不能为空|父级ID必须为大于等于0的整数"`
+	ModelId             uint   `p:"model_id" v:"integer|min:1#模型ID必须为数字|模型ID不能为空"`
 	Name                string `p:"name" v:"required#栏目名称不能为空"`
 	Alias               string `p:"alias"`
 	CateType            uint   `p:"cate_type" v:"required|in:1,2,3,4#请选择栏目类型|栏目类型只能在1-4之间"`
@@ -69,6 +70,7 @@ func GetList() (list []*Entity, err error) {
 func AddSave(req *ReqAdd) (id int64, err error) {
 	var entity Entity
 	entity.ParentId = req.ParentId
+	entity.ModelId = req.ModelId
 	entity.CateType = req.CateType
 	entity.Status = req.Status
 	entity.Name = req.Name
@@ -128,6 +130,7 @@ func EditSave(req *ReqEdit) (id int64, err error) {
 	}
 	entity.Id = gconv.Uint64(req.Id)
 	entity.ParentId = req.ParentId
+	entity.ModelId = req.ModelId
 	entity.CateType = req.CateType
 	entity.Status = req.Status
 	entity.Name = req.Name

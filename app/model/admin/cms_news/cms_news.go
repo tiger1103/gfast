@@ -20,19 +20,17 @@ import (
 
 //添加文章参数
 type ReqAddParams struct {
-	NewsStatus uint `p:"status"    v:"in:0,1#状态只能为0或1"` // 状态;1:已发布;0:未发布;
-	//IsTop         uint   `p:"IsTop"         v:"in:0,1#置顶只能为0或1"`   // 是否置顶;1:置顶;0:不置顶
-	//Recommended   uint   `p:"recommended"    v:"in:0,1#推荐只能为0或1"`  // 是否推荐;1:推荐;0:不推荐
+	NewsStatus    uint   `p:"status"    v:"in:0,1#状态只能为0或1"`                                // 状态;1:已发布;0:未发布;
 	Attr          []int  `p:attr`                                                           //文章标记 置顶 推荐
 	PublishedTime string `p:"published_time"`                                               // 发布时间
 	NewsTitle     string `p:"title"     v:"required#标题不能为空"`                                // post标题
 	NewsKeywords  string `p:"keywords"`                                                     // seo keywords
 	NewsExcerpt   string `p:"excerpt"`                                                      // post摘要
 	NewsSource    string `p:"source"  `                                                     // 转载文章的来源
-	NewsContent   string `p:"content"   v:"required-if:IsJump,0#文章内容不能为空"`                  // 文章内容
 	Thumbnail     string `p:"thumbnail"    `                                                // 缩略图
 	IsJump        uint   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"`                          // 是否跳转地址
 	JumpUrl       string `p:"JumpUrl"      v:"required-if:IsJump,1|url#跳转地址不能为空|跳转地址格式不正确"` // 跳转地址
+	ModelForm     g.Map  `p:"modelForm"`
 }
 
 //文章搜索参数
@@ -51,17 +49,12 @@ type ReqEditParams struct {
 }
 
 //添加文章操作
-func AddNews(req *ReqAddParams, cateIds []int, userId int) (insId int64, err error) {
+func AddNews(req *ReqAddParams, cateIds []int, userId int, tx *gdb.TX) (insId int64, err error) {
 	if len(cateIds) == 0 {
 		err = gerror.New("栏目不能为空")
 		return
 	}
-	tx, err := g.DB().Begin()
-	if err != nil {
-		g.Log().Error(err)
-		err = gerror.New("添加失败")
-		return
-	}
+
 	nowTime := gconv.Uint(gtime.Timestamp())
 	entity := &Entity{
 		UserId:        gconv.Uint64(userId),
@@ -73,7 +66,6 @@ func AddNews(req *ReqAddParams, cateIds []int, userId int) (insId int64, err err
 		NewsKeywords:  req.NewsKeywords,
 		NewsExcerpt:   req.NewsExcerpt,
 		NewsSource:    req.NewsSource,
-		NewsContent:   req.NewsContent,
 		Thumbnail:     req.Thumbnail,
 		IsJump:        req.IsJump,
 		JumpUrl:       req.JumpUrl,
@@ -85,18 +77,16 @@ func AddNews(req *ReqAddParams, cateIds []int, userId int) (insId int64, err err
 			entity.Recommended = 1
 		}
 	}
-	res, e := entity.Save()
+	res, e := Model.TX(tx).Insert(entity)
 	if e != nil {
 		g.Log().Error(e)
-		err = gerror.New("添加文章失败")
-		tx.Rollback()
+		err = gerror.New("保存文章失败")
 		return
 	}
 	insId, err = res.LastInsertId()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("添加文章失败")
-		tx.Rollback()
 		return
 	}
 	//保存栏目与文章关联信息
@@ -105,27 +95,19 @@ func AddNews(req *ReqAddParams, cateIds []int, userId int) (insId int64, err err
 		catNewsEntity[k].CategoryId = gconv.Uint64(cateId)
 		catNewsEntity[k].NewsId = gconv.Uint64(insId)
 	}
-	_, err = cms_category_news.Model.Data(catNewsEntity).Insert()
+	_, err = cms_category_news.Model.TX(tx).Data(catNewsEntity).Insert()
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("添加文章失败")
-		tx.Rollback()
+		err = gerror.New("设置文章栏目失败")
 		return
 	}
-	tx.Commit()
 	return
 }
 
 //修改文章操作
-func EditNews(req *ReqEditParams, cateIds []int) (err error) {
+func EditNews(req *ReqEditParams, cateIds []int, tx *gdb.TX) (err error) {
 	if len(cateIds) == 0 {
 		err = gerror.New("栏目不能为空")
-		return
-	}
-	tx, err := g.DB().Begin()
-	if err != nil {
-		g.Log().Error(err)
-		err = gerror.New("添加失败")
 		return
 	}
 	entity, err := Model.FindOne("id", req.Id)
@@ -143,7 +125,6 @@ func EditNews(req *ReqEditParams, cateIds []int) (err error) {
 	entity.NewsKeywords = req.NewsKeywords
 	entity.NewsExcerpt = req.NewsExcerpt
 	entity.NewsSource = req.NewsSource
-	entity.NewsContent = req.NewsContent
 	entity.Thumbnail = req.Thumbnail
 	entity.IsJump = req.IsJump
 	entity.JumpUrl = req.JumpUrl
@@ -154,11 +135,10 @@ func EditNews(req *ReqEditParams, cateIds []int) (err error) {
 			entity.Recommended = 1
 		}
 	}
-	_, err = entity.Update()
+	_, err = Model.TX(tx).Replace(entity)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("修改文章失败")
-		tx.Rollback()
 		return
 	}
 	//删除旧的栏目文章关联信息
@@ -167,11 +147,10 @@ func EditNews(req *ReqEditParams, cateIds []int) (err error) {
 		return
 	}
 	for _, cn := range cnList {
-		_, err = cn.Delete()
+		_, err = cms_category_news.Model.TX(tx).Delete("news_id", cn.NewsId)
 		if err != nil {
 			g.Log().Error(err)
 			err = gerror.New("更新文章栏目所属信息失败")
-			tx.Rollback()
 			return
 		}
 	}
@@ -181,14 +160,12 @@ func EditNews(req *ReqEditParams, cateIds []int) (err error) {
 		catNewsEntity[k].CategoryId = gconv.Uint64(cateId)
 		catNewsEntity[k].NewsId = gconv.Uint64(req.Id)
 	}
-	_, err = cms_category_news.Model.Data(catNewsEntity).Insert()
+	_, err = cms_category_news.Model.TX(tx).Data(catNewsEntity).Insert()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("更新文章栏目所属信息失败")
-		tx.Rollback()
 		return
 	}
-	tx.Commit()
 	return
 }
 
@@ -247,12 +224,16 @@ func GetById(id int) (news *Entity, err error) {
 	return
 }
 
-func DeleteByIds(ids []int) error {
-	_, err := Model.Delete("id in (?)", ids)
+func DeleteByIds(ids []int, tx *gdb.TX) error {
+	_, err := Model.TX(tx).Delete("id in (?)", ids)
 	if err != nil {
 		g.Log().Error(err)
-		return gerror.New("删除失败")
+		return gerror.New("删除文章失败")
 	}
-	cms_category_news.Delete("news_id in (?)", ids)
+	_, err = cms_category_news.Model.TX(tx).Delete("news_id in (?)", ids)
+	if err != nil {
+		g.Log().Error(err)
+		return gerror.New("删除文章栏目关联信息失败")
+	}
 	return nil
 }

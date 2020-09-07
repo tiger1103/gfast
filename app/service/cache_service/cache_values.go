@@ -6,6 +6,7 @@ const (
 	AdminAuthRole
 	AdminCmsMenu
 	AdminConfigDict
+	GovProject
 )
 
 //缓存TAG标签
@@ -13,4 +14,7 @@ const (
 	AdminAuthTag = iota
 	AdminCmsTag
 	AdminSysConfigTag
+	AdminModelTag
+	AdminDeptUserTag
+	GovProjectCateTag
 )

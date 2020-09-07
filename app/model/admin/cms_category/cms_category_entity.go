@@ -13,6 +13,7 @@ import (
 type Entity struct {
 	Id             uint64  `orm:"id,primary"      json:"id"`              // 分类id
 	ParentId       int64   `orm:"parent_id"       json:"parent_id"`       // 分类父id
+	ModelId        uint    `orm:"model_id"       json:"model_id"`         // 模型id
 	Status         uint    `orm:"status"          json:"status"`          // 状态,1:发布,0:不发布
 	DeleteTime     uint    `orm:"delete_time"     json:"delete_time"`     // 删除时间
 	ListOrder      float64 `orm:"list_order"      json:"list_order"`      // 排序

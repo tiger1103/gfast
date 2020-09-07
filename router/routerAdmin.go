@@ -39,6 +39,12 @@ func init() {
 		//岗位管理
 		group.ALL("/post", new(admin.Post))
 
+		//cms管理
+		group.Group("/cms", func(group *ghttp.RouterGroup) {
+			group.ALL("/menu", new(admin.CmsMenu))
+			group.ALL("/news", new(admin.CmsNews))
+		})
+
 		//配置管理
 		group.Group("/config", func(group *ghttp.RouterGroup) {
 			group.ALL("/dict", new(admin.Dict))
@@ -53,9 +59,29 @@ func init() {
 			group.ALL("/operlog", new(admin.MonitorOperationLog))
 			group.ALL("/loginlog", new(admin.MonitorLoginLog))
 		})
+
+		//模型管理
+		group.Group("/model", func(group *ghttp.RouterGroup) {
+			group.ALL("/category", new(admin.ModelCategory))
+			group.ALL("/info", new(admin.ModelInfo))
+			group.ALL("/fields", new(admin.ModelFields))
+		})
+
 		//代码生成
 		group.Group("/tools", func(group *ghttp.RouterGroup) {
 			group.ALL("/gen", new(admin.Gen))
+		})
+
+		//扩展管理
+		group.Group("/plug", func(group *ghttp.RouterGroup) {
+			group.Group("/ad", func(group *ghttp.RouterGroup) {
+				group.ALL("/type", new(admin.AdType))
+				group.ALL("/info", new(admin.PlugAd))
+			})
+			group.Group("/link", func(group *ghttp.RouterGroup) {
+				group.ALL("/type", new(admin.LinkType))
+				group.ALL("/info", new(admin.PlugLink))
+			})
 		})
 	})
 }

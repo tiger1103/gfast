@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/gogf/gf/container/garray"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gconv"
 	"reflect"
@@ -80,7 +81,7 @@ func PushSonToParent(list g.List, params ...interface{}) g.List {
 		args[k] = v
 	}
 	var (
-		pid         int         //父级id
+		pid         string      //父级id
 		fieldName   string      //父级id键名
 		id          string      //id键名
 		key         string      //子级数组键名
@@ -88,7 +89,7 @@ func PushSonToParent(list g.List, params ...interface{}) g.List {
 		filterVal   interface{} //过滤的值
 		showNoChild bool        //是否显示不存在的子级健
 	)
-	pid = gconv.Int(GetSliceByKey(args, 0, 0))
+	pid = gconv.String(GetSliceByKey(args, 0, 0))
 	fieldName = gconv.String(GetSliceByKey(args, 1, "pid"))
 	id = gconv.String(GetSliceByKey(args, 2, "id"))
 	key = gconv.String(GetSliceByKey(args, 3, "children"))
@@ -97,7 +98,7 @@ func PushSonToParent(list g.List, params ...interface{}) g.List {
 	showNoChild = gconv.Bool(GetSliceByKey(args, 6, true))
 	var returnList g.List
 	for _, v := range list {
-		if gconv.Int(v[fieldName]) == pid {
+		if gconv.String(v[fieldName]) == pid {
 			if filter != "" {
 				if reflect.DeepEqual(v[filter], filterVal) {
 					args[0] = v[id]
@@ -147,8 +148,26 @@ func FindSonByParentId(list g.List, parentId int, parentIndex, idIndex string) g
 	return newList
 }
 
+//获取最顶层 parent Id
+func GetTopPidList(list g.List, parentIndex, idIndex string) *garray.Array {
+	arr := garray.NewArray()
+	for _, v1 := range list {
+		tag := true
+		for _, v2 := range list {
+			if v1[parentIndex] == v2[idIndex] {
+				tag = false
+				break
+			}
+		}
+		if tag {
+			arr.PushRight(v1[parentIndex])
+		}
+	}
+	return arr.Unique()
+}
+
 //有层级关系的数组，通过子级fid查找所有父级数组
-func findParentBySonPid(list g.List, id int, params ...interface{}) g.List {
+func FindParentBySonPid(list g.List, id int, params ...interface{}) g.List {
 	args := make([]interface{}, 4)
 	for k, v := range params {
 		if k == 4 {
@@ -172,9 +191,58 @@ func findParentBySonPid(list g.List, id int, params ...interface{}) g.List {
 			} else {
 				rList = append(rList, v)
 			}
-			r := findParentBySonPid(list, gconv.Int(v[fPid]), filter, fPid, filterValue, fid)
+			r := FindParentBySonPid(list, gconv.Int(v[fPid]), filter, fPid, filterValue, fid)
 			rList = append(rList, r...)
 		}
 	}
 	return rList
+}
+
+/**
+ * 根据id查询最顶层父级信息
+ * @param list 有层级关系的数组
+ * @param id 查找的id
+ * @param string fpid 父级id键名
+ * @param string fid 当前id键名
+ * @return g.Map
+ */
+func FindTopParent(list g.List, id int64, params ...interface{}) g.Map {
+	if len(list) == 0 {
+		return g.Map{}
+	}
+	args := make([]interface{}, 2)
+	for k, v := range params {
+		if k == 2 {
+			break
+		}
+		args[k] = v
+	}
+	var (
+		fPid = gconv.String(GetSliceByKey(args, 0, "pid")) //父级id字段键名
+		fid  = gconv.String(GetSliceByKey(args, 1, "id"))  //id字段键名
+	)
+	hasParent := true
+	top := g.Map{}
+	//找到要查找id值的数组
+	for _, v := range list {
+		if gconv.Int64(v[fid]) == gconv.Int64(id) {
+			top = v
+			break
+		}
+	}
+	for {
+		if !hasParent {
+			break
+		}
+		//查询最顶层
+		for _, v := range list {
+			if gconv.Int64(top[fPid]) == gconv.Int64(v[fid]) {
+				top = v
+				hasParent = true
+				break
+			}
+			hasParent = false
+		}
+	}
+	return top
 }

@@ -1,6 +1,8 @@
 package plug_ad
 
 import (
+	"gfast/app/model/admin/plug_adtype"
+	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
@@ -8,28 +10,34 @@ import (
 
 // AddReq 用于存储新增广告请求的请求参数
 type AddReq struct {
-	AdName     string `p:"adName"`     // 广告名称
-	AdAdtypeid int    `p:"adAdtypeid"` // 所属位置
-	AdCheckid  int    `p:"adCheckid"`  // 1=图片 2=JS
-	AdJs       string `p:"adJs"`       // JS代码
-	AdPic      string `p:"adPic"`      // 广告图片URL
-	AdUrl      string `p:"adUrl"`      // 广告链接
-	AdContent  string `p:"adContent"`  // 广告文字内容
-	AdSort     int    `p:"adSort"`     // 排序
-	AdOpen     int    `p:"adOpen"`     // 1=审核  0=未审核
+	AdName     string `p:"adName" v:"required#名称不能为空"` // 广告名称
+	AdAdtypeid int    `p:"adAdtypeid"`                 // 所属位置
+	AdCheckid  int    `p:"adCheckid"`                  // 1=图片 2=JS
+	AdJs       string `p:"adJs"`                       // JS代码
+	AdPic      string `p:"adPic"`                      // 广告图片URL
+	AdUrl      string `p:"adUrl"`                      // 广告链接
+	AdContent  string `p:"adContent"`                  // 广告文字内容
+	AdSort     int    `p:"adSort"`                     // 排序
+	AdOpen     int    `p:"adOpen"`                     // 1=审核  0=未审核
 }
 
-// EditReq 用于存储修改广告位请求参数
+// EditReq 用于存储修改广告请求参数
 type EditReq struct {
-	PlugAdID int64 `p:"plugAdID"`
+	PlugAdID int64 `p:"plugAdID" v:"required|min:1#广告id不能为空|广告id参数错误"`
 	AddReq
 }
 
 // SelectPageReq 用于存储分页查询广告的请求参数
 type SelectPageReq struct {
 	AdName   string `p:"adName"`   // 广告名称
-	PageNo   int64  `p:"pageNo"`   // 当前页
+	PageNo   int64  `p:"pageNum"`  // 当前页
 	PageSize int64  `p:"pageSize"` // 每页显示记录数
+}
+
+// 用于存储分页查询的数据
+type ListEntity struct {
+	Entity
+	AdTypeName string `orm:"adtype_name"      json:"adtype_name" ` // 广告所属位置
 }
 
 // GetPlugAdByID 根据ID查询广告记录
@@ -37,10 +45,10 @@ func GetPlugAdByID(id int64) (*Entity, error) {
 	entity, err := Model.FindOne("ad_id", id)
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("根据ID查询广告记录出错")
+		return nil, gerror.New("根据ID查询广告记录出错")
 	}
 	if entity == nil {
-		err = gerror.New("根据ID未能查询到广告记录")
+		return nil, gerror.New("根据ID未能查询到广告记录")
 	}
 	return entity, nil
 }
@@ -62,15 +70,14 @@ func AddSave(req *AddReq) error {
 	_, err := entity.Insert()
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("保存失败")
-		return err
+		return gerror.New("添加广告记录入库失败")
 	}
 	return nil
 }
 
-// 删除广告
-func DeleteByIDs(Ids []int) error {
-	_, err := Model.Delete("ad_id in(?)", Ids)
+// 批量删除广告记录
+func DeleteByIDs(ids []int) error {
+	_, err := Model.Delete("ad_id in(?)", ids)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("删除广告失败")
@@ -78,7 +85,7 @@ func DeleteByIDs(Ids []int) error {
 	return nil
 }
 
-// 根据广告ID来修改广告位信息
+// 根据广告ID来修改广告信息
 func EditSave(editReq *EditReq) error {
 	// 先根据ID来查询要修改的广告记录
 	entity, err := GetPlugAdByID(editReq.PlugAdID)
@@ -98,19 +105,20 @@ func EditSave(editReq *EditReq) error {
 	_, err = entity.Update()
 	if err != nil {
 		g.Log().Error(err)
-		return gerror.New("修改广告位失败")
+		return gerror.New("修改广告失败")
 	}
 	return nil
 }
 
 // 分页查询,返回值total总记录数,page当前页
-func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity, err error) {
-	model := Model
+func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*ListEntity, err error) {
+	model := g.DB().Table(Table + " ad")
 	if req != nil {
 		if req.AdName != "" {
-			model = model.Where("ad_name like ?", "%"+req.AdName+"%")
+			model.Where("ad.ad_name like ?", "%"+req.AdName+"%")
 		}
 	}
+	model = model.LeftJoin(plug_adtype.Table+" type", "type.adtype_id=ad.ad_adtypeid")
 	// 查询广告位总记录数(总行数)
 	total, err = model.Count()
 	if err != nil {
@@ -126,7 +134,15 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 		req.PageSize = 10
 	}
 	// 分页排序查询
-	list, err = model.Page(int(page), int(req.PageSize)).Order("ad_sort asc,ad_id asc").All()
+	var res gdb.Result
+	res, err = model.Fields("ad.*,type.adtype_name").Page(int(page), int(req.PageSize)).Order("ad.ad_sort asc,ad.ad_id asc").All()
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("分页查询广告失败")
+		return 0, 0, nil, err
+	}
+
+	err = res.Structs(&list)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("分页查询广告失败")
