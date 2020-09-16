@@ -5,13 +5,17 @@ import (
 	"gfast/app/service/admin/gen_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/library/response"
+	"github.com/gogf/gf/encoding/gcompress"
 	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/os/gview"
 	"github.com/gogf/gf/text/gregex"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
+	"github.com/gogf/gf/util/grand"
 	"github.com/gogf/gf/util/gvalid"
 	"strings"
 )
@@ -182,15 +186,101 @@ func (c *Gen) Preview(r *ghttp.Request) {
 	if tableId == 0 {
 		response.FailJson(true, r, "参数错误")
 	}
-	entity, err := gen_service.SelectRecordById(tableId)
+	data, _, err := c.genData(tableId)
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	response.SusJson(true, r, "ok", data)
+}
+
+//下载生成的代码
+func (c *Gen) BatchGenCode(r *ghttp.Request) {
+	tableIds := r.GetString("tables")
+	if tableIds == "" {
+		response.FailJson(true, r, "请选择要生成的表")
+	}
+	ids := gstr.Split(tableIds, ",")
+	dataFilePath := g.Cfg().GetString("adminInfo.dataDir")
+	dataFileRange := grand.S(10)
+	//生成文件
+	for _, id := range ids {
+		data, entity, err := c.genData(gconv.Int64(id))
+		if err != nil {
+			response.FailJson(true, r, err.Error())
+		}
+		pathMap := c.getPath(entity)
+		for key, val := range data {
+			switch key {
+			case "vm/go/" + entity.BusinessName + "_controller.go.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/"+pathMap["controller"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/go/" + entity.BusinessName + "_service.go.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/"+pathMap["service"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/go/" + entity.BusinessName + "_model.go.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/"+pathMap["model"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/html/" + entity.BusinessName + "_api.js.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/vue/"+pathMap["api"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/html/" + entity.BusinessName + "_vue.js.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/vue/"+pathMap["vue"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			}
+		}
+	}
+	//打包
+	err := gcompress.ZipPathWriter(dataFilePath+"/gen/"+dataFileRange, r.Response.Writer)
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	//删除生成的文件
+	gfile.Remove(dataFilePath + "/gen/" + dataFileRange)
+	//设置下载文件名
+	r.Response.Header().Set("Content-Length", gconv.String(r.Response.BufferLength()))
+	r.Response.Header().Set("Content-Type", "application/force-download")
+	r.Response.Header().Set("Accept-Ranges", "bytes")
+	r.Response.Header().Set("Content-Disposition", "attachment; filename=gfast.zip")
+	r.Response.Buffer()
+}
+
+//获取生成文件的目录
+func (c *Gen) getPath(entity *gen_table.EntityExtend) g.MapStrStr {
+	controller := "app/controller/" + entity.ModuleName + "/" + entity.ClassName + ".go"
+	service := "app/service/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + ".go"
+	model := "app/model/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + ".go"
+	vue := "views/" + entity.ModuleName + "/" + entity.BusinessName + "/index.vue"
+	api := "api/" + entity.ModuleName + "/" + entity.BusinessName + ".js"
+	return g.MapStrStr{
+		"controller": controller,
+		"service":    service,
+		"model":      model,
+		"vue":        vue,
+		"api":        api,
+	}
+}
+
+//获取生成数据
+func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.EntityExtend, err error) {
+	entity, err = gen_service.SelectRecordById(tableId)
+	if err != nil {
+		return
+	}
 	if entity == nil {
-		response.FailJson(true, r, "表格数据不存在")
+		err = gerror.New("表格数据不存在")
+		return
 	}
 	gen_service.SetPkColumn(entity, entity.Columns)
-
 	controllerKey := "vm/go/" + entity.BusinessName + "_controller.go.vm"
 	controllerValue := ""
 	serviceKey := "vm/go/" + entity.BusinessName + "_service.go.vm"
@@ -220,31 +310,47 @@ func (c *Gen) Preview(r *ghttp.Request) {
 	if entity.TplCategory == "tree" {
 		options = gjson.New(entity.Options).ToMap()
 	}
-	if tmpController, err := view.Parse("vm/go/"+entity.TplCategory+"/controller.template", g.Map{"table": entity}); err == nil {
+	var tmpController string
+	if tmpController, err = view.Parse("vm/go/"+entity.TplCategory+"/controller.template", g.Map{"table": entity}); err == nil {
 		controllerValue = tmpController
+	} else {
+		return
 	}
-	if tmpService, err := view.Parse("vm/go/"+entity.TplCategory+"/service.template", g.Map{"table": entity, "options": options}); err == nil {
+	var tmpService string
+	if tmpService, err = view.Parse("vm/go/"+entity.TplCategory+"/service.template", g.Map{"table": entity, "options": options}); err == nil {
 		serviceValue = tmpService
+	} else {
+		return
 	}
-	if tmpModel, err := view.Parse("vm/go/"+entity.TplCategory+"/model.template", g.Map{"table": entity}); err == nil {
+	var tmpModel string
+	if tmpModel, err = view.Parse("vm/go/"+entity.TplCategory+"/model.template", g.Map{"table": entity}); err == nil {
 		modelValue = tmpModel
 		modelValue, err = c.trimBreak(modelValue)
+	} else {
+		return
 	}
-	if tmpJs, err := view.Parse("vm/html/js.template", g.Map{"table": entity}); err == nil {
+	var tmpJs string
+	if tmpJs, err = view.Parse("vm/html/js.template", g.Map{"table": entity}); err == nil {
 		apiJsValue = tmpJs
+	} else {
+		return
 	}
-	if tmpVue, err := view.Parse("vm/html/vue_"+entity.TplCategory+".template", g.Map{"table": entity, "options": options}); err == nil {
+	var tmpVue string
+	if tmpVue, err = view.Parse("vm/html/vue_"+entity.TplCategory+".template", g.Map{"table": entity, "options": options}); err == nil {
 		vueValue = tmpVue
 		vueValue, err = c.trimBreak(vueValue)
+	} else {
+		return
 	}
 
-	response.SusJson(true, r, "ok", g.Map{
+	data = g.MapStrStr{
 		modelKey:      modelValue,
 		serviceKey:    serviceValue,
 		controllerKey: controllerValue,
 		apiJsKey:      apiJsValue,
 		vueKey:        vueValue,
-	})
+	}
+	return
 }
 
 //剔除多余的换行

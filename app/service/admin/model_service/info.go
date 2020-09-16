@@ -188,6 +188,9 @@ func CreateModel(modelId int64) error {
 				}
 				SqlFields.Append(fmt.Sprintf("`%s` TINYINT UNSIGNED NOT NULL DEFAULT %s COMMENT '%s'",
 					fi.FieldName, fi.FieldDefault, fi.FieldTitle))
+			//部门选择器
+			case "DepartmentSelector":
+				SqlFields.Append(fmt.Sprintf("`%s` VARCHAR(300) %s DEFAULT '' COMMENT '%s'", fi.FieldName, fi.FieldDefault, fi.FieldTitle))
 			default:
 				return gerror.New("不能识别字段类型")
 			}

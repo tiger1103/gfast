@@ -48,7 +48,12 @@ func GetModelRuleByModelId(r *ghttp.Request, modelId int64, masterId int64) (rul
 	//获取可编辑字段
 	fieldEdit := garray.NewStrArrayFrom(gstr.Split(modelInfo.ModelEdit, ","))
 	for _, field := range modelFields {
-		rule := new(model_fields.FieldRule)
+		rule := &model_fields.FieldRule{
+			FOptions:  g.List{},
+			FAttr:     g.Map{},
+			FProps:    g.Map{},
+			FValidate: make([]model_fields.Validate, 0),
+		}
 		fAttr := g.Map{}
 		//主键跳过不在表单显示
 		if field.FieldName == modelInfo.ModelPk {

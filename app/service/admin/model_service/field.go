@@ -55,6 +55,7 @@ func SelectFieldsAll(req *model_fields.SelectPageReq) (list []*model_fields.Fiel
 		fInfo.FieldTitle = field.FieldTitle
 		fInfo.FieldType = field.FieldType
 		fInfo.FieldRules = field.FieldRules
+		fInfo.FieldDefault = field.FieldDefault
 		if gstr.ContainsI(modelInfo.SearchList, field.FieldName) {
 			//列表查询
 			fInfo.SearchList = "1"
