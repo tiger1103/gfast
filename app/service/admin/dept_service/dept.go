@@ -29,7 +29,7 @@ func EditDept(data *sys_dept.EditParams) error {
 	return sys_dept.EditDept(data)
 }
 
-func GetDeptById(id int64) (*sys_dept.Dept, error) {
+func GetDeptById(id uint64) (*sys_dept.Dept, error) {
 	return sys_dept.GetDeptById(id)
 }
 

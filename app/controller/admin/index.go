@@ -38,7 +38,7 @@ func (c *Index) GetInfo(r *ghttp.Request) {
 			roles, err := user_service.GetAdminRole(userId, allRoles)
 			if err == nil {
 				name := make([]string, len(roles))
-				roleIds := make([]int, len(roles))
+				roleIds := make([]uint, len(roles))
 				for k, v := range roles {
 					name[k] = v.Name
 					roleIds[k] = v.Id
@@ -79,7 +79,7 @@ func (c *Index) GetRouters(r *ghttp.Request) {
 
 		//获取无需验证权限的用户id
 		for _, v := range service.NotCheckAuthAdminIds {
-			if v == userId {
+			if gconv.Uint64(v) == userId {
 				isSuperAdmin = true
 				break
 			}
@@ -91,7 +91,7 @@ func (c *Index) GetRouters(r *ghttp.Request) {
 			roles, err := user_service.GetAdminRole(userId, allRoles)
 			if err == nil {
 				name := make([]string, len(roles))
-				roleIds := make([]int, len(roles))
+				roleIds := make([]uint, len(roles))
 				for k, v := range roles {
 					name[k] = v.Name
 					roleIds[k] = v.Id

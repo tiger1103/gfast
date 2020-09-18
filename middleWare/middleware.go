@@ -11,6 +11,7 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gconv"
 )
 
 //跨域处理中间件
@@ -28,7 +29,7 @@ func Auth(r *ghttp.Request) {
 	adminId := user_service.GetLoginID(r)
 	//获取无需验证权限的用户id
 	for _, v := range service.NotCheckAuthAdminIds {
-		if v == adminId {
+		if gconv.Uint64(v) == adminId {
 			r.Middleware.Next()
 			return
 		}

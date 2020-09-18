@@ -13,12 +13,12 @@ import (
 type Entity struct {
 	Id             uint64  `orm:"id,primary"      json:"id"`              // 分类id
 	ParentId       int64   `orm:"parent_id"       json:"parent_id"`       // 分类父id
-	ModelId        uint    `orm:"model_id"       json:"model_id"`         // 模型id
+	ModelId        uint    `orm:"model_id"        json:"model_id"`        // 模型ID
 	Status         uint    `orm:"status"          json:"status"`          // 状态,1:发布,0:不发布
 	DeleteTime     uint    `orm:"delete_time"     json:"delete_time"`     // 删除时间
 	ListOrder      float64 `orm:"list_order"      json:"list_order"`      // 排序
 	Name           string  `orm:"name"            json:"name"`            // 分类名称
-	Alias          string  `orm:"alias"            json:"alias"`          // 分类别名
+	Alias          string  `orm:"alias"           json:"alias"`           // 栏目别名
 	Description    string  `orm:"description"     json:"description"`     // 分类描述
 	SeoTitle       string  `orm:"seo_title"       json:"seo_title"`       //
 	SeoKeywords    string  `orm:"seo_keywords"    json:"seo_keywords"`    //
@@ -40,6 +40,11 @@ func (r *Entity) OmitEmpty() *arModel {
 // Inserts does "INSERT...INTO..." statement for inserting current object into table.
 func (r *Entity) Insert() (result sql.Result, err error) {
 	return Model.Data(r).Insert()
+}
+
+// InsertIgnore does "INSERT IGNORE INTO ..." statement for inserting current object into table.
+func (r *Entity) InsertIgnore() (result sql.Result, err error) {
+	return Model.Data(r).InsertIgnore()
 }
 
 // Replace does "REPLACE...INTO..." statement for inserting current object into table.

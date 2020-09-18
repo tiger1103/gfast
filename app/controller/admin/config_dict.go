@@ -9,6 +9,7 @@ import (
 	"gfast/library/response"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
 )
 
@@ -158,7 +159,7 @@ func (c *Dict) DataAdd(r *ghttp.Request) {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 		}
 		userId := user_service.GetLoginID(r) //获取登陆用户id
-		_, err := dict_service.AddSaveData(req, userId)
+		_, err := dict_service.AddSaveData(req, gconv.Uint64(userId))
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}
@@ -183,7 +184,7 @@ func (c *Dict) DataEdit(r *ghttp.Request) {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 		}
 		userId := user_service.GetLoginID(r)
-		_, err := dict_service.EditSaveData(req, userId)
+		_, err := dict_service.EditSaveData(req, gconv.Uint64(userId))
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}

@@ -49,7 +49,7 @@ type ReqEditParams struct {
 }
 
 //添加文章操作
-func AddNews(req *ReqAddParams, cateIds []int, userId int, tx *gdb.TX) (insId int64, err error) {
+func AddNews(req *ReqAddParams, cateIds []int, userId uint64, tx *gdb.TX) (insId int64, err error) {
 	if len(cateIds) == 0 {
 		err = gerror.New("栏目不能为空")
 		return

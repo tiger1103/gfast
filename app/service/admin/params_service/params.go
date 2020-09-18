@@ -7,12 +7,12 @@ import (
 )
 
 //保存参数
-func AddSave(req *sys_config.AddReq, userId int) (id int64, err error) {
+func AddSave(req *sys_config.AddReq, userId uint64) (id int64, err error) {
 	return sys_config.AddSave(req, userId)
 }
 
 //修改保存
-func EditSave(req *sys_config.EditReq, userId int) (int64, error) {
+func EditSave(req *sys_config.EditReq, userId uint64) (int64, error) {
 	return sys_config.EditSave(req, userId)
 }
 

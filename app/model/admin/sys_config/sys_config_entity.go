@@ -13,7 +13,7 @@ import (
 type Entity struct {
 	ConfigId    uint   `orm:"config_id,primary" json:"config_id"`    // 参数主键
 	ConfigName  string `orm:"config_name"       json:"config_name"`  // 参数名称
-	ConfigKey   string `orm:"config_key"        json:"config_key"`   // 参数键名
+	ConfigKey   string `orm:"config_key,unique" json:"config_key"`   // 参数键名
 	ConfigValue string `orm:"config_value"      json:"config_value"` // 参数键值
 	ConfigType  int    `orm:"config_type"       json:"config_type"`  // 系统内置（Y是 N否）
 	CreateBy    uint   `orm:"create_by"         json:"create_by"`    // 创建者
@@ -32,6 +32,11 @@ func (r *Entity) OmitEmpty() *arModel {
 // Inserts does "INSERT...INTO..." statement for inserting current object into table.
 func (r *Entity) Insert() (result sql.Result, err error) {
 	return Model.Data(r).Insert()
+}
+
+// InsertIgnore does "INSERT IGNORE INTO ..." statement for inserting current object into table.
+func (r *Entity) InsertIgnore() (result sql.Result, err error) {
+	return Model.Data(r).InsertIgnore()
 }
 
 // Replace does "REPLACE...INTO..." statement for inserting current object into table.

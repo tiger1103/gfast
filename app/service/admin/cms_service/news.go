@@ -14,7 +14,7 @@ import (
 )
 
 //添加文章操作
-func AddNews(req *cms_news.ReqAddParams, cateIds []int, userId int) (insId int64, err error) {
+func AddNews(req *cms_news.ReqAddParams, cateIds []int, userId uint64) (insId int64, err error) {
 	cateIds, err = getPubCateIds(cateIds)
 	if err != nil {
 		return

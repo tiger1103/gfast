@@ -38,7 +38,7 @@ type SelectDataPageReq struct {
 }
 
 //添加字典数据操作
-func AddSaveData(req *AddDataReq, userId int) (int64, error) {
+func AddSaveData(req *AddDataReq, userId uint64) (int64, error) {
 	var entity Entity
 	entity.DictType = req.DictType
 	entity.Status = req.Status
@@ -80,7 +80,7 @@ func GetById(dictCode int) (*Entity, error) {
 }
 
 //修改字典数据操作
-func EditSaveData(req *EditDataReq, userId int) (int64, error) {
+func EditSaveData(req *EditDataReq, userId uint64) (int64, error) {
 	entity, err := GetById(req.DictCode)
 	if err != nil {
 		return 0, err

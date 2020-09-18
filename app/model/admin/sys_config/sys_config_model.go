@@ -8,12 +8,13 @@ import (
 	"database/sql"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/frame/gmvc"
 	"time"
 )
 
 // arModel is a active record design model for table sys_config operations.
 type arModel struct {
-	M *gdb.Model
+	gmvc.M
 }
 
 var (
@@ -21,6 +22,30 @@ var (
 	Table = "sys_config"
 	// Model is the model object of sys_config.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
+	// Columns defines and stores column names for table sys_config.
+	Columns = struct {
+		ConfigId    string // 参数主键
+		ConfigName  string // 参数名称
+		ConfigKey   string // 参数键名
+		ConfigValue string // 参数键值
+		ConfigType  string // 系统内置（Y是 N否）
+		CreateBy    string // 创建者
+		CreateTime  string // 创建时间
+		UpdateBy    string // 更新者
+		UpdateTime  string // 更新时间
+		Remark      string // 备注
+	}{
+		ConfigId:    "config_id",
+		ConfigName:  "config_name",
+		ConfigKey:   "config_key",
+		ConfigValue: "config_value",
+		ConfigType:  "config_type",
+		CreateBy:    "create_by",
+		CreateTime:  "create_time",
+		UpdateBy:    "update_by",
+		UpdateTime:  "update_time",
+		Remark:      "remark",
+	}
 )
 
 // FindOne is a convenience method for Model.FindOne.
@@ -41,6 +66,12 @@ func FindValue(fieldsAndWhere ...interface{}) (gdb.Value, error) {
 	return Model.FindValue(fieldsAndWhere...)
 }
 
+// FindArray is a convenience method for Model.FindArray.
+// See Model.FindArray.
+func FindArray(fieldsAndWhere ...interface{}) ([]gdb.Value, error) {
+	return Model.FindArray(fieldsAndWhere...)
+}
+
 // FindCount is a convenience method for Model.FindCount.
 // See Model.FindCount.
 func FindCount(where ...interface{}) (int, error) {
@@ -50,6 +81,11 @@ func FindCount(where ...interface{}) (int, error) {
 // Insert is a convenience method for Model.Insert.
 func Insert(data ...interface{}) (result sql.Result, err error) {
 	return Model.Insert(data...)
+}
+
+// InsertIgnore is a convenience method for Model.InsertIgnore.
+func InsertIgnore(data ...interface{}) (result sql.Result, err error) {
+	return Model.InsertIgnore(data...)
 }
 
 // Replace is a convenience method for Model.Replace.
@@ -94,18 +130,30 @@ func (m *arModel) Slave() *arModel {
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
-func (m *arModel) LeftJoin(joinTable string, on string) *arModel {
-	return &arModel{m.M.LeftJoin(joinTable, on)}
+// The parameter <table> can be joined table and its joined condition,
+// and also with its alias name, like:
+// Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
+// Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
+func (m *arModel) LeftJoin(table ...string) *arModel {
+	return &arModel{m.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
-func (m *arModel) RightJoin(joinTable string, on string) *arModel {
-	return &arModel{m.M.RightJoin(joinTable, on)}
+// The parameter <table> can be joined table and its joined condition,
+// and also with its alias name, like:
+// Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
+// Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
+func (m *arModel) RightJoin(table ...string) *arModel {
+	return &arModel{m.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
-func (m *arModel) InnerJoin(joinTable string, on string) *arModel {
-	return &arModel{m.M.InnerJoin(joinTable, on)}
+// The parameter <table> can be joined table and its joined condition,
+// and also with its alias name, like:
+// Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
+// Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
+func (m *arModel) InnerJoin(table ...string) *arModel {
+	return &arModel{m.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
@@ -165,8 +213,8 @@ func (m *arModel) Group(groupBy string) *arModel {
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (m *arModel) Order(orderBy string) *arModel {
-	return &arModel{m.M.Order(orderBy)}
+func (m *arModel) Order(orderBy ...string) *arModel {
+	return &arModel{m.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
@@ -207,8 +255,8 @@ func (m *arModel) Batch(batch int) *arModel {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (m *arModel) Cache(expire time.Duration, name ...string) *arModel {
-	return &arModel{m.M.Cache(expire, name...)}
+func (m *arModel) Cache(duration time.Duration, name ...string) *arModel {
+	return &arModel{m.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -220,53 +268,6 @@ func (m *arModel) Cache(expire time.Duration, name ...string) *arModel {
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
 func (m *arModel) Data(data ...interface{}) *arModel {
 	return &arModel{m.M.Data(data...)}
-}
-
-// Insert does "INSERT INTO ..." statement for the model.
-// The optional parameter <data> is the same as the parameter of Model.Data function,
-// see Model.Data.
-func (m *arModel) Insert(data ...interface{}) (result sql.Result, err error) {
-	return m.M.Insert(data...)
-}
-
-// Replace does "REPLACE INTO ..." statement for the model.
-// The optional parameter <data> is the same as the parameter of Model.Data function,
-// see Model.Data.
-func (m *arModel) Replace(data ...interface{}) (result sql.Result, err error) {
-	return m.M.Replace(data...)
-}
-
-// Save does "INSERT INTO ... ON DUPLICATE KEY UPDATE..." statement for the model.
-// It updates the record if there's primary or unique index in the saving data,
-// or else it inserts a new record into the table.
-//
-// The optional parameter <data> is the same as the parameter of Model.Data function,
-// see Model.Data.
-func (m *arModel) Save(data ...interface{}) (result sql.Result, err error) {
-	return m.M.Save(data...)
-}
-
-// Update does "UPDATE ... " statement for the model.
-//
-// If the optional parameter <dataAndWhere> is given, the dataAndWhere[0] is the updated
-// data field, and dataAndWhere[1:] is treated as where condition fields.
-// Also see Model.Data and Model.Where functions.
-func (m *arModel) Update(dataAndWhere ...interface{}) (result sql.Result, err error) {
-	return m.M.Update(dataAndWhere...)
-}
-
-// Delete does "DELETE FROM ... " statement for the model.
-// The optional parameter <where> is the same as the parameter of Model.Where function,
-// see Model.Where.
-func (m *arModel) Delete(where ...interface{}) (result sql.Result, err error) {
-	return m.M.Delete(where...)
-}
-
-// Count does "SELECT COUNT(x) FROM ..." statement for the model.
-// The optional parameter <where> is the same as the parameter of Model.Where function,
-// see Model.Where.
-func (m *arModel) Count(where ...interface{}) (int, error) {
-	return m.M.Count(where...)
 }
 
 // All does "SELECT FROM ..." statement for the model.
@@ -304,16 +305,6 @@ func (m *arModel) One(where ...interface{}) (*Entity, error) {
 	return entity, nil
 }
 
-// Value retrieves a specified record value from table and returns the result as interface type.
-// It returns nil if there's no record found with the given conditions from table.
-//
-// If the optional parameter <fieldsAndWhere> is given, the fieldsAndWhere[0] is the selected fields
-// and fieldsAndWhere[1:] is treated as where condition fields.
-// Also see Model.Fields and Model.Where functions.
-func (m *arModel) Value(fieldsAndWhere ...interface{}) (gdb.Value, error) {
-	return m.M.Value(fieldsAndWhere...)
-}
-
 // FindOne retrieves and returns a single Record by Model.WherePri and Model.One.
 // Also see Model.WherePri and Model.One.
 func (m *arModel) FindOne(where ...interface{}) (*Entity, error) {
@@ -342,18 +333,6 @@ func (m *arModel) FindAll(where ...interface{}) ([]*Entity, error) {
 	return entities, nil
 }
 
-// FindValue retrieves and returns single field value by Model.WherePri and Model.Value.
-// Also see Model.WherePri and Model.Value.
-func (m *arModel) FindValue(fieldsAndWhere ...interface{}) (gdb.Value, error) {
-	return m.M.FindValue(fieldsAndWhere...)
-}
-
-// FindCount retrieves and returns the record number by Model.WherePri and Model.Count.
-// Also see Model.WherePri and Model.Count.
-func (m *arModel) FindCount(where ...interface{}) (int, error) {
-	return m.M.FindCount(where...)
-}
-
 // Chunk iterates the table with given size and callback function.
 func (m *arModel) Chunk(limit int, callback func(entities []*Entity, err error) bool) {
 	m.M.Chunk(limit, func(result gdb.Result, err error) bool {
@@ -364,4 +343,19 @@ func (m *arModel) Chunk(limit int, callback func(entities []*Entity, err error) 
 		}
 		return callback(entities, err)
 	})
+}
+
+// LockUpdate sets the lock for update for current operation.
+func (m *arModel) LockUpdate() *arModel {
+	return &arModel{m.M.LockUpdate()}
+}
+
+// LockShared sets the lock in share mode for current operation.
+func (m *arModel) LockShared() *arModel {
+	return &arModel{m.M.LockShared()}
+}
+
+// Unscoped enables/disables the soft deleting feature.
+func (m *arModel) Unscoped() *arModel {
+	return &arModel{m.M.Unscoped()}
 }

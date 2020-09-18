@@ -11,26 +11,23 @@ import (
 
 // Entity is the golang structure for table user.
 type Entity struct {
-	Id            int    `orm:"id,primary"       json:"id"`              //
+	Id            uint64 `orm:"id,primary"       json:"id"`              //
 	UserName      string `orm:"user_name,unique" json:"user_name"`       // 用户名
 	Mobile        string `orm:"mobile,unique"    json:"mobile"`          // 中国手机不带国家代码，国际手机号格式为：国家代码-手机号
 	UserNickname  string `orm:"user_nickname"    json:"user_nickname"`   // 用户昵称
 	Birthday      int    `orm:"birthday"         json:"birthday"`        // 生日
 	CreateTime    int    `orm:"create_time"      json:"create_time"`     // 注册时间
 	UserPassword  string `orm:"user_password"    json:"user_password"`   // 登录密码;cmf_password加密
-	UserStatus    int    `orm:"user_status"      json:"user_status"`     // 用户状态;0:禁用,1:正常,2:未验证
+	UserStatus    uint   `orm:"user_status"      json:"user_status"`     // 用户状态;0:禁用,1:正常,2:未验证
 	UserEmail     string `orm:"user_email"       json:"user_email"`      // 用户登录邮箱
 	Sex           int    `orm:"sex"              json:"sex"`             // 性别;0:保密,1:男,2:女
 	Avatar        string `orm:"avatar"           json:"avatar"`          // 用户头像
 	LastLoginTime int    `orm:"last_login_time"  json:"last_login_time"` // 最后登录时间
 	LastLoginIp   string `orm:"last_login_ip"    json:"last_login_ip"`   // 最后登录ip
-	DeptId        int64  `orm:"dept_id"       json:"dept_id"`            //所属部门id
+	DeptId        uint64 `orm:"dept_id"          json:"dept_id"`         // 部门id
 	Remark        string `orm:"remark"           json:"remark"`          // 备注
 	IsAdmin       int    `orm:"is_admin"         json:"is_admin"`        // 是否后台管理员 1 是  0   否
 }
-
-// User is alias of Entity, which some developers say they just want.
-type User = Entity
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
@@ -41,6 +38,11 @@ func (r *Entity) OmitEmpty() *arModel {
 // Inserts does "INSERT...INTO..." statement for inserting current object into table.
 func (r *Entity) Insert() (result sql.Result, err error) {
 	return Model.Data(r).Insert()
+}
+
+// InsertIgnore does "INSERT IGNORE INTO ..." statement for inserting current object into table.
+func (r *Entity) InsertIgnore() (result sql.Result, err error) {
+	return Model.Data(r).InsertIgnore()
 }
 
 // Replace does "REPLACE...INTO..." statement for inserting current object into table.

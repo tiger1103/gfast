@@ -17,12 +17,12 @@ func init() {
 }
 
 //添加计划任务
-func AddJob(req *sys_job.ReqAdd, userId int) (id int64, err error) {
+func AddJob(req *sys_job.ReqAdd, userId uint64) (id int64, err error) {
 	return sys_job.Add(req, userId)
 }
 
 //修改计划任务
-func EditJob(req *sys_job.ReqEdit, userId int) (rows int64, err error) {
+func EditJob(req *sys_job.ReqEdit, userId uint64) (rows int64, err error) {
 	return sys_job.Edit(req, userId)
 }
 

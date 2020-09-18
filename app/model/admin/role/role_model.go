@@ -8,20 +8,106 @@ import (
 	"database/sql"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/frame/gmvc"
 	"time"
 )
 
-// arModel is a active record design model for table _role operations.
+// arModel is a active record design model for table role operations.
 type arModel struct {
-	M *gdb.Model
+	gmvc.M
 }
 
 var (
-	// Table is the table name of _role.
+	// Table is the table name of role.
 	Table = "role"
-	// Model is the model object of _role.
+	// Model is the model object of role.
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
+	// Columns defines and stores column names for table role.
+	Columns = struct {
+		Id         string //
+		Status     string // 状态;0:禁用;1:正常
+		CreateTime string // 创建时间
+		UpdateTime string // 更新时间
+		ListOrder  string // 排序
+		Name       string // 角色名称
+		Remark     string // 备注
+		DataScope  string // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
+	}{
+		Id:         "id",
+		Status:     "status",
+		CreateTime: "create_time",
+		UpdateTime: "update_time",
+		ListOrder:  "list_order",
+		Name:       "name",
+		Remark:     "remark",
+		DataScope:  "data_scope",
+	}
 )
+
+// FindOne is a convenience method for Model.FindOne.
+// See Model.FindOne.
+func FindOne(where ...interface{}) (*Entity, error) {
+	return Model.FindOne(where...)
+}
+
+// FindAll is a convenience method for Model.FindAll.
+// See Model.FindAll.
+func FindAll(where ...interface{}) ([]*Entity, error) {
+	return Model.FindAll(where...)
+}
+
+// FindValue is a convenience method for Model.FindValue.
+// See Model.FindValue.
+func FindValue(fieldsAndWhere ...interface{}) (gdb.Value, error) {
+	return Model.FindValue(fieldsAndWhere...)
+}
+
+// FindArray is a convenience method for Model.FindArray.
+// See Model.FindArray.
+func FindArray(fieldsAndWhere ...interface{}) ([]gdb.Value, error) {
+	return Model.FindArray(fieldsAndWhere...)
+}
+
+// FindCount is a convenience method for Model.FindCount.
+// See Model.FindCount.
+func FindCount(where ...interface{}) (int, error) {
+	return Model.FindCount(where...)
+}
+
+// Insert is a convenience method for Model.Insert.
+func Insert(data ...interface{}) (result sql.Result, err error) {
+	return Model.Insert(data...)
+}
+
+// InsertIgnore is a convenience method for Model.InsertIgnore.
+func InsertIgnore(data ...interface{}) (result sql.Result, err error) {
+	return Model.InsertIgnore(data...)
+}
+
+// Replace is a convenience method for Model.Replace.
+func Replace(data ...interface{}) (result sql.Result, err error) {
+	return Model.Replace(data...)
+}
+
+// Save is a convenience method for Model.Save.
+func Save(data ...interface{}) (result sql.Result, err error) {
+	return Model.Save(data...)
+}
+
+// Update is a convenience method for Model.Update.
+func Update(dataAndWhere ...interface{}) (result sql.Result, err error) {
+	return Model.Update(dataAndWhere...)
+}
+
+// Delete is a convenience method for Model.Delete.
+func Delete(where ...interface{}) (result sql.Result, err error) {
+	return Model.Delete(where...)
+}
+
+// As sets an alias name for current table.
+func (m *arModel) As(as string) *arModel {
+	return &arModel{m.M.As(as)}
+}
 
 // TX sets the transaction for current operation.
 func (m *arModel) TX(tx *gdb.TX) *arModel {
@@ -40,18 +126,30 @@ func (m *arModel) Slave() *arModel {
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
-func (m *arModel) LeftJoin(joinTable string, on string) *arModel {
-	return &arModel{m.M.LeftJoin(joinTable, on)}
+// The parameter <table> can be joined table and its joined condition,
+// and also with its alias name, like:
+// Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
+// Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
+func (m *arModel) LeftJoin(table ...string) *arModel {
+	return &arModel{m.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
-func (m *arModel) RightJoin(joinTable string, on string) *arModel {
-	return &arModel{m.M.RightJoin(joinTable, on)}
+// The parameter <table> can be joined table and its joined condition,
+// and also with its alias name, like:
+// Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
+// Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
+func (m *arModel) RightJoin(table ...string) *arModel {
+	return &arModel{m.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
-func (m *arModel) InnerJoin(joinTable string, on string) *arModel {
-	return &arModel{m.M.InnerJoin(joinTable, on)}
+// The parameter <table> can be joined table and its joined condition,
+// and also with its alias name, like:
+// Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
+// Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
+func (m *arModel) InnerJoin(table ...string) *arModel {
+	return &arModel{m.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
@@ -105,14 +203,14 @@ func (m *arModel) Or(where interface{}, args ...interface{}) *arModel {
 	return &arModel{m.M.Or(where, args...)}
 }
 
-// GroupBy sets the "GROUP BY" statement for the model.
-func (m *arModel) GroupBy(groupBy string) *arModel {
-	return &arModel{m.M.GroupBy(groupBy)}
+// Group sets the "GROUP BY" statement for the model.
+func (m *arModel) Group(groupBy string) *arModel {
+	return &arModel{m.M.Group(groupBy)}
 }
 
-// OrderBy sets the "ORDER BY" statement for the model.
-func (m *arModel) OrderBy(orderBy string) *arModel {
-	return &arModel{m.M.OrderBy(orderBy)}
+// Order sets the "ORDER BY" statement for the model.
+func (m *arModel) Order(orderBy ...string) *arModel {
+	return &arModel{m.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
@@ -129,11 +227,11 @@ func (m *arModel) Offset(offset int) *arModel {
 	return &arModel{m.M.Offset(offset)}
 }
 
-// ForPage sets the paging number for the model.
+// Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (m *arModel) ForPage(page, limit int) *arModel {
-	return &arModel{m.M.ForPage(page, limit)}
+func (m *arModel) Page(page, limit int) *arModel {
+	return &arModel{m.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
@@ -153,8 +251,8 @@ func (m *arModel) Batch(batch int) *arModel {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (m *arModel) Cache(expire time.Duration, name ...string) *arModel {
-	return &arModel{m.M.Cache(expire, name...)}
+func (m *arModel) Cache(duration time.Duration, name ...string) *arModel {
+	return &arModel{m.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -168,43 +266,14 @@ func (m *arModel) Data(data ...interface{}) *arModel {
 	return &arModel{m.M.Data(data...)}
 }
 
-// Insert does "INSERT INTO ..." statement for the model.
-func (m *arModel) Insert() (result sql.Result, err error) {
-	return m.M.Insert()
-}
-
-// Replace does "REPLACE INTO ..." statement for the model.
-func (m *arModel) Replace() (result sql.Result, err error) {
-	return m.M.Replace()
-}
-
-// Save does "INSERT INTO ... ON DUPLICATE KEY UPDATE..." statement for the model.
-// It updates the record if there's primary or unique index in the saving data,
-// or else it inserts a new record into the table.
-func (m *arModel) Save() (result sql.Result, err error) {
-	return m.M.Save()
-}
-
-// Update does "UPDATE ... " statement for the model.
-func (m *arModel) Update() (result sql.Result, err error) {
-	return m.M.Update()
-}
-
-// Delete does "DELETE FROM ... " statement for the model.
-func (m *arModel) Delete() (result sql.Result, err error) {
-	return m.M.Delete()
-}
-
-// Count does "SELECT COUNT(x) FROM ..." statement for the model.
-func (m *arModel) Count() (int, error) {
-	return m.M.Count()
-}
-
 // All does "SELECT FROM ..." statement for the model.
 // It retrieves the records from table and returns the result as []*Entity.
 // It returns nil if there's no record retrieved with the given conditions from table.
-func (m *arModel) All() ([]*Entity, error) {
-	all, err := m.M.All()
+//
+// The optional parameter <where> is the same as the parameter of Model.Where function,
+// see Model.Where.
+func (m *arModel) All(where ...interface{}) ([]*Entity, error) {
+	all, err := m.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -217,8 +286,11 @@ func (m *arModel) All() ([]*Entity, error) {
 
 // One retrieves one record from table and returns the result as *Entity.
 // It returns nil if there's no record retrieved with the given conditions from table.
-func (m *arModel) One() (*Entity, error) {
-	one, err := m.M.One()
+//
+// The optional parameter <where> is the same as the parameter of Model.Where function,
+// see Model.Where.
+func (m *arModel) One(where ...interface{}) (*Entity, error) {
+	one, err := m.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
@@ -229,10 +301,32 @@ func (m *arModel) One() (*Entity, error) {
 	return entity, nil
 }
 
-// Value retrieves a specified record value from table and returns the result as interface type.
-// It returns nil if there's no record found with the given conditions from table.
-func (m *arModel) Value() (gdb.Value, error) {
-	return m.M.Value()
+// FindOne retrieves and returns a single Record by Model.WherePri and Model.One.
+// Also see Model.WherePri and Model.One.
+func (m *arModel) FindOne(where ...interface{}) (*Entity, error) {
+	one, err := m.M.FindOne(where...)
+	if err != nil {
+		return nil, err
+	}
+	var entity *Entity
+	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+	return entity, nil
+}
+
+// FindAll retrieves and returns Result by by Model.WherePri and Model.All.
+// Also see Model.WherePri and Model.All.
+func (m *arModel) FindAll(where ...interface{}) ([]*Entity, error) {
+	all, err := m.M.FindAll(where...)
+	if err != nil {
+		return nil, err
+	}
+	var entities []*Entity
+	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+	return entities, nil
 }
 
 // Chunk iterates the table with given size and callback function.
@@ -247,14 +341,17 @@ func (m *arModel) Chunk(limit int, callback func(entities []*Entity, err error) 
 	})
 }
 
-// Page sets the paging number for the model.
-// The parameter <page> is started from 1 for paging.
-// Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (m *arModel) Page(page, limit int) *arModel {
-	return &arModel{m.M.Page(page, limit)}
+// LockUpdate sets the lock for update for current operation.
+func (m *arModel) LockUpdate() *arModel {
+	return &arModel{m.M.LockUpdate()}
 }
 
-// Order sets the "ORDER BY" statement for the model.
-func (m *arModel) Order(orderBy string) *arModel {
-	return &arModel{m.M.Order(orderBy)}
+// LockShared sets the lock in share mode for current operation.
+func (m *arModel) LockShared() *arModel {
+	return &arModel{m.M.LockShared()}
+}
+
+// Unscoped enables/disables the soft deleting feature.
+func (m *arModel) Unscoped() *arModel {
+	return &arModel{m.M.Unscoped()}
 }

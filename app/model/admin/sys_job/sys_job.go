@@ -47,7 +47,7 @@ func GetJobs() (jobs []*Entity, err error) {
 }
 
 //添加计划任务
-func Add(req *ReqAdd, userId int) (id int64, err error) {
+func Add(req *ReqAdd, userId uint64) (id int64, err error) {
 	entity := new(Entity)
 	entity.JobName = req.JobName
 	entity.JobGroup = req.JobGroup
@@ -90,7 +90,7 @@ func GetJobInfoById(id int64) (job *Entity, err error) {
 }
 
 //修改计划任务
-func Edit(req *ReqEdit, userId int) (rows int64, err error) {
+func Edit(req *ReqEdit, userId uint64) (rows int64, err error) {
 	entity, err := GetJobInfoById(req.JobId)
 	if err != nil {
 		return

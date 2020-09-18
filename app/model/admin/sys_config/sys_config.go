@@ -37,7 +37,7 @@ type SelectPageReq struct {
 }
 
 //保存参数
-func AddSave(req *AddReq, userId int) (id int64, err error) {
+func AddSave(req *AddReq, userId uint64) (id int64, err error) {
 	var entity Entity
 	entity.ConfigName = req.ConfigName
 	entity.ConfigKey = req.ConfigKey
@@ -62,7 +62,7 @@ func AddSave(req *AddReq, userId int) (id int64, err error) {
 }
 
 //修改保存
-func EditSave(req *EditReq, userId int) (int64, error) {
+func EditSave(req *EditReq, userId uint64) (int64, error) {
 	entity, err := GetParamsById(gconv.Int(req.ConfigId))
 	if err != nil {
 		return 0, err

@@ -39,13 +39,13 @@ type AddParams struct {
 	PostSort int    `p:"postSort" v:"required#岗位排序不能为空"`
 	Status   string `p:"status" v:"required#状态不能为空"`
 	Remark   string `p:"remark"`
-	AddUser  int
+	AddUser  uint64
 }
 
 type EditParams struct {
 	PostId int64 `p:"postId" v:"required#id必须"`
 	AddParams
-	UpUser int
+	UpUser uint64
 }
 
 func List(req *SearchParams) (total, page int, list gdb.Result, err error) {

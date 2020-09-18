@@ -5,12 +5,12 @@ import (
 )
 
 //添加字典数据操作
-func AddSaveData(req *sys_dict_data.AddDataReq, userId int) (int64, error) {
+func AddSaveData(req *sys_dict_data.AddDataReq, userId uint64) (int64, error) {
 	return sys_dict_data.AddSaveData(req, userId)
 }
 
 //修改字典数据操作
-func EditSaveData(req *sys_dict_data.EditDataReq, userId int) (int64, error) {
+func EditSaveData(req *sys_dict_data.EditDataReq, userId uint64) (int64, error) {
 	return sys_dict_data.EditSaveData(req, userId)
 }
 

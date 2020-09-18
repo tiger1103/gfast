@@ -20,7 +20,7 @@ type Entity struct {
 	Status        int    `orm:"status"          json:"status"`         // 登录状态（0成功 1失败）
 	Msg           string `orm:"msg"             json:"msg"`            // 提示消息
 	LoginTime     int64  `orm:"login_time"      json:"login_time"`     // 访问时间
-	Module        string `orm:"module"  json:"module"`                 //登录模块
+	Module        string `orm:"module"          json:"module"`         // 登录模块
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
@@ -32,6 +32,11 @@ func (r *Entity) OmitEmpty() *arModel {
 // Inserts does "INSERT...INTO..." statement for inserting current object into table.
 func (r *Entity) Insert() (result sql.Result, err error) {
 	return Model.Data(r).Insert()
+}
+
+// InsertIgnore does "INSERT IGNORE INTO ..." statement for inserting current object into table.
+func (r *Entity) InsertIgnore() (result sql.Result, err error) {
+	return Model.Data(r).InsertIgnore()
 }
 
 // Replace does "REPLACE...INTO..." statement for inserting current object into table.

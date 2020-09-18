@@ -30,7 +30,7 @@ func AddUserPost(postIds []int64, userId int64) (err error) {
 }
 
 //获取用户岗位
-func GetAdminPosts(userId int) (postIds []int64, err error) {
+func GetAdminPosts(userId uint64) (postIds []int64, err error) {
 	list, e := Model.All(Columns.UserId, userId)
 	if e != nil {
 		g.Log().Error(e)
@@ -44,7 +44,7 @@ func GetAdminPosts(userId int) (postIds []int64, err error) {
 }
 
 //根据用户id获取岗位信息详情
-func GetPostsByUserId(userId int) ([]*sys_post.Entity, error) {
+func GetPostsByUserId(userId uint64) ([]*sys_post.Entity, error) {
 	model := g.DB().Table(Table)
 	datas := ([]*sys_post.Entity)(nil)
 	err := model.As("a").InnerJoin("sys_post b", "a.post_id = b.post_id").Fields("b.*").Where(Columns.UserId, userId).Structs(&datas)

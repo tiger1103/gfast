@@ -87,7 +87,7 @@ func (c *Dept) EditDept(r *ghttp.Request) {
 		response.SusJson(true, r, "编辑成功")
 
 	}
-	id := r.GetInt64("id")
+	id := r.GetUint64("id")
 	if id == 0 {
 		response.FailJson(true, r, "参数错误")
 	}

@@ -40,7 +40,7 @@ type SelectPageReq struct {
 }
 
 //添加数据
-func AddSave(req *AddReq, userId int) (int64, error) {
+func AddSave(req *AddReq, userId uint64) (int64, error) {
 	var entity Entity
 	entity.Status = req.Status
 	entity.DictType = req.DictType
@@ -76,7 +76,7 @@ func GetDictById(id int) (dict *Entity, err error) {
 }
 
 //修改保存字典类型
-func EditSave(req *EditReq, userId int) (int64, error) {
+func EditSave(req *EditReq, userId uint64) (int64, error) {
 	entity, err := GetDictById(gconv.Int(req.DictId))
 	if err != nil || entity == nil {
 		return 0, err

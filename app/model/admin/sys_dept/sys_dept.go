@@ -21,7 +21,7 @@ type Dept struct {
 	Remark      string                 `json:"remark"`
 	DataScope   interface{}            `json:"dataScope"`
 	Params      map[string]interface{} `json:"params"`
-	DeptID      int64                  `json:"deptId" orm:"dept_id"`
+	DeptID      uint64                 `json:"deptId" orm:"dept_id"`
 	ParentID    int64                  `json:"parentId" orm:"parent_id"`
 	Ancestors   string                 `json:"ancestors" orm:"ancestors"`
 	DeptName    string                 `json:"deptName" orm:"dept_name"`
@@ -120,7 +120,7 @@ func DelDept(id int64) error {
 }
 
 //根据部门id获取部门信息
-func GetDeptById(id int64) (*Dept, error) {
+func GetDeptById(id uint64) (*Dept, error) {
 
 	dept := (*Dept)(nil)
 

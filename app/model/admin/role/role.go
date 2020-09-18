@@ -30,7 +30,7 @@ type SelectPageReq struct {
 //修改状态参数
 type StatusSetReq struct {
 	RoleId uint `p:"roleId" v:"required#角色ID不能为空"`
-	Status int  `p:"status" v:"required#状态不能为空"`
+	Status uint `p:"status" v:"required#状态不能为空"`
 }
 
 //角色数据授权参数
@@ -90,7 +90,7 @@ func GetList() (list []*Entity, err error) {
 		return
 	}
 	//从数据库获取
-	list, err = Model.OrderBy("list_order asc,id asc").All()
+	list, err = Model.Order("list_order asc,id asc").All()
 	//缓存数据
 	cache.Set(cache_service.AdminAuthRole, list, 0, cache_service.AdminAuthTag)
 	return

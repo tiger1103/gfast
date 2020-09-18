@@ -19,12 +19,12 @@ func CheckDictTypeUnique(dictType *sys_dict_type.EditReq) bool {
 }
 
 //添加数据
-func AddSave(req *sys_dict_type.AddReq, userId int) (int64, error) {
+func AddSave(req *sys_dict_type.AddReq, userId uint64) (int64, error) {
 	return sys_dict_type.AddSave(req, userId)
 }
 
 //修改保存字典类型
-func EditSave(req *sys_dict_type.EditReq, userId int) (int64, error) {
+func EditSave(req *sys_dict_type.EditReq, userId uint64) (int64, error) {
 	return sys_dict_type.EditSave(req, userId)
 }
 

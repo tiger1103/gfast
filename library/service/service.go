@@ -127,7 +127,7 @@ func LoginOut(r *ghttp.Request) bool {
 }
 
 // 用户登录，成功返回用户信息，否则返回nil
-func signIn(username, password string, r *ghttp.Request) (error, *user.User) {
+func signIn(username, password string, r *ghttp.Request) (error, *user.Entity) {
 	user, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
 	if err != nil && err != sql.ErrNoRows {
 		return err, nil
