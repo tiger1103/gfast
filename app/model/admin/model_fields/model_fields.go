@@ -26,7 +26,7 @@ type AddReq struct {
 	FieldRules   []string `p:"fieldRules" `
 	CreateBy     uint64
 	FieldWidth   string `p:"fieldWidth"`
-	fieldAlign   string `p:"fieldAlign"`
+	FieldAlign   string `p:"fieldAlign"`
 }
 
 // EditReq 用于存储修改请求参数
@@ -43,7 +43,7 @@ type EditReq struct {
 	FieldRules   []string `p:"fieldRules" `
 	UpdateBy     uint64
 	FieldWidth   string `p:"fieldWidth"`
-	fieldAlign   string `p:"fieldAlign"`
+	FieldAlign   string `p:"fieldAlign"`
 }
 
 type RemoveReq struct {
@@ -66,6 +66,8 @@ type FieldInfo struct {
 	UpdateBy     uint64 `p:"update_by"        json:"update_by"`     // 修改人
 	CreateTime   uint64 `p:"create_time"      json:"create_time"`   // 创建时间
 	UpdateTime   uint64 `p:"update_time"      json:"update_time"`   // 修改时间
+	FieldWidth   string `p:"field_width"      json:"field_width"`   //字段列表宽度
+	FieldAlign   string `p:"field_align"     json:"field_align"`    //字段对齐方式
 	ModelEdit    string `p:"model_edit" json:"model_edit"`
 	ModelIndexes string `p:"model_indexes" json:"model_indexes"`
 	ModelList    string `p:"model_list" json:"model_list"`
@@ -121,7 +123,7 @@ func AddSave(req *AddReq) error {
 	entity.CreateBy = req.CreateBy
 	entity.FieldSort = 1000
 	entity.FieldWidth = req.FieldWidth
-	entity.FieldAlign = req.fieldAlign
+	entity.FieldAlign = req.FieldAlign
 	time := gconv.Uint64(gtime.Timestamp())
 	entity.CreateTime = time
 	entity.UpdateTime = time
@@ -184,7 +186,7 @@ func EditSave(req *EditReq) error {
 	entity.UpdateBy = req.UpdateBy
 	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
 	entity.FieldWidth = req.FieldWidth
-	entity.FieldAlign = req.fieldAlign
+	entity.FieldAlign = req.FieldAlign
 	_, err = entity.Update()
 	if err != nil {
 		g.Log().Error(err)
