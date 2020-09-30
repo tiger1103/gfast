@@ -257,7 +257,7 @@ func (c *Gen) BatchGenCode(r *ghttp.Request) {
 //获取生成文件的目录
 func (c *Gen) getPath(entity *gen_table.EntityExtend) g.MapStrStr {
 	controller := "app/controller/" + entity.ModuleName + "/" + entity.ClassName + ".go"
-	service := "app/service/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + ".go"
+	service := "app/service/" + entity.ModuleName + "/" + entity.BusinessName + "_service/" + entity.ClassName + ".go"
 	model := "app/model/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + ".go"
 	vue := "views/" + entity.ModuleName + "/" + entity.BusinessName + "/index.vue"
 	api := "api/" + entity.ModuleName + "/" + entity.BusinessName + ".js"

@@ -42,7 +42,10 @@ func SelectDbTableColumnsByName(tableName string) ([]*Entity, error) {
 		g.Log().Error(err)
 		return nil, gerror.New("查询列信息失败")
 	}
-	result.Structs(&entity)
+	err = result.Structs(&entity)
+	if err != nil {
+		return nil, err
+	}
 	return entity, nil
 }
 

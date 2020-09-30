@@ -8,6 +8,8 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gregex"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"strings"
 )
@@ -59,7 +61,6 @@ func ImportGenTable(tableList []*gen_table.Entity, operName string) error {
 				tx.Rollback()
 				return gerror.New("获取列数据失败")
 			}
-
 			for _, column := range genTableColumns {
 				InitColumnField(column, table)
 				_, err = tx.Table("gen_table_column").Insert(column)
@@ -167,21 +168,25 @@ func InitColumnField(column *gen_table_column.Entity, table *gen_table.Entity) {
 	} else if gen_table_column.IsNumberObject(dataType) {
 		//字段为数字类型
 		column.HtmlType = "input"
+		t, _ := gregex.ReplaceString(`\(.+\)`, "", column.ColumnType)
+		t = gstr.Split(gstr.Trim(t), " ")[0]
+		t = gstr.ToLower(t)
 		// 如果是浮点型
-		tmp := column.ColumnType
-		start := strings.Index(tmp, "(")
-		end := strings.Index(tmp, ")")
-		result := "0"
-		if start > 0 && end > 0 {
-			result = tmp[start+1 : end]
-		}
-		arr := strings.Split(result, ",")
-		if len(arr) == 2 && gconv.Int(arr[1]) > 0 {
+		switch t {
+		case "float", "double", "decimal":
 			column.GoType = "float64"
-		} else if len(arr) == 1 && gconv.Int(arr[0]) <= 10 {
-			column.GoType = "int"
-		} else {
-			column.GoType = "int64"
+		case "bit", "int", "tinyint", "small_int", "smallint", "medium_int", "mediumint":
+			if gstr.ContainsI(column.ColumnType, "unsigned") {
+				column.GoType = "uint"
+			} else {
+				column.GoType = "int"
+			}
+		case "big_int", "bigint":
+			if gstr.ContainsI(column.ColumnType, "unsigned") {
+				column.GoType = "uint64"
+			} else {
+				column.GoType = "int64"
+			}
 		}
 	}
 	//新增字段
