@@ -10,13 +10,13 @@ import (
 
 //设置用户状态参数
 type StatusReq struct {
-	Id         int  `p:"userId" v:"required#用户id不能为空"`
-	UserStatus uint `p:"status" v:"required#用户状态不能为空"`
+	Id         uint64 `p:"userId" v:"required#用户id不能为空"`
+	UserStatus uint   `p:"status" v:"required#用户状态不能为空"`
 }
 
 //重置用户密码状态参数
 type ResetPwdReq struct {
-	Id       int    `p:"userId" v:"required#用户id不能为空"`
+	Id       uint64 `p:"userId" v:"required#用户id不能为空"`
 	Password string `p:"password" v:"required|password#密码不能为空|密码以字母开头，只能包含字母、数字和下划线，长度在6~18之间"`
 }
 

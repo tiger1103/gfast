@@ -53,7 +53,7 @@ func UpdatePwd(r *ghttp.Request, data *UpdatePwdReq) error {
 	}
 
 	return ResetUserPwd(&user.ResetPwdReq{
-		Id:       currentUser["id"].(int),
+		Id:       gconv.Uint64(currentUser["id"]),
 		Password: data.NewPassword,
 	})
 }
