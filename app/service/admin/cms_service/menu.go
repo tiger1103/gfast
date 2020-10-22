@@ -9,6 +9,8 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gfile"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 )
 
@@ -148,4 +150,26 @@ func GetModelIdByCateIds(ids []int) (modelId uint, err error) {
 		return
 	}
 	return
+}
+
+//获取分类模板
+func GetCmsTemplate() ([]string, []string) {
+	pathArr := g.Cfg().GetArray("viewer.paths")
+	var listTemplates []string
+	var contentTemplates []string
+	for _, p := range pathArr {
+		path := gconv.String(p) + "/cms"
+		if gfile.IsDir(path) {
+			path = gfile.Abs(path)
+			cmsPath, _ := gfile.ScanDirFile(path, "*", true)
+			for _, cp := range cmsPath {
+				if gstr.ContainsI(cp, "list") {
+					listTemplates = append(listTemplates, gstr.TrimLeft(gstr.ReplaceByArray(cp, []string{path, "", "\\", "/"}), "/"))
+				} else if gstr.ContainsI(cp, "content") {
+					contentTemplates = append(contentTemplates, gstr.TrimLeft(gstr.ReplaceByArray(cp, []string{path, "", "\\", "/"}), "/"))
+				}
+			}
+		}
+	}
+	return listTemplates, contentTemplates
 }

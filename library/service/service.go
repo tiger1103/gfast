@@ -19,7 +19,7 @@ import (
 )
 
 //版本号
-const Version = "1.1.01"
+const Version = "1.1.02"
 
 //获取数字验证码
 func GetVerifyImgDigit() (idKeyC string, base64stringC string) {

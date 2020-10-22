@@ -25,7 +25,7 @@ func (c *CacheTagService) cacheTagKey(key interface{}, tag interface{}) {
 	c.setTagKey(tag)
 	if c.tagKey != nil {
 		tagValue := []interface{}{key}
-		value := gcache.Get(c.tagKey)
+		value, _ := gcache.Get(c.tagKey)
 		if value != nil {
 			keyValue := gconv.SliceAny(value)
 			for _, v := range keyValue {
@@ -60,7 +60,8 @@ func (c *CacheTagService) SetIfNotExist(key interface{}, value interface{}, dura
 	tagSetMux.Lock()
 	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
-	return gcache.SetIfNotExist(key, value, duration)
+	v, _ := gcache.SetIfNotExist(key, value, duration)
+	return v
 }
 
 // Sets batch sets cache with tagKey-value pairs by <data>, which is expired after <duration>.
@@ -82,7 +83,8 @@ func (c *CacheTagService) Sets(data map[interface{}]interface{}, duration time.D
 // Get returns the value of <tagKey>.
 // It returns nil if it does not exist or its value is nil.
 func (c *CacheTagService) Get(key interface{}) interface{} {
-	return gcache.Get(key)
+	v, _ := gcache.Get(key)
+	return v
 }
 
 // GetOrSet returns the value of <tagKey>,
@@ -94,17 +96,19 @@ func (c *CacheTagService) GetOrSet(key interface{}, value interface{}, duration 
 	tagSetMux.Lock()
 	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
-	return gcache.GetOrSet(key, value, duration)
+	v, _ := gcache.GetOrSet(key, value, duration)
+	return v
 }
 
 // GetOrSetFunc returns the value of <tagKey>, or sets <tagKey> with result of function <f>
 // and returns its result if <tagKey> does not exist in the cache. The tagKey-value pair expires
 // after <duration>. It does not expire if <duration> <= 0.
-func (c *CacheTagService) GetOrSetFunc(key interface{}, f func() interface{}, duration time.Duration, tag interface{}) interface{} {
+func (c *CacheTagService) GetOrSetFunc(key interface{}, f func() (interface{}, error), duration time.Duration, tag interface{}) interface{} {
 	tagSetMux.Lock()
 	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
-	return gcache.GetOrSetFunc(key, f, duration)
+	v, _ := gcache.GetOrSetFunc(key, f, duration)
+	return v
 }
 
 // GetOrSetFuncLock returns the value of <tagKey>, or sets <tagKey> with result of function <f>
@@ -112,26 +116,29 @@ func (c *CacheTagService) GetOrSetFunc(key interface{}, f func() interface{}, du
 // after <duration>. It does not expire if <duration> <= 0.
 //
 // Note that the function <f> is executed within writing mutex lock.
-func (c *CacheTagService) GetOrSetFuncLock(key interface{}, f func() interface{}, duration time.Duration, tag interface{}) interface{} {
+func (c *CacheTagService) GetOrSetFuncLock(key interface{}, f func() (interface{}, error), duration time.Duration, tag interface{}) interface{} {
 	tagSetMux.Lock()
 	defer tagSetMux.Unlock()
 	c.cacheTagKey(key, tag)
-	return gcache.GetOrSetFuncLock(key, f, duration)
+	v, _ := gcache.GetOrSetFuncLock(key, f, duration)
+	return v
 }
 
 // Contains returns true if <tagKey> exists in the cache, or else returns false.
 func (c *CacheTagService) Contains(key interface{}) bool {
-	return gcache.Contains(key)
+	v, _ := gcache.Contains(key)
+	return v
 }
 
 // Remove deletes the <tagKey> in the cache, and returns its value.
 func (c *CacheTagService) Remove(key interface{}) interface{} {
-	return gcache.Remove(key)
+	v, _ := gcache.Remove(key)
+	return v
 }
 
 // Removes deletes <keys> in the cache.
 func (c *CacheTagService) Removes(keys []interface{}) {
-	gcache.Removes(keys)
+	gcache.Remove(keys...)
 }
 
 // Remove deletes the <tag> in the cache, and returns its value.
@@ -157,25 +164,30 @@ func (c *CacheTagService) RemoveByTags(tag []interface{}) {
 
 // Data returns a copy of all tagKey-value pairs in the cache as map type.
 func (c *CacheTagService) Data() map[interface{}]interface{} {
-	return gcache.Data()
+	v, _ := gcache.Data()
+	return v
 }
 
 // Keys returns all keys in the cache as slice.
 func (c *CacheTagService) Keys() []interface{} {
-	return gcache.Keys()
+	v, _ := gcache.Keys()
+	return v
 }
 
 // KeyStrings returns all keys in the cache as string slice.
 func (c *CacheTagService) KeyStrings() []string {
-	return gcache.KeyStrings()
+	v, _ := gcache.KeyStrings()
+	return v
 }
 
 // Values returns all values in the cache as slice.
 func (c *CacheTagService) Values() []interface{} {
-	return gcache.Values()
+	v, _ := gcache.Values()
+	return v
 }
 
 // Size returns the size of the cache.
 func (c *CacheTagService) Size() int {
-	return gcache.Size()
+	v, _ := gcache.Size()
+	return v
 }

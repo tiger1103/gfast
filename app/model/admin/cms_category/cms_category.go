@@ -38,6 +38,8 @@ type ReqAdd struct {
 	Status              uint   `p:"status" v:"in:0,1#状态只能包含0或1"`
 	CateAddress         string `p:"cate_address"`
 	CateContent         string `p:"content"`
+	ListTemplate        string `p:"list_template"`
+	ContentTemplate     string `p:"content_template"`
 }
 
 //修改请求参数
@@ -81,6 +83,8 @@ func AddSave(req *ReqAdd) (id int64, err error) {
 	entity.SeoDescription = req.InputSeoDescription
 	entity.CateAddress = req.CateAddress
 	entity.CateContent = req.CateContent
+	entity.ListTemplate = req.ListTemplate
+	entity.ContentTemplate = req.ContentTemplate
 	moreFields := g.Map{}
 	if req.Thumbnail != "" {
 		moreFields["thumb"] = req.Thumbnail
@@ -141,6 +145,8 @@ func EditSave(req *ReqEdit) (id int64, err error) {
 	entity.SeoDescription = req.InputSeoDescription
 	entity.CateAddress = req.CateAddress
 	entity.CateContent = req.CateContent
+	entity.ListTemplate = req.ListTemplate
+	entity.ContentTemplate = req.ContentTemplate
 	moreFields := g.Map{}
 	if req.Thumbnail != "" {
 		moreFields["thumb"] = req.Thumbnail

@@ -23,7 +23,7 @@ func (c *PlugLink) Add(r *ghttp.Request) {
 			response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 		}
 		// 调用service中的添加函数添加链接
-		err = plug_link.AddSave(req)
+		err = plug_link_service.AddSavePlugLink(req)
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}

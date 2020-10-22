@@ -11,15 +11,18 @@ import (
 
 // Entity is the golang structure for table plug_link.
 type Entity struct {
-	LinkId      int    `orm:"link_id,primary" json:"link_id"`      //
-	LinkName    string `orm:"link_name"       json:"link_name"`    // 链接名称
-	LinkUrl     string `orm:"link_url"        json:"link_url"`     // 链接URL
-	LinkTarget  string `orm:"link_target"     json:"link_target"`  // 打开方式
-	LinkTypeid  int    `orm:"link_typeid"     json:"link_typeid"`  // 所属栏目ID
-	LinkQq      string `orm:"link_qq"         json:"link_qq"`      // 联系QQ
-	LinkOrder   int64  `orm:"link_order"      json:"link_order"`   // 排序
-	LinkAddtime int    `orm:"link_addtime"    json:"link_addtime"` // 添加时间
-	LinkOpen    int    `orm:"link_open"       json:"link_open"`    // 0禁用1启用
+	LinkId       int    `orm:"link_id,primary" json:"link_id"`      //
+	LinkName     string `orm:"link_name"       json:"link_name"`    // 链接名称
+	LinkUrl      string `orm:"link_url"        json:"link_url"`     // 链接URL
+	LinkTarget   string `orm:"link_target"     json:"link_target"`  // 打开方式
+	LinkTypeid   int    `orm:"link_typeid"     json:"link_typeid"`  // 所属栏目ID
+	LinkQq       string `orm:"link_qq"         json:"link_qq"`      // 联系QQ
+	LinkOrder    int64  `orm:"link_order"      json:"link_order"`   // 排序
+	LinkAddtime  int    `orm:"link_addtime"    json:"link_addtime"` // 添加时间
+	LinkOpen     int    `orm:"link_open"       json:"link_open"`    // 0禁用1启用
+	LinkUsername string `orm:"link_username" json:"link_username"`  // 申请友情链接的联系人
+	LinkEmail    string `orm:"link_email" json:"link_email"`        // 联系邮箱
+	LinkRemark   string `orm:"link_remark" json:"link_remark"`      // 申请友情链接时的备注
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

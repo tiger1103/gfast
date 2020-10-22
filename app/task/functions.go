@@ -87,7 +87,7 @@ func GetOnlineInfo(token string) g.Map {
 	cacheKey := boot.AdminGfToken.CacheKey + userKey
 	switch boot.AdminGfToken.CacheMode {
 	case gtoken.CacheModeCache:
-		userCacheValue := gcache.Get(cacheKey)
+		userCacheValue, _ := gcache.Get(cacheKey)
 		if userCacheValue == nil {
 			return nil
 		}

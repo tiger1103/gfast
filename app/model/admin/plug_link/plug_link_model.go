@@ -24,25 +24,31 @@ var (
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 	// Columns defines and stores column names for table plug_link.
 	Columns = struct {
-		LinkId      string //
-		LinkName    string // 链接名称
-		LinkUrl     string // 链接URL
-		LinkTarget  string // 打开方式
-		LinkTypeid  string // 所属栏目ID
-		LinkQq      string // 联系QQ
-		LinkOrder   string // 排序
-		LinkAddtime string // 添加时间
-		LinkOpen    string // 0禁用1启用
+		LinkId       string //
+		LinkName     string // 链接名称
+		LinkUrl      string // 链接URL
+		LinkTarget   string // 打开方式
+		LinkTypeid   string // 所属栏目ID
+		LinkQq       string // 联系QQ
+		LinkOrder    string // 排序
+		LinkAddtime  string // 添加时间
+		LinkOpen     string // 0禁用1启用
+		LinkUsername string // 申请友情链接的联系人
+		LinkEmail    string // 联系邮箱
+		LinkRemark   string // 申请友情链接时的备注
 	}{
-		LinkId:      "link_id",
-		LinkName:    "link_name",
-		LinkUrl:     "link_url",
-		LinkTarget:  "link_target",
-		LinkTypeid:  "link_typeid",
-		LinkQq:      "link_qq",
-		LinkOrder:   "link_order",
-		LinkAddtime: "link_addtime",
-		LinkOpen:    "link_open",
+		LinkId:       "link_id",
+		LinkName:     "link_name",
+		LinkUrl:      "link_url",
+		LinkTarget:   "link_target",
+		LinkTypeid:   "link_typeid",
+		LinkQq:       "link_qq",
+		LinkOrder:    "link_order",
+		LinkAddtime:  "link_addtime",
+		LinkOpen:     "link_open",
+		LinkUsername: "link_username",
+		LinkEmail:    "link_email",
+		LinkRemark:   "link_remark",
 	}
 )
 

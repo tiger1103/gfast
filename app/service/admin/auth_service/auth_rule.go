@@ -30,7 +30,7 @@ func GetIsMenuList() ([]*auth_rule.Entity, error) {
 	return gList, nil
 }
 
-//获取isMenu=1且status=1的菜单列表
+//获取isMenu=0|1且status=1的菜单列表
 func GetIsMenuStatusList() ([]*auth_rule.Entity, error) {
 	list, err := GetMenuList()
 	if err != nil {
@@ -39,6 +39,21 @@ func GetIsMenuStatusList() ([]*auth_rule.Entity, error) {
 	var gList = make([]*auth_rule.Entity, 0, len(list))
 	for _, v := range list {
 		if (v.MenuType == 0 || v.MenuType == 1) && v.Status == 1 {
+			gList = append(gList, v)
+		}
+	}
+	return gList, nil
+}
+
+//获取所有按钮isMenu=2 且status=1的菜单列表
+func GetIsButtonStatusList() ([]*auth_rule.Entity, error) {
+	list, err := GetMenuList()
+	if err != nil {
+		return nil, err
+	}
+	var gList = make([]*auth_rule.Entity, 0, len(list))
+	for _, v := range list {
+		if v.MenuType == 2 && v.Status == 1 {
 			gList = append(gList, v)
 		}
 	}
@@ -80,7 +95,6 @@ func GetMenuListSearch(req *auth_rule.ReqSearch) (list []*auth_rule.Entity, err 
 		}
 		list = tmpList
 	}
-	g.Log().Debug(list)
 	return
 }
 

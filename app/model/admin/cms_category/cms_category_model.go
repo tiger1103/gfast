@@ -24,43 +24,47 @@ var (
 	Model = &arModel{g.DB("default").Table(Table).Safe()}
 	// Columns defines and stores column names for table cms_category.
 	Columns = struct {
-		Id             string // 分类id
-		ParentId       string // 分类父id
-		ModelId        string // 模型ID
-		Status         string // 状态,1:发布,0:不发布
-		DeleteTime     string // 删除时间
-		ListOrder      string // 排序
-		Name           string // 分类名称
-		Alias          string // 栏目别名
-		Description    string // 分类描述
-		SeoTitle       string //
-		SeoKeywords    string //
-		SeoDescription string //
-		ListTpl        string // 分类列表模板
-		OneTpl         string // 分类文章页模板
-		More           string // 扩展属性
-		CateType       string // 分类类型
-		CateAddress    string // 跳转地址
-		CateContent    string // 单页内容
+		Id              string // 分类id
+		ParentId        string // 分类父id
+		ModelId         string // 模型ID
+		Status          string // 状态,1:发布,0:不发布
+		DeleteTime      string // 删除时间
+		ListOrder       string // 排序
+		Name            string // 分类名称
+		Alias           string // 栏目别名
+		Description     string // 分类描述
+		SeoTitle        string //
+		SeoKeywords     string //
+		SeoDescription  string //
+		ListTpl         string // 分类列表模板
+		OneTpl          string // 分类文章页模板
+		More            string // 扩展属性
+		CateType        string // 分类类型
+		CateAddress     string // 跳转地址
+		CateContent     string // 单页内容
+		ListTemplate    string //列表页模板
+		ContentTemplate string //内容页模板
 	}{
-		Id:             "id",
-		ParentId:       "parent_id",
-		ModelId:        "model_id",
-		Status:         "status",
-		DeleteTime:     "delete_time",
-		ListOrder:      "list_order",
-		Name:           "name",
-		Alias:          "alias",
-		Description:    "description",
-		SeoTitle:       "seo_title",
-		SeoKeywords:    "seo_keywords",
-		SeoDescription: "seo_description",
-		ListTpl:        "list_tpl",
-		OneTpl:         "one_tpl",
-		More:           "more",
-		CateType:       "cate_type",
-		CateAddress:    "cate_address",
-		CateContent:    "cate_content",
+		Id:              "id",
+		ParentId:        "parent_id",
+		ModelId:         "model_id",
+		Status:          "status",
+		DeleteTime:      "delete_time",
+		ListOrder:       "list_order",
+		Name:            "name",
+		Alias:           "alias",
+		Description:     "description",
+		SeoTitle:        "seo_title",
+		SeoKeywords:     "seo_keywords",
+		SeoDescription:  "seo_description",
+		ListTpl:         "list_tpl",
+		OneTpl:          "one_tpl",
+		More:            "more",
+		CateType:        "cate_type",
+		CateAddress:     "cate_address",
+		CateContent:     "cate_content",
+		ListTemplate:    "list_template",
+		ContentTemplate: "content_template",
 	}
 )
 

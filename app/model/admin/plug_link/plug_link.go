@@ -14,13 +14,16 @@ import (
 
 // AddReq 用于存储新增链接请求的请求参数
 type AddReq struct {
-	LinkName   string `p:"linkName" v:"required#名称不能为空"` // 链接名称
-	LinkUrl    string `p:"linkUrl"`                      // 链接URL
-	LinkTarget string `p:"linkTarget"`                   // 打开方式
-	LinkTypeID int    `p:"linkTypeID"`                   // 所属栏目ID
-	LinkQQ     string `p:"linkQQ"`                       // 联系QQ
-	LinkOrder  int64  `p:"linkOrder"`                    // 排序
-	LinkOpen   int    `p:"linkOpen"`                     // 0禁用1启用(是否审核)
+	LinkName     string `p:"linkName" v:"required#名称不能为空"`     // 链接名称
+	LinkUrl      string `p:"linkUrl" v:"required#名称不能为空"`      // 链接URL
+	LinkTarget   string `p:"linkTarget" `                      // 打开方式
+	LinkTypeID   int    `p:"linkTypeID"`                       // 所属栏目ID
+	LinkQQ       string `p:"linkQQ" v:"required#名称不能为空"`       // 联系QQ
+	LinkOrder    int64  `p:"linkOrder"`                        // 排序
+	LinkOpen     int    `p:"linkOpen"`                         // 0禁用1启用(是否审核)
+	LinkUsername string `p:"linkUsername" v:"required#名称不能为空"` // 申请友情链接的联系人
+	LinkEmail    string `p:"linkEmail"`                        // 联系邮箱
+	LinkRemark   string `p:"linkRemark"`                       // 申请友情链接时的备注
 }
 
 // EditReq 用于存储修改广告位请求参数
@@ -66,6 +69,9 @@ func AddSave(req *AddReq) error {
 	entity.LinkAddtime = int(gtime.Timestamp()) // 添加时间
 	entity.LinkOrder = req.LinkOrder
 	entity.LinkOpen = req.LinkOpen
+	entity.LinkUsername = req.LinkUsername
+	entity.LinkEmail = req.LinkEmail
+	entity.LinkRemark = req.LinkRemark
 	// 保存实体
 	_, err := entity.Insert()
 	if err != nil {
@@ -100,6 +106,9 @@ func EditSave(editReq *EditReq) error {
 	entity.LinkQq = editReq.LinkQQ
 	entity.LinkOrder = editReq.LinkOrder
 	entity.LinkOpen = editReq.LinkOpen
+	entity.LinkUsername = editReq.LinkUsername
+	entity.LinkEmail = editReq.LinkEmail
+	entity.LinkRemark = editReq.LinkRemark
 	_, err = entity.Update()
 	if err != nil {
 		g.Log().Error(err)
@@ -146,4 +155,14 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*ListEn
 		return 0, 0, nil, err
 	}
 	return total, page, list, nil
+}
+
+// 按链接分类查询当前分类下的size条最新链接(status:1启用,0未启用,优先序号排序，其次时间倒序)
+func ListByTypeId(typeId int, size int, status int) (list []*Entity, err error) {
+	list, err = Model.Where("link_typeid = ?", typeId).And("link_open = ?", status).Fields("link_name,link_url,link_target").Order("link_order asc,link_addtime desc").Limit(size).All()
+	if err != nil {
+		g.Log().Error(err)
+		return nil, gerror.New("按分类查询链接出错")
+	}
+	return list, nil
 }

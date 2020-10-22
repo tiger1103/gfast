@@ -150,3 +150,18 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*ListEn
 	}
 	return total, page, list, nil
 }
+
+// 获取size条状态为status的广告信息,优先按排序序号排序,其次按时间倒序(status 0停用 1正常)
+func GetSizeAd(size int, status int, typeId int) ([]*Entity, error) {
+	model := Model
+	model = model.Where("ad_open = ?", status)
+	if typeId != 0 {
+		model = model.Where("ad_adtypeid = ?", typeId)
+	}
+	entity, err := model.Order("ad_sort asc,ad_addtime desc").Limit(size).All()
+	if err != nil {
+		g.Log().Error(err)
+		return nil, gerror.New("查询广告信息失败")
+	}
+	return entity, nil
+}

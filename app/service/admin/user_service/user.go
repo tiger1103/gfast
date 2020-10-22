@@ -53,7 +53,7 @@ func UpdatePwd(r *ghttp.Request, data *UpdatePwdReq) error {
 	}
 
 	return ResetUserPwd(&user.ResetPwdReq{
-		Id:       currentUser["id"].(int),
+		Id:       gconv.Uint64(currentUser["id"]),
 		Password: data.NewPassword,
 	})
 }
@@ -140,7 +140,7 @@ func GetAdminList(req *user.SearchReq) (total, page int, userList []*user.Entity
 	if req.DeptId != "" {
 		depts, err = sys_dept.GetList(&sys_dept.SearchParams{Status: "1"})
 		if err != nil {
-			g.Log().Debug(err)
+			g.Log().Error(err)
 			err = gerror.New("获取部门信息失败")
 			return
 		}
@@ -167,6 +167,9 @@ func GetAdminRole(userId uint64, allRoleList []*role.Entity) (roles []*role.Enti
 			if id == v.Id {
 				roles = append(roles, v)
 			}
+		}
+		if len(roles) == len(roleIds) {
+			break
 		}
 	}
 	return
@@ -283,4 +286,30 @@ func ResetUserPwd(req *user.ResetPwdReq) error {
 	//密码加密
 	req.Password = utils.EncryptCBC(gconv.String(req.Password), utils.AdminCbcPublicKey)
 	return user.ResetUserPwd(req)
+}
+
+func GetPermissions(roleIds []uint) ([]string, error) {
+	//获取角色对应的菜单id
+	enforcer, err := casbin_adapter_service.GetEnforcer()
+	if err != nil {
+		return nil, err
+	}
+	menuIds := map[int64]int64{}
+	for _, roleId := range roleIds {
+		//查询当前权限
+		gp := enforcer.GetFilteredPolicy(0, fmt.Sprintf("g_%d", roleId))
+		for _, p := range gp {
+			mid := gconv.Int64(gstr.SubStr(p[1], 2))
+			menuIds[mid] = mid
+		}
+	}
+	//获取所有开启的按钮
+	allButtons, err := auth_service.GetIsButtonStatusList()
+	userButtons := make([]string, 0, len(allButtons))
+	for _, button := range allButtons {
+		if _, ok := menuIds[gconv.Int64(button.Id)]; gstr.Equal(button.Condition, "nocheck") || ok {
+			userButtons = append(userButtons, button.Name)
+		}
+	}
+	return userButtons, nil
 }

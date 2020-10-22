@@ -77,9 +77,12 @@ func (c *CmsMenu) Add(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
-
+	//获取分类栏目模板
+	ListTemp, contentTemp := cms_service.GetCmsTemplate()
 	res := g.Map{
-		"parentList": menus,
+		"parentList":  menus,
+		"listTemp":    ListTemp,
+		"contentTemp": contentTemp,
 	}
 	response.SusJson(true, r, "添加栏目", res)
 }
@@ -119,10 +122,13 @@ func (c *CmsMenu) Edit(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
-
+	//获取分类栏目模板
+	ListTemp, contentTemp := cms_service.GetCmsTemplate()
 	res := g.Map{
-		"menuInfo":   menuInfo,
-		"parentList": menus,
+		"menuInfo":    menuInfo,
+		"parentList":  menus,
+		"listTemp":    ListTemp,
+		"contentTemp": contentTemp,
 	}
 	response.SusJson(true, r, "修改栏目", res)
 }

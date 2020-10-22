@@ -65,3 +65,10 @@
     packageName   = "gfast"
     autoRemovePre = true
     tablePrefix   = "t_,sys_"
+
+
+#模板配置
+[viewer]
+paths       = ["./template"]
+defaultFile = "index.html"
+delimiters  =  ["${", "}"]

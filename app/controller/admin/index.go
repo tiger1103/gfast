@@ -27,6 +27,7 @@ func (c *Index) GetInfo(r *ghttp.Request) {
 	}
 	userInfo := gconv.Map(userEntity)
 	rolesList := make([]string, 0, 10)
+	var permissions []string
 	if userInfo != nil {
 		userId := userEntity.Id
 		delete(userInfo, "user_password")
@@ -44,6 +45,19 @@ func (c *Index) GetInfo(r *ghttp.Request) {
 					roleIds[k] = v.Id
 				}
 				userInfo["roles"] = roles
+				isSuperAdmin := false
+				//获取无需验证权限的用户id
+				for _, v := range service.NotCheckAuthAdminIds {
+					if gconv.Uint64(v) == userId {
+						isSuperAdmin = true
+						break
+					}
+				}
+				if isSuperAdmin {
+					permissions = []string{"*/*/*"}
+				} else {
+					permissions, err = user_service.GetPermissions(roleIds)
+				}
 				rolesList = name
 			} else {
 				g.Log().Error(err)
@@ -56,7 +70,7 @@ func (c *Index) GetInfo(r *ghttp.Request) {
 	result := g.Map{
 		"user":        userInfo,
 		"roles":       rolesList,
-		"permissions": nil,
+		"permissions": permissions,
 	}
 
 	response.SusJson(true, r, "ok", result)

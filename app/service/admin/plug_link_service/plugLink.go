@@ -28,3 +28,8 @@ func GetPlugLinkByID(id int64) (*plug_link.Entity, error) {
 func SelectPlugLinkListByPage(req *plug_link.SelectPageReq) (total int, page int64, list []*plug_link.ListEntity, err error) {
 	return plug_link.SelectListByPage(req)
 }
+
+// 按链接分类查询当前分类下的size条最新链接(status:1启用,0未启用,优先序号排序，其次时间倒序)
+func ListByTypeId(typeId int, size int, status int) (list []*plug_link.Entity, err error) {
+	return plug_link.ListByTypeId(typeId, size, status)
+}

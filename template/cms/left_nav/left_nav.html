@@ -1,0 +1,25 @@
+${define "left_nav"}
+<div class="left-col">
+    <div class="site-branding">
+        <div id="logo">
+            <a href="${.domain}/index" rel="home">
+                <img width="240" height="70" src="${.domain}cms/images/logo.png" class="custom-logo" alt="Gfast"></a>
+        </div>
+    </div>
+    <div class="nav">
+        <ul>
+            ${range $index,$item := .menus}
+                ${if eq $index 0}
+                <li>
+                    <a href="#" class="active">${$item.Name}</a>
+                </li>
+                ${else}
+                <li>
+                    <a href="#">${$item.Name}</a>
+                </li>
+                ${end}
+            ${end}
+        </ul>
+    </div>
+</div>
+${end}

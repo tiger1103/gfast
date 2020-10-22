@@ -28,3 +28,8 @@ func GetPlugAdByID(id int64) (*plug_ad.Entity, error) {
 func SelectPlugAdListByPage(req *plug_ad.SelectPageReq) (total int, page int64, list []*plug_ad.ListEntity, err error) {
 	return plug_ad.SelectListByPage(req)
 }
+
+// 获取size条状态为status的广告信息,优先按排序序号排序,其次按时间倒序(status 0停用 1正常)
+func GetSizeAd(size int, status int, typeId int) ([]*plug_ad.Entity, error) {
+	return plug_ad.GetSizeAd(size, status, typeId)
+}
