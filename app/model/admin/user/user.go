@@ -10,8 +10,8 @@ import (
 
 //设置用户状态参数
 type StatusReq struct {
-	Id         int  `p:"userId" v:"required#用户id不能为空"`
-	UserStatus uint `p:"status" v:"required#用户状态不能为空"`
+	Id         uint64 `p:"userId" v:"required#用户id不能为空"`
+	UserStatus uint   `p:"status" v:"required#用户状态不能为空"`
 }
 
 //重置用户密码状态参数
