@@ -4,6 +4,8 @@ definitions:
     properties:
       alwaysShow:
         type: integer
+      component:
+        type: string
       condition:
         type: string
       icon:
@@ -32,6 +34,178 @@ definitions:
       status:
         type: string
       title:
+        type: string
+    type: object
+  cms_category.ReqAdd:
+    properties:
+      alias:
+        type: string
+      cateAddress:
+        type: string
+      cateContent:
+        type: string
+      cateType:
+        type: integer
+      contentTemplate:
+        type: string
+      description:
+        type: string
+      inputSeoDescription:
+        type: string
+      inputSeoKeywords:
+        type: string
+      inputSeoTitle:
+        type: string
+      listTemplate:
+        type: string
+      modelId:
+        type: integer
+      name:
+        type: string
+      parentId:
+        type: integer
+      status:
+        type: integer
+      thumbnail:
+        type: string
+    type: object
+  cms_category.ReqEdit:
+    properties:
+      alias:
+        type: string
+      cateAddress:
+        type: string
+      cateContent:
+        type: string
+      cateType:
+        type: integer
+      contentTemplate:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      inputSeoDescription:
+        type: string
+      inputSeoKeywords:
+        type: string
+      inputSeoTitle:
+        type: string
+      listTemplate:
+        type: string
+      modelId:
+        type: integer
+      name:
+        type: string
+      parentId:
+        type: integer
+      status:
+        type: integer
+      thumbnail:
+        type: string
+    type: object
+  cms_category.ReqSearchList:
+    properties:
+      name:
+        type: string
+      status:
+        type: string
+    type: object
+  cms_news.ReqAddParams:
+    properties:
+      attr:
+        description: 文章标记 置顶 推荐
+        items:
+          type: integer
+        type: array
+      isJump:
+        description: 是否跳转地址
+        type: integer
+      jumpUrl:
+        description: 跳转地址
+        type: string
+      modelForm:
+        additionalProperties: true
+        type: object
+      newsExcerpt:
+        description: post摘要
+        type: string
+      newsKeywords:
+        description: seo keywords
+        type: string
+      newsSource:
+        description: 转载文章的来源
+        type: string
+      newsStatus:
+        description: 状态;1:已发布;0:未发布;
+        type: integer
+      newsTitle:
+        description: post标题
+        type: string
+      publishedTime:
+        description: 发布时间
+        type: string
+      thumbnail:
+        description: 缩略图
+        type: string
+    type: object
+  cms_news.ReqEditParams:
+    properties:
+      attr:
+        description: 文章标记 置顶 推荐
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      isJump:
+        description: 是否跳转地址
+        type: integer
+      jumpUrl:
+        description: 跳转地址
+        type: string
+      modelForm:
+        additionalProperties: true
+        type: object
+      newsExcerpt:
+        description: post摘要
+        type: string
+      newsKeywords:
+        description: seo keywords
+        type: string
+      newsSource:
+        description: 转载文章的来源
+        type: string
+      newsStatus:
+        description: 状态;1:已发布;0:未发布;
+        type: integer
+      newsTitle:
+        description: post标题
+        type: string
+      publishedTime:
+        description: 发布时间
+        type: string
+      thumbnail:
+        description: 缩略图
+        type: string
+    type: object
+  cms_news.ReqListSearchParams:
+    properties:
+      cateId:
+        items:
+          type: integer
+        type: array
+      keyWords:
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      publishedTimeEnd:
+        type: string
+      publishedTimeStart:
         type: string
     type: object
   gen_table.EditReq:
@@ -91,6 +265,224 @@ definitions:
       tableName:
         description: 表名称
         type: string
+    type: object
+  model_category.AddReq:
+    properties:
+      cname:
+        type: string
+      createBy:
+        type: integer
+      csort:
+        type: integer
+      cstatus:
+        type: integer
+    type: object
+  model_category.EditReq:
+    properties:
+      cid:
+        type: integer
+      cname:
+        type: string
+      csort:
+        type: integer
+      cstatus:
+        type: integer
+      updateBy:
+        type: integer
+    type: object
+  model_category.SearchReq:
+    properties:
+      name:
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+      status:
+        type: string
+    type: object
+  model_info.AddReq:
+    properties:
+      createBy:
+        description: 添加人
+        type: integer
+      modelCategoryId:
+        type: integer
+      modelEngine:
+        type: string
+      modelName:
+        type: string
+      modelStatus:
+        type: integer
+      modelTitle:
+        type: string
+    type: object
+  model_info.EditReq:
+    properties:
+      modelCategoryId:
+        type: integer
+      modelEngine:
+        type: string
+      modelId:
+        type: integer
+      modelName:
+        type: string
+      modelStatus:
+        type: integer
+      modelTitle:
+        type: string
+      updateBy:
+        type: integer
+    type: object
+  model_info.RemoveReq:
+    properties:
+      ids:
+        description: 删除id
+        items:
+          type: integer
+        type: array
+    type: object
+  model_info.SelectPageReq:
+    properties:
+      beginTime:
+        description: 开始时间
+        type: string
+      endTime:
+        description: 结束时间
+        type: string
+      modelCategoryId:
+        description: 模型分类
+        type: string
+      modelName:
+        description: 模型标识
+        type: string
+      modelStatus:
+        description: 模型状态
+        type: string
+      modelTitle:
+        description: 模型名称
+        type: string
+      pageNum:
+        description: 当前页码
+        type: integer
+      pageSize:
+        description: 每页数
+        type: integer
+    type: object
+  model_info.StatusSetReq:
+    properties:
+      modelId:
+        type: integer
+      modelStatus:
+        type: integer
+    type: object
+  plug_ad.AddReq:
+    properties:
+      adAdtypeid:
+        description: 所属位置
+        type: integer
+      adCheckid:
+        description: 1=图片 2=JS
+        type: integer
+      adContent:
+        description: 广告文字内容
+        type: string
+      adJs:
+        description: JS代码
+        type: string
+      adName:
+        description: 广告名称
+        type: string
+      adOpen:
+        description: 1=审核  0=未审核
+        type: integer
+      adPic:
+        description: 广告图片URL
+        type: string
+      adSort:
+        description: 排序
+        type: integer
+      adUrl:
+        description: 广告链接
+        type: string
+    type: object
+  plug_ad.EditReq:
+    properties:
+      adAdtypeid:
+        description: 所属位置
+        type: integer
+      adCheckid:
+        description: 1=图片 2=JS
+        type: integer
+      adContent:
+        description: 广告文字内容
+        type: string
+      adJs:
+        description: JS代码
+        type: string
+      adName:
+        description: 广告名称
+        type: string
+      adOpen:
+        description: 1=审核  0=未审核
+        type: integer
+      adPic:
+        description: 广告图片URL
+        type: string
+      adSort:
+        description: 排序
+        type: integer
+      adUrl:
+        description: 广告链接
+        type: string
+      plugAdID:
+        type: integer
+    type: object
+  plug_ad.SelectPageReq:
+    properties:
+      adName:
+        description: 广告名称
+        type: string
+      pageNo:
+        description: 当前页
+        type: integer
+      pageSize:
+        description: 每页显示记录数
+        type: integer
+    type: object
+  plug_adtype.AddReq:
+    properties:
+      adtypeName:
+        description: 广告位名称
+        type: string
+      adtypeSort:
+        description: 广告位排序
+        type: integer
+    type: object
+  plug_adtype.EditReq:
+    properties:
+      adtypeID:
+        type: integer
+      adtypeName:
+        description: 广告位名称
+        type: string
+      adtypeSort:
+        description: 广告位排序
+        type: integer
+    type: object
+  plug_adtype.SelectPageReq:
+    properties:
+      adtypeName:
+        description: 广告位名称
+        type: string
+      pageNo:
+        description: 当前页
+        type: integer
+      pageSize:
+        description: 每页显示记录数
+        type: integer
     type: object
   response.Response:
     properties:
@@ -499,6 +891,8 @@ definitions:
     type: object
   sys_post.AddParams:
     properties:
+      addUser:
+        type: integer
       postCode:
         type: string
       postName:
@@ -512,6 +906,8 @@ definitions:
     type: object
   sys_post.EditParams:
     properties:
+      addUser:
+        type: integer
       postCode:
         type: string
       postId:
@@ -524,6 +920,8 @@ definitions:
         type: string
       status:
         type: string
+      upUser:
+        type: integer
     type: object
   sys_post.SearchParams:
     properties:
@@ -667,7 +1065,6 @@ host: localhost
 info:
   contact: {}
   description: gfast 在线API文档
-  license: {}
   title: gfast API文档
   version: "1.0"
 paths:
@@ -1016,6 +1413,225 @@ paths:
       summary: 设置角色状态
       tags:
       - 用户管理
+  /system/cms/menu/add:
+    post:
+      description: 添加栏目
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/cms_category.ReqAdd'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加栏目
+      tags:
+      - 栏目管理
+  /system/cms/menu/delete:
+    delete:
+      description: 删除栏目
+      parameters:
+      - description: ids
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除栏目
+      tags:
+      - 栏目管理
+  /system/cms/menu/edit:
+    post:
+      description: 修改栏目
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/cms_category.ReqEdit'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改栏目
+      tags:
+      - 栏目管理
+  /system/cms/menu/list:
+    get:
+      description: 分页列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/cms_category.ReqSearchList'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 栏目列表
+      tags:
+      - 栏目管理
+  /system/cms/menu/modelOptions:
+    get:
+      description: 栏目模型选项
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 栏目模型选项
+      tags:
+      - 栏目管理
+  /system/cms/menu/sort:
+    post:
+      description: 栏目排序
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 栏目排序
+      tags:
+      - 栏目管理
+  /system/cms/news/add:
+    post:
+      description: 添加信息
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/cms_news.ReqAddParams'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加信息
+      tags:
+      - 文章管理
+  /system/cms/news/delete:
+    delete:
+      description: 删除信息
+      parameters:
+      - description: ids[1,2,3..]
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除信息
+      tags:
+      - 文章管理
+  /system/cms/news/edit:
+    post:
+      description: 修改信息
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/cms_news.ReqEditParams'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改信息
+      tags:
+      - 文章管理
+  /system/cms/news/getModelFields:
+    get:
+      description: 获取模型字段
+      parameters:
+      - description: cateIds[1,2,3...]
+        in: body
+        name: cateIds
+        required: true
+        schema:
+          type: integer
+      - description: newsId
+        in: body
+        name: newsId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 获取模型字段
+      tags:
+      - 栏目管理
+  /system/cms/news/list:
+    get:
+      description: 信息列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/cms_news.ReqListSearchParams'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 信息列表
+      tags:
+      - 文章管理
   /system/config/dict/add:
     post:
       description: 添加字典
@@ -1178,7 +1794,13 @@ paths:
       - 字典管理
   /system/config/dict/sysNormalDisable:
     post:
-      description: 字典状态
+      description: 获取字典对应选项
+      parameters:
+      - description: dictType
+        in: query
+        name: dictType
+        required: true
+        type: string
       responses:
         "0":
           description: '{"code": 200, "data": [...]}'
@@ -1186,7 +1808,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - "": []
-      summary: 字典状态
+      summary: 获取字典对应选项
       tags:
       - 字典管理
   /system/config/params/add:
@@ -1376,6 +1998,257 @@ paths:
       summary: 获取后台菜单
       tags:
       - 公共
+  /system/model/category/add:
+    post:
+      description: 添加模型分类
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_category.AddReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加模型分类
+      tags:
+      - 模型分类
+  /system/model/category/all:
+    post:
+      description: 模型分类
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 模型分类
+      tags:
+      - 模型分类
+  /system/model/category/delete:
+    delete:
+      description: 删除分类
+      parameters:
+      - description: ids
+        in: body
+        name: ids
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除分类
+      tags:
+      - 模型分类
+  /system/model/category/edit:
+    post:
+      description: 修改模型分类
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_category.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改模型分类
+      tags:
+      - 模型分类
+  /system/model/category/list:
+    get:
+      description: 模型列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_category.SearchReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 模型列表
+      tags:
+      - 模型分类
+  /system/model/category/sort:
+    post:
+      description: 分类排序
+      parameters:
+      - description: sorts
+        in: body
+        name: sorts
+        required: true
+        schema:
+          type: string
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 分类排序
+      tags:
+      - 模型分类
+  /system/model/info/add:
+    post:
+      description: 新增
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_info.AddReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 新增
+      tags:
+      - 模型列表
+  /system/model/info/copyModel:
+    post:
+      description: 复制模型
+      parameters:
+      - description: int valid
+        in: path
+        name: modelId
+        required: true
+        type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 复制模型
+      tags:
+      - 模型列表
+  /system/model/info/createModel:
+    post:
+      description: 模型生成
+      parameters:
+      - description: int valid
+        in: path
+        name: modelId
+        required: true
+        type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 模型生成
+      tags:
+      - 模型列表
+  /system/model/info/delete:
+    post:
+      description: 删除
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_info.RemoveReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除
+      tags:
+      - 模型列表
+  /system/model/info/edit:
+    post:
+      description: 修改
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_info.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改
+      tags:
+      - 模型列表
+  /system/model/info/list:
+    post:
+      description: 列表页
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_info.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 列表页
+      tags:
+      - 模型列表
+  /system/model/info/setStatus:
+    post:
+      description: 设置模型状态
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model_info.StatusSetReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 设置模型状态
+      tags:
+      - 模型列表
   /system/monitor/job/add:
     post:
       description: 添加任务
@@ -1702,6 +2575,206 @@ paths:
       summary: 服务监控
       tags:
       - 服务监控
+  /system/plug/ad/info/add:
+    post:
+      description: 添加广告
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/plug_ad.AddReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加广告
+      tags:
+      - 广告列表
+  /system/plug/ad/info/delete:
+    delete:
+      description: 删除广告
+      parameters:
+      - description: ids
+        in: body
+        name: data
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除广告
+      tags:
+      - 广告列表
+  /system/plug/ad/info/edit:
+    post:
+      description: 修改广告
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/plug_ad.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改广告
+      tags:
+      - 广告列表
+  /system/plug/ad/info/list:
+    get:
+      description: 广告列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/plug_ad.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 广告列表
+      tags:
+      - 广告列表
+  /system/plug/ad/info/sort:
+    post:
+      description: 栏目排序
+      parameters:
+      - description: sorts[]
+        in: body
+        name: sorts
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 栏目排序
+      tags:
+      - 广告列表
+  /system/plug/ad/type/add:
+    post:
+      description: 添加广告位
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/plug_adtype.AddReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 添加广告位
+      tags:
+      - 广告位管理
+  /system/plug/ad/type/delete:
+    delete:
+      description: 删除广告位
+      parameters:
+      - description: adtypeID[1,2,3...]
+        in: body
+        name: adtypeID
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 删除广告位
+      tags:
+      - 广告位管理
+  /system/plug/ad/type/edit:
+    post:
+      description: 修改广告位信息
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/plug_adtype.EditReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 修改广告位信息
+      tags:
+      - 广告位管理
+  /system/plug/ad/type/list:
+    get:
+      description: 广告位列表
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/plug_adtype.SelectPageReq'
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 广告位列表
+      tags:
+      - 广告位管理
+  /system/plug/ad/type/sort:
+    post:
+      description: 栏目排序
+      parameters:
+      - description: sorts
+        in: body
+        name: sorts
+        required: true
+        schema:
+          type: integer
+      responses:
+        "0":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - "": []
+      summary: 栏目排序
+      tags:
+      - 广告位管理
   /system/post/add:
     post:
       consumes:
@@ -1775,7 +2848,7 @@ paths:
           $ref: '#/definitions/sys_post.SearchParams'
       responses:
         "0":
-          description: '{"code": 200, "data": [...]}'
+          description: '{"code": 0, "data": [...]}'
           schema:
             $ref: '#/definitions/response.Response'
       security:

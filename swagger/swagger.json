@@ -4,7 +4,6 @@
         "description": "gfast 在线API文档",
         "title": "gfast API文档",
         "contact": {},
-        "license": {},
         "version": "1.0"
     },
     "host": "localhost",
@@ -575,6 +574,367 @@
                 }
             }
         },
+        "/system/cms/menu/add": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "添加栏目",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "添加栏目",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cms_category.ReqAdd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/menu/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "删除栏目",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "删除栏目",
+                "parameters": [
+                    {
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/menu/edit": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "修改栏目",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "修改栏目",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cms_category.ReqEdit"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/menu/list": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "分页列表",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "栏目列表",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cms_category.ReqSearchList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/menu/modelOptions": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "栏目模型选项",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "栏目模型选项",
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/menu/sort": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "栏目排序",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "栏目排序",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/news/add": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "添加信息",
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "添加信息",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cms_news.ReqAddParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/news/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "删除信息",
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "删除信息",
+                "parameters": [
+                    {
+                        "description": "ids[1,2,3..]",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/news/edit": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "修改信息",
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "修改信息",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cms_news.ReqEditParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/news/getModelFields": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "获取模型字段",
+                "tags": [
+                    "栏目管理"
+                ],
+                "summary": "获取模型字段",
+                "parameters": [
+                    {
+                        "description": "cateIds[1,2,3...]",
+                        "name": "cateIds",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "newsId",
+                        "name": "newsId",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/cms/news/list": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "信息列表",
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "信息列表",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cms_news.ReqListSearchParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/system/config/dict/add": {
             "post": {
                 "security": [
@@ -846,11 +1206,20 @@
                         "": []
                     }
                 ],
-                "description": "字典状态",
+                "description": "获取字典对应选项",
                 "tags": [
                     "字典管理"
                 ],
-                "summary": "字典状态",
+                "summary": "获取字典对应选项",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "dictType",
+                        "name": "dictType",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "0": {
                         "description": "{\"code\": 200, \"data\": [...]}",
@@ -1158,6 +1527,420 @@
                     "公共"
                 ],
                 "summary": "获取后台菜单",
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/category/add": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "添加模型分类",
+                "tags": [
+                    "模型分类"
+                ],
+                "summary": "添加模型分类",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_category.AddReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/category/all": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "模型分类",
+                "tags": [
+                    "模型分类"
+                ],
+                "summary": "模型分类",
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/category/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "删除分类",
+                "tags": [
+                    "模型分类"
+                ],
+                "summary": "删除分类",
+                "parameters": [
+                    {
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/category/edit": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "修改模型分类",
+                "tags": [
+                    "模型分类"
+                ],
+                "summary": "修改模型分类",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_category.EditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/category/list": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "模型列表",
+                "tags": [
+                    "模型分类"
+                ],
+                "summary": "模型列表",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_category.SearchReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/category/sort": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "分类排序",
+                "tags": [
+                    "模型分类"
+                ],
+                "summary": "分类排序",
+                "parameters": [
+                    {
+                        "description": "sorts",
+                        "name": "sorts",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/add": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "新增",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "新增",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_info.AddReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/copyModel": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "复制模型",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "复制模型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "int valid",
+                        "name": "modelId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/createModel": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "模型生成",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "模型生成",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "int valid",
+                        "name": "modelId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/delete": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "删除",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "删除",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_info.RemoveReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/edit": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "修改",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "修改",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_info.EditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/list": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "列表页",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "列表页",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_info.SelectPageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/model/info/setStatus": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "设置模型状态",
+                "tags": [
+                    "模型列表"
+                ],
+                "summary": "设置模型状态",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model_info.StatusSetReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "0": {
                         "description": "{\"code\": 200, \"data\": [...]}",
@@ -1707,6 +2490,336 @@
                 }
             }
         },
+        "/system/plug/ad/info/add": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "添加广告",
+                "tags": [
+                    "广告列表"
+                ],
+                "summary": "添加广告",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/plug_ad.AddReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/info/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "删除广告",
+                "tags": [
+                    "广告列表"
+                ],
+                "summary": "删除广告",
+                "parameters": [
+                    {
+                        "description": "ids",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/info/edit": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "修改广告",
+                "tags": [
+                    "广告列表"
+                ],
+                "summary": "修改广告",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/plug_ad.EditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/info/list": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "广告列表",
+                "tags": [
+                    "广告列表"
+                ],
+                "summary": "广告列表",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/plug_ad.SelectPageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/info/sort": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "栏目排序",
+                "tags": [
+                    "广告列表"
+                ],
+                "summary": "栏目排序",
+                "parameters": [
+                    {
+                        "description": "sorts[]",
+                        "name": "sorts",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/type/add": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "添加广告位",
+                "tags": [
+                    "广告位管理"
+                ],
+                "summary": "添加广告位",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/plug_adtype.AddReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/type/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "删除广告位",
+                "tags": [
+                    "广告位管理"
+                ],
+                "summary": "删除广告位",
+                "parameters": [
+                    {
+                        "description": "adtypeID[1,2,3...]",
+                        "name": "adtypeID",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/type/edit": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "修改广告位信息",
+                "tags": [
+                    "广告位管理"
+                ],
+                "summary": "修改广告位信息",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/plug_adtype.EditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/type/list": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "广告位列表",
+                "tags": [
+                    "广告位管理"
+                ],
+                "summary": "广告位列表",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/plug_adtype.SelectPageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/plug/ad/type/sort": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "栏目排序",
+                "tags": [
+                    "广告位管理"
+                ],
+                "summary": "栏目排序",
+                "parameters": [
+                    {
+                        "description": "sorts",
+                        "name": "sorts",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/system/post/add": {
             "post": {
                 "security": [
@@ -1830,7 +2943,7 @@
                 ],
                 "responses": {
                     "0": {
-                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "description": "{\"code\": 0, \"data\": [...]}",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
                         }
@@ -2363,6 +3476,9 @@
                 "alwaysShow": {
                     "type": "integer"
                 },
+                "component": {
+                    "type": "string"
+                },
                 "condition": {
                     "type": "string"
                 },
@@ -2405,6 +3521,255 @@
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "cms_category.ReqAdd": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "cateAddress": {
+                    "type": "string"
+                },
+                "cateContent": {
+                    "type": "string"
+                },
+                "cateType": {
+                    "type": "integer"
+                },
+                "contentTemplate": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "inputSeoDescription": {
+                    "type": "string"
+                },
+                "inputSeoKeywords": {
+                    "type": "string"
+                },
+                "inputSeoTitle": {
+                    "type": "string"
+                },
+                "listTemplate": {
+                    "type": "string"
+                },
+                "modelId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "thumbnail": {
+                    "type": "string"
+                }
+            }
+        },
+        "cms_category.ReqEdit": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "cateAddress": {
+                    "type": "string"
+                },
+                "cateContent": {
+                    "type": "string"
+                },
+                "cateType": {
+                    "type": "integer"
+                },
+                "contentTemplate": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "inputSeoDescription": {
+                    "type": "string"
+                },
+                "inputSeoKeywords": {
+                    "type": "string"
+                },
+                "inputSeoTitle": {
+                    "type": "string"
+                },
+                "listTemplate": {
+                    "type": "string"
+                },
+                "modelId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "thumbnail": {
+                    "type": "string"
+                }
+            }
+        },
+        "cms_category.ReqSearchList": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "cms_news.ReqAddParams": {
+            "type": "object",
+            "properties": {
+                "attr": {
+                    "description": "文章标记 置顶 推荐",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "isJump": {
+                    "description": "是否跳转地址",
+                    "type": "integer"
+                },
+                "jumpUrl": {
+                    "description": "跳转地址",
+                    "type": "string"
+                },
+                "modelForm": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "newsExcerpt": {
+                    "description": "post摘要",
+                    "type": "string"
+                },
+                "newsKeywords": {
+                    "description": "seo keywords",
+                    "type": "string"
+                },
+                "newsSource": {
+                    "description": "转载文章的来源",
+                    "type": "string"
+                },
+                "newsStatus": {
+                    "description": "状态;1:已发布;0:未发布;",
+                    "type": "integer"
+                },
+                "newsTitle": {
+                    "description": "post标题",
+                    "type": "string"
+                },
+                "publishedTime": {
+                    "description": "发布时间",
+                    "type": "string"
+                },
+                "thumbnail": {
+                    "description": "缩略图",
+                    "type": "string"
+                }
+            }
+        },
+        "cms_news.ReqEditParams": {
+            "type": "object",
+            "properties": {
+                "attr": {
+                    "description": "文章标记 置顶 推荐",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isJump": {
+                    "description": "是否跳转地址",
+                    "type": "integer"
+                },
+                "jumpUrl": {
+                    "description": "跳转地址",
+                    "type": "string"
+                },
+                "modelForm": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "newsExcerpt": {
+                    "description": "post摘要",
+                    "type": "string"
+                },
+                "newsKeywords": {
+                    "description": "seo keywords",
+                    "type": "string"
+                },
+                "newsSource": {
+                    "description": "转载文章的来源",
+                    "type": "string"
+                },
+                "newsStatus": {
+                    "description": "状态;1:已发布;0:未发布;",
+                    "type": "integer"
+                },
+                "newsTitle": {
+                    "description": "post标题",
+                    "type": "string"
+                },
+                "publishedTime": {
+                    "description": "发布时间",
+                    "type": "string"
+                },
+                "thumbnail": {
+                    "description": "缩略图",
+                    "type": "string"
+                }
+            }
+        },
+        "cms_news.ReqListSearchParams": {
+            "type": "object",
+            "properties": {
+                "cateId": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "keyWords": {
+                    "type": "string"
+                },
+                "pageNum": {
+                    "description": "当前页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页数",
+                    "type": "integer"
+                },
+                "publishedTimeEnd": {
+                    "type": "string"
+                },
+                "publishedTimeStart": {
                     "type": "string"
                 }
             }
@@ -2491,6 +3856,320 @@
                 "tableName": {
                     "description": "表名称",
                     "type": "string"
+                }
+            }
+        },
+        "model_category.AddReq": {
+            "type": "object",
+            "properties": {
+                "cname": {
+                    "type": "string"
+                },
+                "createBy": {
+                    "type": "integer"
+                },
+                "csort": {
+                    "type": "integer"
+                },
+                "cstatus": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model_category.EditReq": {
+            "type": "object",
+            "properties": {
+                "cid": {
+                    "type": "integer"
+                },
+                "cname": {
+                    "type": "string"
+                },
+                "csort": {
+                    "type": "integer"
+                },
+                "cstatus": {
+                    "type": "integer"
+                },
+                "updateBy": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model_category.SearchReq": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "pageNum": {
+                    "description": "当前页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页数",
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model_info.AddReq": {
+            "type": "object",
+            "properties": {
+                "createBy": {
+                    "description": "添加人",
+                    "type": "integer"
+                },
+                "modelCategoryId": {
+                    "type": "integer"
+                },
+                "modelEngine": {
+                    "type": "string"
+                },
+                "modelName": {
+                    "type": "string"
+                },
+                "modelStatus": {
+                    "type": "integer"
+                },
+                "modelTitle": {
+                    "type": "string"
+                }
+            }
+        },
+        "model_info.EditReq": {
+            "type": "object",
+            "properties": {
+                "modelCategoryId": {
+                    "type": "integer"
+                },
+                "modelEngine": {
+                    "type": "string"
+                },
+                "modelId": {
+                    "type": "integer"
+                },
+                "modelName": {
+                    "type": "string"
+                },
+                "modelStatus": {
+                    "type": "integer"
+                },
+                "modelTitle": {
+                    "type": "string"
+                },
+                "updateBy": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model_info.RemoveReq": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "description": "删除id",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "model_info.SelectPageReq": {
+            "type": "object",
+            "properties": {
+                "beginTime": {
+                    "description": "开始时间",
+                    "type": "string"
+                },
+                "endTime": {
+                    "description": "结束时间",
+                    "type": "string"
+                },
+                "modelCategoryId": {
+                    "description": "模型分类",
+                    "type": "string"
+                },
+                "modelName": {
+                    "description": "模型标识",
+                    "type": "string"
+                },
+                "modelStatus": {
+                    "description": "模型状态",
+                    "type": "string"
+                },
+                "modelTitle": {
+                    "description": "模型名称",
+                    "type": "string"
+                },
+                "pageNum": {
+                    "description": "当前页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model_info.StatusSetReq": {
+            "type": "object",
+            "properties": {
+                "modelId": {
+                    "type": "integer"
+                },
+                "modelStatus": {
+                    "type": "integer"
+                }
+            }
+        },
+        "plug_ad.AddReq": {
+            "type": "object",
+            "properties": {
+                "adAdtypeid": {
+                    "description": "所属位置",
+                    "type": "integer"
+                },
+                "adCheckid": {
+                    "description": "1=图片 2=JS",
+                    "type": "integer"
+                },
+                "adContent": {
+                    "description": "广告文字内容",
+                    "type": "string"
+                },
+                "adJs": {
+                    "description": "JS代码",
+                    "type": "string"
+                },
+                "adName": {
+                    "description": "广告名称",
+                    "type": "string"
+                },
+                "adOpen": {
+                    "description": "1=审核  0=未审核",
+                    "type": "integer"
+                },
+                "adPic": {
+                    "description": "广告图片URL",
+                    "type": "string"
+                },
+                "adSort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "adUrl": {
+                    "description": "广告链接",
+                    "type": "string"
+                }
+            }
+        },
+        "plug_ad.EditReq": {
+            "type": "object",
+            "properties": {
+                "adAdtypeid": {
+                    "description": "所属位置",
+                    "type": "integer"
+                },
+                "adCheckid": {
+                    "description": "1=图片 2=JS",
+                    "type": "integer"
+                },
+                "adContent": {
+                    "description": "广告文字内容",
+                    "type": "string"
+                },
+                "adJs": {
+                    "description": "JS代码",
+                    "type": "string"
+                },
+                "adName": {
+                    "description": "广告名称",
+                    "type": "string"
+                },
+                "adOpen": {
+                    "description": "1=审核  0=未审核",
+                    "type": "integer"
+                },
+                "adPic": {
+                    "description": "广告图片URL",
+                    "type": "string"
+                },
+                "adSort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "adUrl": {
+                    "description": "广告链接",
+                    "type": "string"
+                },
+                "plugAdID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "plug_ad.SelectPageReq": {
+            "type": "object",
+            "properties": {
+                "adName": {
+                    "description": "广告名称",
+                    "type": "string"
+                },
+                "pageNo": {
+                    "description": "当前页",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页显示记录数",
+                    "type": "integer"
+                }
+            }
+        },
+        "plug_adtype.AddReq": {
+            "type": "object",
+            "properties": {
+                "adtypeName": {
+                    "description": "广告位名称",
+                    "type": "string"
+                },
+                "adtypeSort": {
+                    "description": "广告位排序",
+                    "type": "integer"
+                }
+            }
+        },
+        "plug_adtype.EditReq": {
+            "type": "object",
+            "properties": {
+                "adtypeID": {
+                    "type": "integer"
+                },
+                "adtypeName": {
+                    "description": "广告位名称",
+                    "type": "string"
+                },
+                "adtypeSort": {
+                    "description": "广告位排序",
+                    "type": "integer"
+                }
+            }
+        },
+        "plug_adtype.SelectPageReq": {
+            "type": "object",
+            "properties": {
+                "adtypeName": {
+                    "description": "广告位名称",
+                    "type": "string"
+                },
+                "pageNo": {
+                    "description": "当前页",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页显示记录数",
+                    "type": "integer"
                 }
             }
         },
@@ -3088,6 +4767,9 @@
         "sys_post.AddParams": {
             "type": "object",
             "properties": {
+                "addUser": {
+                    "type": "integer"
+                },
                 "postCode": {
                     "type": "string"
                 },
@@ -3108,6 +4790,9 @@
         "sys_post.EditParams": {
             "type": "object",
             "properties": {
+                "addUser": {
+                    "type": "integer"
+                },
                 "postCode": {
                     "type": "string"
                 },
@@ -3125,6 +4810,9 @@
                 },
                 "status": {
                     "type": "string"
+                },
+                "upUser": {
+                    "type": "integer"
                 }
             }
         },
