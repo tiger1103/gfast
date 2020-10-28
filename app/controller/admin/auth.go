@@ -426,7 +426,7 @@ func (c *Auth) AddUser(r *ghttp.Request) {
 			response.FailJson(true, r, err.Error())
 		}
 		//设置用户所属角色信息
-		err = auth_service.AddUserRole(req.PostIds, InsertId)
+		err = auth_service.AddUserRole(req.RoleIds, InsertId)
 		if err != nil {
 			g.Log().Error(err)
 			response.FailJson(true, r, "设置用户权限失败")

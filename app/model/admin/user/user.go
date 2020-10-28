@@ -86,7 +86,7 @@ func Add(req *AddUserReq) (InsertId int64, err error) {
 	entity.UserNickname = req.NickName
 	entity.UserPassword = req.Password
 	entity.Remark = req.Remark
-
+	entity.IsAdmin = req.IsAdmin
 	res, err := entity.Save()
 	if err != nil {
 		return
