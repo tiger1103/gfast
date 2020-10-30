@@ -25,6 +25,11 @@ func Auth(r *ghttp.Request) {
 	/*if r.Method != "GET" {
 		response.FailJson(true, r, "演示系统禁止操作")
 	}*/
+	accessParams := r.GetStrings("accessParams")
+	accessParamsStr := ""
+	if len(accessParams) > 0 {
+		accessParamsStr = "?" + gstr.Join(accessParams, "&")
+	}
 	//获取登陆用户id
 	adminId := user_service.GetLoginID(r)
 	//获取无需验证权限的用户id
@@ -34,10 +39,9 @@ func Auth(r *ghttp.Request) {
 			return
 		}
 	}
-	url := gstr.TrimLeft(r.Request.URL.Path, "/")
+	url := gstr.TrimLeft(r.Request.URL.Path, "/") + accessParamsStr
 	//获取地址对应的菜单id
 	menuList, err := auth_service.GetMenuIsStatusList()
-
 	if err != nil {
 		g.Log().Error(err)
 		response.FailJson(true, r, "请求数据失败")
@@ -81,6 +85,8 @@ func Auth(r *ghttp.Request) {
 				response.FailJson(true, r, "没有访问权限")
 			}
 		}
+	} else if menu == nil && accessParamsStr != "" {
+		response.FailJson(true, r, "没有访问权限")
 	}
 	r.Middleware.Next()
 }

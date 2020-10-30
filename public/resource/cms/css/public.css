@@ -1,0 +1,295 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+html,
+body,
+div,
+ul,
+li,
+dl,
+dd,
+dt,
+a,
+ol,
+u,
+i,
+b,
+br,
+p,
+span,
+hr,
+label,
+input,
+select,
+textarea,
+button,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+font,
+strong,
+em,
+iframe,
+img,
+tr,
+th,
+td,
+q {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    word-wrap: break-word;
+}
+
+q:before,
+q:after {
+    content: '';
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font: 12px/1.5 "Microsoft YaHei", 微软雅黑, '宋体', tahoma, Verdana, arial, sans-serif;
+    color: #333;
+    background: #f4f4f4;
+}
+
+input,
+textarea,
+select,
+button {
+    vertical-align: middle;
+    outline: none;
+    font-family: "Microsoft YaHei", 微软雅黑;
+    color: #333;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    outline: none;
+    blr: expression(this.onFocus=this.blur());
+}
+
+a:hover {
+    color: #0088FF;
+    text-decoration: none;
+}
+
+a img {
+    border: none;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+ul,
+li {
+    vertical-align: middle;
+    list-style: none;
+}
+
+
+/***底部***/
+
+.footer {
+    width: 100%;
+    background: #011e3a;
+    padding: 20px 0;
+    overflow: hidden;
+}
+
+.footer_l {
+    float: left;
+    width: 52%;
+    font-size: 14px;
+    color: #fff;
+    line-height: 38px;
+}
+
+.footer_l a {
+    color: #fff;
+    padding: 0 5px;
+}
+
+.footer_l a:hover {
+    color: #dedede;
+}
+
+.footer_r {
+    float: right;
+    width: 36%;
+}
+
+.footer_ht {
+    line-height: 60px;
+    font-size: 20px;
+    color: #fff;
+    float: left;
+    padding: 30px 20px 0 0;
+}
+
+.footer_r .weixin {
+    float: left;
+}
+
+.footer_r img {
+    width: 120px;
+    height: 120px;
+}
+
+.sf-menu {
+    margin-bottom: 10px;
+}
+.sf-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.sf-menu li {
+    line-height: 1.5;
+    white-space: nowrap;
+}
+.sf-menu > li {
+    float: none;
+}
+
+.sf-menu li {
+    position: relative;
+}
+.sf-menu * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.sf-menu li a {
+    color: #333;
+    font-size: 16px;
+    padding: 10px 10px 10px 30px;
+}
+.sf-menu a {
+    text-decoration: none;
+    zoom: 1;
+}
+.sf-menu a {
+    display: block;
+    position: relative;
+}
+a:visited {
+    color: #333;
+}
+.sf-menu ul {
+    position: absolute;
+    background-color: #fff;
+    width: 190px;
+    box-shadow: rgba(190, 190, 190, 0.45882) 0px 1px 5px;
+    -webkit-box-shadow: rgba(190, 190, 190, 0.45882) 0px 1px 5px;
+    left: 190px;
+    top: 0;
+    z-index: 99;
+}
+.sf-menu ul:before {
+    color: #fff;
+    font-family: "fontawesome";
+    font-size: 16px;
+    content: "\f0d9";
+    left: -5px;
+    top: 10px;
+    position: absolute;
+}
+.sf-arrows ul .sf-with-ul:after {
+    right: 18px;
+    margin-top: -9px;
+    content: '\f105';
+    font: normal 15px/1 'fontawesome';
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.sf-arrows .sf-with-ul:after {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    margin-top: -8px;
+    height: 0;
+    width: 0;
+    content: '\f105';
+    font: normal 15px/1 'fontawesome';
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: none;
+}
+
+.sf-menu .sub-menu{
+    display: none;
+}
+
+.sub-menu.show-menu{
+    display: block;
+}
+
+.swiper-container{
+    --swiper-navigation-color: red;
+    --swiper-pagination-color: red;
+}
+
+.slide-title {
+    position: absolute;
+    z-index: 99999;
+    bottom: 0px;
+    color: red;
+    background: rgba(0,0,0,0.6);
+    padding: 3px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.pagination {
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+    width: 100%;
+    text-align: center;
+}
+
+.pagination .GPageSpan{
+    color: #ff4c4c;
+    background-color: #fafafa;
+}
+
+.pagination .GPageLink,.pagination span {
+    border-top: 2px solid transparent;
+    background-color: #fff;
+    color: #555;
+    display: inline-block;
+    font-size: 14px;
+    height: 46px;
+    line-height: 46px;
+    padding: 0 13px;
+    text-transform: uppercase;
+}

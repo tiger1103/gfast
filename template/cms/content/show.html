@@ -12,6 +12,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="${.domain}image/favicon.ico">
     <link rel="stylesheet" type="text/css" href="${.domain}cms/css/public.css"/>
     <link rel="stylesheet" type="text/css" href="${.domain}cms/css/qxkj.css"/>
+    <link rel="stylesheet" type="text/css" href="${.domain}cms/css/font-awesome-4.7.0/css/font-awesome.min.css"/>
+    <script type="text/javascript" src="${.domain}js/jquery1.9.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -22,26 +24,38 @@
             <div class="recent-content">
                 <div class="showart">
                     <div class="loccrumbs"><span>您当前的位置 ></span>
-                        <a href="#">首页 </a> >
-                        <a href="#">财经股票</a>
+                        <a href="${.domain}cms">首页 </a> >
+                        ${$breadMenus:=GetMenuBreadTree .menu}
+                        ${range $index,$menu:= $breadMenus}
+                            ${if eq $menu.cate_type 4}
+                            <!-- 单页栏目必定是导航尽头，所以只需要栏目名即可 -->
+                            <a href="javascript:;">${index $menu "name"}</a>
+                            ${else}
+                                <a href="${$.domain}cms/list/${$menu.id}">${index $menu "name"}</a> ${if lt (add $index 1) (len $breadMenus)}>${end}
+                            ${end}
+                        ${end}
                     </div>
-                    <h3><a href="#">美拟补贴贸易战中受损农场主遭反对：不要补贴要市场</a></h3>
+                    <h3>
+                        ${if eq .menu.CateType 4}
+                            <a href="javascript:;">${$.menu.Name}</a>
+                        ${else}
+                            <a href="javascript:;">${.newsInfo.NewsTitle}</a>
+                        ${end}
+                    </h3>
+                    ${if ne .menu.CateType 4}
                     <div class="footbar">
-                        <i class="footbar-like">网站小编 </i>
-                        <i class="footbar-like"><a href="#">点赞(2)</a></i>
-                        <i class="footbar-like"><a href="#">阅读(2,310)</a></i>
-                        <i class="footbar-like"><a href="#">分享</a></i>
+                        <i class="footbar-like">来源：${.newsInfo.NewsSource} </i>
+                        <i class="footbar-like">作者：${.author.FValue} </i>
+                        <i class="footbar-like">发布时间：${.newsInfo.PublishedTime|timeFormatYear} </i>
+                        <i class="footbar-like"><a href="#">阅读(${.newsInfo.NewsHits})</a></i>
                     </div>
+                    ${end}
                     <div class="showcontent">
-                        <img src="images/showbg.jpg">
-                        <p>
-                            特朗普政府24日宣布一项总额最高达120亿美元的农业补贴计划，以援助在美国挑起的贸易争端中受损的美国农场主。但该计划遭到许多国会议员、农业协会代表和农场主们的反对，他们纷纷表示“要市场不要补贴”，敦促特朗普政府尽快结束与其他经济体的贸易争端。</p>
-                        <p>
-                            特朗普政府24日宣布一项总额最高达120亿美元的农业补贴计划，以援助在美国挑起的贸易争端中受损的美国农场主。但该计划遭到许多国会议员、农业协会代表和农场主们的反对，他们纷纷表示“要市场不要补贴”，敦促特朗普政府尽快结束与其他经济体的贸易争端。</p>
-                        <p>
-                            特朗普政府24日宣布一项总额最高达120亿美元的农业补贴计划，以援助在美国挑起的贸易争端中受损的美国农场主。但该计划遭到许多国会议员、农业协会代表和农场主们的反对，他们纷纷表示“要市场不要补贴”，敦促特朗普政府尽快结束与其他经济体的贸易争端。</p>
-                        <p>
-                            特朗普政府24日宣布一项总额最高达120亿美元的农业补贴计划，以援助在美国挑起的贸易争端中受损的美国农场主。但该计划遭到许多国会议员、农业协会代表和农场主们的反对，他们纷纷表示“要市场不要补贴”，敦促特朗普政府尽快结束与其他经济体的贸易争端。</p>
+                        ${if eq .menu.CateType 4}
+                        ${$.menu.CateContent}
+                        ${else}
+                        ${$.content.FValue}
+                        ${end}
                     </div>
                 </div>
             </div>

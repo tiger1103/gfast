@@ -1,8 +1,8 @@
 ${define "sitebar"}
 <div class="sitebar">
     <div class="searchbox">
-        <form id="searchform" method="get" action="/">
-            <input type="search" name="s" class="search-input" placeholder="请输入关键词" autocomplete="off">
+        <form id="searchform" method="get" action="${$.domain}cms/search/1">
+            <input type="search" name="keyWords" class="search-input" value="${.keyWords}" placeholder="请输入关键词" autocomplete="off">
             <button type="submit" class="search-submit">搜索</button>
         </form>
     </div>
@@ -12,53 +12,37 @@ ${define "sitebar"}
         </a>
     </div>
     <div class="sitebar-article">
-        <h2><span>浏览最多的文章</span></h2>
+        <h2><span>推荐文章</span></h2>
         <div class="sitebar-article-list">
             <ul>
+                ${$newsParams := .newsParams}
+                ${$newsParams := SetNewsParams $newsParams "Recommended" "1"}
+                ${$listRec:=GetNewsList 0 4 (GetNewsParams $newsParams)}
+                ${range $index,$article := $listRec}
                 <li>
                     <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
+                        ${if eq $article.IsJump 1}
+                        <a href="${$article.JumpUrl}" target="_blank">
+                            <p>${subStr $article.NewsTitle 20}</p>
                         </a>
-                        <label>2018-07-27</label>
-                    </div>
-                    <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
-                    </div>
-                </li>
-                <li>
-                    <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
+                        ${else}
+                        <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank">
+                            <p>${subStr $article.NewsTitle 20}</p>
                         </a>
-                        <label>2018-07-27</label>
+                        ${end}
+                        <label>${$article.PublishedTime|timeFormatYear}</label>
                     </div>
+                    ${if ne $article.Thumbnail ""}
                     <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
+                        ${if eq $article.IsJump 1}
+                        <a href="${$article.JumpUrl}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
+                        ${else}
+                        <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
+                        ${end}
                     </div>
+                    ${end}
                 </li>
-                <li>
-                    <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
-                        </a>
-                        <label>2018-07-27</label>
-                    </div>
-                    <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
-                    </div>
-                </li>
-                <li>
-                    <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
-                        </a>
-                        <label>2018-07-27</label>
-                    </div>
-                    <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
-                    </div>
-                </li>
+                ${end}
             </ul>
         </div>
     </div>
@@ -70,53 +54,37 @@ ${define "sitebar"}
     </div>
 
     <div class="sitebar-article">
-        <h2><span>点赞最多的文章</span></h2>
+        <h2><span>点击最多的文章</span></h2>
         <div class="sitebar-article-list">
             <ul>
+                ${$newsParams := .newsParams}
+                ${$newsParams := SetNewsParams $newsParams "OrderBy" "news.news_hits desc"}
+                ${$listHits:=GetNewsList 0 4 (GetNewsParams $newsParams)}
+                ${range $index,$article := $listHits}
                 <li>
                     <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
+                        ${if eq $article.IsJump 1}
+                        <a href="${$article.JumpUrl}" target="_blank">
+                            <p>${subStr $article.NewsTitle 20}</p>
                         </a>
-                        <label>2018-07-27</label>
-                    </div>
-                    <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
-                    </div>
-                </li>
-                <li>
-                    <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
+                        ${else}
+                        <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank">
+                            <p>${subStr $article.NewsTitle 20}</p>
                         </a>
-                        <label>2018-07-27</label>
+                        ${end}
+                        <label>${$article.PublishedTime|timeFormatYear}</label>
                     </div>
+                    ${if ne $article.Thumbnail ""}
                     <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
+                        ${if eq $article.IsJump 1}
+                        <a href="${$article.JumpUrl}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
+                        ${else}
+                        <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
+                        ${end}
                     </div>
+                    ${end}
                 </li>
-                <li>
-                    <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
-                        </a>
-                        <label>2018-07-27</label>
-                    </div>
-                    <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
-                    </div>
-                </li>
-                <li>
-                    <div class="artl">
-                        <a href="@#">
-                            <p>超美的三亚,5天4晚全五星酒店高大上自由行</p>
-                        </a>
-                        <label>2018-07-27</label>
-                    </div>
-                    <div class="artr">
-                        <a href="#"><img src="${.domain}cms/images/g17-120.jpg"></a>
-                    </div>
-                </li>
+                ${end}
             </ul>
         </div>
     </div>

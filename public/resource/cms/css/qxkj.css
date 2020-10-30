@@ -1,0 +1,435 @@
+/*****内容****/
+
+.container {
+    margin: 0 auto;
+    max-width: 1320px;
+}
+
+
+/**左边**/
+
+.left-col {
+    background-color: #fff;
+    position: fixed;
+    width: 190px;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+.site-branding {
+    border-bottom: 1px solid #f5f5f5;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.site-branding img {
+    vertical-align: middle;
+    width: auto;
+    max-width: 100%;
+}
+
+.site-branding #logo {
+    padding: 10px 0;
+}
+
+
+/**导航**/
+
+.nav {
+    width: 100%;
+}
+
+.nav ul {
+    margin-bottom: 10px;
+}
+
+.nav ul li {
+    white-space: nowrap;
+}
+
+.nav ul li a {
+    color: #333;
+    font-size: 16px;
+    padding: 10px 10px 10px 60px;
+    display: block;
+}
+
+.nav ul li a.active ,.nav ul li a:hover{
+    background-color: #ed4040;
+    color: #fff;
+    border-radius: 4px;
+}
+
+
+/**幻灯**/
+
+.gslider {
+    width: 770px;
+    height: 385px;
+    margin: 20px 0;
+}
+
+.gslider img {
+    width: 770px;
+    height: 385px;
+}
+
+.content-wrapper {
+    margin-right: 320px;
+    margin-left: 190px;
+    padding: 0 20px 0;
+    float: left;
+}
+
+.content-wrapper a:hover {
+    text-decoration: underline;
+    color: #ed4040;
+}
+
+
+/**最新动态**/
+
+.recent-content {
+    width: 770px;
+    height: auto;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.recent-content h2 {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 20px;
+    position: relative;
+}
+
+.recent-content h2 span {
+    display: inline-block;
+    border-bottom: 2px solid #ff4c4c;
+    margin-bottom: -1px;
+    padding: 10px 0 9px;
+}
+
+
+/**文章**/
+
+.lista {
+    padding: 20px;
+    border-bottom: 1px solid #f4f4f4;
+    overflow: hidden;
+}
+
+.lista h3 {
+    font-size: 1.3em;
+    margin-bottom: 12px;
+}
+
+.lista h3 a {
+    font-size: 1.3em;
+    line-height: 30px;
+}
+
+.pov {
+    display: block;
+}
+
+.tittop {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #999;
+}
+
+.tittop b {
+    color: #999;
+    font-size: 12px;
+    margin-right: 10px;
+    font-weight: normal;
+}
+
+.lista ul {
+    margin: 15px 0 15px;
+    overflow: hidden;
+}
+
+.lista ul li {
+    float: left;
+    width: 32%;
+    margin-right: 2%;
+    overflow: hidden;
+}
+
+.lista .mg {
+    margin-right: 0;
+    clear: right;
+}
+
+.thumbnail-wrap {
+    overflow: hidden;
+}
+
+.lista ul li:hover .thumbnail-wrap img {
+    transform: scale(1.02);
+    transition: all 0.4s;
+    overflow: hidden;
+}
+
+.lista ul li img {
+    width: 230px;
+    height: 150px;
+    overflow: hidden;
+}
+
+.sview {
+    width: 100%;
+    height: auto;
+}
+
+.sviewl {
+    float: left;
+    width: 490px;
+    overflow: hidden;
+}
+
+.sviewr {
+    float: right;
+    width: 218px;
+    overflow: hidden;
+    height: auto;
+}
+
+.sviewr img {
+    width: 218px;
+    height: 140px;
+    transform: scale(1.1);
+    transition: all .5s;
+    overflow: hidden;
+}
+
+.art_summary {
+    margin-bottom: 12px;
+}
+
+.art_summary p {
+    line-height: 26px;
+    font-size: 16px;
+}
+
+.footbar {
+    height: 26px;
+    line-height: 26px;
+}
+
+.footbar i {
+    font-style: normal;
+}
+
+.footbar-category {
+    background-color: #ff4c4c;
+    color: #fff;
+    padding: 5px;
+    line-height: 26px;
+    margin-right: 20px;
+}
+
+.footbar-category a {
+    color: #fff;
+}
+
+.footbar-category a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footbar-like {
+    margin-right: 15px;
+}
+
+.footbar-like a {
+    color: #999;
+    font-size: 12px;
+}
+
+
+/**右边**/
+
+.sitebar {
+    width: 300px;
+    margin-top: 20px;
+    margin-left: -320px;
+    float: left;
+}
+
+.searchbox {
+    background-color: #fff;
+}
+
+.searchbox form {
+    height: 38px;
+    padding: 20px;
+    position: relative;
+    margin-right: 20px;
+}
+
+.search-input {
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #e9e9e9;
+    padding-left: 10px;
+    font-size: 14px;
+}
+
+.search-submit {
+    width: 64px;
+    height: 38px;
+    padding-left: 0;
+    padding-right: 0;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    border-left: none;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ff4c4c;
+}
+
+.sitebar-article {
+    margin: 20px 0;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+}
+
+.sitebar-article h2 {
+    border-bottom: 1px solid #e9e9e9;
+    color: #333;
+    font-size: 1em;
+    margin: -5px 0 20px;
+    font-size: 18px;
+}
+
+.sitebar-article h2 span {
+    border-bottom-color: #ff4c4c;
+    border-bottom: 2px solid #ff4c4c;
+    display: inline-block;
+    margin-bottom: -1px;
+    padding-bottom: 10px;
+}
+
+.sitebar-article ul li {
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.sitebar-article-list ul li .artl {
+    float: left;
+    width: 158px;
+}
+
+.sitebar-article-list ul li .artl a {
+    color: #333;
+    line-height: 24px;
+    font-size: 14px;
+}
+
+.sitebar-article-list ul li a:hover {
+    color: #ff4c4c;
+    text-decoration: underline;
+}
+
+.sitebar-article-list ul li .artl p {
+    line-height: 24px;
+    font-size: 14px;
+}
+
+.sitebar-article-list ul li .artl label {
+    color: #999;
+    line-height: 24px;
+}
+
+.sitebar-article-list ul li .artr {
+    float: right;
+    width: 90px;
+    height: auto;
+}
+
+.sitebar-article-list ul li .artr img {
+    width: 90px;
+    height: 60px;
+}
+
+.sitebar-article-list ul li:hover .artr img {
+    transform: scale(1.01);
+    transition: all .5s;
+    -ms-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}
+
+.ali {
+    width: 300px;
+}
+
+.ali img {
+    width: 300px;
+    height: auto;
+}
+
+
+/**文章显示**/
+
+.showart {
+    padding: 20px;
+}
+
+.loccrumbs {
+    font-size: 13px;
+    margin-bottom: 20px;
+    color: #999;
+}
+
+.loccrumbs span {
+    color: #999;
+    font-size: 12px;
+}
+
+.loccrumbs a {
+    color: #999;
+    text-decoration: underline;
+}
+
+.showart h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.showart h3 a {
+    color: #333;
+    font-weight: bold;
+}
+
+.showcontent {
+    border-top: 1px solid #f0f0f0;
+    overflow: hidden;
+    margin-top: 20px;
+    padding-top: 25px;
+}
+
+.showcontent img {
+    width: 730px;
+    padding: 10px 0;
+}
+
+.showcontent p {
+    line-height: 30px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}

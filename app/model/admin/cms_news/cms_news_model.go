@@ -29,6 +29,7 @@ var (
 		NewsStatus    string // 状态;1:已发布;0:未发布;
 		IsTop         string // 是否置顶;1:置顶;0:不置顶
 		Recommended   string // 是否推荐;1:推荐;0:不推荐
+		IsSlide       string //是否幻灯  1是  0 否
 		NewsHits      string // 查看数
 		NewsLike      string // 点赞数
 		CreateTime    string // 创建时间
@@ -48,6 +49,7 @@ var (
 		NewsStatus:    "news_status",
 		IsTop:         "is_top",
 		Recommended:   "recommended",
+		IsSlide:       "is_slide",
 		NewsHits:      "news_hits",
 		NewsLike:      "news_like",
 		CreateTime:    "create_time",

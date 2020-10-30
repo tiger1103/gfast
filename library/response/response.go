@@ -1,7 +1,12 @@
 package response
 
 import (
+	"gfast/library/utils"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gview"
+	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gconv"
 )
 
 const (
@@ -57,4 +62,48 @@ func FailJson(isExit bool, r *ghttp.Request, msg string, data ...interface{}) {
 		JsonExit(r, ErrorCode, msg, data...)
 	}
 	RJson(r, ErrorCode, msg, data...)
+}
+
+//模板输出
+func WriteTpl(r *ghttp.Request, tpl string, view *gview.View, params ...gview.Params) error {
+	//绑定模板中需要用到的方法
+	view.BindFuncMap(g.Map{
+		// 根据长度i来切割字符串
+		"subStr": func(str interface{}, i int) (s string) {
+			s1 := gconv.String(str)
+			if gstr.LenRune(s1) > i {
+				s = gstr.SubStrRune(s1, 0, i) + "..."
+				return s
+			}
+			return s1
+		},
+		// 格式化时间戳 年月日
+		"timeFormatYear": func(time interface{}) string {
+			return utils.TimeStampToDate(gconv.Int64(time))
+		},
+		// 格式化时间戳 年月日时分秒
+		"timeFormatDateTime": func(time interface{}) string {
+			return utils.TimeStampToDateTime(gconv.Int64(time))
+		},
+		// 判断是否有子菜单
+		"isSon": func(id, menus interface{}) bool {
+			i := gconv.Int(id)
+			m := gconv.SliceMap(menus)
+			for _, v := range m {
+				if gconv.Int(v["classification_pid"]) == i {
+					return true
+				}
+			}
+			return false
+		},
+		"add": func(a, b interface{}) int {
+			return gconv.Int(a) + gconv.Int(b)
+		},
+	})
+	//设置全局变量
+	domain, _ := utils.GetDomain(r)
+	view.Assigns(g.Map{
+		"domain": domain,
+	})
+	return r.Response.WriteTpl(tpl, params...)
 }

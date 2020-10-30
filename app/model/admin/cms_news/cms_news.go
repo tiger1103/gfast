@@ -9,6 +9,7 @@ import (
 	"gfast/app/model/admin/user"
 	"gfast/library/service"
 	"gfast/library/utils"
+	"github.com/gogf/gf/container/gvar"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
@@ -16,21 +17,26 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-// Fill with you ideas below.
+//文章列表
+type NewsList struct {
+	Entity
+	UserNickname string    `json:"user_nickname"`
+	CateList     *gvar.Var `json:"cateList"`
+}
 
 //添加文章参数
 type ReqAddParams struct {
-	NewsStatus    uint                   `p:"status"    v:"in:0,1#状态只能为0或1"`                                // 状态;1:已发布;0:未发布;
-	Attr          []int                  `p:attr`                                                           //文章标记 置顶 推荐
-	PublishedTime string                 `p:"published_time"`                                               // 发布时间
-	NewsTitle     string                 `p:"title"     v:"required#标题不能为空"`                                // post标题
-	NewsKeywords  string                 `p:"keywords"`                                                     // seo keywords
-	NewsExcerpt   string                 `p:"excerpt"`                                                      // post摘要
-	NewsSource    string                 `p:"source"  `                                                     // 转载文章的来源
-	Thumbnail     string                 `p:"thumbnail"    `                                                // 缩略图
-	IsJump        uint                   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"`                          // 是否跳转地址
-	JumpUrl       string                 `p:"JumpUrl"      v:"required-if:IsJump,1|url#跳转地址不能为空|跳转地址格式不正确"` // 跳转地址
-	ModelForm     map[string]interface{} `p:"modelForm"`
+	NewsStatus    uint   `p:"status"    v:"in:0,1#状态只能为0或1"`                                // 状态;1:已发布;0:未发布;
+	Attr          []int  `p:"attr"`                                                         //文章标记 置顶 推荐
+	PublishedTime string `p:"published_time"`                                               // 发布时间
+	NewsTitle     string `p:"title"     v:"required#标题不能为空"`                                // post标题
+	NewsKeywords  string `p:"keywords"`                                                     // seo keywords
+	NewsExcerpt   string `p:"excerpt"`                                                      // post摘要
+	NewsSource    string `p:"source"  `                                                     // 转载文章的来源
+	Thumbnail     string `p:"thumbnail"    `                                                // 缩略图
+	IsJump        uint   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"`                          // 是否跳转地址
+	JumpUrl       string `p:"JumpUrl"      v:"required-if:IsJump,1|url#跳转地址不能为空|跳转地址格式不正确"` // 跳转地址
+	ModelForm     g.Map  `p:"modelForm"`
 }
 
 //文章搜索参数
@@ -39,8 +45,13 @@ type ReqListSearchParams struct {
 	PublishedTimeStart string `p:"pubTimeStart"`
 	PublishedTimeEnd   string `p:"pubTimeEnd"`
 	KeyWords           string `p:"keyWords"`
+	IsSlide            string `p:"isSlide"`
+	IsTop              string `p:"IsTop"`
+	Recommended        string `p:"Recommended"`
+	NewsStatus         string `p:"NewsStatus"`
 	PageNum            int    `p:"page"`     //当前页码
 	PageSize           int    `p:"pageSize"` //每页数
+	OrderBy            string //排序字段
 }
 
 type ReqEditParams struct {
@@ -75,6 +86,8 @@ func AddNews(req *ReqAddParams, cateIds []int, userId uint64, tx *gdb.TX) (insId
 			entity.IsTop = 1
 		} else if v == 2 {
 			entity.Recommended = 1
+		} else if v == 3 {
+			entity.IsSlide = 1
 		}
 	}
 	res, e := Model.TX(tx).Insert(entity)
@@ -128,11 +141,16 @@ func EditNews(req *ReqEditParams, cateIds []int, tx *gdb.TX) (err error) {
 	entity.Thumbnail = req.Thumbnail
 	entity.IsJump = req.IsJump
 	entity.JumpUrl = req.JumpUrl
+	entity.IsTop = 0
+	entity.Recommended = 0
+	entity.IsSlide = 0
 	for _, v := range req.Attr {
 		if v == 1 {
 			entity.IsTop = 1
 		} else if v == 2 {
 			entity.Recommended = 1
+		} else if v == 3 {
+			entity.IsSlide = 1
 		}
 	}
 	_, err = Model.TX(tx).Replace(entity)
@@ -170,7 +188,7 @@ func EditNews(req *ReqEditParams, cateIds []int, tx *gdb.TX) (err error) {
 }
 
 //文章列表查询
-func ListByPage(req *ReqListSearchParams) (total, page int, list gdb.Result, err error) {
+func ListByPage(req *ReqListSearchParams) (total, page int, list []*NewsList, err error) {
 	model := g.DB().Table(Table + " news")
 	if req != nil {
 		if len(req.CateId) > 0 {
@@ -185,6 +203,18 @@ func ListByPage(req *ReqListSearchParams) (total, page int, list gdb.Result, err
 		}
 		if req.PublishedTimeEnd != "" {
 			model = model.Where("news.published_time <=?", utils.StrToTimestamp(req.PublishedTimeEnd))
+		}
+		if req.IsSlide != "" {
+			model = model.Where("news.is_slide", gconv.Int(req.IsSlide))
+		}
+		if req.IsTop != "" {
+			model = model.Where("news.is_top", gconv.Int(req.IsTop))
+		}
+		if req.Recommended != "" {
+			model = model.Where("news.recommended", gconv.Int(req.Recommended))
+		}
+		if req.NewsStatus != "" {
+			model = model.Where("news.news_status", gconv.Int(req.NewsStatus))
 		}
 	}
 	model = model.LeftJoin(user.Table+" user", "news.user_id=user.id")
@@ -201,13 +231,20 @@ func ListByPage(req *ReqListSearchParams) (total, page int, list gdb.Result, err
 	if req.PageSize == 0 {
 		req.PageSize = service.AdminPageNum
 	}
-
-	list, err = model.Page(page, req.PageSize).Fields("news.*,user.user_nickname").Order("published_time desc,news.id desc").All()
+	var datas gdb.Result
+	order := "published_time desc,news.id desc"
+	if req.OrderBy != "" {
+		order = req.OrderBy
+	}
+	datas, err = model.Page(page, req.PageSize).Fields("news.*,user.user_nickname").
+		Order(order).All()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取数据失败")
 		return
 	}
+	list = make([]*NewsList, len(datas))
+	err = datas.Structs(&list)
 	return
 }
 

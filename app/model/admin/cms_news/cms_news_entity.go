@@ -16,6 +16,7 @@ type Entity struct {
 	NewsStatus    uint   `orm:"news_status"    json:"news_status"`    // 状态;1:已发布;0:未发布;
 	IsTop         uint   `orm:"is_top"         json:"is_top"`         // 是否置顶;1:置顶;0:不置顶
 	Recommended   uint   `orm:"recommended"    json:"recommended"`    // 是否推荐;1:推荐;0:不推荐
+	IsSlide       uint   `orm:"is_slide"    json:"is_slide"`          // 是否幻灯;1:是;0:否
 	NewsHits      uint64 `orm:"news_hits"      json:"news_hits"`      // 查看数
 	NewsLike      uint64 `orm:"news_like"      json:"news_like"`      // 点赞数
 	CreateTime    uint   `orm:"create_time"    json:"create_time"`    // 创建时间
