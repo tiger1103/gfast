@@ -75,7 +75,7 @@ func Add(user *user.Entity, menu *auth_rule.Entity, url *url.URL,
 //操作日志列表
 func ListByPage(req *SelectPageReq) (total, page int, list []*Entity, err error) {
 	model := Model
-	order := "oper_time DESC"
+	order := "oper_id DESC"
 	if req != nil {
 		if req.OperName != "" {
 			model = model.Where("oper_name like ?", "%"+req.OperName+"%")

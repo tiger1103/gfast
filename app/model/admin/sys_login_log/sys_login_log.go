@@ -24,7 +24,7 @@ type SelectPageReq struct {
 func LoginLogListByPage(req *SelectPageReq) (total, page int, list []*Entity, err error) {
 	model := Model
 	page = req.PageNum
-	order := "login_time DESC"
+	order := "info_id DESC"
 
 	if req.LoginName != "" {
 		model = model.Where("login_name like ?", "%"+req.LoginName+"%")

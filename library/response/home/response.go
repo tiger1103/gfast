@@ -40,12 +40,14 @@ func Response(r *ghttp.Request, tpl string, params ...gview.Params) error {
 		},
 		//设置文章参数
 		"SetNewsParams": func(params g.Map, key string, value interface{}) g.Map {
+			data := g.Map{}
 			if params != nil {
-				params[key] = value
-			} else {
-				params = g.Map{key: value}
+				for k, v := range params {
+					data[k] = v
+				}
 			}
-			return params
+			data[key] = value
+			return data
 		},
 		//获取文章列表
 		"GetNewsList": func(cateId int, pageSize int, attr ...*cms_news.ReqListSearchParams) []*cms_news.NewsList {
