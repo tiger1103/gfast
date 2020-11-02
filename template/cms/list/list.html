@@ -29,11 +29,7 @@
                 ${range $index,$article := .list}
                 <div class="lista">
                     <h3>
-                        ${if eq $article.IsJump 1}
-                        <a href="${$article.JumpUrl}" target="_blank">${subStr $article.NewsTitle 24}</a>
-                        ${else}
                         <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank">${subStr $article.NewsTitle 24}</a>
-                        ${end}
                     </h3>
                     <div class="pov">
                         <div class="sview">
@@ -53,11 +49,7 @@
                                 </div>
                             </div>
                             <div class="sviewr">
-                                ${if eq $article.IsJump 1}
-                                <a href="${$article.JumpUrl}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                                ${else}
                                 <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                                ${end}
                             </div>
                         </div>
                     </div>

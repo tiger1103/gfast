@@ -12,7 +12,7 @@ type Index struct{}
 
 // 首页
 func (c *Index) Index(r *ghttp.Request) {
-	home.Response(r, "index.html")
+	home.WriteTpl(r, "index.html")
 }
 
 // 列表页
@@ -43,7 +43,7 @@ func (c *Index) listInfo(r *ghttp.Request, args ...interface{}) {
 	} else {
 		tmp = "list/list.html"
 	}
-	home.Response(r, tmp, g.Map{
+	home.WriteTpl(r, tmp, g.Map{
 		"list":      list,
 		"pageStyle": r.GetPage(total, pageSize).GetContent(4),
 		"menu":      menu,
@@ -67,10 +67,16 @@ func (c *Index) Show(r *ghttp.Request) {
 	newsInfo, _ := cms_service.GetNewsById(int(newsId))
 	newsInfo.NewsHits++
 	newsInfo.Save()
+	if newsInfo.IsJump == 1 {
+		//跳转连接
+		home.ResponseInstance.Redirect(r, newsInfo.JumpUrl)
+		r.Exit()
+	}
 	cateId := cateIds[0]
 	// 获取当前栏目
 	menu, _ := cms_service.GetMenuInfoById(cateId)
-	home.Response(r, menu.ContentTemplate, g.Map{
+
+	home.WriteTpl(r, menu.ContentTemplate, g.Map{
 		"content":  res[0],
 		"author":   res[1],
 		"newsInfo": newsInfo,

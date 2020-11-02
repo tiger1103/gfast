@@ -16,7 +16,17 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
-func Response(r *ghttp.Request, tpl string, params ...gview.Params) error {
+type Response struct {
+	*response.Response
+}
+
+var ResponseInstance Response
+
+func WriteTpl(r *ghttp.Request, tpl string, params ...gview.Params) error {
+	return ResponseInstance.WriteTpl(r, tpl, params...)
+}
+
+func (res *Response) WriteTpl(r *ghttp.Request, tpl string, params ...gview.Params) error {
 	v := g.View()
 	v.SetPath("template/cms")
 	//绑定模板中需要用到的方法
@@ -122,5 +132,5 @@ func Response(r *ghttp.Request, tpl string, params ...gview.Params) error {
 	})
 	//文章参数
 	params = append(params, g.Map{"newsParams": g.Map{}})
-	return response.WriteTpl(r, tpl, v, params...)
+	return res.Response.WriteTpl(r, tpl, v, params...)
 }

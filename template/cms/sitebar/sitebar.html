@@ -21,24 +21,14 @@ ${define "sitebar"}
                 ${range $index,$article := $listRec}
                 <li>
                     <div class="artl">
-                        ${if eq $article.IsJump 1}
-                        <a href="${$article.JumpUrl}" target="_blank">
-                            <p>${subStr $article.NewsTitle 20}</p>
-                        </a>
-                        ${else}
                         <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank">
                             <p>${subStr $article.NewsTitle 20}</p>
                         </a>
-                        ${end}
                         <label>${$article.PublishedTime|timeFormatYear}</label>
                     </div>
                     ${if ne $article.Thumbnail ""}
                     <div class="artr">
-                        ${if eq $article.IsJump 1}
-                        <a href="${$article.JumpUrl}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                        ${else}
                         <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                        ${end}
                     </div>
                     ${end}
                 </li>
@@ -63,24 +53,14 @@ ${define "sitebar"}
                 ${range $index,$article := $listHits}
                 <li>
                     <div class="artl">
-                        ${if eq $article.IsJump 1}
-                        <a href="${$article.JumpUrl}" target="_blank">
-                            <p>${subStr $article.NewsTitle 20}</p>
-                        </a>
-                        ${else}
                         <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank">
                             <p>${subStr $article.NewsTitle 20}</p>
                         </a>
-                        ${end}
                         <label>${$article.PublishedTime|timeFormatYear}</label>
                     </div>
                     ${if ne $article.Thumbnail ""}
                     <div class="artr">
-                        ${if eq $article.IsJump 1}
-                        <a href="${$article.JumpUrl}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                        ${else}
                         <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                        ${end}
                     </div>
                     ${end}
                 </li>
