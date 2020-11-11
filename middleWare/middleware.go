@@ -27,7 +27,7 @@ func Auth(r *ghttp.Request) {
 	}*/
 	accessParams := r.GetStrings("accessParams")
 	accessParamsStr := ""
-	if len(accessParams) > 0 {
+	if len(accessParams) > 0 && accessParams[0] != "undefined" {
 		accessParamsStr = "?" + gstr.Join(accessParams, "&")
 	}
 	//获取登陆用户id
@@ -48,7 +48,8 @@ func Auth(r *ghttp.Request) {
 	}
 	var menu *auth_rule.Entity
 	for _, m := range menuList {
-		if gstr.Equal(m.Name, url) {
+		ms := gstr.SubStr(m.Name, 0, gstr.Pos(m.Name, "?"))
+		if m.Name == url || ms == url {
 			menu = m
 			break
 		}

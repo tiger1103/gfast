@@ -121,7 +121,7 @@ func SelectListByPage(req *SelectPageReq) (total, page int, list []*Entity, err 
 			model = model.Where("config_name like ?", "%"+req.ConfigName+"%")
 		}
 		if req.ConfigType != "" {
-			model = model.Where("status = ", gconv.Int(req.ConfigType))
+			model = model.Where("config_type = ", gconv.Int(req.ConfigType))
 		}
 		if req.ConfigKey != "" {
 			model = model.Where("config_key like ?", "%"+req.ConfigKey+"%")
