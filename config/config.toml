@@ -57,6 +57,7 @@
 [adminInfo]
     notCheckAuthAdminIds = [1,31]  #无需验证后台权限的用户id
     pageNum = 5  #后台列表分页长度
+    dataDir =  "./data"  #数据目录
 
 # Gen
 [gen]
