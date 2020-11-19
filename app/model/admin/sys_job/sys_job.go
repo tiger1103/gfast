@@ -15,7 +15,7 @@ import (
 
 //添加操作请求参数
 type ReqAdd struct {
-	JobName        string `p:"job_mame" v:"required#任务名称不能为空"`
+	JobName        string `p:"job_name" v:"required#任务名称不能为空"`
 	JobParams      string `p:"job_params"` // 任务参数
 	JobGroup       string `p:"job_group" `
 	InvokeTarget   string `p:"invoke_target" v:"required#执行方法不能为空"`
