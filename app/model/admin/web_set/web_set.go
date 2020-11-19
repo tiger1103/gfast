@@ -18,7 +18,7 @@ func UpdateSave(req *UpdateReq) error {
 		WebContent: gconv.String(req.WebContent),
 	}
 
-	_, err := entity.Replace()
+	_, err := Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("更新站点信息失败")

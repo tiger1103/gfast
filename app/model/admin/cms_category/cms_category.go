@@ -154,7 +154,7 @@ func EditSave(req *ReqEdit) (id int64, err error) {
 	if len(moreFields) != 0 {
 		entity.More = gconv.String(moreFields)
 	}
-	res, err := entity.Update()
+	res, err := Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("修改保存失败")

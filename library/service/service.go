@@ -86,7 +86,7 @@ func LoginAfter(r *ghttp.Request, respData gtoken.Resp) {
 			Explorer:   explorer,
 			Os:         os,
 		}
-		entity.Save()
+		user_online.Model.Save(entity)
 		r.Response.WriteJson(gtoken.Succ(g.Map{
 			"token": token,
 		}))
@@ -128,22 +128,22 @@ func LoginOut(r *ghttp.Request) bool {
 
 // 用户登录，成功返回用户信息，否则返回nil
 func signIn(username, password string, r *ghttp.Request) (error, *user.Entity) {
-	user, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
+	userInfo, err := user.Model.Where("user_name=? and user_password=?", username, password).One()
 	if err != nil && err != sql.ErrNoRows {
 		return err, nil
 	}
-	if user == nil {
+	if userInfo == nil {
 		return errors.New("账号或密码错误"), nil
 	}
 	//判断用户状态
-	if user.UserStatus == 0 {
+	if userInfo.UserStatus == 0 {
 		return errors.New("用户已被冻结"), nil
 	}
-	returnData := *user
+	returnData := *userInfo
 	//更新登陆时间及ip
-	user.LastLoginTime = gconv.Int(gtime.Timestamp())
-	user.LastLoginIp = utils.GetClientIp(r)
-	user.Update()
+	userInfo.LastLoginTime = gconv.Int(gtime.Timestamp())
+	userInfo.LastLoginIp = utils.GetClientIp(r)
+	user.Model.Save(userInfo)
 	return nil, &returnData
 }
 
@@ -160,5 +160,5 @@ func loginLog(status int, username, ip, userAgent, msg, module string) {
 	log.Msg = msg
 	log.LoginTime = gtime.Timestamp()
 	log.Module = module
-	log.Save()
+	sys_login_log.Model.Save(log)
 }

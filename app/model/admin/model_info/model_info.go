@@ -155,7 +155,7 @@ func EditSave(req *EditReq) error {
 	entity.ModelEngine = req.ModelEngine
 	entity.UpdateBy = gconv.Uint64(req.UpdateBy)
 	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
-	_, err = entity.Update()
+	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改失败")
@@ -242,7 +242,7 @@ func SetStatus(req *StatusSetReq) error {
 			return gerror.New("获取模型信息失败")
 		}
 		entity.ModelStatus = gconv.Uint(req.ModelStatus)
-		_, err = entity.Update()
+		_, err = Model.Save(entity)
 		if err != nil {
 			g.Log().Error(err)
 			return gerror.New("设置状态失败")

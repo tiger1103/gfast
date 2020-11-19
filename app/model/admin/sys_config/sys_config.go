@@ -74,7 +74,7 @@ func EditSave(req *EditReq, userId uint64) (int64, error) {
 	entity.Remark = req.Remark
 	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
 	entity.UpdateBy = gconv.Uint(userId)
-	result, err := entity.Update()
+	result, err := Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return 0, gerror.New("修改失败")

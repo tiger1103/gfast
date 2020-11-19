@@ -70,7 +70,7 @@ func CheckUserOnline() {
 		for _, entity := range list {
 			onlineInfo := GetOnlineInfo(entity.Token)
 			if onlineInfo == nil {
-				entity.Delete()
+				user_online.Model.Delete("id", entity.Id)
 			}
 		}
 		param.PageNum++

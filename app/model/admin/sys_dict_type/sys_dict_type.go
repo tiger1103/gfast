@@ -87,7 +87,7 @@ func EditSave(req *EditReq, userId uint64) (int64, error) {
 	entity.Remark = req.Remark
 	entity.UpdateBy = gconv.Uint(userId)
 	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
-	res, err := entity.Update()
+	res, err := Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return 0, gerror.New("更新失败")
@@ -239,7 +239,7 @@ func DeleteDictByIds(ids []int) error {
 	//删除字典下的数据
 	for _, v := range discs {
 		sys_dict_data.Model.Delete("dict_type=?", v.DictType)
-		v.Delete()
+		Model.Delete(v.DictId)
 	}
 	return nil
 }

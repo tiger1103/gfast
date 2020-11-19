@@ -69,7 +69,7 @@ func Add(user *user.Entity, menu *auth_rule.Entity, url *url.URL,
 			operLog.OperParam = string(b)
 		}
 	}
-	operLog.Save()
+	Model.Save(operLog)
 }
 
 //操作日志列表

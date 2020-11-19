@@ -109,7 +109,7 @@ func EditSave(editReq *EditReq) error {
 	entity.LinkUsername = editReq.LinkUsername
 	entity.LinkEmail = editReq.LinkEmail
 	entity.LinkRemark = editReq.LinkRemark
-	_, err = entity.Update()
+	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改栏目失败")

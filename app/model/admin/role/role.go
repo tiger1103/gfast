@@ -169,7 +169,7 @@ func StatusSetRole(req *StatusSetReq) error {
 			return gerror.New("获取角色信息失败")
 		}
 		entity.Status = req.Status
-		_, err = entity.Update()
+		_, err = Model.Save(entity)
 		if err != nil {
 			g.Log().Error(err)
 			return gerror.New("设置状态失败")

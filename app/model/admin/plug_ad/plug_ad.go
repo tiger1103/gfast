@@ -102,7 +102,7 @@ func EditSave(editReq *EditReq) error {
 	entity.AdContent = editReq.AdContent
 	entity.AdSort = editReq.AdSort
 	entity.AdOpen = editReq.AdOpen
-	_, err = entity.Update()
+	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改广告失败")

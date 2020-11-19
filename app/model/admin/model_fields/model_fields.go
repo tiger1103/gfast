@@ -187,7 +187,7 @@ func EditSave(req *EditReq) error {
 	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
 	entity.FieldWidth = req.FieldWidth
 	entity.FieldAlign = req.FieldAlign
-	_, err = entity.Update()
+	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改失败")

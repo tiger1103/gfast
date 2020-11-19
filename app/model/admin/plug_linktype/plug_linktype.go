@@ -101,7 +101,7 @@ func EditSave(req *EditReq) error {
 	// 修改实体
 	entity.LinktypeName = req.LinktypeName
 	entity.LinktypeOrder = uint(req.LinktypeOrder)
-	_, err = entity.Update()
+	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改栏目失败")

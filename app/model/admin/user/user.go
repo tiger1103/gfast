@@ -87,7 +87,7 @@ func Add(req *AddUserReq) (InsertId int64, err error) {
 	entity.UserPassword = req.Password
 	entity.Remark = req.Remark
 	entity.IsAdmin = req.IsAdmin
-	res, err := entity.Save()
+	res, err := Model.Save(entity)
 	if err != nil {
 		return
 	}
@@ -117,7 +117,7 @@ func Edit(req *EditUserReq) (err error) {
 	entity.UserNickname = req.NickName
 	entity.Remark = req.Remark
 	entity.IsAdmin = req.IsAdmin
-	_, err = entity.Update()
+	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("修改用户信息失败")
@@ -172,7 +172,7 @@ func ChangeUserStatus(req *StatusReq) error {
 		return gerror.New("用户不存在")
 	}
 	user.UserStatus = req.UserStatus
-	_, err = user.Update()
+	_, err = Model.Save(user)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改用户状态失败")
@@ -188,7 +188,7 @@ func ResetUserPwd(req *ResetPwdReq) error {
 		return gerror.New("用户不存在")
 	}
 	user.UserPassword = req.Password
-	_, err = user.Update()
+	_, err = Model.Save(user)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("修改用户密码失败")

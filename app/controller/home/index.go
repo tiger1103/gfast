@@ -66,7 +66,7 @@ func (c *Index) Show(r *ghttp.Request) {
 	// 查询文章信息
 	newsInfo, _ := cms_service.GetNewsById(int(newsId))
 	newsInfo.NewsHits++
-	newsInfo.Save()
+	cms_news.Model.Save(newsInfo)
 	if newsInfo.IsJump == 1 {
 		//跳转连接
 		home.ResponseInstance.Redirect(r, newsInfo.JumpUrl)

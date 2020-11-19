@@ -124,7 +124,7 @@ func Edit(req *MenuReq, id int) (err error, rows int64) {
 	entity.IsFrame = req.IsFrame
 	entity.Pid = req.Pid
 	entity.Weigh = req.Weigh
-	res, e := entity.Update()
+	res, e := Model.Save(entity)
 	err = e
 	if err != nil {
 		return

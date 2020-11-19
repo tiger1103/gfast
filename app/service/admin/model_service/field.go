@@ -157,7 +157,7 @@ func SetFieldsAttr(req *model_fields.SetFieldsAttrReq) error {
 	modelInfo.ModelList = infoReq.ModelList
 	modelInfo.ModelSort = infoReq.ModelSort
 	modelInfo.SearchList = infoReq.SearchList
-	_, err = modelInfo.Save()
+	_, err = model_info.Save(modelInfo)
 	if err != nil {
 		g.Log().Error(err)
 		tx.Rollback()

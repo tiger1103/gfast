@@ -118,7 +118,7 @@ func Add(addParams *AddParams) (result sql.Result, err error) {
 		CreateTime: gtime.Now(),
 	}
 
-	return entity.Save()
+	return Model.Save(entity)
 
 }
 
@@ -136,7 +136,7 @@ func Edit(editParams *EditParams) (result sql.Result, err error) {
 	if entity.CreateTime == nil {
 		entity.CreateTime = entity.UpdateTime
 	}
-	return entity.Update()
+	return Model.Save(entity)
 }
 
 func GetOneById(id int64) (*Entity, error) {

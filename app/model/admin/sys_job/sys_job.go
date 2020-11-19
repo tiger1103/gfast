@@ -105,7 +105,7 @@ func Edit(req *ReqEdit, userId uint64) (rows int64, err error) {
 	entity.Status = req.Status
 	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
 	entity.UpdateBy = gconv.Uint64(userId)
-	res, err := entity.Update()
+	res, err := Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("修改任务失败")
@@ -194,7 +194,7 @@ func JobStart(job *Entity) error {
 	gcron.Start(job.InvokeTarget)
 	if job.MisfirePolicy == 1 {
 		job.Status = 0
-		job.Update()
+		Model.Save(job)
 	}
 	return nil
 }
@@ -211,6 +211,6 @@ func JobStop(job *Entity) error {
 		gcron.Remove(job.InvokeTarget)
 	}
 	job.Status = 1
-	job.Update()
+	Model.Save(job)
 	return nil
 }
