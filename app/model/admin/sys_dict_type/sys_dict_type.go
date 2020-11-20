@@ -239,7 +239,7 @@ func DeleteDictByIds(ids []int) error {
 	//删除字典下的数据
 	for _, v := range discs {
 		sys_dict_data.Model.Delete("dict_type=?", v.DictType)
-		Model.Delete(v.DictId)
+		Model.Delete("dict_id", v.DictId)
 	}
 	return nil
 }
