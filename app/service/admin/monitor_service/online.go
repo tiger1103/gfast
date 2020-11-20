@@ -41,7 +41,7 @@ func ForceLogout(ids []int) error {
 		if entity == nil {
 			continue
 		}
-		user_online.Delete("id", entity.Id)
+		user_online.Model.Where("id", entity.Id).Delete()
 		_, userKey := GetUuidUserKeyByToken(entity.Token)
 		if userKey == "" {
 			continue
