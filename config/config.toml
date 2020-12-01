@@ -11,6 +11,9 @@
     maxOpen     = "10" #连接池最大打开的连接数
     maxLifetime  = "30" #(单位秒)连接对象可重复使用的时间长度
     debug  = true
+    path   = "data/log/sql"
+    level  = "all"
+    stdout = true
 
 #web服务器配置
 [server]
@@ -70,6 +73,6 @@
 
 #模板配置
 [viewer]
-paths       = ["./template"]
-defaultFile = "index.html"
-delimiters  =  ["${", "}"]
+    paths       = ["./template"]
+    defaultFile = "index.html"
+    delimiters  =  ["${", "}"]
