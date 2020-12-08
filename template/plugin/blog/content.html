@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>gfast博客</title>
+    <link href="${.domain}plugin/blog/css/base.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="${.domain}js/jquery/jquery.js"></script>
+    <script src="${.domain}plugin/blog/js/nav.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 提交评论后在页面弹框显示返回的添加信息
+            $('#addComment').submit(function () {
+                $.post($(this).attr('action'), $(this).serializeArray(), function (data) {
+                    alert(data.msg);
+                    $('.com_content').val(""); // 把评论中的内容置为空
+                    // window.location.reload(); // 添加后刷新一下页面
+                });
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            // 重置按钮功能
+            $('.reset_button').click(function () {
+                $('.hidden_commentPid').attr('value', '0');
+                $('.hidden_replyName').attr('value', "");
+                $('.com_content').attr('placeholder', "请输入评论");
+            });
+
+            // 点击回复
+            $('.reply').each(function (index) {
+                $(this).click(function () {
+                    const ph1 = $('.comment_nickname');
+                    const r = $('.reply_id');
+                    $('.com_content').attr('placeholder', "@"+$(ph1[index]).text());
+                    // 将.hidden_commentPid所属标签的value值改为所回复评论的id
+                    // 用回复span的id把父评论的id值传过来
+                    $('.hidden_commentPid').attr('value', $(this).attr('id'));
+                    // 将所回复对象的id放入隐藏的input中
+                    $('.hidden_replyId').attr("value", $(r[index]).text());
+                    // 将所回复的对象的昵称放入隐藏的input中提交,$(ph1[index]).text()从评论的div中获取所回复对象的昵称
+                    $('.hidden_replyName').attr('value', $(ph1[index]).text());
+                    $('.com_content').focus();
+                });
+            });
+
+            // 点击查看更多
+            $('.click_view').each(function (index) {
+                $(this).click(function () {
+                    const rb = $('.reply_box');
+                    $(rb[index]).find('.reply_item').removeClass("reply_item");
+                    const vm = $('.view_more');
+                    $(vm[index]).addClass("reply_item");
+                });
+            });
+        })
+    </script>
+</head>
+<body>
+${template "header" .}
+<main>
+    ${if and (ne .classification nil) (eq .classification.ClassificationType 4)}
+    <p class="weizhi">您现在的位置是：<a href="${.domain}plugin/blog/index">网站首页</a> > <a href="${.domain}plugin/blog/blogList?cateId=${.classification.ClassificationId}">${.classification.ClassificationName}</a> </p>
+    <article>
+        <div class="container">
+            <h1>${.classification.ClassificationName}</h1>
+            <div class="content">
+                ${.classification.ClassificationContent}
+            </div>
+        </div>
+    </article>
+    ${else}
+    <p class="weizhi">您现在的位置是：<a href="${.domain}plugin/blog/index">网站首页</a> > <a href="${.domain}plugin/blog/blogList?cateId=${.log.LogType}">${.log.ClassificationName}</a> > ${.log.LogTitle}</p>
+    <article>
+        <div class="container">
+            <h1>${.log.LogTitle}</h1>
+            <p class="blog_info">
+                <span>${timeFormatYear .log.CreatTime}</span>
+                <span>${.log.LogAuthor}</span>
+                <span><a href="${.domain}plugin/blog/blogList?cateId=${.log.LogType}" target="_blank">${.log.ClassificationName}</a></span>
+                <span>${.log.LogHits}</span>
+            </p>
+            <div class="content">
+                ${.log.LogContent}
+            </div>
+            <div class="otherlink">
+                <h2>相关文章</h2>
+                <div class="relevant_article">
+                    ${range $index,$article := .relevantList}
+                    ${if ne $.log.LogId $article.LogId}
+                    <div>
+                        <a href="${$.domain}plugin/blog/content?logId=${$article.LogId}"><img src="${$.domain}${$article.LogThumbnail}"></a>
+                    </div>
+                    ${end}
+                    ${end}
+                </div>
+            </div>
+            <div class="pinglun_box">
+                <div>
+                    <h2>文章评论</h2>
+                    ${range $index,$comment := .commentList}
+                    <div class="comment">
+                        <div class="comment_nickname">${$comment.CommentNickname}</div>
+                        <div class="comment_create_time">
+                            (${timeFormatYear $comment.CreateTime})
+                        </div>
+                        <div class="comment_content">
+                            ${$comment.CommentContent}
+                        </div>
+                        <div class="reply_id">${$comment.CommentId}</div>
+                        <div class="comment_reply"><span class="reply" id="${$comment.CommentId}">回复</span></div>
+                        <!-- 二级评论 -->
+                        <div class="reply_box">
+                            ${range $index2, $item := $comment.Children}
+                            <!-- 小于或者等于3条回复则显示,大于3条的隐藏 -->
+                            ${if lt $index2 3}
+                            <div>
+                                <div class="comment_nickname">${$item.CommentNickname}</div>
+                                <div class="comment_create_time">
+                                    (${timeFormatYear $item.CreateTime})
+                                </div>
+                                <div class="comment_content">
+                                    @${$item.ReplyName}:${$item.CommentContent}
+                                </div>
+                                <div class="reply_id">${$item.CommentId}</div>
+                                <div class="comment_reply"><span class="reply" id="${$comment.CommentId}">回复</span></div>
+                            </div>
+                            ${else}
+                            <div class="reply_item">
+                                <div class="comment_nickname">${$item.CommentNickname}</div>
+                                <div class="comment_create_time">
+                                    (${timeFormatYear $item.CreateTime})
+                                </div>
+                                <div class="comment_content">
+                                    @${$item.ReplyName}:${$item.CommentContent}
+                                </div>
+                                <div class="reply_id">${$item.CommentId}</div>
+                                <div class="comment_reply"><span class="reply" id="${$comment.CommentId}">回复</span></div>
+                            </div>
+                            ${end}
+                            ${end}
+                        </div>
+                        ${if gt $comment.CommentNum 3}
+                        <div class="view_more">
+                            共<b>${$comment.CommentNum}</b>条回复,<span class="click_view">点击查看</span>
+                        </div>
+                        ${else}
+                        <div class="view_more reply_item">
+                            共<b>${$comment.CommentNum}</b>条回复,<span class="click_view">点击查看</span>
+                        </div>
+                        ${end}
+                    </div>
+                    ${end}
+                    ${if ne .commentList nil}
+                    <div class="paging">
+                        ${$.pageStyle}
+                    </div>
+                    ${else}
+                    <div class="no_comment">还没有人发表评论</div>
+                    ${end}
+                </div>
+                <div>
+                    <h2>发表评论</h2>
+                    <form id="addComment" action="${.domain}plugin/blog/addComment" method="post">
+                        <input type="hidden" name="commentLogId" value="${.log.LogId}">
+                        <input type="hidden" class="hidden_commentPid" name="commentPid" value="0">
+                        <input type="hidden" class="hidden_replyName" name="replyName" value="">
+                        <input type="hidden" class="hidden_replyId" name="replyId" value="">
+                        <div class="guest_tit">
+                            <input type="text" name="commentNickname" placeholder="请输入昵称"><label>&ensp;昵称</label>
+                        </div>
+                        <div class="guest_txt">
+                            <textarea  class="com_content" name="commentContent" placeholder="请输入评论"></textarea>
+                        </div>
+                        <div class="guest_s">
+                            <button class="btn" type="submit">提交</button>
+                            <button class="btn reset_button" type="reset">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </article>
+    ${end}
+    <!--article end-->
+
+    ${template "aside" .}
+    <!--aside end-->
+</main>
+${template "footer" .}
+</body>
+</html>

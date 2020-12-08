@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>gfast博客</title>
+    <link href="${.domain}plugin/blog/css/base.css" rel="stylesheet">
+    <link href="${.domain}css/swiper-6.1.1/swiper-bundle.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="${.domain}js/jquery/jquery.js"></script>
+    <script src="${.domain}plugin/blog/js/nav.js"></script>
+    <script src="${.domain}js/swiper-6.1.1/swiper-bundle.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#addLink').submit(function () {
+                $.post($(this).attr('action'), $(this).serializeArray(), function (data) {
+                    alert(data.msg);
+                    window.location.reload(); // 添加后刷新一下页面
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+${template "header" .}
+<!--header end-->
+<main>
+    <div class="link_content">
+        <h2>申请信息</h2>
+        <form id="addLink" action="${.domain}plugin/blog/addLink" method="post">
+            <div>
+               <input type="text" name="linkUsername" required placeholder="请输入联系人">
+            </div>
+            <div>
+                <input type="number" name="linkQQ" required placeholder="请输入QQ">
+            </div>
+            <div>
+               <input type="email" name="linkEmail" required placeholder="请输入邮箱地址">
+            </div>
+            <div>
+               <input type="text" name="linkName" required placeholder="请输入申请链接名称">
+            </div>
+            <div>
+                <input type="url" name="linkUrl" required placeholder="请输入申请链接URL">
+            </div>
+            <div>
+                <textarea rows="6" name="linkRemark" placeholder="请输入备注"></textarea>
+            </div>
+            <div>
+                <button class="comment_button" type="submit">提交申请</button>
+            </div>
+        </form>
+    </div>
+    ${template "aside" .}
+    <!--aside end-->
+</main>
+${template "footer" .}
+</body>
+</html>

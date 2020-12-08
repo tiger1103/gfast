@@ -6,7 +6,7 @@ const (
 	AdminAuthRole
 	AdminCmsMenu
 	AdminConfigDict
-	GovProject
+	AdminBlogClassification
 )
 
 //缓存TAG标签
@@ -15,6 +15,5 @@ const (
 	AdminCmsTag
 	AdminSysConfigTag
 	AdminModelTag
-	AdminDeptUserTag
-	GovProjectCateTag
+	AdminBlogTag
 )

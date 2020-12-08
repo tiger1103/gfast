@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>gfast博客</title>
+    <link href="${.domain}plugin/blog/css/base.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="${.domain}js/jquery.js"></script>
+    <script src="${.domain}plugin/blog/js/nav.js"></script>
+</head>
+<body>
+${template "header" .}
+<!--header end-->
+<main>
+    ${if ne .classification nil}
+    <p class="weizhi">您现在的位置是：<a href="${.domain}plugin/blog/index">网站首页</a> > ${.classification.ClassificationName}</p>
+    ${else}
+    <p class="weizhi">您现在的位置是：<a href="${.domain}plugin/blog/index">网站首页</a> > 搜索</p>
+    ${end}
+    <article>
+        <!--new_blog 最新文章 begin-->
+        <div class="new_blog">
+            <ul class="blogs">
+                ${range $index,$article := .list}
+                <li>
+                    <a href="${$.domain}plugin/blog/content?logId=${$article.LogId}" target="_blank">
+                        <i><img src="${$.domain}${$article.LogThumbnail}" alt="标题图片"></i>
+                        <h2>${$article.LogTitle}</h2>
+                    </a>
+                    <div class="blog_smalltext">${subStr $article.LogContent 23}</div>
+                    <p class="blog_info">
+                        <span>${timeFormatYear $article.CreatTime}</span>
+                        <span>${$article.LogAuthor}</span>
+                        <span>${$article.ClassificationName}</span>
+                        <span>${$article.LogHits}</span>
+                    </p>
+                </li>
+                ${end}
+            </ul>
+        </div>
+        <!--new_blog 最新文章 end-->
+
+    </article>
+    <!--article end-->
+
+    ${template "aside" .}
+    <!--aside end-->
+</main>
+${template "footer" .}
+<!--footer end-->
+</body>
+</html>

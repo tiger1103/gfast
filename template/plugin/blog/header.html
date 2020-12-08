@@ -1,0 +1,52 @@
+${define "header"}
+<header>
+    <div class="nav">
+        <a href="${.domain}plugin/blog/index">
+            <img src="${.domain}plugin/blog/image/gfastLogo.png" alt="gfastLogo">
+        </a>
+        <h2 class="logo-name">gfast</h2>
+        <p class="describe">一款极速开发框架</p>
+        <div class="nav-list1">
+            <ul>
+                ${range $index,$column := .classificationList}
+                ${if lt $index 5}
+                <!-- 只显示前五条 -->
+                ${if ne (len $column.Children) 0}
+                <!-- 有子栏目的情况 级别2 -->
+                <li class="submenu">
+                    <a style="cursor: pointer">${$column.ClassificationName}</a>
+                    <ul class="nav-submenu">
+                        <div></div>
+                        ${range $sonIndex,$sonColumn := $column.Children}
+                        <!-- 如果子栏目ClassificationType=3是跳转栏目，则解析另一种a标签 -->
+                            ${if eq $sonColumn.ClassificationType 3}
+                            <li>
+                                <a href="${$.domain}${$sonColumn.ClassificationAddress}?cateId=${$sonColumn.ClassificationId}">${$sonColumn.ClassificationName}</a>
+                            </li>
+                            ${else}
+                            <li>
+                                <a href="${$.domain}plugin/blog/blogList?cateId=${$sonColumn.ClassificationId}">${$sonColumn.ClassificationName}</a>
+                            </li>
+                            ${end}
+                        ${end}
+                    </ul>
+                </li>
+                ${else}
+                <!-- 没有子栏目的情况 级别2 -->
+                ${if eq $column.ClassificationType 3}
+                <li class="submenu">
+                    <a href="${$.domain}${$column.ClassificationAddress}?cateId=${$column.ClassificationId}">${$column.ClassificationName}</a>
+                </li>
+                ${else}
+                <li class="submenu">
+                    <a href="${$.domain}plugin/blog/blogList?cateId=${$column.ClassificationId}">${$column.ClassificationName}</a>
+                </li>
+                ${end}
+                ${end}
+                ${end}
+                ${end}
+            </ul>
+        </div>
+    </div>
+</header>
+${end}

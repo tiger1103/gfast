@@ -107,3 +107,6 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 > <img src="https://gitee.com/tiger1103/gfast/raw/master/public/qqcode.png"/>  
 
 > 快来加入群聊【Gfast框架交流群】(群号865697297)，发现精彩内容。  
+
+### 若框架对您有帮助，您可以捐赠表达一下心意：
+> <img src="https://gitee.com/tiger1103/gfast-ui/raw/master/public/images/jz.jpg"/>

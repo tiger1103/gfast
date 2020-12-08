@@ -1,0 +1,53 @@
+${define "aside"}
+<aside>
+    <div class="search">
+        <form action="${.domain}plugin/blog/blogList" method="post" name="searchform" id="searchform">
+            <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词"
+                   style="color: rgb(153, 153, 153);"
+                   onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}"
+                   onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+            <input name="show" value="title" type="hidden">
+            <input name="tempid" value="1" type="hidden">
+            <input name="tbname" value="news" type="hidden">
+            <input name="Submit" class="input_submit" value="搜索" type="submit">
+        </form>
+    </div>
+
+    <div class="paihang">
+        <h2 class="aside_title">点击排行</h2>
+        <ol start="1">
+            ${range $index, $article := .hitsList}
+            <li><a href="${$.domain}plugin/blog/content?logId=${$article.LogId}" target="_blank">${$article.LogTitle}</a></li>
+            ${end}
+        </ol>
+    </div>
+    <div class="paihang">
+        <h2 class="aside_title">推荐文章</h2>
+        ${range $index,$article := .recommendList}
+        <a href="${$.domain}plugin/blog/content?logId=${$article.LogId}" target="_blank"><img class="recommend" src="${$.domain}${$article.LogThumbnail}" alt="推荐文章"></a>
+        ${end}
+    </div>
+    <div class="paihang">
+        <h2 class="aside_title">最新文章</h2>
+        <ol start="1">
+            ${range $index, $article := .newList}
+            <li><a href="${$.domain}plugin/blog/content?logId=${$article.LogId}" target="_blank">${$article.LogTitle}</a></li>
+            ${end}
+        </ol>
+    </div>
+    <div class="links">
+        <h2 class="aside_title"><span><a href="${.domain}plugin/blog/link" target="_blank">申请</a></span>友情链接</h2>
+        <ul>
+            ${range $index,$link := .linkList}
+            <li><a href="${$link.LinkUrl}" target="${$link.LinkTarget}">${$link.LinkName}</a></li>
+            ${end}
+        </ul>
+    </div>
+    <div class="paihang">
+        <h2 class="aside_title">请喝咖啡</h2>
+        ${range $index,$article := .coffeeArticle}
+        <img class="coffee" src="${$.domain}${$article.AdPic}" alt="请喝咖啡">
+        ${end}
+    </div>
+</aside>
+${end}
