@@ -59,13 +59,11 @@ github.com/go-playground/universal-translator v0.17.0/go.mod h1:UkSxE5sNxxRwHyU+
 github.com/go-playground/validator/v10 v10.2.0/go.mod h1:uOYAAleCW8F/7oMFd6aG0GOhaH6EGOAJShg8Id5JGkI=
 github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
-github.com/goflyfox/gtoken v1.3.21 h1:62k9aqcqGJ17axDw5dsIgJzhESIaSohNC/DVhvwzx6E=
-github.com/goflyfox/gtoken v1.3.21/go.mod h1:/p/vWt/TjHB22+sWnr+W/nLB0RR9akp7B+iUT+dMd3I=
+github.com/goflyfox/gtoken v1.4.1 h1:mlnu4ZHZVZHvAlUzMNTI3ZO916D1WySvYerimbOOiKY=
+github.com/goflyfox/gtoken v1.4.1/go.mod h1:ylHVvQ4/nTstw81iElcDWFht4LAKL4Pqhw7Ja2UaGAk=
 github.com/gofrs/uuid v3.3.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
-github.com/gogf/gf v1.14.2 h1:xIgfq2YcMYAm1ZcbVD/u0y5qZDDdARY4u7261w8QlHA=
-github.com/gogf/gf v1.14.2/go.mod h1:7b21qQKDyIwJO4PkBCxVci5C62tm89MANGV2wJgAf50=
-github.com/gogf/gf v1.14.4 h1:44EfQ7mluq/qEkppzk6Pg4I7QVP+9DBu/JOLaR5nXkQ=
-github.com/gogf/gf v1.14.4/go.mod h1:s4b0tkBqHyEWAk/Hwm4hzUCbCbdIPeERxB2wmeBg11g=
+github.com/gogf/gf v1.14.5 h1:y/4q8rfFtiuIL7PwNUhG8RyBWLlvR1pl44x7/EJeDMI=
+github.com/gogf/gf v1.14.5/go.mod h1:s4b0tkBqHyEWAk/Hwm4hzUCbCbdIPeERxB2wmeBg11g=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF08vX0COfcOBJRhZ8lUbR+ZWIs0Y5g=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
@@ -76,8 +74,6 @@ github.com/gomodule/redigo v2.0.0+incompatible/go.mod h1:B4C85qUVwatsJoIUNIfCRsp
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/gorilla/websocket v1.4.1 h1:q7AeDBpnBk8AogcD4DSag/Ukw/KV+YhzLj2bP5HvKCM=
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
-github.com/gqcn/structs v1.1.1 h1:cyzGRwfmn3d1d54fwW3KUNyG9QxR0ldIeqwFGeBt638=
-github.com/gqcn/structs v1.1.1/go.mod h1:/aBhTBSsKQ2Ec9pbnYdGphtdWXHFn4KrCL0fXM/Adok=
 github.com/grokify/html-strip-tags-go v0.0.0-20190921062105-daaa06bf1aaf h1:wIOAyJMMen0ELGiFzlmqxdcV1yGbkyHBAB6PolcNbLA=
 github.com/grokify/html-strip-tags-go v0.0.0-20190921062105-daaa06bf1aaf/go.mod h1:2Su6romC5/1VXOQMaWL2yb618ARB8iVo6/DR99A6d78=
 github.com/josharian/intern v1.0.0 h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=

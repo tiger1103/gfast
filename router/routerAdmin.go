@@ -83,5 +83,12 @@ func init() {
 				group.ALL("/info", new(admin.PlugLink))
 			})
 		})
+
+		//工作流
+		group.Group("/wf", func(group *ghttp.RouterGroup) {
+			group.ALL("/flow", new(admin.Flow))
+			group.ALL("/news", new(admin.WfNews))
+		})
+
 	})
 }

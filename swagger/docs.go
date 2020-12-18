@@ -3770,7 +3770,20 @@ var doc = `{
                         "type": "integer"
                     }
                 },
+                "isSlide": {
+                    "type": "string"
+                },
+                "isTop": {
+                    "type": "string"
+                },
                 "keyWords": {
+                    "type": "string"
+                },
+                "newsStatus": {
+                    "type": "string"
+                },
+                "orderBy": {
+                    "description": "排序字段",
                     "type": "string"
                 },
                 "pageNum": {
@@ -3785,6 +3798,9 @@ var doc = `{
                     "type": "string"
                 },
                 "publishedTimeStart": {
+                    "type": "string"
+                },
+                "recommended": {
                     "type": "string"
                 }
             }

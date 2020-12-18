@@ -180,7 +180,7 @@ func (c *Index) Content(r *ghttp.Request) {
 	}
 	// 更新点击数
 	log.LogHits += 1
-	blog_log.Model.Save(log)
+	blog_log.Model.Save(log.Entity)
 	if log.LogUrl != "" {
 		//跳转连接
 		r.Response.RedirectTo(log.LogUrl)

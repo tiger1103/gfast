@@ -26,17 +26,17 @@ type NewsList struct {
 
 //添加文章参数
 type ReqAddParams struct {
-	NewsStatus    uint   `p:"status"    v:"in:0,1#状态只能为0或1"`                                // 状态;1:已发布;0:未发布;
-	Attr          []int  `p:"attr"`                                                         //文章标记 置顶 推荐
-	PublishedTime string `p:"published_time"`                                               // 发布时间
-	NewsTitle     string `p:"title"     v:"required#标题不能为空"`                                // post标题
-	NewsKeywords  string `p:"keywords"`                                                     // seo keywords
-	NewsExcerpt   string `p:"excerpt"`                                                      // post摘要
-	NewsSource    string `p:"source"  `                                                     // 转载文章的来源
-	Thumbnail     string `p:"thumbnail"    `                                                // 缩略图
-	IsJump        uint   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"`                          // 是否跳转地址
-	JumpUrl       string `p:"JumpUrl"      v:"required-if:IsJump,1|url#跳转地址不能为空|跳转地址格式不正确"` // 跳转地址
-	ModelForm     g.Map  `p:"modelForm"`
+	NewsStatus    uint                   `p:"status"    v:"in:0,1#状态只能为0或1"`                                // 状态;1:已发布;0:未发布;
+	Attr          []int                  `p:"attr"`                                                         //文章标记 置顶 推荐
+	PublishedTime string                 `p:"published_time"`                                               // 发布时间
+	NewsTitle     string                 `p:"title"     v:"required#标题不能为空"`                                // post标题
+	NewsKeywords  string                 `p:"keywords"`                                                     // seo keywords
+	NewsExcerpt   string                 `p:"excerpt"`                                                      // post摘要
+	NewsSource    string                 `p:"source"  `                                                     // 转载文章的来源
+	Thumbnail     string                 `p:"thumbnail"    `                                                // 缩略图
+	IsJump        uint                   `p:"IsJump"        v:"in:0,1#跳转类型只能为0或1"`                          // 是否跳转地址
+	JumpUrl       string                 `p:"JumpUrl"      v:"required-if:IsJump,1|url#跳转地址不能为空|跳转地址格式不正确"` // 跳转地址
+	ModelForm     map[string]interface{} `p:"modelForm"`
 }
 
 //文章搜索参数
