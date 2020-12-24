@@ -97,10 +97,10 @@ func GetByID(id int64) (*Entity, error) {
 	entity, err := Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("根据ID查询记录出错")
+		return nil, gerror.New("根据ID查询记录出错")
 	}
 	if entity == nil {
-		err = gerror.New("没有查询到对应模型的字段")
+		return nil, gerror.New("没有查询到对应模型的字段")
 	}
 	return entity, nil
 }
