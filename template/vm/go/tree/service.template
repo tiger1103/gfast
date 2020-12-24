@@ -38,8 +38,6 @@ func GetListSearch(req *{{.table.BusinessName}}Model.ReqSearchList) (list []*{{.
 	return {{.table.BusinessName}}Model.GetListSearch(req)
 }
 
-
-
 //通过ID获取子级ID
 func GetChildrenIds(ids []int) ([]int, error) {
 	//获取所有

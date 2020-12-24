@@ -29,6 +29,7 @@ type EditReq struct {
 	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
 }
 
+// RemoveReq 用于存储删除请求参数
 type RemoveReq struct {
 	Ids []int `p:"ids"` //删除id
 }
@@ -42,15 +43,15 @@ type SelectPageReq struct { {{range $index, $column := .table.Columns}} {{if eq 
 	PageSize   int    `p:"pageSize"`   //每页数
 }
 
-// GetPlugAdByID 根据ID查询记录
+// GetByID 根据ID查询记录
 func GetByID(id int64) (*Entity, error) {
 	entity, err := Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("根据ID查询记录出错")
+		return nil, gerror.New("根据ID查询记录出错")
 	}
 	if entity == nil {
-		err = gerror.New("根据ID未能查询到记录")
+		return nil, gerror.New("根据ID未能查询到记录")
 	}
 	return entity, nil
 }
@@ -72,7 +73,7 @@ func AddSave(req *AddReq) error {
 	return nil
 }
 
-// 删除
+// DeleteByIds 删除
 func DeleteByIds(Ids []int) error {
 	_, err := Model.Delete("{{.table.PkColumn.ColumnName}} in(?)", Ids)
 	if err != nil {
@@ -82,7 +83,7 @@ func DeleteByIds(Ids []int) error {
 	return nil
 }
 
-// 根据ID来修改信息
+// EditSave 根据ID来修改信息
 func EditSave(req *EditReq) error {
 	// 先根据ID来查询要修改的记录
 	entity, err := GetByID(req.{{$pkGoField}})
@@ -101,7 +102,7 @@ func EditSave(req *EditReq) error {
 	return nil
 }
 
-// 分页查询,返回值total总记录数,page当前页
+// SelectListByPage 分页查询,返回值total总记录数,page当前页
 func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity, err error) {
 	model := Model
 	if req != nil {
@@ -144,7 +145,7 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 
 
 
-// 获取所有数据
+// SelectListAll 获取所有数据
 func SelectListAll(req *SelectPageReq) (list []*Entity, err error) {
 	model := Model
 	if req != nil {
