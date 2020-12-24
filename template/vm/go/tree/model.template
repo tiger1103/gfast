@@ -32,6 +32,7 @@ type ReqEdit struct {
 	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
 }
 
+// RemoveReq 用于存储删除请求参数
 type RemoveReq struct {
 	Ids []int `p:"ids"` //删除id
 }
@@ -41,15 +42,15 @@ type ReqSearchList struct { {{range $index, $column := .table.Columns}} {{if eq 
 	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}"` //{{$column.ColumnComment}} {{end}} {{end}}
 }
 
-// GetPlugAdByID 根据ID查询记录
+// GetByID 根据ID查询记录
 func GetByID(id int64) (*Entity, error) {
 	entity, err := Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("根据ID查询记录出错")
+		return nil, gerror.New("根据ID查询记录出错")
 	}
 	if entity == nil {
-		err = gerror.New("根据ID未能查询到记录")
+		return nil, gerror.New("根据ID未能查询到记录")
 	}
 	return entity, nil
 }
@@ -74,7 +75,7 @@ func AddSave(req *ReqAdd) error {
 	return nil
 }
 
-// 删除
+// DeleteByIds 删除
 func DeleteByIds(Ids []int) error {
 	_, err := Model.Delete("{{.table.PkColumn.ColumnName}} in(?)", Ids)
 	if err != nil {
@@ -84,7 +85,7 @@ func DeleteByIds(Ids []int) error {
 	return nil
 }
 
-// 根据ID来修改信息
+// EditSave 根据ID来修改信息
 func EditSave(req *ReqEdit) error {
 	// 先根据ID来查询要修改的记录
 	entity, err := GetByID(req.{{$pkGoField}})
@@ -103,7 +104,7 @@ func EditSave(req *ReqEdit) error {
 	return nil
 }
 
-// 列表查询
+// GetListSearch 列表查询
 func GetListSearch(req *ReqSearchList) (list []*Entity, err error) {
     list, err = GetList()
 	if req !=nil{
@@ -134,7 +135,7 @@ func GetListSearch(req *ReqSearchList) (list []*Entity, err error) {
 	return
 }
 
-
+// GetList 获取列表
 func GetList() (list []*Entity, err error) {
 	cache := cache_service.New()
 	//从缓存获取数据
