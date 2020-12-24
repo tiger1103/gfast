@@ -43,15 +43,15 @@ type InfoBtn struct {
 	ActionBtn g.MapStrAny `json:"action_btn"`
 }
 
-// GetPlugAdByID 根据ID查询记录
+// GetByID 根据ID查询记录
 func GetByID(id int64) (*Entity, error) {
 	entity, err := Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
-		err = gerror.New("根据ID查询记录出错")
+		return nil, gerror.New("根据ID查询记录出错")
 	}
 	if entity == nil {
-		err = gerror.New("根据ID未能查询到记录")
+		return nil, gerror.New("根据ID未能查询到记录")
 	}
 	return entity, nil
 }
