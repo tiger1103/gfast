@@ -7,7 +7,8 @@ import (
 	"gfast/app/model/admin/user"
 	"gfast/app/model/admin/user_post"
 	"gfast/app/service/casbin_adapter_service"
-	"gfast/library/utils"
+	"gfast/library/service"
+
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
@@ -197,7 +198,7 @@ func DeleteRoleRule(roleId int) (err error) {
 //添加管理员操作
 func AddUser(req *user.AddUserReq) (InsertId int64, err error) {
 	//密码加密
-	req.Password = utils.EncryptCBC(gconv.String(req.Password), utils.AdminCbcPublicKey)
+	req.Password = service.EncryptData(req.Password)
 	return user.Add(req)
 }
 
