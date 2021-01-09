@@ -28,7 +28,6 @@
     SessionMaxAge    = "24h"
     DumpRouterMap    = true
     NameToUriType    = 3
-    EncryptKey       = "HqmP1KLMuz09Q0Bu" 
 
 
 # Redis数据库配置
@@ -62,6 +61,7 @@
     notCheckAuthAdminIds = [1,2,31]  #无需验证后台权限的用户id
     pageNum = 10  #后台列表分页长度
     dataDir =  "./data"  #数据目录
+    encryptKey = "HqmP1KLMuz09Q0Bu"  #后台加密
 
 # Gen
 [gen]
