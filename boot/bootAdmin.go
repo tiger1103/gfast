@@ -15,7 +15,7 @@ func initAdmin() {
 	//后端分页长度配置
 	service.AdminPageNum = g.Cfg().GetInt("adminInfo.pageNum")
 	//后端数据加密密钥
-	service.AdminEncryptKey = g.Cfg().GetString("server.EncryptKey")
+	service.AdminEncryptKey = g.Cfg().GetString("adminInfo.encryptKey")
 	// 设置并启动后台gtoken处理
 	initAdminGfToken()
 }
