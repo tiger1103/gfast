@@ -2,6 +2,7 @@ package boot
 
 import (
 	"gfast/library/service"
+
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/frame/g"
 )
@@ -13,6 +14,8 @@ func initAdmin() {
 	service.NotCheckAuthAdminIds = g.Cfg().GetInts("adminInfo.notCheckAuthAdminIds")
 	//后端分页长度配置
 	service.AdminPageNum = g.Cfg().GetInt("adminInfo.pageNum")
+	//后端数据加密密钥
+	service.AdminEncryptKey = g.Cfg().GetString("server.EncryptKey")
 	// 设置并启动后台gtoken处理
 	initAdminGfToken()
 }

@@ -15,6 +15,7 @@ import (
 	"gfast/boot"
 	"gfast/library/service"
 	"gfast/library/utils"
+
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -46,7 +47,7 @@ func UpdatePwd(r *ghttp.Request, data *UpdatePwdReq) error {
 		return err
 	}
 
-	OldPassword := utils.EncryptCBC(gconv.String(data.OldPassword), utils.AdminCbcPublicKey)
+	OldPassword := service.EncryptData(data.OldPassword)
 
 	if OldPassword != currentUser["user_password"].(string) {
 		return errors.New("原始密码错误!")
@@ -284,7 +285,7 @@ func ChangeUserStatus(req *user.StatusReq) error {
 
 func ResetUserPwd(req *user.ResetPwdReq) error {
 	//密码加密
-	req.Password = utils.EncryptCBC(gconv.String(req.Password), utils.AdminCbcPublicKey)
+	req.Password = service.EncryptData(req.Password)
 	return user.ResetUserPwd(req)
 }
 

@@ -2,6 +2,9 @@ package utils
 
 import (
 	"fmt"
+	"net"
+	"time"
+
 	"github.com/gogf/gf/crypto/gaes"
 	"github.com/gogf/gf/encoding/gbase64"
 	"github.com/gogf/gf/encoding/gcharset"
@@ -12,11 +15,7 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/text/gstr"
-	"net"
-	"time"
 )
-
-const AdminCbcPublicKey = "HqmP1KLMuz09Q0Bu"
 
 //字符串加密
 func EncryptCBC(plainText, publicKey string) string {

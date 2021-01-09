@@ -27,7 +27,8 @@
     SessionPath      = "./data/session"
     SessionMaxAge    = "24h"
     DumpRouterMap    = true
-    NameToUriType = 3
+    NameToUriType    = 3
+    EncryptKey       = "HqmP1KLMuz09Q0Bu" 
 
 
 # Redis数据库配置
