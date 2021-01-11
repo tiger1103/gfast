@@ -36,7 +36,7 @@ type WorkFlow struct {
 	BillTime    string                 `json:"bill_time"`
 }
 
-var msgNoAction = "该功能仅对捐赠用户开放，捐赠299即可获得完整工作流功能及配套视频。"
+var msgNoAction = "该功能仅对捐赠用户开放，捐赠199即可获得完整工作流功能及配套视频。"
 
 //获取流程信息
 func GetFlowInfoById(flowId int64) (entity *flowModel.Entity, err error) {
