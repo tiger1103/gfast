@@ -94,8 +94,19 @@ func SetBtn(wfFid uint, wfType, wfTitle, wfStatusField string, status int, userI
 	case 1:
 		st := 0
 		userName := ""
-		flowInfo, err := WorkFlowInfo(wfFid, wfType, userId, departmentId)
+		flowInfo, processList, err := WorkFlowInfo(wfFid, wfType, userId, departmentId)
 		if err != nil {
+			if err.Error() == "无权限" {
+				//获取当前步骤审批人信息
+				userNameArr := make([]string, 0, 10)
+				for _, process := range processList {
+					userNameArr = append(userNameArr, process.SponsorText)
+				}
+				return g.MapStrAny{
+					"title": "无审批权限（" + gstr.Join(userNameArr, ",") + "）",
+					"type":  "text",
+				}, nil
+			}
 			return nil, err
 		}
 		if flowInfo != nil && flowInfo.NextProcess != nil {
@@ -162,10 +173,13 @@ func SetBtn(wfFid uint, wfType, wfTitle, wfStatusField string, status int, userI
 }
 
 //流程状态查询
-func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64) (*WorkFlow, error) {
+func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64) (
+	*WorkFlow, []*wf_run_process.Entity, error) {
+
 	workFlow := &WorkFlow{}
+	processList := ([]*wf_run_process.Entity)(nil)
 	if wfFid == 0 || wfType == "" {
-		return nil, gerror.New("单据编号，单据表不可为空！")
+		return nil, nil, gerror.New("单据编号，单据表不可为空！")
 	}
 	//根据表信息，判断当前流程是否还在运行
 	runInfo, err := wf_run.GetRunning(&wf_run.RunSearch{
@@ -175,7 +189,7 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 		Status:    0,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	if runInfo != nil {
 		info := new(wf_run_process.Entity)
@@ -186,14 +200,14 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 			RunFlowProcess: runInfo.RunFlowProcess,
 			Status:         "0",
 		}
-		processList, err := wf_run_process.GetProcessList(where)
+		processList, err = wf_run_process.GetProcessList(where)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		if processList == nil || len(processList) == 0 {
 			process, err := wf_run_process.GetProcess(where)
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			processList = append(processList, process)
 		}
@@ -218,7 +232,7 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 				}
 			}
 			if info == nil || info.Id == 0 {
-				return nil, gerror.New("无权限")
+				return nil, processList, gerror.New("无权限")
 			}
 		}
 		//设置运行信息数据
@@ -234,21 +248,21 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 		//获取流程名称
 		flowName, err := GetFlowName(gconv.Int64(runInfo.FlowId))
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		workFlow.FlowName = flowName
 		//获取流程步骤信息
 		var processData *ProcessData
 		processData, err = GetProcessInfo(info.RunFlowProcess, runInfo.Id)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		workFlow.Process = processData
 		//获取下一个步骤信息
 		var nextProcess []*ProcessData
 		nextProcess, err = GetNexProcessInfo(wfType, wfFid, info.RunFlowProcess, runInfo.Id)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		workFlow.NextProcess = nextProcess
 		//获取前几个步骤信息，用于步骤回退
@@ -264,13 +278,13 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 				Status:         "0",
 			})
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			workFlow.SingSt = 1
 			workFlow.FlowProcess = info.RunFlowProcess
 			process, err := GetProcessInfo(info.RunFlowProcess, runInfo.Id)
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			workFlow.Status = &wf_run_process.Entity{
 				WfMode:   gconv.Int(process.WfMode),
@@ -278,7 +292,7 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 			}
 			nextProcess, err = GetNexProcessInfo(wfType, wfFid, info.RunFlowProcess, runInfo.Id)
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			workFlow.NextProcess = nextProcess
 			workFlow.Process = process
@@ -292,7 +306,7 @@ func WorkFlowInfo(wfFid uint, wfType string, userId uint64, departmentId uint64)
 		workFlow.BillCheck = ""
 		workFlow.BillTime = ""
 	}
-	return workFlow, nil
+	return workFlow, processList, nil
 }
 
 //获取对应类型的工作流

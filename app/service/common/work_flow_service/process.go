@@ -415,3 +415,27 @@ func getFirstProcess(processes []*wf_flow_process.Entity) *wf_flow_process.Entit
 	}
 	return firstProcess
 }
+
+//获取步骤所有下级步骤
+func GetAllNextProcessIds(id uint) (ids []uint, err error) {
+	entity := (*wf_flow_process.Entity)(nil)
+	entity, err = wf_flow_process.GetProcessInfoById(id)
+	ids = make([]uint, 0, 100)
+	if err != nil {
+		return
+	}
+	if entity != nil && entity.ProcessTo != "" {
+		processTo := gstr.Split(entity.ProcessTo, ",")
+		for _, v := range processTo {
+			id := gconv.Uint(v)
+			ids = append(ids, id)
+			idsChd := make([]uint, 0, 100)
+			idsChd, err = GetAllNextProcessIds(id)
+			if err != nil {
+				return nil, err
+			}
+			ids = append(ids, idsChd...)
+		}
+	}
+	return
+}

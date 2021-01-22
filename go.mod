@@ -8,7 +8,7 @@ require (
 	github.com/go-openapi/spec v0.19.11 // indirect
 	github.com/go-openapi/swag v0.19.11 // indirect
 	github.com/goflyfox/gtoken v1.4.1
-	github.com/gogf/gf v1.14.5
+	github.com/gogf/gf v1.15.0
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mojocn/base64Captcha v1.3.1
 	github.com/mssola/user_agent v0.5.1

@@ -339,7 +339,7 @@ func (c *Flow) WfCheck(r *ghttp.Request) {
 	//当前用户信息
 	userInfo := user_service.GetLoginAdminInfo(r)
 	//获取流程信息
-	flowInfo, err := work_flow_service.WorkFlowInfo(req.WfFid, req.WfType, userInfo.Id, userInfo.DeptId)
+	flowInfo, _, err := work_flow_service.WorkFlowInfo(req.WfFid, req.WfType, userInfo.Id, userInfo.DeptId)
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
