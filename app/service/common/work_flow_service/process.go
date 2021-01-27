@@ -418,23 +418,78 @@ func getFirstProcess(processes []*wf_flow_process.Entity) *wf_flow_process.Entit
 
 //获取步骤所有下级步骤
 func GetAllNextProcessIds(id uint) (ids []uint, err error) {
-	entity := (*wf_flow_process.Entity)(nil)
-	entity, err = wf_flow_process.GetProcessInfoById(id)
-	ids = make([]uint, 0, 100)
+	processData := ([]*wf_flow_process.ProcessData)(nil)
+	processData, err = GetAllProcessesByProcessId(id)
 	if err != nil {
 		return
 	}
-	if entity != nil && entity.ProcessTo != "" {
-		processTo := gstr.Split(entity.ProcessTo, ",")
-		for _, v := range processTo {
-			id := gconv.Uint(v)
+	ids = GetNextProcessesById(id, processData)
+	return
+}
+
+//获取步骤所有上级步骤
+func GetAllPreProcessIds(id uint) (ids []uint, err error) {
+	processData := ([]*wf_flow_process.ProcessData)(nil)
+	processData, err = GetAllProcessesByProcessId(id)
+	if err != nil {
+		return
+	}
+	ids = GetPreProcessesById(id, processData)
+	return
+}
+
+//获取对应步骤所属流程的所有步骤数据
+func GetAllProcessesByProcessId(id uint) (processData []*wf_flow_process.ProcessData, err error) {
+	process := (*wf_flow_process.Entity)(nil)
+	process, err = wf_flow_process.GetProcessInfoById(id)
+	if err != nil {
+		return
+	}
+	if process == nil {
+		err = gerror.New("流程步骤信息不存在")
+		return
+	}
+	//获取流程下所有步骤
+	_, processData, err = wf_flow_process.ProcessAll(gconv.Int64(process.FlowId))
+	return
+}
+
+//获取所有上级步骤切片id
+func GetPreProcessesById(id uint, processData []*wf_flow_process.ProcessData) (ids []uint) {
+	ids = make([]uint, 0, len(processData))
+	for _, v := range processData {
+		processTo := gstr.Split(v.ProcessTo, ",")
+		processToArr := garray.NewStrArrayFrom(processTo)
+		if processToArr.Contains(gconv.String(id)) {
+			id := gconv.Uint(v.Id)
 			ids = append(ids, id)
-			idsChd := make([]uint, 0, 100)
-			idsChd, err = GetAllNextProcessIds(id)
-			if err != nil {
-				return nil, err
+			idsChd := GetPreProcessesById(id, processData)
+			if len(idsChd) > 0 {
+				ids = append(ids, idsChd...)
 			}
-			ids = append(ids, idsChd...)
+		}
+	}
+	return
+}
+
+//获取所有下级步骤id切片
+func GetNextProcessesById(id uint, processData []*wf_flow_process.ProcessData) (ids []uint) {
+	ids = make([]uint, 0, len(processData))
+	for _, v := range processData {
+		if id == gconv.Uint(v.Id) {
+			processTo := gstr.Split(v.ProcessTo, ",")
+			for _, v := range processTo {
+				id := gconv.Uint(v)
+				if id == 0 {
+					continue
+				}
+				ids = append(ids, id)
+				idsChd := make([]uint, 0, len(processData))
+				idsChd = GetNextProcessesById(id, processData)
+				if len(idsChd) > 0 {
+					ids = append(ids, idsChd...)
+				}
+			}
 		}
 	}
 	return

@@ -141,3 +141,11 @@ func GetBackTodo(req *wf_flow.BackTodoReq) (string, error) {
 	}
 	return todo, nil
 }
+
+func GetAllRunProcessByRunId(runId int) (runProcess []*wf_run_process.Entity, err error) {
+	runProcess, err = wf_run_process.GetProcessByMap(g.Map{
+		"run_id": runId,
+		"status": 2,
+	})
+	return
+}
