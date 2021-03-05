@@ -21,13 +21,13 @@ ${end}${end}
 // AddReq 用于存储新增请求的请求参数
 type AddReq struct {
 	${range $index, $column := .table.Columns}
-	${if and (eq $column.IsInsert "1") (ne $column.IsPk "1")} ${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end}   `p:"${$column.HtmlField}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
+	${if and (eq $column.IsInsert "1") (ne $column.IsPk "1")} ${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end}   `p:"${$column.ColumnName}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
 }
 
 // EditReq 用于存储修改请求参数
 type EditReq struct {
-	${.table.PkColumn.GoField}    ${.table.PkColumn.GoType}  `p:"${.table.PkColumn.HtmlField}" v:"required#主键ID不能为空"` ${range $index, $column := .table.Columns} ${if eq $column.IsEdit "1"}
-	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.HtmlField}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
+	${.table.PkColumn.GoField}    ${.table.PkColumn.GoType}  `p:"${.table.PkColumn.ColumnName}" v:"required#主键ID不能为空"` ${range $index, $column := .table.Columns} ${if eq $column.IsEdit "1"}
+	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.ColumnName}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
 }
 
 // RemoveReq 用于存储删除请求参数
@@ -37,7 +37,7 @@ type RemoveReq struct {
 
 // SelectPageReq 用于存储分页查询的请求参数
 type SelectPageReq struct { ${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
-	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.HtmlField}"` //${$column.ColumnComment} ${end} ${end}
+	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.ColumnName}"` //${$column.ColumnComment} ${end} ${end}
 	BeginTime  string `p:"beginTime"`  //开始时间
 	EndTime    string `p:"endTime"`    //结束时间
 	PageNum    int    `p:"pageNum"`    //当前页码
