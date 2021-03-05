@@ -1,0 +1,19 @@
+// ==========================================================================
+// 生成日期：${.table.CreateTime}
+// 生成人：${.table.FunctionAuthor}
+// ==========================================================================
+
+
+// 请手工复制以下内容，到 /route/routerAdmin.go 文件的合适位置
+
+
+import "${.table.PackageName}/app/controller/${.table.ModuleName}"
+
+
+group.Group("/${.table.ModuleName}", func(group *ghttp.RouterGroup) {
+	//${.table.FunctionName}
+	group.ALL("/${.table.BusinessName}", new(${.table.ModuleName}.${.table.BusinessName|UcFirst}))
+})
+
+
+

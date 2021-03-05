@@ -27,7 +27,7 @@ ${else if and (or (eq $column.HtmlType  "select" )  (eq $column.HtmlType  "radio
       <el-form-item label="${$comment}" prop="${$column.ColumnName}">
         <el-select v-model="queryParams.${$column.ColumnName}" placeholder="请选择${$comment}" clearable size="small">
           <el-option
-            v-for="dict in ${$column.ColumnName}Options"
+            v-for="dict in ${$column.HtmlField}Options"
             :key="dict.key"
             :label="dict.value"
             :value="dict.key"
@@ -98,11 +98,11 @@ ${end}
        ${else if and (eq $column.IsList "1")  (eq $column.HtmlType "datetime")}
              <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" width="180">
                <template slot-scope="scope">
-                 <span>${ "${" } parseTime(scope.row.${$ColumnName}, '{y}-{m}-{d}') ${"}"}</span>
+                 <span>{{ parseTime(scope.row.${$ColumnName}, '{y}-{m}-{d}') }}</span>
                </template>
              </el-table-column>
        ${else if and (eq $column.IsList "1")  (ne $column.DictType "")}
-             <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" :formatter="${$ColumnName}Format" />
+             <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" :formatter="${$column.HtmlField}Format" />
        ${else if and (eq $column.IsList "1")  (ne $ColumnName "")}
              <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" />
        ${end}
@@ -150,7 +150,7 @@ ${end}
                     <el-form-item label="${$comment}">
                       <el-select v-model="form.${$field}" placeholder="请选择${$comment}">
                         <el-option
-                          v-for="dict in ${$field}Options"
+                          v-for="dict in ${$column.HtmlField}Options"
                           :key="dict.key"
                           :label="dict.value"
                           ${if or (eq $column.GoType "int") (eq $column.GoType "int64")}:value="parseInt(dict.key)"${else}:value="dict.key"${end}
@@ -167,7 +167,7 @@ ${end}
                     <el-form-item label="${$comment}">
                       <el-checkbox-group v-model="form.${$field}">
                         <el-checkbox
-                          v-for="dict in ${$field}Options"
+                          v-for="dict in ${$column.HtmlField}Options"
                           :key="dict.key"
                           :label="dict.key">
                           ${"${"}dict.value${"}"}
@@ -184,7 +184,7 @@ ${end}
                     <el-form-item label="${$comment}">
                       <el-radio-group v-model="form.${$field}">
                         <el-radio
-                          v-for="dict in ${$field}Options"
+                          v-for="dict in ${$column.HtmlField}Options"
                           :key="dict.key"
                           ${if or (eq $column.GoType "int")  (eq $column.GoType  "int64")}:label="parseInt(dict.key)"${else}:label="dict.key"${end}
                         >${"${"}dict.value${"}"}</el-radio>
@@ -250,11 +250,11 @@ export default {
           ${range  $index,$column := $columns}
            ${$comment :=$column.ColumnComment}
            ${if ne $column.DictType ""}
-                 // $comment字典
-                 ${$column.ColumnName}Options: [],
+            // ${$column.ColumnName}字典
+            ${$column.HtmlField}Options: [],
            ${end}
           ${end}
-          // 查询参数
+        // 查询参数
         queryParams: {
           pageNum: 1,
           pageSize: 10,
@@ -286,7 +286,7 @@ export default {
     ${range  $index,$column := $columns}
     ${if ne $column.DictType ""}
         this.getDicts("${$column.DictType}").then(response => {
-          this.${$column.ColumnName}Options = response.data.values || [];
+          this.${$column.HtmlField}Options = response.data.values || [];
         });
     ${end}
     ${end}
@@ -306,8 +306,8 @@ export default {
         ${if ne $column.DictType ""}
         ${$comment:=$column.ColumnComment}
         // $comment字典翻译
-        ${$column.ColumnName}Format(row, column) {
-          return this.selectDictLabel${if eq $column.HtmlType "checkbox"}s${end}(this.${$column.ColumnName}Options, row.${$column.ColumnName});
+        ${$column.HtmlField}Format(row, column) {
+          return this.selectDictLabel${if eq $column.HtmlType "checkbox"}s${end}(this.${$column.HtmlField}Options, row.${$column.ColumnName});
         },
         ${end}
         ${end}
