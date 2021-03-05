@@ -8,6 +8,7 @@ import (
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/library/response"
 	"gfast/library/service"
+
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/text/gstr"
@@ -32,6 +33,11 @@ func Auth(r *ghttp.Request) {
 	}
 	//获取登陆用户id
 	adminId := user_service.GetLoginID(r)
+	//glog.Debugf("adminId:%d", adminId)
+	if adminId < 1 {
+		response.FailJson(true, r, "没有访问权限")
+	}
+
 	//获取无需验证权限的用户id
 	for _, v := range service.NotCheckAuthAdminIds {
 		if gconv.Uint64(v) == adminId {
