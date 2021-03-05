@@ -1,45 +1,45 @@
 import request from '@/utils/request'
 
-// 查询{{.table.BusinessName}}列表
-export function list{{.table.BusinessName|UcFirst}}(query) {
+// 查询${.table.BusinessName}列表
+export function list${.table.BusinessName|UcFirst}(query) {
     return request({
-        url: '/{{.table.ModuleName}}/{{.table.BusinessName}}/list',
+        url: '/${.table.ModuleName}/${.table.BusinessName}/list',
         method: 'get',
         params: query
     })
 }
 
-// 查询{{.table.BusinessName}}详细
-export function get{{.table.BusinessName|UcFirst}} (id) {
+// 查询${.table.BusinessName}详细
+export function get${.table.BusinessName|UcFirst} (id) {
     return request({
-        url: '/{{.table.ModuleName}}/{{.table.BusinessName}}/edit?id='+id,
+        url: '/${.table.ModuleName}/${.table.BusinessName}/edit?id='+id,
         method: 'get'
     })
 }
 
 
-// 新增{{.table.BusinessName}}
-export function add{{.table.BusinessName|UcFirst}}(data) {
+// 新增${.table.BusinessName}
+export function add${.table.BusinessName|UcFirst}(data) {
     return request({
-        url: '/{{.table.ModuleName}}/{{.table.BusinessName}}/add',
+        url: '/${.table.ModuleName}/${.table.BusinessName}/add',
         method: 'post',
         data: data
     })
 }
 
-// 修改{{.table.BusinessName}}
-export function update{{.table.BusinessName|UcFirst}}(data) {
+// 修改${.table.BusinessName}
+export function update${.table.BusinessName|UcFirst}(data) {
     return request({
-        url: '/{{.table.ModuleName}}/{{.table.BusinessName}}/edit',
+        url: '/${.table.ModuleName}/${.table.BusinessName}/edit',
         method: 'post',
         data: data
     })
 }
 
-// 删除{{.table.BusinessName}}
-export function del{{.table.BusinessName|UcFirst}}(ids) {
+// 删除${.table.BusinessName}
+export function del${.table.BusinessName|UcFirst}(ids) {
     return request({
-        url: '/{{.table.ModuleName}}/{{.table.BusinessName}}/delete',
+        url: '/${.table.ModuleName}/${.table.BusinessName}/delete',
         method: 'delete',
         data:{ids:ids}
     })
