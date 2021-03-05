@@ -165,7 +165,7 @@ func InitColumnField(column *gen_table_column.Entity, table *gen_table.Entity) {
 	} else if gen_table_column.IsTimeObject(dataType) {
 		//字段为时间类型
 		column.GoType = "Time"
-		column.HtmlType = "datatime"
+		column.HtmlType = "datetime"
 	} else if gen_table_column.IsNumberObject(dataType) {
 		//字段为数字类型
 		column.HtmlType = "input"
