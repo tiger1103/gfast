@@ -303,7 +303,7 @@ func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.Entity
 	})
 	view.SetConfigWithMap(g.Map{
 		"Paths":      []string{"template"},
-		"Delimiters": []string{"{{", "}}"},
+		"Delimiters": []string{"${", "}"},
 	})
 	//树形菜单选项
 	var options g.Map

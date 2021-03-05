@@ -1,57 +1,57 @@
-{{$columns:=.table.Columns}}
-{{$pk:=""}}
-{{$pkColumnName:=""}}
-{{range $index, $column := .table.Columns}} {{if eq $column.IsPk "1"}}
-    {{$pk = $column.ColumnName}}
-    {{$pkColumnName = $column.ColumnName}}
-{{end}}{{end}}
+${$columns:=.table.Columns}
+${$pk:=""}
+${$pkColumnName:=""}
+${range $index, $column := .table.Columns} ${if eq $column.IsPk "1"}
+    ${$pk = $column.ColumnName}
+    ${$pkColumnName = $column.ColumnName}
+${end}${end}
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-{{range $index,$column := $columns}}
-{{if eq $column.IsQuery "1"}}
-{{$dictType:=$column.DictType}}
-{{$AttrName:=$column.ColumnName }}
-{{$comment:=$column.ColumnComment}}
-{{if eq $column.HtmlType "input"}}
-      <el-form-item label="{{$comment}}" prop="{{$column.ColumnName}}">
+${range $index,$column := $columns}
+${if eq $column.IsQuery "1"}
+${$dictType:=$column.DictType}
+${$AttrName:=$column.ColumnName }
+${$comment:=$column.ColumnComment}
+${if eq $column.HtmlType "input"}
+      <el-form-item label="${$comment}" prop="${$column.ColumnName}">
         <el-input
-          v-model="queryParams.{{$column.ColumnName}}"
-          placeholder="请输入{{$comment}}"
+          v-model="queryParams.${$column.ColumnName}"
+          placeholder="请输入${$comment}"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-{{else if and (or (eq $column.HtmlType  "select" )  (eq $column.HtmlType  "radio"))  (ne $dictType "") }}
-      <el-form-item label="{{$comment}}" prop="{{$column.ColumnName}}">
-        <el-select v-model="queryParams.{{$column.ColumnName}}" placeholder="请选择{{$comment}}" clearable size="small">
+${else if and (or (eq $column.HtmlType  "select" )  (eq $column.HtmlType  "radio"))  (ne $dictType "") }
+      <el-form-item label="${$comment}" prop="${$column.ColumnName}">
+        <el-select v-model="queryParams.${$column.ColumnName}" placeholder="请选择${$comment}" clearable size="small">
           <el-option
-            v-for="dict in {{$column.ColumnName}}Options"
+            v-for="dict in ${$column.ColumnName}Options"
             :key="dict.key"
             :label="dict.value"
             :value="dict.key"
           />
         </el-select>
       </el-form-item>
-{{else if and (or (eq $column.HtmlType  "select" )  (eq $column.HtmlType  "radio"))  (eq $dictType "") }}
-      <el-form-item label="{{$comment}}" prop="{{$column.ColumnName}}">
-        <el-select v-model="queryParams.{{$column.ColumnName}}" placeholder="请选择{{$comment}}" clearable size="small">
+${else if and (or (eq $column.HtmlType  "select" )  (eq $column.HtmlType  "radio"))  (eq $dictType "") }
+      <el-form-item label="${$comment}" prop="${$column.ColumnName}">
+        <el-select v-model="queryParams.${$column.ColumnName}" placeholder="请选择${$comment}" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
-{{else if eq $column.HtmlType  "datetime"}}
-      <el-form-item label="{{$comment}}" prop="{{$column.ColumnName}}">
+${else if eq $column.HtmlType  "datetime"}
+      <el-form-item label="${$comment}" prop="${$column.ColumnName}">
         <el-date-picker clearable size="small" style="width: 200px"
-          v-model="queryParams.{{$column.ColumnName}}"
+          v-model="queryParams.${$column.ColumnName}"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="选择{{$comment}}">
+          placeholder="选择${$comment}">
         </el-date-picker>
       </el-form-item>
-{{end}}
-{{end}}
-{{end}}
+${end}
+${end}
+${end}
 
         <el-form-item>
             <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -88,26 +88,26 @@
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="{{.table.BusinessName}}List" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="${.table.BusinessName}List" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center" />
-    {{range $index,$column := $columns}}
-    {{$ColumnName:=$column.ColumnName}}
-    {{$comment:=$column.ColumnComment}}
-   {{if eq $column.IsPk "1"}}
-             <el-table-column label="{{$comment}}" align="center" prop="{{$ColumnName}}" />
-       {{else if and (eq $column.IsList "1")  (eq $column.HtmlType "datetime")}}
-             <el-table-column label="{{$comment}}" align="center" prop="{{$ColumnName}}" width="180">
+    ${range $index,$column := $columns}
+    ${$ColumnName:=$column.ColumnName}
+    ${$comment:=$column.ColumnComment}
+   ${if eq $column.IsPk "1"}
+             <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" />
+       ${else if and (eq $column.IsList "1")  (eq $column.HtmlType "datetime")}
+             <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" width="180">
                <template slot-scope="scope">
-                 <span>{{ "{{" }} parseTime(scope.row.{{$ColumnName}}, '{y}-{m}-{d}') {{"}}"}}</span>
+                 <span>${ "${" } parseTime(scope.row.${$ColumnName}, '{y}-{m}-{d}') ${"}"}</span>
                </template>
              </el-table-column>
-       {{else if and (eq $column.IsList "1")  (ne $column.DictType "")}}
-             <el-table-column label="{{$comment}}" align="center" prop="{{$ColumnName}}" :formatter="{{$ColumnName}}Format" />
-       {{else if and (eq $column.IsList "1")  (ne $ColumnName "")}}
-             <el-table-column label="{{$comment}}" align="center" prop="{{$ColumnName}}" />
-       {{end}}
+       ${else if and (eq $column.IsList "1")  (ne $column.DictType "")}
+             <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" :formatter="${$ColumnName}Format" />
+       ${else if and (eq $column.IsList "1")  (ne $ColumnName "")}
+             <el-table-column label="${$comment}" align="center" prop="${$ColumnName}" />
+       ${end}
 
-    {{end}}
+    ${end}
           <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
@@ -134,84 +134,84 @@
               @pagination="getList"
             />
 
-            <!-- 添加或修改{{.table.FunctionName}}对话框 -->
+            <!-- 添加或修改${.table.FunctionName}对话框 -->
                 <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
                   <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-            {{range $index,$column := $columns}}
-            {{$field := $column.ColumnName}}
-            {{if and (eq $column.IsInsert "1")  (ne $column.IsPk "1") }}
-            {{$comment  :=$column.ColumnComment}}
-            {{$dictType := $column.DictType }}
-            {{if eq $column.HtmlType "input"}}
-                    <el-form-item label="{{$comment}}" prop="{{$field}}">
-                      <el-input v-model="form.{{$field}}" placeholder="请输入{{$comment}}" />
+            ${range $index,$column := $columns}
+            ${$field := $column.ColumnName}
+            ${if and (eq $column.IsInsert "1")  (ne $column.IsPk "1") }
+            ${$comment  :=$column.ColumnComment}
+            ${$dictType := $column.DictType }
+            ${if eq $column.HtmlType "input"}
+                    <el-form-item label="${$comment}" prop="${$field}">
+                      <el-input v-model="form.${$field}" placeholder="请输入${$comment}" />
                     </el-form-item>
-            {{else if and (eq $column.HtmlType  "select") (ne $dictType "") }}
-                    <el-form-item label="{{$comment}}">
-                      <el-select v-model="form.{{$field}}" placeholder="请选择{{$comment}}">
+            ${else if and (eq $column.HtmlType  "select") (ne $dictType "") }
+                    <el-form-item label="${$comment}">
+                      <el-select v-model="form.${$field}" placeholder="请选择${$comment}">
                         <el-option
-                          v-for="dict in {{$field}}Options"
+                          v-for="dict in ${$field}Options"
                           :key="dict.key"
                           :label="dict.value"
-                          {{if or (eq $column.GoType "int") (eq $column.GoType "int64")}}:value="parseInt(dict.key)"{{else}}:value="dict.key"{{end}}
+                          ${if or (eq $column.GoType "int") (eq $column.GoType "int64")}:value="parseInt(dict.key)"${else}:value="dict.key"${end}
                         ></el-option>
                       </el-select>
                     </el-form-item>
-            {{else if and (eq $column.HtmlType  "select") $dictType}}
-                    <el-form-item label="{{$comment}}">
-                      <el-select v-model="form.{{$field}}" placeholder="请选择{{$comment}}">
+            ${else if and (eq $column.HtmlType  "select") $dictType}
+                    <el-form-item label="${$comment}">
+                      <el-select v-model="form.${$field}" placeholder="请选择${$comment}">
                         <el-option label="请选择字典生成" value="" />
                       </el-select>
                     </el-form-item>
-            {{else if and (eq $column.HtmlType  "checkbox") (ne $dictType "")}}
-                    <el-form-item label="{{$comment}}">
-                      <el-checkbox-group v-model="form.{{$field}}">
+            ${else if and (eq $column.HtmlType  "checkbox") (ne $dictType "")}
+                    <el-form-item label="${$comment}">
+                      <el-checkbox-group v-model="form.${$field}">
                         <el-checkbox
-                          v-for="dict in {{$field}}Options"
+                          v-for="dict in ${$field}Options"
                           :key="dict.key"
                           :label="dict.key">
-                          {{"{{"}}dict.value{{"}}"}}
+                          ${"${"}dict.value${"}"}
                         </el-checkbox>
                       </el-checkbox-group>
                     </el-form-item>
-            {{else if and (eq $column.HtmlType  "checkbox") $dictType }}
-                    <el-form-item label="{{$comment}}">
-                      <el-checkbox-group v-model="form.{{$field}}">
+            ${else if and (eq $column.HtmlType  "checkbox") $dictType }
+                    <el-form-item label="${$comment}">
+                      <el-checkbox-group v-model="form.${$field}">
                         <el-checkbox>请选择字典生成</el-checkbox>
                       </el-checkbox-group>
                     </el-form-item>
-            {{else if and (eq $column.HtmlType  "radio") (ne $dictType "") }}
-                    <el-form-item label="{{$comment}}">
-                      <el-radio-group v-model="form.{{$field}}">
+            ${else if and (eq $column.HtmlType  "radio") (ne $dictType "") }
+                    <el-form-item label="${$comment}">
+                      <el-radio-group v-model="form.${$field}">
                         <el-radio
-                          v-for="dict in {{$field}}Options"
+                          v-for="dict in ${$field}Options"
                           :key="dict.key"
-                          {{if or (eq $column.GoType "int")  (eq $column.GoType  "int64")}}:label="parseInt(dict.key)"{{else}}:label="dict.key"{{end}}
-                        >{{"{{"}}dict.value{{"}}"}}</el-radio>
+                          ${if or (eq $column.GoType "int")  (eq $column.GoType  "int64")}:label="parseInt(dict.key)"${else}:label="dict.key"${end}
+                        >${"${"}dict.value${"}"}</el-radio>
                       </el-radio-group>
                     </el-form-item>
-            {{else if and (eq $column.HtmlType "radio") $dictType }}
-                    <el-form-item label="{{$comment}}">
-                      <el-radio-group v-model="form.{{$field}}">
+            ${else if and (eq $column.HtmlType "radio") $dictType }
+                    <el-form-item label="${$comment}">
+                      <el-radio-group v-model="form.${$field}">
                         <el-radio label="1">请选择字典生成</el-radio>
                       </el-radio-group>
                     </el-form-item>
-            {{else if eq $column.HtmlType  "datetime"}}
-                    <el-form-item label="{{$comment}}" prop="{{$field}}">
+            ${else if eq $column.HtmlType  "datetime"}
+                    <el-form-item label="${$comment}" prop="${$field}">
                       <el-date-picker clearable size="small" style="width: 200px"
-                        v-model="form.{{$field}}"
+                        v-model="form.${$field}"
                         type="date"
                         value-format="yyyy-MM-dd"
-                        placeholder="选择{{$comment}}">
+                        placeholder="选择${$comment}">
                       </el-date-picker>
                     </el-form-item>
-            {{else if eq $column.HtmlType  "textarea"}}
-                    <el-form-item label="{{$comment}}" prop="{{$field}}">
-                      <el-input v-model="form.{{$field}}" type="textarea" placeholder="请输入内容" />
+            ${else if eq $column.HtmlType  "textarea"}
+                    <el-form-item label="${$comment}" prop="${$field}">
+                      <el-input v-model="form.${$field}" type="textarea" placeholder="请输入内容" />
                     </el-form-item>
-            {{end}}
-            {{end}}
-            {{end}}
+            ${end}
+            ${end}
+            ${end}
 
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -223,10 +223,10 @@
 </template>
 
 <script>
-import { list{{.table.BusinessName|UcFirst}}, get{{.table.BusinessName|UcFirst}}, del{{.table.BusinessName|UcFirst}}, add{{.table.BusinessName|UcFirst}}, update{{.table.BusinessName|UcFirst}} } from '@/api/{{.table.ModuleName}}/{{.table.BusinessName}}'
+import { list${.table.BusinessName|UcFirst}, get${.table.BusinessName|UcFirst}, del${.table.BusinessName|UcFirst}, add${.table.BusinessName|UcFirst}, update${.table.BusinessName|UcFirst} } from '@/api/${.table.ModuleName}/${.table.BusinessName}'
 
 export default {
-  name: "{{.table.BusinessName}}",
+  name: "${.table.BusinessName}",
   data() {
     return {
           // 遮罩层
@@ -241,76 +241,76 @@ export default {
           showSearch: true,
           // 总条数
           total: 0,
-          // {{.table.FunctionName}}表格数据
-          {{.table.BusinessName}}List: [],
+          // ${.table.FunctionName}表格数据
+          ${.table.BusinessName}List: [],
           // 弹出层标题
           title: "",
           // 是否显示弹出层
           open: false,
-          {{range  $index,$column := $columns}}
-           {{$comment :=$column.ColumnComment}}
-           {{if ne $column.DictType ""}}
+          ${range  $index,$column := $columns}
+           ${$comment :=$column.ColumnComment}
+           ${if ne $column.DictType ""}
                  // $comment字典
-                 {{$column.ColumnName}}Options: [],
-           {{end}}
-          {{end}}
+                 ${$column.ColumnName}Options: [],
+           ${end}
+          ${end}
           // 查询参数
         queryParams: {
           pageNum: 1,
           pageSize: 10,
-          {{range  $index,$column := $columns}}
-          {{$velocityCount := add $index 1}}
-          {{if eq $column.IsQuery "1"}}
-          {{$column.ColumnName}}: null,
-          {{end}}
-          {{end}}
+          ${range  $index,$column := $columns}
+          ${$velocityCount := add $index 1}
+          ${if eq $column.IsQuery "1"}
+          ${$column.ColumnName}: null,
+          ${end}
+          ${end}
         },
         // 表单参数
           form: {},
           // 表单校验
           rules: {
-              {{range  $index,$column := $columns}}
-              {{$velocityCount := add $index 1}}
-              {{if and (eq $column.IsRequired "1") (eq $column.IsPk "0")}}
-              {{$comment:=$column.ColumnComment}}
-              {{$column.ColumnName}}: [
-                { required: true, message: "{{$comment}}不能为空", trigger: "blur" }
-              ]{{if ne $velocityCount (len $columns)}},{{end}}
-              {{end}}
-              {{end}}
+              ${range  $index,$column := $columns}
+              ${$velocityCount := add $index 1}
+              ${if and (eq $column.IsRequired "1") (eq $column.IsPk "0")}
+              ${$comment:=$column.ColumnComment}
+              ${$column.ColumnName}: [
+                { required: true, message: "${$comment}不能为空", trigger: "blur" }
+              ]${if ne $velocityCount (len $columns)},${end}
+              ${end}
+              ${end}
           }
       };
     },
     created() {
         this.getList();
-    {{range  $index,$column := $columns}}
-    {{if ne $column.DictType ""}}
-        this.getDicts("{{$column.DictType}}").then(response => {
-          this.{{$column.ColumnName}}Options = response.data.values || [];
+    ${range  $index,$column := $columns}
+    ${if ne $column.DictType ""}
+        this.getDicts("${$column.DictType}").then(response => {
+          this.${$column.ColumnName}Options = response.data.values || [];
         });
-    {{end}}
-    {{end}}
+    ${end}
+    ${end}
     },
 
     methods: {
-        /** 查询{{.table.FunctionName}}列表 */
+        /** 查询${.table.FunctionName}列表 */
         getList() {
           this.loading = true;
-          list{{.table.BusinessName|UcFirst}}(this.queryParams).then(response => {
-            this.{{.table.BusinessName}}List = response.data.list;
+          list${.table.BusinessName|UcFirst}(this.queryParams).then(response => {
+            this.${.table.BusinessName}List = response.data.list;
             this.total = response.data.total;
             this.loading = false;
           });
         },
-        {{range  $index,$column := $columns}}
-        {{if ne $column.DictType ""}}
-        {{$comment:=$column.ColumnComment}}
+        ${range  $index,$column := $columns}
+        ${if ne $column.DictType ""}
+        ${$comment:=$column.ColumnComment}
         // $comment字典翻译
-        {{$column.ColumnName}}Format(row, column) {
-          return this.selectDictLabel{{if eq $column.HtmlType "checkbox"}}s{{end}}(this.{{$column.ColumnName}}Options, row.{{$column.ColumnName}});
+        ${$column.ColumnName}Format(row, column) {
+          return this.selectDictLabel${if eq $column.HtmlType "checkbox"}s${end}(this.${$column.ColumnName}Options, row.${$column.ColumnName});
         },
-        {{end}}
-        {{end}}
+        ${end}
+        ${end}
         // 取消按钮
         cancel() {
           this.open = false;
@@ -319,18 +319,18 @@ export default {
         // 表单重置
         reset() {
           this.form = {
-    {{range  $index,$column := $columns}}
-    {{$velocityCount := add $index 1}}
-    {{if eq $column.HtmlType  "radio"}}
-            {{$column.ColumnName}}: {{if or (eq $column.GoType  "int")  (eq $column.GoType "int64") }}0{{else}}"0"{{end}} {{if ne $velocityCount  (len $columns)}},{{end}}
+    ${range  $index,$column := $columns}
+    ${$velocityCount := add $index 1}
+    ${if eq $column.HtmlType  "radio"}
+            ${$column.ColumnName}: ${if or (eq $column.GoType  "int")  (eq $column.GoType "int64") }0${else}"0"${end} ${if ne $velocityCount  (len $columns)},${end}
 
-    {{else if eq $column.HtmlType  "checkbox"}}
-            {{$column.ColumnName}}: []{{if ne $velocityCount  (len $columns)}},{{end}}
+    ${else if eq $column.HtmlType  "checkbox"}
+            ${$column.ColumnName}: []${if ne $velocityCount  (len $columns)},${end}
 
-    {{else}}
-            {{$column.ColumnName}}: null{{if ne $velocityCount  (len $columns)}},{{end}}
-    {{end}}
-    {{end}}
+    ${else}
+            ${$column.ColumnName}: null${if ne $velocityCount  (len $columns)},${end}
+    ${end}
+    ${end}
           };
           this.resetForm("form");
         },
@@ -347,7 +347,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.{{$pkColumnName}})
+      this.ids = selection.map(item => item.${$pkColumnName})
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -355,34 +355,34 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加{{.table.FunctionName}}";
+      this.title = "添加${.table.FunctionName}";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const {{$pkColumnName}} = row.{{$pkColumnName}} || this.ids
-      get{{.table.BusinessName|UcFirst}}({{$pkColumnName}}).then(response => {
+      const ${$pkColumnName} = row.${$pkColumnName} || this.ids
+      get${.table.BusinessName|UcFirst}(${$pkColumnName}).then(response => {
         this.form = response.data;
-{{range  $index,$column := $columns}}
-{{if eq $column.HtmlType  "checkbox"}}
-        this.form.{{$column.ColumnName}} = this.form.{{$column.ColumnName}}.split(",");
-{{end}}
-{{end}}
+${range  $index,$column := $columns}
+${if eq $column.HtmlType  "checkbox"}
+        this.form.${$column.ColumnName} = this.form.${$column.ColumnName}.split(",");
+${end}
+${end}
         this.open = true;
-        this.title = "修改{{.table.FunctionName}}";
+        this.title = "修改${.table.FunctionName}";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-{{range  $index,$column := $columns}}
-{{if eq $column.HtmlType  "checkbox"}}
-          this.form.{{$column.ColumnName}} = this.form.{{$column.ColumnName}}.join(",");
-{{end}}
-{{end}}
-          if (this.form.{{$pkColumnName}} != null) {
-            update{{.table.BusinessName|UcFirst}}(this.form).then(response => {
+${range  $index,$column := $columns}
+${if eq $column.HtmlType  "checkbox"}
+          this.form.${$column.ColumnName} = this.form.${$column.ColumnName}.join(",");
+${end}
+${end}
+          if (this.form.${$pkColumnName} != null) {
+            update${.table.BusinessName|UcFirst}(this.form).then(response => {
               if (response.code === 0) {
                 this.msgSuccess("修改成功");
                 this.open = false;
@@ -390,7 +390,7 @@ export default {
               }
             });
           } else {
-            add{{.table.BusinessName|UcFirst}}(this.form).then(response => {
+            add${.table.BusinessName|UcFirst}(this.form).then(response => {
               if (response.code === 0) {
                 this.msgSuccess("新增成功");
                 this.open = false;
@@ -403,13 +403,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const {{$pkColumnName}}s = row.{{$pkColumnName}} || this.ids;
-      this.$confirm('是否确认删除{{.table.FunctionName}}编号为"' + {{$pkColumnName}}s + '"的数据项?', "警告", {
+      const ${$pkColumnName}s = row.${$pkColumnName} || this.ids;
+      this.$confirm('是否确认删除${.table.FunctionName}编号为"' + ${$pkColumnName}s + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return del{{.table.BusinessName|UcFirst}}({{$pkColumnName}}s);
+          return del${.table.BusinessName|UcFirst}(${$pkColumnName}s);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");

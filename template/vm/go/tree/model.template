@@ -1,35 +1,35 @@
 // ==========================================================================
-// 生成日期：{{.table.CreateTime}}
-// 生成人：{{.table.FunctionAuthor}}
+// 生成日期：${.table.CreateTime}
+// 生成人：${.table.FunctionAuthor}
 // ==========================================================================
 
-package {{.table.BusinessName}}
+package ${.table.BusinessName}
 
 import (
-	"{{.table.PackageName}}/app/service/cache_service"
+	"${.table.PackageName}/app/service/cache_service"
     "github.com/gogf/gf/container/gset"
     "github.com/gogf/gf/errors/gerror"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/util/gconv"
 )
 
-{{$pk:=""}}
-{{$pkGoField:=""}}
-{{range $index, $column := .table.Columns}} {{if eq $column.IsPk "1"}}
-    {{$pk = $column.ColumnName}}
-    {{$pkGoField = $column.GoField}}
-{{end}}{{end}}
+${$pk:=""}
+${$pkGoField:=""}
+${range $index, $column := .table.Columns} ${if eq $column.IsPk "1"}
+    ${$pk = $column.ColumnName}
+    ${$pkGoField = $column.GoField}
+${end}${end}
 
 // ReqAdd 用于存储新增请求的请求参数
 type ReqAdd struct {
-	{{range $index, $column := .table.Columns}}
-	{{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}} {{$column.GoField}} 	{{if eq $column.GoType "Time"}}	*gtime.Time	{{else}}	{{$column.GoType}} {{end}}	  `p:"{{$column.HtmlField}}"  {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
+	${range $index, $column := .table.Columns}
+	${if and (eq $column.IsInsert "1") (ne $column.IsPk "1")} ${$column.GoField} 	${if eq $column.GoType "Time"}	*gtime.Time	${else}	${$column.GoType} ${end}	  `p:"${$column.HtmlField}"  ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
 }
 
 // ReqEdit 用于存储修改请求参数
 type ReqEdit struct {
-	{{.table.PkColumn.GoField}}    {{.table.PkColumn.GoType}}  `p:"{{.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"` {{range $index, $column := .table.Columns}} {{if eq $column.IsEdit "1"}}
-	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
+	${.table.PkColumn.GoField}    ${.table.PkColumn.GoType}  `p:"${.table.PkColumn.HtmlField}" v:"required#主键ID不能为空"` ${range $index, $column := .table.Columns} ${if eq $column.IsEdit "1"}
+	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.HtmlField}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
 }
 
 // RemoveReq 用于存储删除请求参数
@@ -38,8 +38,8 @@ type RemoveReq struct {
 }
 
 // ReqSearchList 用于存储查询的请求参数
-type ReqSearchList struct { {{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
-	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}"` //{{$column.ColumnComment}} {{end}} {{end}}
+type ReqSearchList struct { ${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
+	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.HtmlField}"` //${$column.ColumnComment} ${end} ${end}
 }
 
 // GetByID 根据ID查询记录
@@ -58,11 +58,11 @@ func GetByID(id int64) (*Entity, error) {
 // AddSave 添加
 func AddSave(req *ReqAdd) error {
 	entity:= new(Entity)
-    {{range $index, $column := .table.Columns}}
-	    {{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}}
-        entity.{{$column.GoField}} = req.{{$column.GoField}}
-        {{end}}
-    {{end}}
+    ${range $index, $column := .table.Columns}
+	    ${if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}
+        entity.${$column.GoField} = req.${$column.GoField}
+        ${end}
+    ${end}
 
 	result, err := entity.Insert()
 	if err != nil {
@@ -77,7 +77,7 @@ func AddSave(req *ReqAdd) error {
 
 // DeleteByIds 删除
 func DeleteByIds(Ids []int) error {
-	_, err := Model.Delete("{{.table.PkColumn.ColumnName}} in(?)", Ids)
+	_, err := Model.Delete("${.table.PkColumn.ColumnName} in(?)", Ids)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("删除失败")
@@ -88,14 +88,14 @@ func DeleteByIds(Ids []int) error {
 // EditSave 根据ID来修改信息
 func EditSave(req *ReqEdit) error {
 	// 先根据ID来查询要修改的记录
-	entity, err := GetByID(req.{{$pkGoField}})
+	entity, err := GetByID(req.${$pkGoField})
 	if err != nil {
 		return err
 	}
 
 	// 修改实体
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsEdit "1"}}
-	entity.{{$column.GoField}} = req.{{$column.GoField}}{{end}} {{end}}
+	${range $index, $column := .table.Columns} ${if eq $column.IsEdit "1"}
+	entity.${$column.GoField} = req.${$column.GoField}${end} ${end}
 	_, err = entity.Update()
 	if err != nil {
 		g.Log().Error(err)
@@ -111,15 +111,15 @@ func GetListSearch(req *ReqSearchList) (list []*Entity, err error) {
 	    filterKey := gset.New(false)
 	    tagWhere := true
         for key, entity := range list {
-	    {{range $index, $column := .table.Columns}}
-	        {{if eq $column.IsQuery "1" }}
-            if tagWhere && gconv.String(req.{{$column.GoField}}) != "" && entity.{{$column.GoField}}!= req.{{$column.GoField}} {
+	    ${range $index, $column := .table.Columns}
+	        ${if eq $column.IsQuery "1" }
+            if tagWhere && gconv.String(req.${$column.GoField}) != "" && entity.${$column.GoField}!= req.${$column.GoField} {
                 tagWhere = true
             }else{
                 tagWhere = false
             }
-            {{end}}
-        {{end}}
+            ${end}
+        ${end}
             if tagWhere{
                 filterKey.Add(key)
             }
@@ -139,18 +139,18 @@ func GetListSearch(req *ReqSearchList) (list []*Entity, err error) {
 func GetList() (list []*Entity, err error) {
 	cache := cache_service.New()
 	//从缓存获取数据
-	iList := cache.Get("{{.table.ModuleName}}_{{.table.BusinessName}}_{{.table.TableId}}")
+	iList := cache.Get("${.table.ModuleName}_${.table.BusinessName}_${.table.TableId}")
 	if iList != nil {
 		list = iList.([]*Entity)
 		return
 	}
-	list, err = Model.Order(Columns.{{$pkGoField}}+" ASC").All()
+	list, err = Model.Order(Columns.${$pkGoField}+" ASC").All()
 	if err != nil {
 		g.Log().Error()
 		err = gerror.New("获取数据失败")
 		return
 	}
 	//缓存数据
-	cache.Set("{{.table.ModuleName}}_{{.table.BusinessName}}_{{.table.TableId}}", list, 0, "{{.table.ModuleName}}_{{.table.BusinessName}}_tag")
+	cache.Set("${.table.ModuleName}_${.table.BusinessName}_${.table.TableId}", list, 0, "${.table.ModuleName}_${.table.BusinessName}_tag")
 	return
 }
