@@ -107,18 +107,30 @@ func EditSave(req *EditReq) error {
 func SelectListByPage(req *SelectPageReq) (total int, page int, list []*Entity, err error) {
 	model := Model
 	if req != nil {
-		${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
-		${if eq $column.QueryType "LIKE"}
-			if req.${$column.GoField} != "" {
-				model = model.Where("${$column.ColumnName} like ?", "%"+req.${$column.GoField}+"%")
-			} ${else if eq $column.QueryType "EQ"} ${if eq $column.GoType "string"}
-			if req.${$column.GoField} != "" {
-				model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
-			} ${else if eq $column.GoType "int" "int64"}
-			if req.${$column.GoField} != 0 {
-				model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
-			}
-		${end} ${end} ${end} ${end}
+${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
+	${if eq $column.QueryType "LIKE"}
+		if req.${$column.GoField} != "" {
+			model = model.Where("${$column.ColumnName} like ?", "%"+req.${$column.GoField}+"%")
+		} ${end}
+	${if eq $column.QueryType "EQ"} ${if eq $column.GoType "string"}
+		if req.${$column.GoField} != "" {
+			model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+		} 
+	${else if eq $column.GoType "Time"}
+		if req.${$column.GoField} != nil {
+			model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+		}
+	${else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64") }
+		if req.${$column.GoField} != 0 {
+			model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+		}
+	${end} ${end} 
+	${if and (eq $column.QueryType "BETWEEN") (eq $column.ColumnType "datetime") }
+		if req.${$column.GoField} != nil {
+			model = model.Where("${$column.ColumnName} >= ? AND ${$column.ColumnName} < ?", req.${$column.GoField}, req.${$column.GoField}.Add(gtime.D))
+		}
+	${end}
+${end} ${end}
 	}
 	// 查询总记录数(总行数)
 	total, err = model.Count()
