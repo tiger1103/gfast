@@ -5,6 +5,8 @@ import (
 	"gfast/app/service/admin/gen_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/library/response"
+	"strings"
+
 	"github.com/gogf/gf/encoding/gcompress"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/errors/gerror"
@@ -17,7 +19,6 @@ import (
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/grand"
 	"github.com/gogf/gf/util/gvalid"
-	"strings"
 )
 
 type Gen struct{}
@@ -222,7 +223,22 @@ func (c *Gen) BatchGenCode(r *ghttp.Request) {
 					response.FailJson(true, r, err.Error())
 				}
 			case "vm/go/" + entity.BusinessName + "_model.go.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/"+pathMap["gfgenModel"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/go/" + entity.BusinessName + "_entity.go.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/"+pathMap["gfgenEntity"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/go/" + entity.BusinessName + ".go.vm":
 				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/"+pathMap["model"], val)
+				if err != nil {
+					response.FailJson(true, r, err.Error())
+				}
+			case "vm/go/" + entity.BusinessName + "_route.go.vm":
+				err = gfile.PutContents(dataFilePath+"/gen/"+dataFileRange+"/go/路由说明.txt", val)
 				if err != nil {
 					response.FailJson(true, r, err.Error())
 				}
@@ -259,14 +275,18 @@ func (c *Gen) getPath(entity *gen_table.EntityExtend) g.MapStrStr {
 	controller := "app/controller/" + entity.ModuleName + "/" + entity.ClassName + ".go"
 	service := "app/service/" + entity.ModuleName + "/" + entity.BusinessName + "_service/" + entity.ClassName + ".go"
 	model := "app/model/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + ".go"
+	gfgenModel := "app/model/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + "_model.go"
+	gfgenEntity := "app/model/" + entity.ModuleName + "/" + entity.BusinessName + "/" + entity.ClassName + "_entity.go"
 	vue := "views/" + entity.ModuleName + "/" + entity.BusinessName + "/index.vue"
 	api := "api/" + entity.ModuleName + "/" + entity.BusinessName + ".js"
 	return g.MapStrStr{
-		"controller": controller,
-		"service":    service,
-		"model":      model,
-		"vue":        vue,
-		"api":        api,
+		"controller":  controller,
+		"service":     service,
+		"model":       model,
+		"gfgenModel":  gfgenModel,
+		"gfgenEntity": gfgenEntity,
+		"vue":         vue,
+		"api":         api,
 	}
 }
 
@@ -285,8 +305,14 @@ func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.Entity
 	controllerValue := ""
 	serviceKey := "vm/go/" + entity.BusinessName + "_service.go.vm"
 	serviceValue := ""
-	modelKey := "vm/go/" + entity.BusinessName + "_model.go.vm"
+	modelKey := "vm/go/" + entity.BusinessName + ".go.vm"
 	modelValue := ""
+	routeKey := "vm/go/" + entity.BusinessName + "_route.go.vm"
+	routeValue := ""
+	gfgenModelKey := "vm/go/" + entity.BusinessName + "_model.go.vm"
+	gfgenModelValue := ""
+	gfgenEntityKey := "vm/go/" + entity.BusinessName + "_entity.go.vm"
+	gfgenEntityValue := ""
 	apiJsKey := "vm/html/" + entity.BusinessName + "_api.js.vm"
 	apiJsValue := ""
 	vueKey := "vm/html/" + entity.BusinessName + "_vue.js.vm"
@@ -303,7 +329,7 @@ func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.Entity
 	})
 	view.SetConfigWithMap(g.Map{
 		"Paths":      []string{"template"},
-		"Delimiters": []string{"{{", "}}"},
+		"Delimiters": []string{"${", "}"},
 	})
 	//树形菜单选项
 	var options g.Map
@@ -343,12 +369,34 @@ func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.Entity
 		return
 	}
 
+	var tmpRouter string
+	if tmpRouter, err = view.Parse("vm/go/common/route.template", g.Map{"table": entity}); err == nil {
+		routeValue = tmpRouter
+	} else {
+		return
+	}
+	var tmpGfModel string
+	if tmpGfModel, err = view.Parse("vm/go/common/model.template", g.Map{"table": entity}); err == nil {
+		gfgenModelValue = tmpGfModel
+	} else {
+		return
+	}
+	var tmpGfEntity string
+	if tmpGfEntity, err = view.Parse("vm/go/common/entity.template", g.Map{"table": entity}); err == nil {
+		gfgenEntityValue = tmpGfEntity
+	} else {
+		return
+	}
+
 	data = g.MapStrStr{
-		modelKey:      modelValue,
-		serviceKey:    serviceValue,
-		controllerKey: controllerValue,
-		apiJsKey:      apiJsValue,
-		vueKey:        vueValue,
+		routeKey:       routeValue,
+		gfgenModelKey:  gfgenModelValue,
+		gfgenEntityKey: gfgenEntityValue,
+		modelKey:       modelValue,
+		serviceKey:     serviceValue,
+		controllerKey:  controllerValue,
+		apiJsKey:       apiJsValue,
+		vueKey:         vueValue,
 	}
 	return
 }

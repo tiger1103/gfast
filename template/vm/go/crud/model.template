@@ -1,42 +1,43 @@
 // ==========================================================================
-// 生成日期：{{.table.CreateTime}}
-// 生成人：{{.table.FunctionAuthor}}
+// 生成日期：${.table.CreateTime}
+// 生成人：${.table.FunctionAuthor}
 // ==========================================================================
 
-package {{.table.BusinessName}}
+package ${.table.BusinessName}
 
 import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gtime"
 )
 
-{{$pk:=""}}
-{{$pkGoField:=""}}
-{{range $index, $column := .table.Columns}} {{if eq $column.IsPk "1"}}
-    {{$pk = $column.ColumnName}}
-    {{$pkGoField = $column.GoField}}
-{{end}}{{end}}
+${$pk:=""}
+${$pkGoField:=""}
+${range $index, $column := .table.Columns} ${if eq $column.IsPk "1"}
+    ${$pk = $column.ColumnName}
+    ${$pkGoField = $column.GoField}
+${end}${end}
 
 // AddReq 用于存储新增请求的请求参数
 type AddReq struct {
-	{{range $index, $column := .table.Columns}}
-	{{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}} {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}}   `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
+	${range $index, $column := .table.Columns}
+	${if and (eq $column.IsInsert "1") (ne $column.IsPk "1")} ${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end}   `p:"${$column.ColumnName}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
 }
 
 // EditReq 用于存储修改请求参数
 type EditReq struct {
-	{{.table.PkColumn.GoField}}    {{.table.PkColumn.GoType}}  `p:"{{.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"` {{range $index, $column := .table.Columns}} {{if eq $column.IsEdit "1"}}
-	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}` {{end}} {{end}}
+	${.table.PkColumn.GoField}    ${.table.PkColumn.GoType}  `p:"${.table.PkColumn.ColumnName}" v:"required#主键ID不能为空"` ${range $index, $column := .table.Columns} ${if eq $column.IsEdit "1"}
+	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.ColumnName}" ${if eq $column.IsRequired "1"}v:"required#${$column.ColumnComment}不能为空"${end}` ${end} ${end}
 }
 
 // RemoveReq 用于存储删除请求参数
 type RemoveReq struct {
-	Ids []int `p:"ids"` //删除id
+	Ids [] ${.table.PkColumn.GoType}  `p:"ids"` //删除id
 }
 
 // SelectPageReq 用于存储分页查询的请求参数
-type SelectPageReq struct { {{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
-	{{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}"` //{{$column.ColumnComment}} {{end}} {{end}}
+type SelectPageReq struct { ${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
+	${$column.GoField}  ${if eq $column.GoType "Time"}*gtime.Time${else}${$column.GoType}${end} `p:"${$column.ColumnName}"` //${$column.ColumnComment} ${end} ${end}
 	BeginTime  string `p:"beginTime"`  //开始时间
 	EndTime    string `p:"endTime"`    //结束时间
 	PageNum    int    `p:"pageNum"`    //当前页码
@@ -44,7 +45,7 @@ type SelectPageReq struct { {{range $index, $column := .table.Columns}} {{if eq 
 }
 
 // GetByID 根据ID查询记录
-func GetByID(id int64) (*Entity, error) {
+func GetByID(id ${.table.PkColumn.GoType}) (*Entity, error) {
 	entity, err := Model.FindOne(id)
 	if err != nil {
 		g.Log().Error(err)
@@ -59,8 +60,8 @@ func GetByID(id int64) (*Entity, error) {
 // AddSave 添加
 func AddSave(req *AddReq) error {
 	entity:= new(Entity)
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsInsert "1"}}
-	entity.{{$column.GoField}} = req.{{$column.GoField}}{{end}} {{end}}
+	${range $index, $column := .table.Columns} ${if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}
+	entity.${$column.GoField} = req.${$column.GoField}${end} ${end}
 
 	result, err := Model.Save(entity)
 	if err != nil {
@@ -74,8 +75,8 @@ func AddSave(req *AddReq) error {
 }
 
 // DeleteByIds 删除
-func DeleteByIds(Ids []int) error {
-	_, err := Model.Delete("{{.table.PkColumn.ColumnName}} in(?)", Ids)
+func DeleteByIds(Ids [] ${.table.PkColumn.GoType}) error {
+	_, err := Model.Delete("${.table.PkColumn.ColumnName} in(?)", Ids)
 	if err != nil {
 		g.Log().Error(err)
 		return gerror.New("删除失败")
@@ -86,14 +87,14 @@ func DeleteByIds(Ids []int) error {
 // EditSave 根据ID来修改信息
 func EditSave(req *EditReq) error {
 	// 先根据ID来查询要修改的记录
-	entity, err := GetByID(req.{{$pkGoField}})
+	entity, err := GetByID(req.${$pkGoField})
 	if err != nil {
 		return err
 	}
 
 	// 修改实体
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsEdit "1"}}
-	entity.{{$column.GoField}} = req.{{$column.GoField}}{{end}} {{end}}
+	${range $index, $column := .table.Columns} ${if eq $column.IsEdit "1"}
+	entity.${$column.GoField} = req.${$column.GoField}${end} ${end}
 	_, err = Model.Save(entity)
 	if err != nil {
 		g.Log().Error(err)
@@ -103,21 +104,33 @@ func EditSave(req *EditReq) error {
 }
 
 // SelectListByPage 分页查询,返回值total总记录数,page当前页
-func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity, err error) {
+func SelectListByPage(req *SelectPageReq) (total int, page int, list []*Entity, err error) {
 	model := Model
 	if req != nil {
-		{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
-		{{if eq $column.QueryType "LIKE"}}
-			if req.{{$column.GoField}} != "" {
-				model = model.Where("{{$column.ColumnName}} like ?", "%"+req.{{$column.GoField}}+"%")
-			} {{else if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
-			if req.{{$column.GoField}} != "" {
-				model = model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
-			} {{else if eq $column.GoType "int" "int64"}}
-			if req.{{$column.GoField}} != 0 {
-				model = model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
-			}
-		{{end}} {{end}} {{end}} {{end}}
+${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
+	${if eq $column.QueryType "LIKE"}
+		if req.${$column.GoField} != "" {
+			model = model.Where("${$column.ColumnName} like ?", "%"+req.${$column.GoField}+"%")
+		} ${end}
+	${if eq $column.QueryType "EQ"} ${if eq $column.GoType "string"}
+		if req.${$column.GoField} != "" {
+			model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+		} 
+	${else if eq $column.GoType "Time"}
+		if req.${$column.GoField} != nil {
+			model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+		}
+	${else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64") }
+		if req.${$column.GoField} != 0 {
+			model = model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+		}
+	${end} ${end} 
+	${if and (eq $column.QueryType "BETWEEN") (eq $column.ColumnType "datetime") }
+		if req.${$column.GoField} != nil {
+			model = model.Where("${$column.ColumnName} >= ? AND ${$column.ColumnName} < ?", req.${$column.GoField}, req.${$column.GoField}.Add(gtime.D))
+		}
+	${end}
+${end} ${end}
 	}
 	// 查询总记录数(总行数)
 	total, err = model.Count()
@@ -134,7 +147,7 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 		req.PageSize = 10
 	}
 	// 分页排序查询
-	list, err = model.Page(int(page), int(req.PageSize)).Order("{{$pk}} asc").All()
+	list, err = model.Page(int(page), int(req.PageSize)).Order("${$pk} desc").All()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("分页查询失败")
@@ -149,21 +162,21 @@ func SelectListByPage(req *SelectPageReq) (total int, page int64, list []*Entity
 func SelectListAll(req *SelectPageReq) (list []*Entity, err error) {
 	model := Model
 	if req != nil {
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
-		{{if eq $column.QueryType "LIKE"}}
-			if req.{{$column.GoField}} != "" {
-			model.Where("{{$column.ColumnName}} like ?", "%"+req.{{$column.GoField}}+"%")
-			} {{else if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
-			if req.{{$column.GoField}} != "" {
-			model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
-			} {{else if eq $column.GoType "int" "int64"}}
-			if req.{{$column.GoField}} != 0 {
-			model.Where("{{$column.ColumnName}} = ?", req.{{$column.GoField}})
+	${range $index, $column := .table.Columns} ${if eq $column.IsQuery "1"}
+		${if eq $column.QueryType "LIKE"}
+			if req.${$column.GoField} != "" {
+			model.Where("${$column.ColumnName} like ?", "%"+req.${$column.GoField}+"%")
+			} ${else if eq $column.QueryType "EQ"} ${if eq $column.GoType "string"}
+			if req.${$column.GoField} != "" {
+			model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
+			} ${else if eq $column.GoType "int" "int64"}
+			if req.${$column.GoField} != 0 {
+			model.Where("${$column.ColumnName} = ?", req.${$column.GoField})
 			}
-		{{end}} {{end}} {{end}} {{end}}
+		${end} ${end} ${end} ${end}
 	}
 	// 查询
-	list, err = model.Order("{{$pk}} asc").All()
+	list, err = model.Order("${$pk} desc").All()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("查询失败")

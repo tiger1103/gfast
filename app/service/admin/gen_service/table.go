@@ -3,6 +3,8 @@ package gen_service
 import (
 	"gfast/app/model/admin/gen_table"
 	"gfast/app/model/admin/gen_table_column"
+	"strings"
+
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/errors/gerror"
@@ -11,7 +13,6 @@ import (
 	"github.com/gogf/gf/text/gregex"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
-	"strings"
 )
 
 //根据条件分页查询数据
@@ -164,7 +165,7 @@ func InitColumnField(column *gen_table_column.Entity, table *gen_table.Entity) {
 	} else if gen_table_column.IsTimeObject(dataType) {
 		//字段为时间类型
 		column.GoType = "Time"
-		column.HtmlType = "datatime"
+		column.HtmlType = "datetime"
 	} else if gen_table_column.IsNumberObject(dataType) {
 		//字段为数字类型
 		column.HtmlType = "input"
@@ -333,7 +334,9 @@ func ConvertClassName(tableName string) string {
 	if autoRemovePre && tablePrefix != "" {
 		searchList := strings.Split(tablePrefix, ",")
 		for _, str := range searchList {
-			tableName = strings.ReplaceAll(tableName, str, "")
+			if strings.HasPrefix(tableName, str) {
+				tableName = strings.Replace(tableName, str, "", 1) //注意，只替换一次
+			}
 		}
 	}
 	return tableName
