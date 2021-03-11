@@ -232,6 +232,10 @@ func AddUserPost(postIds []int64, userId int64) (err error) {
 		g.Log().Error(err)
 		err = gerror.New("设置用户岗位信息失败")
 	}
+	//岗位为空
+	if len(postIds) < 1 {
+		return
+	}
 	//添加用户岗位信息
 	err = user_post.AddUserPost(postIds, userId)
 	if err != nil {
