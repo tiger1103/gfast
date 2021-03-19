@@ -160,6 +160,8 @@ func GetAdminList(req *SearchReq) (total, page int, userList []*Entity, err erro
 		req.PageNum = 1
 	}
 	page = req.PageNum
+	// 排除password字段
+	userModel = userModel.FieldsEx("user_password")
 	userList, err = userModel.Page(page, req.PageSize).Order("id asc").All()
 	return
 }
