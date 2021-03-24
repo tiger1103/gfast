@@ -11,10 +11,13 @@ import (
 	"gfast/app/model/admin/user"
 	"gfast/app/model/admin/user_post"
 	"gfast/app/service/admin/auth_service"
+	"gfast/app/service/admin/dept_service"
 	"gfast/app/service/casbin_adapter_service"
 	"gfast/boot"
 	"gfast/library/service"
 	"gfast/library/utils"
+	"github.com/gogf/gf/container/garray"
+	"reflect"
 
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
@@ -313,4 +316,70 @@ func GetPermissions(roleIds []uint) ([]string, error) {
 		}
 	}
 	return userButtons, nil
+}
+
+//获取数据权限判断条件
+func GetDataWhere(userInfo *user.Entity, entity interface{}) (where g.Map, err error) {
+	t := reflect.TypeOf(entity)
+	for i := 0; i < t.Elem().NumField(); i++ {
+		if t.Elem().Field(i).Name == "UserId" {
+			//若存在用户id的字段，则生成判断数据权限的条件
+			//1、获取当前用户所属角色
+			allRoles := ([]*role.Entity)(nil)
+			allRoles, err = auth_service.GetRoleList()
+			if err != nil {
+				return nil, err
+			}
+			roles := ([]*role.Entity)(nil)
+			roles, err = GetAdminRole(userInfo.Id, allRoles)
+			if err != nil {
+				return nil, err
+			}
+			//2获取角色对应数据权限
+			deptIdArr := make([]interface{}, 0, 100)
+			for _, role := range roles {
+				switch role.DataScope {
+				case 1: //全部数据权限
+					return
+				case 2: //自定数据权限
+					var deptIds []int64
+					deptIds, err = dept_service.GetRoleDepts(gconv.Int64(role.Id))
+					if err != nil {
+						return
+					}
+
+					deptIdArr = append(deptIdArr, gconv.Interfaces(deptIds)...)
+				case 3: //本部门数据权限
+					deptIdArr = append(deptIdArr, gconv.Int64(userInfo.DeptId))
+				case 4: //本部门及以下数据权限
+					deptIdArr = append(deptIdArr, gconv.Int64(userInfo.DeptId))
+					//获取正常状态部门数据
+					depts := ([]*sys_dept.Dept)(nil)
+					depts, err = dept_service.GetList(&sys_dept.SearchParams{Status: "1"})
+					if err != nil {
+						return
+					}
+					var dList g.ListStrAny
+					for _, entity := range depts {
+						m := g.Map{
+							"id":    entity.DeptID,
+							"pid":   entity.ParentID,
+							"label": entity.DeptName,
+						}
+						dList = append(dList, m)
+					}
+					l := utils.FindSonByParentId(dList, gconv.Int(userInfo.DeptId), "pid", "id")
+					for _, li := range l {
+						deptIdArr = append(deptIdArr, gconv.Int64(li["id"]))
+					}
+				}
+			}
+			if len(deptIdArr) > 0 {
+				arr := garray.NewArrayFrom(deptIdArr)
+				arr = arr.Unique()
+				where = g.Map{"user.dept_id": arr.Slice()}
+			}
+		}
+	}
+	return
 }

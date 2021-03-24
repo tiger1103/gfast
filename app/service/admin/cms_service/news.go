@@ -102,7 +102,7 @@ func getPubCateIds(cateIds []int) ([]int, error) {
 }
 
 //文章列表查询
-func NewsListByPage(req *cms_news.ReqListSearchParams) (total, page int, list []*cms_news.NewsList, err error) {
+func NewsListByPage(req *cms_news.ReqListSearchParams, where ...g.Map) (total, page int, list []*cms_news.NewsList, err error) {
 	var menuList []*cms_category.Entity
 	//获取所有栏目
 	menuList, err = GetMenuList()
@@ -124,7 +124,7 @@ func NewsListByPage(req *cms_news.ReqListSearchParams) (total, page int, list []
 			}
 		}
 	}
-	total, page, list, err = cms_news.ListByPage(req)
+	total, page, list, err = cms_news.ListByPage(req, where...)
 	if err != nil || len(list) == 0 {
 		return
 	}

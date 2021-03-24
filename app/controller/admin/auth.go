@@ -683,6 +683,8 @@ func (c *Auth) RoleDataScope(r *ghttp.Request) {
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}
+	//清缓存
+	cache_service.New().RemoveByTag(cache_service.AdminAuthTag)
 	response.SusJson(true, r, "数据权限设置成功", req)
 }
 

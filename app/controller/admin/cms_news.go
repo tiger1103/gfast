@@ -26,7 +26,13 @@ func (c *CmsNews) List(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		response.FailJson(true, r, err.(*gvalid.Error).FirstString())
 	}
-	total, page, list, err := cms_service.NewsListByPage(req)
+	//获取登陆用户id
+	userInfo := user_service.GetLoginAdminInfo(r)
+	where, err := user_service.GetDataWhere(userInfo, new(cms_news.Entity))
+	if err != nil {
+		response.FailJson(true, r, err.Error())
+	}
+	total, page, list, err := cms_service.NewsListByPage(req, where)
 	if err != nil {
 		response.FailJson(true, r, err.Error())
 	}

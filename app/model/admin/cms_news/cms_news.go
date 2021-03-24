@@ -188,7 +188,7 @@ func EditNews(req *ReqEditParams, cateIds []int, tx *gdb.TX) (err error) {
 }
 
 //文章列表查询
-func ListByPage(req *ReqListSearchParams) (total, page int, list []*NewsList, err error) {
+func ListByPage(req *ReqListSearchParams, where ...g.Map) (total, page int, list []*NewsList, err error) {
 	model := g.DB().Table(Table + " news")
 	if req != nil {
 		if len(req.CateId) > 0 {
@@ -216,6 +216,9 @@ func ListByPage(req *ReqListSearchParams) (total, page int, list []*NewsList, er
 		if req.NewsStatus != "" {
 			model = model.Where("news.news_status", gconv.Int(req.NewsStatus))
 		}
+	}
+	if len(where) > 0 {
+		model = model.Where(where[0])
 	}
 	model = model.LeftJoin(user.Table+" user", "news.user_id=user.id")
 	total, err = model.Count()
