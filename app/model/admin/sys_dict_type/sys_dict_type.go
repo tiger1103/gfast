@@ -75,26 +75,6 @@ func GetDictById(id int) (dict *Entity, err error) {
 	return
 }
 
-//修改保存字典类型
-func EditSave(req *EditReq, userId uint64) (int64, error) {
-	entity, err := GetDictById(gconv.Int(req.DictId))
-	if err != nil || entity == nil {
-		return 0, err
-	}
-	entity.DictType = req.DictType
-	entity.DictName = req.DictName
-	entity.Status = req.Status
-	entity.Remark = req.Remark
-	entity.UpdateBy = gconv.Uint(userId)
-	entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
-	res, err := Model.Save(entity)
-	if err != nil {
-		g.Log().Error(err)
-		return 0, gerror.New("更新失败")
-	}
-	return res.RowsAffected()
-}
-
 //根据主键判断是否唯一
 func CheckDictTypeUnique(dictType *EditReq) bool {
 	dict, err := Model.FindOne("dict_type=? and dict_id!=?", dictType.DictType, dictType.DictId)

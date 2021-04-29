@@ -1,10 +1,13 @@
 package dict_service
 
 import (
+	"gfast/app/model/admin/sys_dict_data"
 	"gfast/app/model/admin/sys_dict_type"
 	"gfast/app/service/cache_service"
+	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
 )
 
@@ -24,8 +27,34 @@ func AddSave(req *sys_dict_type.AddReq, userId uint64) (int64, error) {
 }
 
 //修改保存字典类型
-func EditSave(req *sys_dict_type.EditReq, userId uint64) (int64, error) {
-	return sys_dict_type.EditSave(req, userId)
+func EditSave(req *sys_dict_type.EditReq, userId uint64) error {
+	return g.DB().Transaction(func(tx *gdb.TX) error {
+		entity, err := GetDictById(gconv.Int(req.DictId))
+		if err != nil || entity == nil {
+			return err
+		}
+		oldType := entity.DictType
+		entity.DictType = req.DictType
+		entity.DictName = req.DictName
+		entity.Status = req.Status
+		entity.Remark = req.Remark
+		entity.UpdateBy = gconv.Uint(userId)
+		entity.UpdateTime = gconv.Uint64(gtime.Timestamp())
+		_, err = sys_dict_type.Model.TX(tx).Save(entity)
+		if err != nil {
+			g.Log().Error(err)
+			return gerror.New("更新失败")
+		}
+		//更新字典数据中的类型
+		_, err = sys_dict_data.Model.TX(tx).Data(g.Map{
+			sys_dict_data.Columns.DictType: req.DictType,
+		}).Where(sys_dict_data.Columns.DictType, oldType).Update()
+		if err != nil {
+			g.Log().Error(err)
+			return gerror.New("更新失败")
+		}
+		return nil
+	})
 }
 
 //字典列表查询分页

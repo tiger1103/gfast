@@ -94,7 +94,7 @@ func (c *Dict) Edit(r *ghttp.Request) {
 			response.FailJson(true, r, "字典类型已经存在")
 		}
 		userId := user_service.GetLoginID(r) //获取登陆用户id
-		_, err := dict_service.EditSave(req, userId)
+		err := dict_service.EditSave(req, userId)
 		if err != nil {
 			response.FailJson(true, r, err.Error())
 		}
