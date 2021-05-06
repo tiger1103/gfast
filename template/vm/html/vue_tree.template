@@ -19,7 +19,7 @@ ${$comment:=$column.ColumnComment}
 ${if eq $column.HtmlType "input"}
       <el-form-item label="${$comment}" prop="${$column.ColumnName}">
         <el-input
-          v-model="queryParams.{$column.ColumnName}"
+          v-model="queryParams.${$column.ColumnName}"
           placeholder="请输入${$comment}"
           clearable
           size="small"
@@ -280,7 +280,7 @@ export default {
         getList() {
           this.loading = true;
           list${.table.BusinessName|UcFirst}(this.queryParams).then(response => {
-            this.${.table.BusinessName}List = this.handleTree(response.data, "${$treeCode}", "${$treeParentCode}");
+            this.${.table.BusinessName}List = this.handleTree(response.data.list, "${$treeCode}", "${$treeParentCode}");
             this.loading = false;
           });
         },
