@@ -4,7 +4,7 @@
     host    =   "127.0.0.1"
     port    =   "3306"
     user    =   "root"
-    pass    =   "123456"
+    pass    =   "180611"
     name    =   "gfast_open"
     charset   = "utf8mb4" #数据库编码
     maxIdle      = "10" #连接池最大闲置的连接数

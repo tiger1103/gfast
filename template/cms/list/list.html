@@ -48,9 +48,13 @@
                                     <i class="footbar-like"><a href="javascript:;">阅读(${$article.NewsHits})</a></i>
                                 </div>
                             </div>
-                            <div class="sviewr">
-                                <a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a>
-                            </div>
+							<script charset="utf-8">
+								let thumb = "${$article.Thumbnail}"
+								if (thumb !== "") {
+									document.write('<div class="sviewr"><a href="${$.domain}cms/show/${$article.CateList | getArticleCateId}/${$article.Id}" target="_blank"><img src="${$.domain}${$article.Thumbnail}"></a></div>')
+								}
+							</script>
+                            
                         </div>
                     </div>
                 </div>
