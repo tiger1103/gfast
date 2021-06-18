@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/container/gvar"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gmutex"
 	"github.com/gogf/gf/os/gview"
 	"github.com/gogf/gf/util/gconv"
 )
@@ -20,13 +21,18 @@ type Response struct {
 	*response.Response
 }
 
-var ResponseInstance Response
+var (
+	ResponseInstance = new(Response)
+	mu               = gmutex.New()
+)
 
 func WriteTpl(r *ghttp.Request, tpl string, params ...gview.Params) error {
 	return ResponseInstance.WriteTpl(r, tpl, params...)
 }
 
 func (res *Response) WriteTpl(r *ghttp.Request, tpl string, params ...gview.Params) error {
+	mu.Lock()
+	defer mu.Unlock()
 	v := g.View()
 	v.SetPath("template/cms")
 	//绑定模板中需要用到的方法

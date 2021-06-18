@@ -4,6 +4,7 @@ import (
 	"gfast/library/utils"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/gmutex"
 	"github.com/gogf/gf/os/gview"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
@@ -23,7 +24,10 @@ type Response struct {
 	Msg string `json:"msg"`
 }
 
-var response *Response
+var (
+	response = new(Response)
+	mu       = gmutex.New()
+)
 
 func JsonExit(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	response.JsonExit(r, code, msg, data...)
@@ -88,6 +92,8 @@ func (res *Response) FailJson(isExit bool, r *ghttp.Request, msg string, data ..
 
 //模板输出
 func (res *Response) WriteTpl(r *ghttp.Request, tpl string, view *gview.View, params ...gview.Params) error {
+	mu.Lock()
+	defer mu.Unlock()
 	//绑定模板中需要用到的方法
 	view.BindFuncMap(g.Map{
 		// 根据长度i来切割字符串
@@ -106,17 +112,6 @@ func (res *Response) WriteTpl(r *ghttp.Request, tpl string, view *gview.View, pa
 		// 格式化时间戳 年月日时分秒
 		"timeFormatDateTime": func(time interface{}) string {
 			return utils.TimeStampToDateTime(gconv.Int64(time))
-		},
-		// 判断是否有子菜单
-		"isSon": func(id, menus interface{}) bool {
-			i := gconv.Int(id)
-			m := gconv.SliceMap(menus)
-			for _, v := range m {
-				if gconv.Int(v["classification_pid"]) == i {
-					return true
-				}
-			}
-			return false
 		},
 		"add": func(a, b interface{}) int {
 			return gconv.Int(a) + gconv.Int(b)
