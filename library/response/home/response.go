@@ -20,7 +20,7 @@ type Response struct {
 	*response.Response
 }
 
-var ResponseInstance Response
+var ResponseInstance = new(Response)
 
 func WriteTpl(r *ghttp.Request, tpl string, params ...gview.Params) error {
 	return ResponseInstance.WriteTpl(r, tpl, params...)

@@ -23,7 +23,7 @@ type Response struct {
 	Msg string `json:"msg"`
 }
 
-var response *Response
+var response = new(Response)
 
 func JsonExit(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	response.JsonExit(r, code, msg, data...)
