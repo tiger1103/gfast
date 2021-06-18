@@ -108,5 +108,9 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 
 > 快来加入群聊【Gfast框架交流群】(群号865697297)，发现精彩内容。  
 
-### 若框架对您有帮助，您可以捐赠表达一下心意：
-> <img src="https://gitee.com/tiger1103/gfast-ui/raw/master/public/images/jz.jpg"/>
+## 免责声明：
+> 1、Gfast仅限自己学习使用，一切商业行为与Gfast无关。
+
+> 2、用户不得利用Gfast从事非法行为，用户应当合法合规的使用，发现用户在使用产品时有任何的非法行为，Gfast有权配合有关机关进行调查或向政府部门举报，Gfast不承担用户因非法行为造成的任何法律责任，一切法律责任由用户自行承担，如因用户使用造成第三方损害的，用户应当依法予以赔偿。
+
+> 3、所有与使用Gfast相关的资源直接风险均由用户承担。 
