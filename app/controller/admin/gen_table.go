@@ -5,6 +5,7 @@ import (
 	"gfast/app/service/admin/gen_service"
 	"gfast/app/service/admin/user_service"
 	"gfast/library/response"
+	"github.com/gogf/gf/os/gmutex"
 	"strings"
 
 	"github.com/gogf/gf/encoding/gcompress"
@@ -22,6 +23,8 @@ import (
 )
 
 type Gen struct{}
+
+var mu = gmutex.New()
 
 // @Summary 查询数据库列表
 // @Description 查询数据库列表
@@ -317,7 +320,7 @@ func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.Entity
 	apiJsValue := ""
 	vueKey := "vm/html/" + entity.BusinessName + "_vue.js.vm"
 	vueValue := ""
-
+	mu.Lock()
 	view := gview.New()
 	view.BindFuncMap(g.Map{
 		"UcFirst": func(str string) string {
@@ -331,6 +334,7 @@ func (c *Gen) genData(tableId int64) (data g.MapStrStr, entity *gen_table.Entity
 		"Paths":      []string{"template"},
 		"Delimiters": []string{"${", "}"},
 	})
+	mu.Unlock()
 	//树形菜单选项
 	var options g.Map
 	if entity.TplCategory == "tree" {
