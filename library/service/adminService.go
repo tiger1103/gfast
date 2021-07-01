@@ -39,9 +39,9 @@ func AdminLogin(r *ghttp.Request) (string, interface{}) {
 	password := EncryptData(data["password"])
 	var keys string
 	if AdminMultiLogin {
-		keys = data["username"] + password + gmd5.MustEncryptString(utils.GetClientIp(r))
+		keys = gmd5.MustEncryptString(data["username"]) + gmd5.MustEncryptString(password+utils.GetClientIp(r))
 	} else {
-		keys = data["username"] + password
+		keys = gmd5.MustEncryptString(data["username"]) + gmd5.MustEncryptString(password)
 	}
 	ip := utils.GetClientIp(r)
 	userAgent := r.Header.Get("User-Agent")
