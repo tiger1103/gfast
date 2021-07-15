@@ -54,6 +54,8 @@ github地址：[https://github.com/tiger1103/gfast-ui](https://github.com/tiger1
 
 gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103/gfast-ui)
 
+## 文档地址
+[http://doc.qjit.cn/docs/gfast/introduce](http://doc.qjit.cn/docs/gfast/introduce)
 
 ## 演示图
 
