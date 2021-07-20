@@ -1,0 +1,68 @@
+# HTTP Server
+[server]
+    Address     = ":8199"
+    ServerRoot  = "./public/resource"
+    ServerAgent = "gfast-app"
+    LogPath     = "./data/log/gf-app/server"
+    logStdout           = true               # 日志是否输出到终端。默认为true
+    errorStack          = true               # 当Server捕获到异常时是否记录堆栈信息到日志中。默认为true
+    errorLogPattern     = "error-{Ymd}.log"  # 异常错误日志文件格式。默认为"error-{Ymd}.log"
+    accessLogPattern    = "access-{Ymd}.log" # 访问日志文件格式。默认为"access-{Ymd}.log"
+    DumpRouterMap    = true
+    NameToUriType = 3
+    maxHeaderBytes    = "20KB"
+    clientMaxBodySize = "200MB"
+    accessLogEnabled    = true              # 是否记录访问日志。默认为false
+    errorLogEnabled     = true               # 是否记录异常日志信息到日志中。默认为true
+    PProfEnabled     = true                 # 是否开启PProf性能调试特性。默认为false
+
+# Logger.
+[logger]
+    Path        = "./data/log/gf-app"
+    Level       = "all"
+    Stdout      = true
+
+# Template.
+[viewer]
+    Path        = "template"
+    DefaultFile = "index.html"
+    Delimiters  =  ["${", "}"]
+
+# Database.
+[database]
+    link  = "mysql:root:123456@tcp(localhost:3306)/gfast-v2-open"
+    charset   = "utf8mb4" #数据库编码
+    debug = true
+    dryRun = false #空跑
+    maxIdle      = "10" #连接池最大闲置的连接数
+    maxOpen     = "10" #连接池最大打开的连接数
+    maxLifetime  = "30" #(单位秒)连接对象可重复使用的时间长度
+    # Database logger.
+    [database.logger]
+        Path   = "./data/log/gf-app/sql"
+        Level  = "all"
+        Stdout = true
+
+# Redis数据库配置
+[redis]
+    open = true #是否开启 redis 缓存 若不开启使用gchache缓存方式
+    default = "127.0.0.1:6379,0?idleTimeout=600"
+
+#jwt配置
+[gToken]
+    [gToken.system]
+        CacheMode = 2
+        CacheKey = "GToken:"
+        Timeout = 3600000 #1个小时
+        MaxRefresh = 0
+        TokenDelimiter="_"
+        EncryptKey = "koi29a83idakguqjq29asd9asd8a7jhq"
+        AuthFailMsg = "登录超时，请重新登录"
+        MultiLogin = true  #后台是否允许多端同时在线
+[system]
+    notCheckAuthAdminIds = [1,2,31]  #无需验证后台权限的用户id
+
+#casbin配置
+[casbin]
+    modelFile="./config/casbin_conf/rbac_model.conf"
+    policyFile="./config/casbin_conf/rbac_policy.csv"
