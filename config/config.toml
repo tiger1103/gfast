@@ -1,6 +1,6 @@
 # HTTP Server
 [server]
-    Address     = ":8199"
+    Address     = ":8200"
     ServerRoot  = "./public/resource"
     ServerAgent = "gfast-app"
     LogPath     = "./data/log/gf-app/server"
@@ -46,7 +46,7 @@
 # Redis数据库配置
 [redis]
     open = true #是否开启 redis 缓存 若不开启使用gchache缓存方式
-    default = "127.0.0.1:6379,0?idleTimeout=600"
+    default = "127.0.0.1:6379,9?idleTimeout=600"
 
 #jwt配置
 [gToken]

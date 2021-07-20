@@ -48,7 +48,7 @@
 ```
 
 ##运行
-go run main.go 直接访问http://localhost:8199
+go run main.go 
 
 账号：demo  密码：123456
 
@@ -108,6 +108,14 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 >casbin [https://github.com/casbin/casbin](https://github.com/casbin/casbin)
 >
 >云捷go [https://gitee.com/yunjieg/yjgo](https://gitee.com/yunjieg/yjgo)
+
+
+### 生成dao
+因为我们在开发过程中，goFrame框架的gf-cli 一直在更新功能，建议不要直接去覆盖，生成到tmp目录后将需要的文件复制到对应的地方
+```
+例如： gf gen dao -path ./tmp  -l "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v2" -t 表名
+```
+
 ## 交流QQ群
 
 > <img src="https://gitee.com/tiger1103/gfast/raw/master/public/qqcode.png"/>  
@@ -120,10 +128,3 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 > 2、用户不得利用Gfast从事非法行为，用户应当合法合规的使用，发现用户在使用产品时有任何的非法行为，Gfast有权配合有关机关进行调查或向政府部门举报，Gfast不承担用户因非法行为造成的任何法律责任，一切法律责任由用户自行承担，如因用户使用造成第三方损害的，用户应当依法予以赔偿。
 
 > 3、所有与使用Gfast相关的资源直接风险均由用户承担。
-
-###生成dao
-因为我们在开发过程中，goFrame框架的gf-cli 一直在更新功能，建议不要直接去覆盖，生成到tmp目录后将需要的文件复制到对应的地方
-```
-例如： gf gen dao -path ./tmp  -l "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v2" -t 表名
-```
-

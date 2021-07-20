@@ -37,5 +37,8 @@ func (ctxUser *CtxUser) GetUserId() (id uint64) {
 // GetDept 获取登录用户所属部门
 func (ctxUser *CtxUser) GetDept() (err error, dept *model.SysDept) {
 	err = g.DB().Model(SysDept.Table).WherePri(ctxUser.DeptId).Scan(&dept)
+	if dept == nil {
+		dept = &model.SysDept{}
+	}
 	return
 }
