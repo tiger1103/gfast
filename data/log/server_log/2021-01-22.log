@@ -1,0 +1,786 @@
+2021-01-22 17:08:33.845 30616: http server started listening on [:8200]
+
+  SERVER  | DOMAIN  | ADDRESS | METHOD |                   ROUTE                   |                             HANDLER                              |    MIDDLEWARE      
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /*                                        | gfast/middleWare.CORS                                            | GLOBAL MIDDLEWARE  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /captcha/get/img                          | gfast/app/controller/common.(*Captcha).Img                       |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /cms                                      | gfast/app/controller/home.(*Index).Index-fm                      |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /cms/list/:cateId/*page/*keyWords         | gfast/app/controller/home.(*Index).List-fm                       |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /cms/search/*page/*keyWords               | gfast/app/controller/home.(*Index).Search-fm                     |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /cms/show/:cateIds/:newsId                | gfast/app/controller/home.(*Index).Show-fm                       |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/*action                      | github.com/gogf/gf/net/ghttp.(*utilPProf).Index-fm               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/cmdline                      | github.com/gogf/gf/net/ghttp.(*utilPProf).Cmdline-fm             |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/profile                      | github.com/gogf/gf/net/ghttp.(*utilPProf).Profile-fm             |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/symbol                       | github.com/gogf/gf/net/ghttp.(*utilPProf).Symbol-fm              |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/trace                        | github.com/gogf/gf/net/ghttp.(*utilPProf).Trace-fm               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog                              | gfast/plugin/blog/controller/home.(*Index).Index                 |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/addComment                   | gfast/plugin/blog/controller/home.(*Index).AddComment            |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/addLink                      | gfast/plugin/blog/controller/home.(*Index).AddLink               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/blogList                     | gfast/plugin/blog/controller/home.(*Index).BlogList              |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/content                      | gfast/plugin/blog/controller/home.(*Index).Content               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/index                        | gfast/plugin/blog/controller/home.(*Index).Index                 |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/link                         | gfast/plugin/blog/controller/home.(*Index).Link                  |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /pub_upload/*                             | gfast/router.init.0.func1                                        | HOOK_BEFORE_SERVE  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /swagger.json                             | gfast/router.init.0.func2                                        |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /sysLogin/login                           | github.com/goflyfox/gtoken/gtoken.(*GfToken).Login-fm            |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /sysLogin/logout                          | github.com/goflyfox/gtoken/gtoken.(*GfToken).Logout-fm           |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/*                                 | github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware-fm   | GLOBAL MIDDLEWARE  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/*                                 | gfast/hook.OperationLog                                          | HOOK_AFTER_OUTPUT  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/addMenu                      | gfast/app/controller/admin.(*Auth).AddMenu                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/addRole                      | gfast/app/controller/admin.(*Auth).AddRole                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/addUser                      | gfast/app/controller/admin.(*Auth).AddUser                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/changeUserStatus             | gfast/app/controller/admin.(*Auth).ChangeUserStatus              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/deleteAdmin                  | gfast/app/controller/admin.(*Auth).DeleteAdmin                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/deleteMenu                   | gfast/app/controller/admin.(*Auth).DeleteMenu                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/deleteRole                   | gfast/app/controller/admin.(*Auth).DeleteRole                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/editMenu                     | gfast/app/controller/admin.(*Auth).EditMenu                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/editRole                     | gfast/app/controller/admin.(*Auth).EditRole                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/editUser                     | gfast/app/controller/admin.(*Auth).EditUser                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/menuList                     | gfast/app/controller/admin.(*Auth).MenuList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/menuSort                     | gfast/app/controller/admin.(*Auth).MenuSort                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/resetUserPwd                 | gfast/app/controller/admin.(*Auth).ResetUserPwd                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/roleDataScope                | gfast/app/controller/admin.(*Auth).RoleDataScope                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/roleList                     | gfast/app/controller/admin.(*Auth).RoleList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/statusSetRole                | gfast/app/controller/admin.(*Auth).StatusSetRole                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/userList                     | gfast/app/controller/admin.(*Auth).UserList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/add                      | gfast/app/controller/admin.(*CmsMenu).Add                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/delete                   | gfast/app/controller/admin.(*CmsMenu).Delete                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/edit                     | gfast/app/controller/admin.(*CmsMenu).Edit                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/list                     | gfast/app/controller/admin.(*CmsMenu).List                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/modelOptions             | gfast/app/controller/admin.(*CmsMenu).ModelOptions               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/sort                     | gfast/app/controller/admin.(*CmsMenu).Sort                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/add                      | gfast/app/controller/admin.(*CmsNews).Add                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/delete                   | gfast/app/controller/admin.(*CmsNews).Delete                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/edit                     | gfast/app/controller/admin.(*CmsNews).Edit                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/getModelFields           | gfast/app/controller/admin.(*CmsNews).GetModelFields             | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/list                     | gfast/app/controller/admin.(*CmsNews).List                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/add                   | gfast/app/controller/admin.(*Dict).Add                           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataAdd               | gfast/app/controller/admin.(*Dict).DataAdd                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataDelete            | gfast/app/controller/admin.(*Dict).DataDelete                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataEdit              | gfast/app/controller/admin.(*Dict).DataEdit                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataList              | gfast/app/controller/admin.(*Dict).DataList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/delete                | gfast/app/controller/admin.(*Dict).Delete                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/edit                  | gfast/app/controller/admin.(*Dict).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/getDicts              | gfast/app/controller/admin.(*Dict).GetDicts                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/list                  | gfast/app/controller/admin.(*Dict).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/optionSelect          | gfast/app/controller/admin.(*Dict).OptionSelect                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/add                 | gfast/app/controller/admin.(*Params).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/delete              | gfast/app/controller/admin.(*Params).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/edit                | gfast/app/controller/admin.(*Params).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/list                | gfast/app/controller/admin.(*Params).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/webSet/getInfo             | gfast/app/controller/admin.(*WebSet).GetInfo                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/webSet/update              | gfast/app/controller/admin.(*WebSet).Update                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/addDept                      | gfast/app/controller/admin.(*Dept).AddDept                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/delDept                      | gfast/app/controller/admin.(*Dept).DelDept                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/editDept                     | gfast/app/controller/admin.(*Dept).EditDept                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/exclude                      | gfast/app/controller/admin.(*Dept).Exclude                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/list                         | gfast/app/controller/admin.(*Dept).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/roleDeptTreeSelect           | gfast/app/controller/admin.(*Dept).RoleDeptTreeSelect            | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/treeSelect                   | gfast/app/controller/admin.(*Dept).TreeSelect                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/index/getInfo                     | gfast/app/controller/admin.(*Index).GetInfo                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/index/getRouters                  | gfast/app/controller/admin.(*Index).GetRouters                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/add                | gfast/app/controller/admin.(*ModelCategory).Add                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/all                | gfast/app/controller/admin.(*ModelCategory).All                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/delete             | gfast/app/controller/admin.(*ModelCategory).Delete               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/edit               | gfast/app/controller/admin.(*ModelCategory).Edit                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/list               | gfast/app/controller/admin.(*ModelCategory).List                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/sort               | gfast/app/controller/admin.(*ModelCategory).Sort                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/add                  | gfast/app/controller/admin.(*ModelFields).Add                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/delete               | gfast/app/controller/admin.(*ModelFields).Delete                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/edit                 | gfast/app/controller/admin.(*ModelFields).Edit                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/list                 | gfast/app/controller/admin.(*ModelFields).List                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/setFieldsAttr        | gfast/app/controller/admin.(*ModelFields).SetFieldsAttr          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/add                    | gfast/app/controller/admin.(*ModelInfo).Add                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/copyModel              | gfast/app/controller/admin.(*ModelInfo).CopyModel                | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/createModel            | gfast/app/controller/admin.(*ModelInfo).CreateModel              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/delete                 | gfast/app/controller/admin.(*ModelInfo).Delete                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/edit                   | gfast/app/controller/admin.(*ModelInfo).Edit                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/list                   | gfast/app/controller/admin.(*ModelInfo).List                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/setStatus              | gfast/app/controller/admin.(*ModelInfo).SetStatus                | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/add                   | gfast/app/controller/admin.(*MonitorJob).Add                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/delete                | gfast/app/controller/admin.(*MonitorJob).Delete                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/details               | gfast/app/controller/admin.(*MonitorJob).Details                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/edit                  | gfast/app/controller/admin.(*MonitorJob).Edit                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/list                  | gfast/app/controller/admin.(*MonitorJob).List                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/start                 | gfast/app/controller/admin.(*MonitorJob).Start                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/stop                  | gfast/app/controller/admin.(*MonitorJob).Stop                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/loginlog/clear            | gfast/app/controller/admin.(*MonitorLoginLog).Clear              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/loginlog/delete           | gfast/app/controller/admin.(*MonitorLoginLog).Delete             | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/loginlog/list             | gfast/app/controller/admin.(*MonitorLoginLog).List               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/online/forceLogout        | gfast/app/controller/admin.(*MonitorOnline).ForceLogout          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/online/list               | gfast/app/controller/admin.(*MonitorOnline).List                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/clear             | gfast/app/controller/admin.(*MonitorOperationLog).Clear          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/delete            | gfast/app/controller/admin.(*MonitorOperationLog).Delete         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/detail            | gfast/app/controller/admin.(*MonitorOperationLog).Detail         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/list              | gfast/app/controller/admin.(*MonitorOperationLog).List           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/server/info               | gfast/app/controller/admin.(*MonitorServer).Info                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/add                  | gfast/app/controller/admin.(*PlugAd).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/delete               | gfast/app/controller/admin.(*PlugAd).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/edit                 | gfast/app/controller/admin.(*PlugAd).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/list                 | gfast/app/controller/admin.(*PlugAd).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/sort                 | gfast/app/controller/admin.(*PlugAd).Sort                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/add                  | gfast/app/controller/admin.(*AdType).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/delete               | gfast/app/controller/admin.(*AdType).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/edit                 | gfast/app/controller/admin.(*AdType).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/list                 | gfast/app/controller/admin.(*AdType).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/sort                 | gfast/app/controller/admin.(*AdType).Sort                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/type                 | gfast/app/controller/admin.(*AdType).Type                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/add                | gfast/app/controller/admin.(*PlugLink).Add                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/delete             | gfast/app/controller/admin.(*PlugLink).Delete                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/edit               | gfast/app/controller/admin.(*PlugLink).Edit                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/list               | gfast/app/controller/admin.(*PlugLink).List                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/sort               | gfast/app/controller/admin.(*PlugLink).Sort                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/add                | gfast/app/controller/admin.(*LinkType).Add                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/delete             | gfast/app/controller/admin.(*LinkType).Delete                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/edit               | gfast/app/controller/admin.(*LinkType).Edit                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/list               | gfast/app/controller/admin.(*LinkType).List                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/sort               | gfast/app/controller/admin.(*LinkType).Sort                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/type               | gfast/app/controller/admin.(*LinkType).Type                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/add    | gfast/plugin/blog/controller/system.(*BlogClassification).Add    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/delete | gfast/plugin/blog/controller/system.(*BlogClassification).Delete | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/edit   | gfast/plugin/blog/controller/system.(*BlogClassification).Edit   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/list   | gfast/plugin/blog/controller/system.(*BlogClassification).List   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/sort   | gfast/plugin/blog/controller/system.(*BlogClassification).Sort   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/type   | gfast/plugin/blog/controller/system.(*BlogClassification).Type   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/comment/delete        | gfast/plugin/blog/controller/system.(*BlogComment).Delete        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/comment/edit          | gfast/plugin/blog/controller/system.(*BlogComment).Edit          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/comment/list          | gfast/plugin/blog/controller/system.(*BlogComment).List          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/add               | gfast/plugin/blog/controller/system.(*BlogLog).Add               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/delete            | gfast/plugin/blog/controller/system.(*BlogLog).Delete            | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/edit              | gfast/plugin/blog/controller/system.(*BlogLog).Edit              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/list              | gfast/plugin/blog/controller/system.(*BlogLog).List              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/sort              | gfast/plugin/blog/controller/system.(*BlogLog).Sort              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/add                          | gfast/app/controller/admin.(*Post).Add                           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/delete                       | gfast/app/controller/admin.(*Post).Delete                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/edit                         | gfast/app/controller/admin.(*Post).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/list                         | gfast/app/controller/admin.(*Post).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/batchGenCode            | gfast/app/controller/admin.(*Gen).BatchGenCode                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/columnList              | gfast/app/controller/admin.(*Gen).ColumnList                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/dataList                | gfast/app/controller/admin.(*Gen).DataList                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/delete                  | gfast/app/controller/admin.(*Gen).Delete                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/editSave                | gfast/app/controller/admin.(*Gen).EditSave                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/importTableSave         | gfast/app/controller/admin.(*Gen).ImportTableSave                | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/preview                 | gfast/app/controller/admin.(*Gen).Preview                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/tableList               | gfast/app/controller/admin.(*Gen).TableList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/ckEditorUp                 | gfast/app/controller/admin.(*Upload).CkEditorUp                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upFile                     | gfast/app/controller/admin.(*Upload).UpFile                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upFiles                    | gfast/app/controller/admin.(*Upload).UpFiles                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upImg                      | gfast/app/controller/admin.(*Upload).UpImg                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upImgs                     | gfast/app/controller/admin.(*Upload).UpImgs                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/avatar                       | gfast/app/controller/admin.(*User).Avatar                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/edit                         | gfast/app/controller/admin.(*User).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/profile                      | gfast/app/controller/admin.(*User).Profile                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/updatePwd                    | gfast/app/controller/admin.(*User).UpdatePwd                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/add                       | gfast/app/controller/admin.(*Flow).Add                           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/addProcess                | gfast/app/controller/admin.(*Flow).AddProcess                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/checkFlow                 | gfast/app/controller/admin.(*Flow).CheckFlow                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/checkSave                 | gfast/app/controller/admin.(*Flow).CheckSave                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/delete                    | gfast/app/controller/admin.(*Flow).Delete                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/deleteProcess             | gfast/app/controller/admin.(*Flow).DeleteProcess                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/deleteProcessAll          | gfast/app/controller/admin.(*Flow).DeleteProcessAll              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/designFlow                | gfast/app/controller/admin.(*Flow).DesignFlow                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/edit                      | gfast/app/controller/admin.(*Flow).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/getBackTodo               | gfast/app/controller/admin.(*Flow).GetBackTodo                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/getManager                | gfast/app/controller/admin.(*Flow).GetManager                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/list                      | gfast/app/controller/admin.(*Flow).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/monitoring                | gfast/app/controller/admin.(*Flow).Monitoring                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/saveAttr                  | gfast/app/controller/admin.(*Flow).SaveAttr                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/saveProcess               | gfast/app/controller/admin.(*Flow).SaveProcess                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/saveStartWf               | gfast/app/controller/admin.(*Flow).SaveStartWf                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/statusSetFlow             | gfast/app/controller/admin.(*Flow).StatusSetFlow                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/stopFlow                  | gfast/app/controller/admin.(*Flow).StopFlow                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/wfCheck                   | gfast/app/controller/admin.(*Flow).WfCheck                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/wfStart                   | gfast/app/controller/admin.(*Flow).WfStart                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/add                       | gfast/app/controller/admin.(*WfNews).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/checkLog                  | gfast/app/controller/admin.(*WfNews).CheckLog                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/delete                    | gfast/app/controller/admin.(*WfNews).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/edit                      | gfast/app/controller/admin.(*WfNews).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/list                      | gfast/app/controller/admin.(*WfNews).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+
+2021-01-22 17:31:33.420 30476: http server started listening on [:8200]
+
+  SERVER  | DOMAIN  | ADDRESS | METHOD |                   ROUTE                   |                             HANDLER                              |    MIDDLEWARE      
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /*                                        | gfast/middleWare.CORS                                            | GLOBAL MIDDLEWARE  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /captcha/get/img                          | gfast/app/controller/common.(*Captcha).Img                       |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /cms                                      | gfast/app/controller/home.(*Index).Index-fm                      |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /cms/list/:cateId/*page/*keyWords         | gfast/app/controller/home.(*Index).List-fm                       |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /cms/search/*page/*keyWords               | gfast/app/controller/home.(*Index).Search-fm                     |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /cms/show/:cateIds/:newsId                | gfast/app/controller/home.(*Index).Show-fm                       |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/*action                      | github.com/gogf/gf/net/ghttp.(*utilPProf).Index-fm               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/cmdline                      | github.com/gogf/gf/net/ghttp.(*utilPProf).Cmdline-fm             |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/profile                      | github.com/gogf/gf/net/ghttp.(*utilPProf).Profile-fm             |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/symbol                       | github.com/gogf/gf/net/ghttp.(*utilPProf).Symbol-fm              |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /debug/pprof/trace                        | github.com/gogf/gf/net/ghttp.(*utilPProf).Trace-fm               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog                              | gfast/plugin/blog/controller/home.(*Index).Index                 |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/addComment                   | gfast/plugin/blog/controller/home.(*Index).AddComment            |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/addLink                      | gfast/plugin/blog/controller/home.(*Index).AddLink               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/blogList                     | gfast/plugin/blog/controller/home.(*Index).BlogList              |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/content                      | gfast/plugin/blog/controller/home.(*Index).Content               |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/index                        | gfast/plugin/blog/controller/home.(*Index).Index                 |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /plugin/blog/link                         | gfast/plugin/blog/controller/home.(*Index).Link                  |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /pub_upload/*                             | gfast/router.init.0.func1                                        | HOOK_BEFORE_SERVE  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | GET    | /swagger.json                             | gfast/router.init.0.func2                                        |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /sysLogin/login                           | github.com/goflyfox/gtoken/gtoken.(*GfToken).Login-fm            |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /sysLogin/logout                          | github.com/goflyfox/gtoken/gtoken.(*GfToken).Logout-fm           |                    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/*                                 | github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware-fm   | GLOBAL MIDDLEWARE  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/*                                 | gfast/hook.OperationLog                                          | HOOK_AFTER_OUTPUT  
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/addMenu                      | gfast/app/controller/admin.(*Auth).AddMenu                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/addRole                      | gfast/app/controller/admin.(*Auth).AddRole                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/addUser                      | gfast/app/controller/admin.(*Auth).AddUser                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/changeUserStatus             | gfast/app/controller/admin.(*Auth).ChangeUserStatus              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/deleteAdmin                  | gfast/app/controller/admin.(*Auth).DeleteAdmin                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/deleteMenu                   | gfast/app/controller/admin.(*Auth).DeleteMenu                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/deleteRole                   | gfast/app/controller/admin.(*Auth).DeleteRole                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/editMenu                     | gfast/app/controller/admin.(*Auth).EditMenu                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/editRole                     | gfast/app/controller/admin.(*Auth).EditRole                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/editUser                     | gfast/app/controller/admin.(*Auth).EditUser                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/menuList                     | gfast/app/controller/admin.(*Auth).MenuList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/menuSort                     | gfast/app/controller/admin.(*Auth).MenuSort                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/resetUserPwd                 | gfast/app/controller/admin.(*Auth).ResetUserPwd                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/roleDataScope                | gfast/app/controller/admin.(*Auth).RoleDataScope                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/roleList                     | gfast/app/controller/admin.(*Auth).RoleList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/statusSetRole                | gfast/app/controller/admin.(*Auth).StatusSetRole                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/auth/userList                     | gfast/app/controller/admin.(*Auth).UserList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/add                      | gfast/app/controller/admin.(*CmsMenu).Add                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/delete                   | gfast/app/controller/admin.(*CmsMenu).Delete                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/edit                     | gfast/app/controller/admin.(*CmsMenu).Edit                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/list                     | gfast/app/controller/admin.(*CmsMenu).List                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/modelOptions             | gfast/app/controller/admin.(*CmsMenu).ModelOptions               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/menu/sort                     | gfast/app/controller/admin.(*CmsMenu).Sort                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/add                      | gfast/app/controller/admin.(*CmsNews).Add                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/delete                   | gfast/app/controller/admin.(*CmsNews).Delete                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/edit                     | gfast/app/controller/admin.(*CmsNews).Edit                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/getModelFields           | gfast/app/controller/admin.(*CmsNews).GetModelFields             | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/cms/news/list                     | gfast/app/controller/admin.(*CmsNews).List                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/add                   | gfast/app/controller/admin.(*Dict).Add                           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataAdd               | gfast/app/controller/admin.(*Dict).DataAdd                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataDelete            | gfast/app/controller/admin.(*Dict).DataDelete                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataEdit              | gfast/app/controller/admin.(*Dict).DataEdit                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/dataList              | gfast/app/controller/admin.(*Dict).DataList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/delete                | gfast/app/controller/admin.(*Dict).Delete                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/edit                  | gfast/app/controller/admin.(*Dict).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/getDicts              | gfast/app/controller/admin.(*Dict).GetDicts                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/list                  | gfast/app/controller/admin.(*Dict).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/dict/optionSelect          | gfast/app/controller/admin.(*Dict).OptionSelect                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/add                 | gfast/app/controller/admin.(*Params).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/delete              | gfast/app/controller/admin.(*Params).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/edit                | gfast/app/controller/admin.(*Params).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/params/list                | gfast/app/controller/admin.(*Params).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/webSet/getInfo             | gfast/app/controller/admin.(*WebSet).GetInfo                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/config/webSet/update              | gfast/app/controller/admin.(*WebSet).Update                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/addDept                      | gfast/app/controller/admin.(*Dept).AddDept                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/delDept                      | gfast/app/controller/admin.(*Dept).DelDept                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/editDept                     | gfast/app/controller/admin.(*Dept).EditDept                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/exclude                      | gfast/app/controller/admin.(*Dept).Exclude                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/list                         | gfast/app/controller/admin.(*Dept).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/roleDeptTreeSelect           | gfast/app/controller/admin.(*Dept).RoleDeptTreeSelect            | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/dept/treeSelect                   | gfast/app/controller/admin.(*Dept).TreeSelect                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/index/getInfo                     | gfast/app/controller/admin.(*Index).GetInfo                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/index/getRouters                  | gfast/app/controller/admin.(*Index).GetRouters                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/add                | gfast/app/controller/admin.(*ModelCategory).Add                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/all                | gfast/app/controller/admin.(*ModelCategory).All                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/delete             | gfast/app/controller/admin.(*ModelCategory).Delete               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/edit               | gfast/app/controller/admin.(*ModelCategory).Edit                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/list               | gfast/app/controller/admin.(*ModelCategory).List                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/category/sort               | gfast/app/controller/admin.(*ModelCategory).Sort                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/add                  | gfast/app/controller/admin.(*ModelFields).Add                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/delete               | gfast/app/controller/admin.(*ModelFields).Delete                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/edit                 | gfast/app/controller/admin.(*ModelFields).Edit                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/list                 | gfast/app/controller/admin.(*ModelFields).List                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/fields/setFieldsAttr        | gfast/app/controller/admin.(*ModelFields).SetFieldsAttr          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/add                    | gfast/app/controller/admin.(*ModelInfo).Add                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/copyModel              | gfast/app/controller/admin.(*ModelInfo).CopyModel                | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/createModel            | gfast/app/controller/admin.(*ModelInfo).CreateModel              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/delete                 | gfast/app/controller/admin.(*ModelInfo).Delete                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/edit                   | gfast/app/controller/admin.(*ModelInfo).Edit                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/list                   | gfast/app/controller/admin.(*ModelInfo).List                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/model/info/setStatus              | gfast/app/controller/admin.(*ModelInfo).SetStatus                | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/add                   | gfast/app/controller/admin.(*MonitorJob).Add                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/delete                | gfast/app/controller/admin.(*MonitorJob).Delete                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/details               | gfast/app/controller/admin.(*MonitorJob).Details                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/edit                  | gfast/app/controller/admin.(*MonitorJob).Edit                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/list                  | gfast/app/controller/admin.(*MonitorJob).List                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/start                 | gfast/app/controller/admin.(*MonitorJob).Start                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/job/stop                  | gfast/app/controller/admin.(*MonitorJob).Stop                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/loginlog/clear            | gfast/app/controller/admin.(*MonitorLoginLog).Clear              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/loginlog/delete           | gfast/app/controller/admin.(*MonitorLoginLog).Delete             | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/loginlog/list             | gfast/app/controller/admin.(*MonitorLoginLog).List               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/online/forceLogout        | gfast/app/controller/admin.(*MonitorOnline).ForceLogout          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/online/list               | gfast/app/controller/admin.(*MonitorOnline).List                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/clear             | gfast/app/controller/admin.(*MonitorOperationLog).Clear          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/delete            | gfast/app/controller/admin.(*MonitorOperationLog).Delete         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/detail            | gfast/app/controller/admin.(*MonitorOperationLog).Detail         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/operlog/list              | gfast/app/controller/admin.(*MonitorOperationLog).List           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/monitor/server/info               | gfast/app/controller/admin.(*MonitorServer).Info                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/add                  | gfast/app/controller/admin.(*PlugAd).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/delete               | gfast/app/controller/admin.(*PlugAd).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/edit                 | gfast/app/controller/admin.(*PlugAd).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/list                 | gfast/app/controller/admin.(*PlugAd).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/info/sort                 | gfast/app/controller/admin.(*PlugAd).Sort                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/add                  | gfast/app/controller/admin.(*AdType).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/delete               | gfast/app/controller/admin.(*AdType).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/edit                 | gfast/app/controller/admin.(*AdType).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/list                 | gfast/app/controller/admin.(*AdType).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/sort                 | gfast/app/controller/admin.(*AdType).Sort                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/ad/type/type                 | gfast/app/controller/admin.(*AdType).Type                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/add                | gfast/app/controller/admin.(*PlugLink).Add                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/delete             | gfast/app/controller/admin.(*PlugLink).Delete                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/edit               | gfast/app/controller/admin.(*PlugLink).Edit                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/list               | gfast/app/controller/admin.(*PlugLink).List                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/info/sort               | gfast/app/controller/admin.(*PlugLink).Sort                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/add                | gfast/app/controller/admin.(*LinkType).Add                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/delete             | gfast/app/controller/admin.(*LinkType).Delete                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/edit               | gfast/app/controller/admin.(*LinkType).Edit                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/list               | gfast/app/controller/admin.(*LinkType).List                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/sort               | gfast/app/controller/admin.(*LinkType).Sort                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plug/link/type/type               | gfast/app/controller/admin.(*LinkType).Type                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/add    | gfast/plugin/blog/controller/system.(*BlogClassification).Add    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/delete | gfast/plugin/blog/controller/system.(*BlogClassification).Delete | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/edit   | gfast/plugin/blog/controller/system.(*BlogClassification).Edit   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/list   | gfast/plugin/blog/controller/system.(*BlogClassification).List   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/sort   | gfast/plugin/blog/controller/system.(*BlogClassification).Sort   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/classification/type   | gfast/plugin/blog/controller/system.(*BlogClassification).Type   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/comment/delete        | gfast/plugin/blog/controller/system.(*BlogComment).Delete        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/comment/edit          | gfast/plugin/blog/controller/system.(*BlogComment).Edit          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/comment/list          | gfast/plugin/blog/controller/system.(*BlogComment).List          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/add               | gfast/plugin/blog/controller/system.(*BlogLog).Add               | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/delete            | gfast/plugin/blog/controller/system.(*BlogLog).Delete            | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/edit              | gfast/plugin/blog/controller/system.(*BlogLog).Edit              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/list              | gfast/plugin/blog/controller/system.(*BlogLog).List              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/plugin/blog/log/sort              | gfast/plugin/blog/controller/system.(*BlogLog).Sort              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/add                          | gfast/app/controller/admin.(*Post).Add                           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/delete                       | gfast/app/controller/admin.(*Post).Delete                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/edit                         | gfast/app/controller/admin.(*Post).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/post/list                         | gfast/app/controller/admin.(*Post).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/batchGenCode            | gfast/app/controller/admin.(*Gen).BatchGenCode                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/columnList              | gfast/app/controller/admin.(*Gen).ColumnList                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/dataList                | gfast/app/controller/admin.(*Gen).DataList                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/delete                  | gfast/app/controller/admin.(*Gen).Delete                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/editSave                | gfast/app/controller/admin.(*Gen).EditSave                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/importTableSave         | gfast/app/controller/admin.(*Gen).ImportTableSave                | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/preview                 | gfast/app/controller/admin.(*Gen).Preview                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/tools/gen/tableList               | gfast/app/controller/admin.(*Gen).TableList                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/ckEditorUp                 | gfast/app/controller/admin.(*Upload).CkEditorUp                  | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upFile                     | gfast/app/controller/admin.(*Upload).UpFile                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upFiles                    | gfast/app/controller/admin.(*Upload).UpFiles                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upImg                      | gfast/app/controller/admin.(*Upload).UpImg                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | POST   | /system/upload/upImgs                     | gfast/app/controller/admin.(*Upload).UpImgs                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/avatar                       | gfast/app/controller/admin.(*User).Avatar                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/edit                         | gfast/app/controller/admin.(*User).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/profile                      | gfast/app/controller/admin.(*User).Profile                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/user/updatePwd                    | gfast/app/controller/admin.(*User).UpdatePwd                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/add                       | gfast/app/controller/admin.(*Flow).Add                           | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/addProcess                | gfast/app/controller/admin.(*Flow).AddProcess                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/checkFlow                 | gfast/app/controller/admin.(*Flow).CheckFlow                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/checkSave                 | gfast/app/controller/admin.(*Flow).CheckSave                     | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/delete                    | gfast/app/controller/admin.(*Flow).Delete                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/deleteProcess             | gfast/app/controller/admin.(*Flow).DeleteProcess                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/deleteProcessAll          | gfast/app/controller/admin.(*Flow).DeleteProcessAll              | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/designFlow                | gfast/app/controller/admin.(*Flow).DesignFlow                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/edit                      | gfast/app/controller/admin.(*Flow).Edit                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/getBackTodo               | gfast/app/controller/admin.(*Flow).GetBackTodo                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/getManager                | gfast/app/controller/admin.(*Flow).GetManager                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/list                      | gfast/app/controller/admin.(*Flow).List                          | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/monitoring                | gfast/app/controller/admin.(*Flow).Monitoring                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/saveAttr                  | gfast/app/controller/admin.(*Flow).SaveAttr                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/saveProcess               | gfast/app/controller/admin.(*Flow).SaveProcess                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/saveStartWf               | gfast/app/controller/admin.(*Flow).SaveStartWf                   | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/statusSetFlow             | gfast/app/controller/admin.(*Flow).StatusSetFlow                 | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/stopFlow                  | gfast/app/controller/admin.(*Flow).StopFlow                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/wfCheck                   | gfast/app/controller/admin.(*Flow).WfCheck                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/flow/wfStart                   | gfast/app/controller/admin.(*Flow).WfStart                       | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/add                       | gfast/app/controller/admin.(*WfNews).Add                         | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/checkLog                  | gfast/app/controller/admin.(*WfNews).CheckLog                    | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/delete                    | gfast/app/controller/admin.(*WfNews).Delete                      | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/edit                      | gfast/app/controller/admin.(*WfNews).Edit                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+  default | default | :8200   | ALL    | /system/wf/news/list                      | gfast/app/controller/admin.(*WfNews).List                        | middleWare.Auth    
+|---------|---------|---------|--------|-------------------------------------------|------------------------------------------------------------------|-------------------|
+

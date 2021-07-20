@@ -1,0 +1,40 @@
+2020-07-20 09:29:35.860 [DEBU] [ 82 ms] SHOW FULL COLUMNS FROM `sys_job`
+2020-07-20 09:29:35.872 [DEBU] [ 10 ms] SELECT * FROM `sys_job` WHERE `status`=0
+2020-07-20 09:29:43.911 [DEBU] [ 37 ms] SHOW FULL COLUMNS FROM `user`
+2020-07-20 09:29:43.913 [DEBU] [  1 ms] SELECT * FROM `user` WHERE user_name='admin' and user_password='IJ1xz+Wve+ZONVMFfXJQMw=='
+2020-07-20 09:29:43.967 [DEBU] [ 53 ms] UPDATE `user` SET `birthday`=0,`user_email`='yxh669@qq.com',`sex`=1,`avatar`='pub_upload/2020-07-06/c3z4ly6gknispnpjea.jpeg',`id`=1,`create_time`=1557715675,`dept_id`=101,`user_nickname`='超级管理员',`mobile`='18687455555',`user_status`=1,`last_login_time`=1595208583,`remark`='',`user_name`='admin',`last_login_ip`='[::1]',`is_admin`=1,`user_password`='IJ1xz+Wve+ZONVMFfXJQMw==' WHERE `id` IN (1)
+2020-07-20 09:29:44.011 [DEBU] [ 43 ms] SHOW FULL COLUMNS FROM `sys_login_log`
+2020-07-20 09:29:44.012 [DEBU] [ 42 ms] SHOW FULL COLUMNS FROM `user_online`
+2020-07-20 09:29:44.014 [DEBU] [  1 ms] INSERT INTO `user_online`(`id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os`) VALUES(0,'f4eef2f8ea0123902851640f38537b1a','lpe0YG9uqSN+sc8zL1tF+9Wcdo668H3tXJxqoKs0sIpULsmmu8SNCn4Y7lyrWhX9FVApjjr9PeY8aHTfwcnZtSlb9XawmSIz69IWJ+uzIeyuCM/los449kZ9xvM4ZmRX',1595208583,'admin','[::1]','Chrome','Windows 10') ON DUPLICATE KEY UPDATE `os`=VALUES(`os`),`id`=VALUES(`id`),`uuid`=VALUES(`uuid`),`token`=VALUES(`token`),`create_time`=VALUES(`create_time`),`user_name`=VALUES(`user_name`),`ip`=VALUES(`ip`),`explorer`=VALUES(`explorer`)
+2020-07-20 09:29:44.022 [DEBU] [ 10 ms] INSERT INTO `sys_login_log`(`info_id`,`login_name`,`ipaddr`,`browser`,`os`,`login_location`,`status`,`msg`,`login_time`) VALUES(0,'admin','[::1]','Chrome','Windows 10','内网IP',1,'登录成功',1595208583) ON DUPLICATE KEY UPDATE `login_name`=VALUES(`login_name`),`ipaddr`=VALUES(`ipaddr`),`browser`=VALUES(`browser`),`os`=VALUES(`os`),`info_id`=VALUES(`info_id`),`status`=VALUES(`status`),`msg`=VALUES(`msg`),`login_time`=VALUES(`login_time`),`login_location`=VALUES(`login_location`)
+2020-07-20 09:29:44.037 [DEBU] [  1 ms] SELECT * FROM `user` WHERE `id`=1
+2020-07-20 09:29:44.056 [DEBU] [ 18 ms] SHOW FULL COLUMNS FROM `role`
+2020-07-20 09:29:44.057 [DEBU] [  0 ms] SELECT * FROM `role` ORDER BY `list_order` asc,`id` asc
+2020-07-20 09:29:44.070 [DEBU] [ 12 ms] SHOW FULL COLUMNS FROM `casbin_rule`
+2020-07-20 09:29:44.081 [DEBU] [ 10 ms] SELECT * FROM `casbin_rule`
+2020-07-20 09:29:44.104 [DEBU] [ 20 ms] SHOW FULL COLUMNS FROM `auth_rule`
+2020-07-20 09:29:44.106 [DEBU] [  1 ms] SELECT * FROM `auth_rule` ORDER BY `weigh` desc,`id` asc
+2020-07-20 09:29:44.122 [DEBU] [  9 ms] SHOW FULL COLUMNS FROM `sys_oper_log`
+2020-07-20 09:29:44.149 [DEBU] [ 26 ms] INSERT INTO `sys_oper_log`(`json_result`,`error_msg`,`oper_time`,`title`,`business_type`,`operator_type`,`dept_name`,`oper_ip`,`oper_location`,`status`,`oper_id`,`oper_name`,`oper_url`,`oper_param`,`request_method`,`method`) VALUES('{"code":0,"msg":"ok"}','',1595208584,'',0,1,'','[::1]','内网IP',1,0,'admin','/system/index/getInfo','{}','GET','/system/index/getInfo') ON DUPLICATE KEY UPDATE `method`=VALUES(`method`),`title`=VALUES(`title`),`json_result`=VALUES(`json_result`),`error_msg`=VALUES(`error_msg`),`oper_time`=VALUES(`oper_time`),`oper_location`=VALUES(`oper_location`),`status`=VALUES(`status`),`oper_id`=VALUES(`oper_id`),`business_type`=VALUES(`business_type`),`operator_type`=VALUES(`operator_type`),`dept_name`=VALUES(`dept_name`),`oper_ip`=VALUES(`oper_ip`),`request_method`=VALUES(`request_method`),`oper_name`=VALUES(`oper_name`),`oper_url`=VALUES(`oper_url`),`oper_param`=VALUES(`oper_param`)
+2020-07-20 09:29:44.149 [DEBU] [ 25 ms] INSERT INTO `sys_oper_log`(`oper_id`,`request_method`,`operator_type`,`status`,`error_msg`,`title`,`business_type`,`method`,`dept_name`,`oper_param`,`json_result`,`oper_name`,`oper_url`,`oper_ip`,`oper_location`,`oper_time`) VALUES(0,'GET',1,1,'','',0,'/system/index/getRouters','','{}','{"code":0,"msg":"ok"}','admin','/system/index/getRouters','[::1]','内网IP',1595208584) ON DUPLICATE KEY UPDATE `error_msg`=VALUES(`error_msg`),`oper_id`=VALUES(`oper_id`),`request_method`=VALUES(`request_method`),`operator_type`=VALUES(`operator_type`),`status`=VALUES(`status`),`oper_param`=VALUES(`oper_param`),`json_result`=VALUES(`json_result`),`title`=VALUES(`title`),`business_type`=VALUES(`business_type`),`method`=VALUES(`method`),`dept_name`=VALUES(`dept_name`),`oper_time`=VALUES(`oper_time`),`oper_name`=VALUES(`oper_name`),`oper_url`=VALUES(`oper_url`),`oper_ip`=VALUES(`oper_ip`),`oper_location`=VALUES(`oper_location`)
+2020-07-20 09:30:46.205 [DEBU] [  8 ms] SHOW FULL COLUMNS FROM `sys_job`
+2020-07-20 09:30:46.216 [DEBU] [ 10 ms] SELECT * FROM `sys_job` WHERE `status`=0
+2020-07-20 09:31:27.882 [DEBU] [  9 ms] SHOW FULL COLUMNS FROM `sys_job`
+2020-07-20 09:31:27.893 [DEBU] [ 10 ms] SELECT * FROM `sys_job` WHERE `status`=0
+2020-07-20 09:31:44.409 [DEBU] [  8 ms] SHOW FULL COLUMNS FROM `sys_job`
+2020-07-20 09:31:44.411 [DEBU] [  1 ms] SELECT * FROM `sys_job` WHERE `status`=0
+2020-07-20 09:31:53.589 [DEBU] [  8 ms] SHOW FULL COLUMNS FROM `sys_job`
+2020-07-20 09:31:53.600 [DEBU] [ 10 ms] SELECT * FROM `sys_job` WHERE `status`=0
+2020-07-20 09:32:18.740 [DEBU] [  9 ms] SHOW FULL COLUMNS FROM `sys_job`
+2020-07-20 09:32:18.748 [DEBU] [  7 ms] SELECT * FROM `sys_job` WHERE `status`=0
+2020-07-20 09:32:26.590 [DEBU] [  5 ms] SHOW FULL COLUMNS FROM `user`
+2020-07-20 09:32:26.596 [DEBU] [  3 ms] SELECT * FROM `user` WHERE `id`=1
+2020-07-20 09:32:26.603 [DEBU] [  6 ms] SHOW FULL COLUMNS FROM `role`
+2020-07-20 09:32:26.604 [DEBU] [  0 ms] SELECT * FROM `role` ORDER BY `list_order` asc,`id` asc
+2020-07-20 09:32:26.617 [DEBU] [ 12 ms] SHOW FULL COLUMNS FROM `casbin_rule`
+2020-07-20 09:32:26.618 [DEBU] [  0 ms] SELECT * FROM `casbin_rule`
+2020-07-20 09:32:26.630 [DEBU] [  6 ms] SHOW FULL COLUMNS FROM `auth_rule`
+2020-07-20 09:32:26.631 [DEBU] [  0 ms] SELECT * FROM `auth_rule` ORDER BY `weigh` desc,`id` asc
+2020-07-20 09:32:26.641 [DEBU] [  5 ms] SHOW FULL COLUMNS FROM `sys_oper_log`
+2020-07-20 09:32:26.643 [DEBU] [  1 ms] INSERT INTO `sys_oper_log`(`oper_id`,`method`,`dept_name`,`oper_url`,`error_msg`,`oper_time`,`business_type`,`oper_location`,`oper_param`,`status`,`operator_type`,`oper_name`,`title`,`request_method`,`oper_ip`,`json_result`) VALUES(0,'/system/index/getInfo','','/system/index/getInfo','',1595208746,0,'内网IP','{}',1,1,'admin','','GET','[::1]','{"code":0,"msg":"ok"}') ON DUPLICATE KEY UPDATE `oper_ip`=VALUES(`oper_ip`),`json_result`=VALUES(`json_result`),`title`=VALUES(`title`),`request_method`=VALUES(`request_method`),`dept_name`=VALUES(`dept_name`),`oper_url`=VALUES(`oper_url`),`oper_id`=VALUES(`oper_id`),`method`=VALUES(`method`),`oper_param`=VALUES(`oper_param`),`status`=VALUES(`status`),`error_msg`=VALUES(`error_msg`),`oper_time`=VALUES(`oper_time`),`business_type`=VALUES(`business_type`),`oper_location`=VALUES(`oper_location`),`operator_type`=VALUES(`operator_type`),`oper_name`=VALUES(`oper_name`)
+2020-07-20 09:32:26.646 [DEBU] [  1 ms] INSERT INTO `sys_oper_log`(`oper_id`,`business_type`,`method`,`operator_type`,`oper_ip`,`json_result`,`title`,`dept_name`,`status`,`error_msg`,`oper_time`,`oper_url`,`request_method`,`oper_name`,`oper_location`,`oper_param`) VALUES(0,0,'/system/index/getRouters',1,'[::1]','{"code":0,"msg":"ok"}','','',1,'',1595208746,'/system/index/getRouters','GET','admin','内网IP','{}') ON DUPLICATE KEY UPDATE `error_msg`=VALUES(`error_msg`),`oper_time`=VALUES(`oper_time`),`title`=VALUES(`title`),`dept_name`=VALUES(`dept_name`),`status`=VALUES(`status`),`oper_url`=VALUES(`oper_url`),`oper_param`=VALUES(`oper_param`),`request_method`=VALUES(`request_method`),`oper_name`=VALUES(`oper_name`),`oper_location`=VALUES(`oper_location`),`operator_type`=VALUES(`operator_type`),`oper_ip`=VALUES(`oper_ip`),`json_result`=VALUES(`json_result`),`oper_id`=VALUES(`oper_id`),`business_type`=VALUES(`business_type`),`method`=VALUES(`method`)
