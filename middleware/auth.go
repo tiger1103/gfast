@@ -52,7 +52,7 @@ func Auth(r *ghttp.Request) {
 	//获取登陆用户id
 	adminId := userInfo.Id
 	/*if r.Method != "GET" && adminId!=1{
-		response.FailJson(true, r, "演示系统禁止操作")
+		library.FailJson(true, r, "演示系统禁止操作")
 	}*/
 	accessParams := r.GetStrings("accessParams")
 	accessParamsStr := ""
