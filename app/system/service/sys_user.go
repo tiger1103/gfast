@@ -200,7 +200,7 @@ func (s *sysUser) GetPermissions(roleIds []uint) ([]string, error) {
 func (s *sysUser) GetAllMenus() (menus []UserMenus, err error) {
 	//获取所有开启的菜单
 	var allMenus []*model.SysAuthRuleInfoRes
-	allMenus, err = Rule.GetMenuIsStatusList()
+	allMenus, err = Rule.GetIsMenuStatusList()
 	if err != nil {
 		return
 	}
@@ -231,7 +231,7 @@ func (s *sysUser) GetAdminMenusByRoleIds(roleIds []uint) (menus []UserMenus, err
 		}
 	}
 	//获取所有开启的菜单
-	allMenus, err := Rule.GetMenuIsStatusList()
+	allMenus, err := Rule.GetIsMenuStatusList()
 	if err != nil {
 		return
 	}

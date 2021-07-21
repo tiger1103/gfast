@@ -14,8 +14,8 @@ type rule struct {
 
 var Rule = new(rule)
 
-//获取status==1的菜单列表
-func (s *rule) GetMenuIsStatusList() ([]*model.SysAuthRuleInfoRes, error) {
+// GetIsMenuStatusList 获取isMenu=0|1且status=1的菜单列表
+func (s *rule) GetIsMenuStatusList() ([]*model.SysAuthRuleInfoRes, error) {
 	list, err := s.GetMenuList()
 	if err != nil {
 		return nil, err
@@ -99,14 +99,30 @@ func (s *rule) GetIsButtonStatusList() ([]*model.SysAuthRuleInfoRes, error) {
 	return gList, nil
 }
 
+// GetIsMenuList 获取MenuType==0,1菜单列表
 func (s *rule) GetIsMenuList() ([]*model.SysAuthRuleInfoRes, error) {
 	list, err := s.GetMenuList()
 	if err != nil {
 		return nil, err
 	}
-	var gList = make([]*model.SysAuthRuleInfoRes, 0)
+	var gList = make([]*model.SysAuthRuleInfoRes, 0, len(list))
 	for _, v := range list {
 		if v.MenuType == 0 || v.MenuType == 1 {
+			gList = append(gList, v)
+		}
+	}
+	return gList, nil
+}
+
+// GetMenuIsStatusList 获取status==1的菜单列表
+func (s *rule) GetMenuIsStatusList() ([]*model.SysAuthRuleInfoRes, error) {
+	list, err := s.GetMenuList()
+	if err != nil {
+		return nil, err
+	}
+	var gList = make([]*model.SysAuthRuleInfoRes, 0, len(list))
+	for _, v := range list {
+		if v.Status == 1 {
 			gList = append(gList, v)
 		}
 	}
