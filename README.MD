@@ -27,7 +27,7 @@
 16. 正在开发中的功能：cms管理、模型管理、工作流引擎
 
 ## 演示地址
-[http://demo.g-fast.cn](http://demo.g-fast.cn/)
+[http://v2.g-fast.cn](http://v2.g-fast.cn/)
 账号：demo  密码：123456
 ## 配置
 项目数据库文件 /data/db.sql 创建数据库导入后修改配置/config/config.toml
