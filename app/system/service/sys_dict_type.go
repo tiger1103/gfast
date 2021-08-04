@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+	"gfast/app/common/global"
 	comModel "gfast/app/common/model"
+	comService "gfast/app/common/service"
 	"gfast/app/system/dao"
 	"gfast/app/system/model"
 	"github.com/gogf/gf/container/garray"
@@ -152,5 +154,25 @@ func (s *sysDictType) GetDictById(id int) (dict *model.SysDictType, err error) {
 	if dict == nil {
 		err = gerror.New("不存在的字典类型")
 	}
+	return
+}
+
+// GetAllDictType 获取所有正常状态下的字典类型
+func (s *sysDictType) GetAllDictType() (list []*model.SysDictType, err error) {
+	cache := comService.Cache.New()
+	//从缓存获取
+	data := cache.Get(global.SysDict + "_dict_type_all")
+	if data != nil {
+		err = gconv.Structs(data, &list)
+		return
+	}
+	err = dao.SysDictType.Where("status", 1).Order("dict_id ASC").Scan(&list)
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取字典类型数据出错")
+		return
+	}
+	//缓存
+	cache.Set(global.SysDict+"_dict_type_all", list, 0, global.SysDictTag)
 	return
 }

@@ -52,6 +52,7 @@ func init() {
 				group.GET("/dict/type/one", api.DictType.Get)
 				group.PUT("/dict/type/edit", api.DictType.Edit)
 				group.DELETE("/dict/type/delete", api.DictType.Delete)
+				group.GET("/dict/type/optionSelect", api.DictType.OptionSelect)
 				//字典数据
 				group.GET("/dict/data/GetDictData", api.DictData.GetDictData)
 				group.GET("/dict/data/list", api.DictData.List)

@@ -24,9 +24,9 @@
 
 # Template.
 [viewer]
-    Path        = "template"
-    DefaultFile = "index.html"
-    Delimiters  =  ["${", "}"]
+    paths       = ["./template"]
+    defaultFile = "index.html"
+    delimiters  =  ["${", "}"]
 
 # Database.
 [database]
@@ -46,14 +46,14 @@
 # Redis数据库配置
 [redis]
     open = true #是否开启 redis 缓存 若不开启使用gchache缓存方式
-    default = "127.0.0.1:6379,9?idleTimeout=600"
+    default = "127.0.0.1:6379,9?idleTimeout=20&maxActive=100"
 
 #jwt配置
 [gToken]
     [gToken.system]
         CacheMode = 2
         CacheKey = "GToken:"
-        Timeout = 3600000 #1个小时
+        Timeout = 10800000 #3个小时
         MaxRefresh = 0
         TokenDelimiter="_"
         EncryptKey = "koi29a83idakguqjq29asd9asd8a7jhq"
@@ -66,3 +66,23 @@
 [casbin]
     modelFile="./config/casbin_conf/rbac_model.conf"
     policyFile="./config/casbin_conf/rbac_policy.csv"
+
+
+# Gen
+[gen]
+    author        = "gfast"
+    moduleName    = "system"
+    packageName   = "gfast/app/system"
+    autoRemovePre = true   #是否自动删除表前缀
+    tablePrefix   = "table_,qxkj_"   #表前缀
+    templatePath  = "./template/vm"  #代码生成模板路径
+    fontDir = "F:/tools/webProject/p2021/gfast-v2-ui/ruoyi-ui" #前端路径
+
+# 上传配置
+[upload]
+    type = "local"  #local：本地，tencentCOS:腾讯云 , 七牛云 阿里云等开发中...
+    [upload.tencentCOS] #腾讯云cos配置
+        UpPath =    "/gfast/"
+        RawUrl =    "https://您的cos空间域名.cos.ap-chongqing.myqcloud.com"
+        SecretID =  "填写您的SecretID"
+        SecretKey = "填写您的SecretKey"

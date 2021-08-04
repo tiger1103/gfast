@@ -94,3 +94,13 @@ func (c *dictType) Delete(r *ghttp.Request) {
 	comService.Cache.New().RemoveByTag(global.SysDictTag)
 	c.SusJsonExit(r)
 }
+
+// OptionSelect 获取字典选择框列表
+func (c *dictType) OptionSelect(r *ghttp.Request) {
+	//获取所有字典类型列表
+	list, err := service.SysDictType.GetAllDictType()
+	if err != nil {
+		c.FailJsonExit(r, err.Error())
+	}
+	c.SusJsonExit(r, list)
+}

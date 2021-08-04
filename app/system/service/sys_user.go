@@ -420,7 +420,7 @@ func (s *sysUser) GetUserList(req *model.SysUserSearchReq) (total, page int, use
 		userModel = userModel.Where("created_at >=?", req.BeginTime)
 	}
 	if req.EndTime != "" {
-		userModel = userModel.Where("create_time <=?", req.EndTime)
+		userModel = userModel.Where("created_at <=?", req.EndTime)
 	}
 	total, err = userModel.Count()
 	if err != nil {

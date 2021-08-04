@@ -10,4 +10,5 @@ type PageReq struct {
 	PageNum   int    `p:"PageNum"`   //当前页码
 	PageSize  int    `p:"pageSize"`  //每页数
 	Ctx       context.Context
+	OrderBy   string //排序方式
 }

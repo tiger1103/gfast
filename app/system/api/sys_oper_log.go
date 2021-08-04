@@ -76,8 +76,8 @@ func (c *sysOperLog) Clear(r *ghttp.Request) {
 
 // OperationLog 操作日志记录
 func (c *sysOperLog) OperationLog(r *ghttp.Request) {
-	user := c.GetCurrentUser(r.GetCtx())
-	if user == nil {
+	userInfo := c.GetCurrentUser(r.GetCtx())
+	if userInfo == nil {
 		return
 	}
 	url := r.Request.URL //请求地址
@@ -98,7 +98,7 @@ func (c *sysOperLog) OperationLog(r *ghttp.Request) {
 	}
 
 	data := &dao.SysOperLogAdd{
-		User:         user,
+		User:         userInfo,
 		Menu:         menu,
 		Url:          url,
 		Params:       r.GetMap(),

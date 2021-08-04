@@ -3,6 +3,7 @@ package library
 import (
 	"fmt"
 	"github.com/gogf/gf/crypto/gmd5"
+	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/encoding/gcharset"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/encoding/gurl"
@@ -10,7 +11,10 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
+	"github.com/gogf/gf/util/gconv"
 	"net"
+	"strings"
 )
 
 //密码加密
@@ -105,4 +109,136 @@ func StrToTimestamp(dateStr string) int64 {
 		return 0
 	}
 	return tm.Timestamp()
+}
+
+// GetDbConfig get db config
+func GetDbConfig() (cfg *gdb.ConfigNode, err error) {
+	cfg = g.DB().GetConfig()
+	err = ParseDSN(cfg)
+	return
+}
+
+// ParseDSN parses the DSN string to a Config
+func ParseDSN(cfg *gdb.ConfigNode) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = gerror.New(r.(string))
+		}
+	}()
+	dsn := cfg.Link
+	if dsn == "" {
+		return
+	}
+	foundSlash := false
+	// gfast:123456@tcp(192.168.0.212:3306)/gfast-v2
+	for i := len(dsn) - 1; i >= 0; i-- {
+		if dsn[i] == '/' {
+			foundSlash = true
+			var j, k int
+
+			// left part is empty if i <= 0
+			if i > 0 {
+				// [username[:password]@][protocol[(address)]]
+				// Find the last '@' in dsn[:i]
+				for j = i; j >= 0; j-- {
+					if dsn[j] == '@' {
+						// username[:password]
+						// Find the first ':' in dsn[:j]
+						for k = 0; k < j; k++ {
+							if dsn[k] == ':' {
+								cfg.Pass = dsn[k+1 : j]
+								cfg.User = dsn[:k]
+								break
+							}
+						}
+						break
+					}
+				}
+
+				// gfast:123456@tcp(192.168.0.212:3306)/gfast-v2
+				// [protocol[(address)]]
+				// Find the first '(' in dsn[j+1:i]
+				var h int
+				for k = j + 1; k < i; k++ {
+					if dsn[k] == '(' {
+						// dsn[i-1] must be == ')' if an address is specified
+						if dsn[i-1] != ')' {
+							if strings.ContainsRune(dsn[k+1:i], ')') {
+								panic("invalid DSN: did you forget to escape a param value?")
+							}
+							panic("invalid DSN: network address not terminated (missing closing brace)")
+						}
+						for h = k + 1; h < i-1; h++ {
+							if dsn[h] == ':' {
+								cfg.Host = dsn[k+1 : h]
+								cfg.Port = dsn[h+1 : i-1]
+								break
+							}
+						}
+						break
+					}
+				}
+			}
+			for j = i + 1; j < len(dsn); j++ {
+				if dsn[j] == '?' {
+					cfg.Name = dsn[i+1 : j]
+					break
+				} else {
+					cfg.Name = dsn[i+1:]
+				}
+			}
+			break
+		}
+	}
+	if !foundSlash && len(dsn) > 0 {
+		panic("invalid DSN: missing the slash separating the database name")
+	}
+	return
+}
+
+//获取附件真实路径
+func GetRealFilesUrl(r *ghttp.Request, path string) (realPath string, err error) {
+	if gstr.ContainsI(path, "http") {
+		realPath = path
+		return
+	}
+	realPath, err = GetDomain(r)
+	if err != nil {
+		return
+	}
+	realPath = realPath + path
+	return
+}
+
+//获取附件相对路径
+func GetFilesPath(fileUrl string) (path string, err error) {
+	if !gstr.ContainsI(fileUrl, "http") {
+		path = fileUrl
+		return
+	}
+	pathInfo, err := gurl.ParseURL(fileUrl, 32)
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("解析附件路径失败")
+		return
+	}
+	path = gstr.TrimLeft(pathInfo["path"], "/")
+	return
+}
+
+//货币转化为分
+func CurrencyLong(currency interface{}) int64 {
+	strArr := gstr.Split(gconv.String(currency), ".")
+	switch len(strArr) {
+	case 1:
+		return gconv.Int64(strArr[0]) * 100
+	case 2:
+		if len(strArr[1]) == 1 {
+			strArr[1] += "0"
+		} else if len(strArr[1]) > 2 {
+			strArr[1] = gstr.SubStr(strArr[1], 0, 2)
+		}
+		return gconv.Int64(strArr[0])*100 + gconv.Int64(strArr[1])
+	}
+	return 0
 }
