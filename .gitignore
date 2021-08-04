@@ -8,6 +8,7 @@
 .vscode/
 vender/
 data/log/
+data/gen_sql/
 data/session/
 composer.lock
 gitpush.sh

@@ -30,7 +30,7 @@
 
 # Database.
 [database]
-    link  = "mysql:root:123456@tcp(localhost:3306)/gfast-v2-open"
+    link  = "mysql:root:123456@tcp(localhost:3306)/gfast-v2-os"
     charset   = "utf8mb4" #数据库编码
     debug = true
     dryRun = false #空跑
