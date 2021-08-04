@@ -1,0 +1,48 @@
+// ==========================================================================
+// GFast自动生成dao internal操作代码，无需手动修改，重新生成会自动覆盖.
+// 生成日期：{{.table.CreateTime}}
+// 生成路径: {{.table.PackageName}}/dao/internal/{{.table.TableName}}.go
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+
+package internal
+
+
+import (
+	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/frame/gmvc"
+)
+
+
+// {{.table.ClassName}}Dao is the manager for logic model data accessing and custom defined data operations functions management.
+type {{.table.ClassName}}Dao struct {
+	gmvc.M                      // M is the core and embedded struct that inherits all chaining operations from gdb.Model.
+	C      {{.table.BusinessName | CaseCamelLower}}Columns // C is the short type for Columns, which contains all the column names of Table for convenient usage.
+	DB     gdb.DB               // DB is the raw underlying database management object.
+	Table  string               // Table is the underlying table name of the DAO.
+}
+
+
+// {{.table.BusinessName | CaseCamelLower}}Columns defines and stores column names for table {{.table.TableName}}.
+type {{.table.BusinessName | CaseCamelLower}}Columns struct {
+    {{range $index, $column := .table.Columns}}
+        {{$column.GoField}}  string  // {{$column.ColumnComment}}
+    {{end}}
+}
+
+
+// New{{.table.ClassName}}Dao creates and returns a new DAO object for table data access.
+func New{{.table.ClassName}}Dao() *{{.table.ClassName}}Dao {
+	columns := {{.table.BusinessName | CaseCamelLower}}Columns{
+	    {{range $index, $column := .table.Columns}}
+            {{$column.GoField}}:  "{{$column.ColumnName}}",
+        {{end}}
+	}
+	return &{{.table.ClassName}}Dao{
+		C:     columns,
+		M:     g.DB("default").Model("{{.table.TableName}}").Safe(),
+		DB:    g.DB("default"),
+		Table: "{{.table.TableName}}",
+	}
+}

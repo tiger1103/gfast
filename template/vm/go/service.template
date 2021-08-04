@@ -1,0 +1,202 @@
+// ==========================================================================
+// GFast自动生成业务逻辑层相关代码，只生成一次，按需修改,再次生成不会覆盖.
+// 生成日期：{{.table.CreateTime}}
+// 生成路径: {{.table.PackageName}}/service/{{.table.BusinessName}}.go
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+{{$structName := .table.BusinessName | CaseCamelLower}}
+
+package service
+
+
+import (
+    {{if ne .table.TplCategory "tree"}}
+	comModel "gfast/app/common/model"
+	{{end}}
+	"gfast/app/system/dao"
+	"gfast/app/system/model"
+	{{if eq .table.TplCategory "tree"}}
+	"github.com/gogf/gf/util/gconv"
+	"gfast/library"
+    {{end}}
+	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/frame/g"
+)
+
+
+type {{$structName}} struct {
+}
+
+var {{.table.ClassName}} = new({{$structName}})
+
+
+{{$pk:=""}}
+{{$pkGoField:=""}}
+
+{{$createdAt:=""}}
+{{$createdAtGoField:=""}}
+
+{{range $index, $column := .table.Columns}}
+{{if eq $column.IsPk "1"}}
+    {{$pk = $column.ColumnName}}
+    {{$pkGoField = $column.GoField}}
+{{end}}
+{{if eq $column.ColumnName "created_at"}}
+    {{$createdAt = $column.ColumnName}}
+    {{$createdAtGoField = $column.GoField}}
+{{end}}
+{{end}}
+
+// GetList 获取任务列表
+func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total, page int, list []*model.{{.table.ClassName}}, err error) {
+	model := dao.{{.table.ClassName}}.M
+	if req != nil {
+	{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
+        {{if eq $column.QueryType "LIKE"}}
+            if req.{{$column.GoField}} != "" {
+                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
+            } {{end}}
+        {{if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
+            if req.{{$column.GoField}} != "" {
+                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+            }
+        {{else if and (eq $column.GoType "Time") (eq $column.ColumnName "created_at")}}
+            if req.BeginTime != "" {
+                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" >=", req.BeginTime)
+            }
+            if req.EndTime != "" {
+                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" <", req.EndTime)
+            }
+        {{else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64") }}
+            if req.{{$column.GoField}} != "" {
+                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+            }
+        {{end}} {{end}}
+        {{if and (eq $column.QueryType "BETWEEN") (eq $column.ColumnType "datetime") }}
+            if req.{{$column.GoField}} != nil {
+                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
+            }
+        {{end}}
+    {{end}}{{end}}
+	}
+	total, err = model.Count()
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取总行数失败")
+		return
+	}
+    {{if ne .table.TplCategory "tree"}}
+    if req.PageNum == 0 {
+        req.PageNum = 1
+    }
+    page = req.PageNum
+    if req.PageSize == 0 {
+        req.PageSize = comModel.PageSize
+    }
+    order:= "{{$pk}} asc"
+    if req.OrderBy!=""{
+        order = req.OrderBy
+    }
+    err = model.Page(page, req.PageSize).Order(order).Scan(&list)
+    {{else}}
+	order:= "{{$pk}} asc"
+	if req.OrderBy!=""{
+		order = req.OrderBy
+	}
+	err = model.Order(order).Scan(&list)
+    {{end}}
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("获取数据失败")
+	}
+	return
+}
+
+
+// GetInfoById 通过id获取
+func (s *{{$structName}}) GetInfoById(id int64) (info *model.{{.table.ClassName}}, err error) {
+	if id == 0 {
+		err = gerror.New("参数错误")
+		return
+	}
+	err = dao.{{.table.ClassName}}.Where(dao.{{.table.ClassName}}.C.{{$pkGoField}}, id).Scan(&info)
+	if err != nil {
+		g.Log().Error(err)
+	}
+	if info == nil || err != nil {
+		err = gerror.New("获取信息失败")
+	}
+	return
+}
+
+// Add 添加
+func (s *{{$structName}}) Add(req *dao.{{.table.ClassName}}AddReq) (err error) {
+	_, err = dao.{{.table.ClassName}}.Insert(req)
+	return
+}
+
+// Edit 修改
+func (s *{{$structName}}) Edit(req *dao.{{.table.ClassName}}EditReq) error {
+    {{ $fieldsEx:= concat "dao." $.table.ClassName ".C." $pkGoField }}
+    {{if ne $createdAt ""}}
+        {{$fieldsEx = concat "dao." $.table.ClassName ".C." $pkGoField  "," "dao." $.table.ClassName ".C." $createdAtGoField}}
+    {{end}}
+	_, err := dao.{{.table.ClassName}}.FieldsEx({{$fieldsEx}}).Where(dao.{{.table.ClassName}}.C.{{$pkGoField}}, req.{{$pkGoField}}).
+		Update(req)
+	return err
+}
+
+
+// DeleteByIds 删除
+func (s *{{$structName}}) DeleteByIds(ids []int) (err error) {
+	if len(ids) == 0 {
+		err = gerror.New("参数错误")
+	}
+	{{if eq .table.TplCategory "tree"}}
+    ids, err = s.GetChildrenIds(ids)
+    if err != nil {
+        return
+    }
+	{{end}}
+	_, err = dao.{{.table.ClassName}}.Delete(dao.{{.table.ClassName}}.C.{{$pkGoField}}+" in (?)", ids)
+	if err != nil {
+		g.Log().Error(err)
+		err = gerror.New("删除失败")
+	}
+	return
+}
+
+
+{{range $index,$column:= .table.Columns}}
+{{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
+// Change{{$column.GoField}} 修改状态
+func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName}}{{$column.GoField}}Req) error {
+	_, err := dao.{{$.table.ClassName}}.WherePri(req.{{$pkGoField}}).Update(g.Map{
+		dao.{{$.table.ClassName}}.C.{{$column.GoField}}: req.{{$column.GoField}},
+	})
+	return err
+}
+{{end}}
+{{end}}
+
+{{if eq .table.TplCategory "tree"}}
+// GetChildrenIds 通过ID获取子级ID
+func (s *{{$structName}})GetChildrenIds(ids []int) ([]int, error) {
+	//获取所有
+	_,_,all, err := s.GetList(new(dao.{{.table.ClassName}}SearchReq))
+	if err != nil {
+		return nil, err
+	}
+	list := make(g.List, len(all))
+	for k, info := range all {
+		list[k] = gconv.Map(info)
+	}
+	for _, id := range ids {
+		children := library.FindSonByParentId(list, id, "{{.table.TreeParentCode}}", "{{.table.TreeCode}}")
+		for _, cid := range children {
+			ids = append(ids, gconv.Int(cid["{{.table.TreeCode}}"]))
+		}
+	}
+	return ids, nil
+}
+{{end}}

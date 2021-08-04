@@ -148,6 +148,21 @@ func init() {
 					group.DELETE("clear", api.SysOperLog.Clear)
 				})
 			})
+			//开发工具
+			group.Group("/tools", func(group *ghttp.RouterGroup) {
+				//代码生成
+				group.Group("/gen", func(group *ghttp.RouterGroup) {
+					group.GET("tableList", api.ToolsGenTable.TableList)
+					group.GET("dataList", api.ToolsGenTable.DataList)
+					group.POST("importTableSave", api.ToolsGenTable.ImportTableSave)
+					group.DELETE("delete", api.ToolsGenTable.Delete)
+					group.GET("columnList", api.ToolsGenTable.ColumnList)
+					group.GET("relationTable", api.ToolsGenTable.RelationTable)
+					group.PUT("editSave", api.ToolsGenTable.EditSave)
+					group.GET("preview", api.ToolsGenTable.Preview)
+					group.PUT("batchGenCode", api.ToolsGenTable.BatchGenCode)
+				})
+			})
 		})
 	})
 }
