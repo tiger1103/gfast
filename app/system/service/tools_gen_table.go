@@ -21,7 +21,6 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gfile"
-	"github.com/gogf/gf/os/gmutex"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/os/gview"
 	"github.com/gogf/gf/text/gregex"
@@ -32,13 +31,9 @@ import (
 	"strings"
 )
 
-type toolsGenTable struct {
-	mu *gmutex.Mutex
-}
+type toolsGenTable struct{}
 
-var ToolsGenTable = &toolsGenTable{
-	mu: gmutex.New(),
-}
+var ToolsGenTable = new(toolsGenTable)
 
 // SelectListByPage 查询已导入的数据表
 func (s *toolsGenTable) SelectListByPage(param *dao.ToolsGenTableSearchReq) (total int, list []*model.ToolsGenTable, err error) {
@@ -500,8 +495,6 @@ func (s *toolsGenTable) GenData(tableId int64, ctx context.Context) (data g.MapS
 		return
 	}
 	ToolsGenTableColumn.SetPkColumn(extendData, extendData.Columns)
-	s.mu.Lock()
-	defer s.mu.Unlock()
 	view := gview.New()
 	view.SetConfigWithMap(g.Map{
 		"Paths":      g.Cfg().GetString("gen.templatePath"),
