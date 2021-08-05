@@ -21,18 +21,19 @@ func init() {
     s := g.Server()
     s.Group("/", func(group *ghttp.RouterGroup) {
         group.Group("/{{.table.ModuleName}}", func(group *ghttp.RouterGroup) {
-            {{if ne $.table.ModuleName "system"}}
-            //gToken拦截器
-            sysApi.GfToken.Middleware(group)
-            {{end}}
-            //context拦截器
-            group.Middleware(middleware.Ctx, middleware.Auth)
-            {{if ne $.table.ModuleName "system"}}
-            //后台操作日志记录
-            group.Hook("/*", ghttp.HookAfterOutput, sysApi.SysOperLog.OperationLog)
-            {{end}}
-
             group.Group("/{{.table.BusinessName | CaseCamelLower}}", func(group *ghttp.RouterGroup) {
+                //gToken拦截器
+                {{if ne $.table.ModuleName "system"}}
+                sysApi.GfToken.Middleware(group)
+                {{else}}
+                api.GfToken.Middleware(group)
+                {{end}}
+                //context拦截器
+                group.Middleware(middleware.Ctx, middleware.Auth)
+                {{if ne $.table.ModuleName "system"}}
+                //后台操作日志记录
+                group.Hook("/*", ghttp.HookAfterOutput, sysApi.SysOperLog.OperationLog)
+                {{end}}
                 group.GET("list", api.{{.table.ClassName}}.List)
                 group.GET("get", api.{{.table.ClassName}}.Get)
                 group.POST("add", api.{{.table.ClassName}}.Add)

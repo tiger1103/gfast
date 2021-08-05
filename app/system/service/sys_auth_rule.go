@@ -217,7 +217,7 @@ func (s *rule) DeleteMenuByIds(ids []int) (err error) {
 		}
 	}
 	ids = append(ids, childrenIds...)
-	_, err = dao.SysAuthRule.Where("id in (?)", ids).Delete()
+	_, err = dao.SysAuthRule.Where("id in (?)", ids).Unscoped().Delete() // 硬删除
 	return
 }
 
