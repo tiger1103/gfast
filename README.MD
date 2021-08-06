@@ -1,11 +1,17 @@
 # GFast-V2
 
 ## 平台简介
-* 基于GF(Go Frame)的后台管理系统
+* 基于全新GF(Go Frame)的后台管理系统
 * 前端采用ruoyi-ui 、Vue、Element UI。
-* 后端采用GO语言 框架 GF(Go Frame)。
 * 阿里云优惠券：[点我进入](https://www.aliyun.com/minisite/goods?userCode=fcor2omk )，腾讯云优惠券：[点我领取](https://cloud.tencent.com/act/cps/redirect?redirect=1062&cps_key=20b1c3842f74986b2894e2c5fcde7ea2&from=console )
 * 本项目由奇讯科技团队开发。
+
+## 特征
+* 高生产率：几分钟即可搭建一个后台管理系统
+* 模块化：单应用多系统的模式，将一个完整的应用拆分为多个系统，后续扩展更加便捷，增加代码复用性。
+* 插件化： 可通过插件的方式扩展系统功能
+* 认证机制：采用gtoken的用户状态认证及casbin的权限认证
+
 
 ## 内置功能
 
@@ -25,7 +31,7 @@
 14. 在线构建器：拖动表单元素生成相应的HTML代码。
 15. 文件上传,缓存标签等。
 
-> 项目使用模块化与插件化的方式开发，正在开发中的功能：cms系统、万能模型、微信管理、工单系统、问答系统、工作流引擎...
+> 项目使用模块化与插件化的方式开发，正在开发中的模块：cms系统、万能模型、微信管理、工单系统、问答系统、工作流引擎...
 
 ## 演示地址
 [http://v2.g-fast.cn](http://v2.g-fast.cn/)
@@ -33,7 +39,7 @@
 ## 配置
 项目数据库文件 /data/db.sql 创建数据库导入后修改配置/config/config.toml
 
-其中jwt配置
+其中gToken配置
 
 ```yaml
 [gToken]
@@ -102,13 +108,10 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 >
 > swaggo [https://github.com/swaggo/swag](https://github.com/swaggo/swag)
 >
->tpflow [https://gitee.com/ntdgg/tpflow](https://gitee.com/ntdgg/tpflow)
->
 >gtoken [https://github.com/goflyfox/gtoken](https://github.com/goflyfox/gtoken)
 >
 >casbin [https://github.com/casbin/casbin](https://github.com/casbin/casbin)
->
->云捷go [https://gitee.com/yunjieg/yjgo](https://gitee.com/yunjieg/yjgo)
+
 
 
 ### 生成dao
