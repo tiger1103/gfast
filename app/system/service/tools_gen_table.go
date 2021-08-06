@@ -418,7 +418,7 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 	if err != nil {
 		return gerror.New("获取本地路径失败")
 	}
-	fontDir := g.Cfg().GetString("gen.fontDir")
+	frontDir := g.Cfg().GetString("gen.frontDir")
 	for _, id := range ids {
 		var genData g.MapStrStr
 		var extendData *dao.ToolsGenTableExtend
@@ -460,10 +460,10 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 				}
 
 			case "vue":
-				path := strings.Join([]string{fontDir, "/src/views/", extendData.ModuleName, "/", bisinessName, "/list/index.vue"}, "")
+				path := strings.Join([]string{frontDir, "/src/views/", extendData.ModuleName, "/", bisinessName, "/list/index.vue"}, "")
 				err = s.createFile(path, code, false)
 			case "jsApi":
-				path := strings.Join([]string{fontDir, "/src/api/", extendData.ModuleName, "/", bisinessName, ".js"}, "")
+				path := strings.Join([]string{frontDir, "/src/api/", extendData.ModuleName, "/", bisinessName, ".js"}, "")
 				err = s.createFile(path, code, false)
 			}
 		}
