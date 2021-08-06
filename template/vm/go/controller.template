@@ -17,8 +17,11 @@ package api
 {{end}}
 
 import (
-    "gfast/app/system/dao"
-    "gfast/app/system/service"
+    {{if ne $.table.ModuleName "system"}}
+    sysApi "gfast/app/system/api"
+    {{end}}
+    "{{.table.PackageName}}/dao"
+    "{{.table.PackageName}}/service"
     "github.com/gogf/gf/frame/g"
     "github.com/gogf/gf/net/ghttp"
     "github.com/gogf/gf/util/gvalid"
@@ -28,7 +31,11 @@ import (
 )
 
 type {{$structName}} struct {
-	{{.table.ModuleName}}Base
+    {{if ne $.table.ModuleName "system"}}
+    sysApi.SystemBase
+    {{else}}
+    SystemBase
+    {{end}}
 }
 
 var {{.table.ClassName}} = new({{$structName}})

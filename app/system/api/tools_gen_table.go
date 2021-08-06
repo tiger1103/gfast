@@ -21,7 +21,7 @@ import (
 )
 
 type toolsGenTable struct {
-	systemBase
+	SystemBase
 }
 
 var ToolsGenTable = new(toolsGenTable)

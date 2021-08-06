@@ -10,7 +10,7 @@ import (
 )
 
 type user struct {
-	systemBase
+	SystemBase
 }
 
 var User = new(user)

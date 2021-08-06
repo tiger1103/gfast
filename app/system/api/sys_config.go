@@ -18,7 +18,7 @@ import (
 )
 
 type sysConfig struct {
-	systemBase
+	SystemBase
 }
 
 var SysConfig = new(sysConfig)

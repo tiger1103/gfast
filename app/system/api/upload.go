@@ -14,7 +14,7 @@ import (
 )
 
 type upload struct {
-	systemBase
+	SystemBase
 }
 
 var Upload = new(upload)

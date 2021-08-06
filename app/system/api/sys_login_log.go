@@ -16,7 +16,7 @@ import (
 )
 
 type sysLoginLog struct {
-	systemBase
+	SystemBase
 }
 
 var SysLoginLog = new(sysLoginLog)

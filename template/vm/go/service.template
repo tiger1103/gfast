@@ -13,8 +13,8 @@ import (
     {{if ne .table.TplCategory "tree"}}
 	comModel "gfast/app/common/model"
 	{{end}}
-	"gfast/app/system/dao"
-	"gfast/app/system/model"
+	"{{.table.PackageName}}/dao"
+	"{{.table.PackageName}}/model"
 	{{if eq .table.TplCategory "tree"}}
 	"github.com/gogf/gf/util/gconv"
 	"gfast/library"

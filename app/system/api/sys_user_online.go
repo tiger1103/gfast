@@ -16,7 +16,7 @@ import (
 )
 
 type sysUserOnline struct {
-	systemBase
+	SystemBase
 }
 
 var SysUserOnline = new(sysUserOnline)

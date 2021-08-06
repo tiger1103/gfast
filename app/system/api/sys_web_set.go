@@ -17,7 +17,7 @@ import (
 )
 
 type sysWebSet struct {
-	systemBase
+	SystemBase
 }
 
 var SysWebSet = new(sysWebSet)
