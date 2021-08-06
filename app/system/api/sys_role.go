@@ -11,7 +11,7 @@ import (
 )
 
 type sysRole struct {
-	systemBase
+	SystemBase
 }
 
 var SysRole = new(sysRole)

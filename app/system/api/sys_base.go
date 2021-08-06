@@ -7,12 +7,12 @@ import (
 	"gfast/app/system/service"
 )
 
-type systemBase struct {
+type SystemBase struct {
 	api.CommonBase
 }
 
 // GetCurrentUser 获取当前登陆用户信息
-func (c *systemBase) GetCurrentUser(ctx context.Context) *dao.CtxUser {
+func (c *SystemBase) GetCurrentUser(ctx context.Context) *dao.CtxUser {
 	context := service.Context.Get(ctx)
 	if context == nil {
 		return nil

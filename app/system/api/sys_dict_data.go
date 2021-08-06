@@ -18,7 +18,7 @@ import (
 )
 
 type dictData struct {
-	systemBase
+	SystemBase
 }
 
 var DictData = new(dictData)

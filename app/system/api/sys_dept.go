@@ -12,7 +12,7 @@ import (
 )
 
 type dept struct {
-	systemBase
+	SystemBase
 }
 
 var Dept = new(dept)

@@ -11,7 +11,7 @@ import (
 )
 
 type authRule struct {
-	systemBase
+	SystemBase
 }
 
 var AuthRule = new(authRule)

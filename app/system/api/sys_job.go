@@ -16,7 +16,7 @@ import (
 )
 
 type sysJob struct {
-	systemBase
+	SystemBase
 }
 
 var SysJob = new(sysJob)

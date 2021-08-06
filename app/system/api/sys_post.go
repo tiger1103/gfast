@@ -16,7 +16,7 @@ import (
 )
 
 type sysPost struct {
-	systemBase
+	SystemBase
 }
 
 var SysPost = new(sysPost)

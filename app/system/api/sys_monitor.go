@@ -26,7 +26,7 @@ import (
 )
 
 type sysMonitor struct {
-	systemBase
+	SystemBase
 	startTime *gtime.Time
 }
 

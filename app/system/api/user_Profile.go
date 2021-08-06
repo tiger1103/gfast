@@ -17,7 +17,7 @@ import (
 )
 
 type userProfile struct {
-	systemBase
+	SystemBase
 }
 
 var UserProfile = new(userProfile)

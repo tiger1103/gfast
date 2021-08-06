@@ -19,7 +19,7 @@ import (
 )
 
 type sysOperLog struct {
-	systemBase
+	SystemBase
 }
 
 var SysOperLog = new(sysOperLog)
