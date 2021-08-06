@@ -424,7 +424,7 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 		var extendData *dao.ToolsGenTableExtend
 		genData, extendData, err = s.GenData(gconv.Int64(id), ctx)
 		packageName := gstr.SubStr(extendData.PackageName, gstr.Pos(extendData.PackageName, "/"))
-		bisinessName := gstr.CaseCamelLower(extendData.BusinessName)
+		businessName := gstr.CaseCamelLower(extendData.BusinessName)
 		for key, code := range genData {
 			switch key {
 			case "controller":
@@ -460,10 +460,10 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 				}
 
 			case "vue":
-				path := strings.Join([]string{frontDir, "/src/views/", extendData.ModuleName, "/", bisinessName, "/list/index.vue"}, "")
+				path := strings.Join([]string{frontDir, "/src/views/", extendData.ModuleName, "/", businessName, "/list/index.vue"}, "")
 				err = s.createFile(path, code, false)
 			case "jsApi":
-				path := strings.Join([]string{frontDir, "/src/api/", extendData.ModuleName, "/", bisinessName, ".js"}, "")
+				path := strings.Join([]string{frontDir, "/src/api/", extendData.ModuleName, "/", businessName, ".js"}, "")
 				err = s.createFile(path, code, false)
 			}
 		}
