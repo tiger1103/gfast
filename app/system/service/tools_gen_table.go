@@ -451,7 +451,7 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 				err = s.createFile(path, code, false)
 				if !hasSql {
 					//第一次生成则向数据库写入菜单数据
-					err = s.writeDb(path)
+					err = s.writeDb(path, ctx)
 					if err != nil {
 						return
 					}
@@ -626,14 +626,14 @@ func (s *toolsGenTable) GenData(tableId int64, ctx context.Context) (data g.MapS
 //剔除多余的换行
 func (s *toolsGenTable) trimBreak(str string) (rStr string, err error) {
 	var b []byte
-	if b, err = gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(str)); err == nil {
+	if b, err = gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n\n"), []byte(str)); err == nil {
 		rStr = gconv.String(b)
 	}
 	return
 }
 
 // 写入菜单数据
-func (s *toolsGenTable) writeDb(path string) (err error) {
+func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 	isAnnotation := false
 	var fi *os.File
 	fi, err = os.Open(path)
@@ -646,10 +646,15 @@ func (s *toolsGenTable) writeDb(path string) (err error) {
 	now := gtime.Now()
 	var res sql.Result
 	var id int64
+	var tx *gdb.TX
+	tx, err = g.DB().Ctx(ctx).Begin()
 	for {
 		bytes, e := br.ReadBytes('\n')
 		if e == io.EOF {
 			break
+		}
+		if gstr.Trim(string(bytes)) == "" {
+			continue
 		}
 		bytes = bytes[:len(bytes)-2]
 		str := string(bytes)
@@ -683,6 +688,7 @@ func (s *toolsGenTable) writeDb(path string) (err error) {
 			//插入业务
 			res, err = g.DB().Exec(sql)
 			if err != nil {
+				tx.Rollback()
 				return
 			}
 			sqlStr = nil
@@ -690,5 +696,6 @@ func (s *toolsGenTable) writeDb(path string) (err error) {
 			sqlStr = []string{str}
 		}
 	}
+	tx.Commit()
 	return
 }

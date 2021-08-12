@@ -212,7 +212,8 @@ func GetRealFilesUrl(r *ghttp.Request, path string) (realPath string, err error)
 
 //获取附件相对路径
 func GetFilesPath(fileUrl string) (path string, err error) {
-	if !gstr.ContainsI(fileUrl, "http") {
+	upType := gstr.ToLower(g.Cfg().GetString("upload.type"))
+	if upType != "local" || (upType == "local" && !gstr.ContainsI(fileUrl, "http")) {
 		path = fileUrl
 		return
 	}

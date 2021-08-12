@@ -10,6 +10,7 @@ package service
 
 
 import (
+    "context"
     {{if ne .table.TplCategory "tree"}}
 	comModel "gfast/app/common/model"
 	{{end}}
@@ -49,32 +50,32 @@ var {{.table.ClassName}} = new({{$structName}})
 
 // GetList 获取任务列表
 func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total, page int, list []*model.{{.table.ClassName}}, err error) {
-	model := dao.{{.table.ClassName}}.M
+	model := dao.{{.table.ClassName}}.Ctx(req.Ctx)
 	if req != nil {
 	{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
         {{if eq $column.QueryType "LIKE"}}
             if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
+                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
             } {{end}}
         {{if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
             if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
             }
         {{else if and (eq $column.GoType "Time") (eq $column.ColumnName "created_at")}}
             if req.BeginTime != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" >=", req.BeginTime)
+                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >=", req.BeginTime)
             }
             if req.EndTime != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" <", req.EndTime)
+                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" <", req.EndTime)
             }
         {{else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64") }}
             if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
             }
         {{end}} {{end}}
         {{if and (eq $column.QueryType "BETWEEN") (eq $column.ColumnType "datetime") }}
             if req.{{$column.GoField}} != nil {
-                model = model.Where(dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.C.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
+                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
             }
         {{end}}
     {{end}}{{end}}
@@ -114,12 +115,12 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
 
 
 // GetInfoById 通过id获取
-func (s *{{$structName}}) GetInfoById(id int64) (info *model.{{.table.ClassName}}, err error) {
+func (s *{{$structName}}) GetInfoById(id int64,ctx context.Context) (info *model.{{.table.ClassName}}, err error) {
 	if id == 0 {
 		err = gerror.New("参数错误")
 		return
 	}
-	err = dao.{{.table.ClassName}}.Where(dao.{{.table.ClassName}}.C.{{$pkGoField}}, id).Scan(&info)
+	err = dao.{{.table.ClassName}}.Ctx(ctx).Where(dao.{{.table.ClassName}}.Columns.{{$pkGoField}}, id).Scan(&info)
 	if err != nil {
 		g.Log().Error(err)
 	}
@@ -130,35 +131,36 @@ func (s *{{$structName}}) GetInfoById(id int64) (info *model.{{.table.ClassName}
 }
 
 // Add 添加
-func (s *{{$structName}}) Add(req *dao.{{.table.ClassName}}AddReq) (err error) {
-	_, err = dao.{{.table.ClassName}}.Insert(req)
+func (s *{{$structName}}) Add(req *dao.{{.table.ClassName}}AddReq,ctx context.Context) (err error) {
+	_, err = dao.{{.table.ClassName}}.Ctx(ctx).Insert(req)
 	return
 }
 
 // Edit 修改
-func (s *{{$structName}}) Edit(req *dao.{{.table.ClassName}}EditReq) error {
-    {{ $fieldsEx:= concat "dao." $.table.ClassName ".C." $pkGoField }}
+func (s *{{$structName}}) Edit(req *dao.{{.table.ClassName}}EditReq,ctx context.Context) error {
+    {{ $fieldsEx:= concat "dao." $.table.ClassName ".Columns." $pkGoField }}
     {{if ne $createdAt ""}}
-        {{$fieldsEx = concat "dao." $.table.ClassName ".C." $pkGoField  "," "dao." $.table.ClassName ".C." $createdAtGoField}}
+        {{$fieldsEx = concat "dao." $.table.ClassName ".Columns." $pkGoField  "," "dao." $.table.ClassName ".Columns." $createdAtGoField}}
     {{end}}
-	_, err := dao.{{.table.ClassName}}.FieldsEx({{$fieldsEx}}).Where(dao.{{.table.ClassName}}.C.{{$pkGoField}}, req.{{$pkGoField}}).
+	_, err := dao.{{.table.ClassName}}.Ctx(ctx).FieldsEx({{$fieldsEx}}).Where(dao.{{.table.ClassName}}.Columns.{{$pkGoField}}, req.{{$pkGoField}}).
 		Update(req)
 	return err
 }
 
 
 // DeleteByIds 删除
-func (s *{{$structName}}) DeleteByIds(ids []int) (err error) {
+func (s *{{$structName}}) DeleteByIds(ids []int,ctx context.Context) (err error) {
 	if len(ids) == 0 {
 		err = gerror.New("参数错误")
+		return
 	}
 	{{if eq .table.TplCategory "tree"}}
-    ids, err = s.GetChildrenIds(ids)
+    ids, err = s.GetChildrenIds(ids,ctx)
     if err != nil {
         return
     }
 	{{end}}
-	_, err = dao.{{.table.ClassName}}.Delete(dao.{{.table.ClassName}}.C.{{$pkGoField}}+" in (?)", ids)
+	_, err = dao.{{.table.ClassName}}.Ctx(ctx).Delete(dao.{{.table.ClassName}}.Columns.{{$pkGoField}}+" in (?)", ids)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("删除失败")
@@ -170,9 +172,9 @@ func (s *{{$structName}}) DeleteByIds(ids []int) (err error) {
 {{range $index,$column:= .table.Columns}}
 {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
 // Change{{$column.GoField}} 修改状态
-func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName}}{{$column.GoField}}Req) error {
-	_, err := dao.{{$.table.ClassName}}.WherePri(req.{{$pkGoField}}).Update(g.Map{
-		dao.{{$.table.ClassName}}.C.{{$column.GoField}}: req.{{$column.GoField}},
+func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName}}{{$column.GoField}}Req,ctx context.Context) error {
+	_, err := dao.{{$.table.ClassName}}.Ctx(ctx).WherePri(req.{{$pkGoField}}).Update(g.Map{
+		dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}: req.{{$column.GoField}},
 	})
 	return err
 }
@@ -181,9 +183,9 @@ func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName
 
 {{if eq .table.TplCategory "tree"}}
 // GetChildrenIds 通过ID获取子级ID
-func (s *{{$structName}})GetChildrenIds(ids []int) ([]int, error) {
+func (s *{{$structName}})GetChildrenIds(ids []int,ctx context.Context) ([]int, error) {
 	//获取所有
-	_,_,all, err := s.GetList(new(dao.{{.table.ClassName}}SearchReq))
+	_,_,all, err := s.GetList(&dao.{{.table.ClassName}}SearchReq{Ctx:ctx})
 	if err != nil {
 		return nil, err
 	}

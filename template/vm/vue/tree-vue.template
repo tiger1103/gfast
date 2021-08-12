@@ -110,8 +110,16 @@
       {{else if and (eq $column.IsList "1") (eq $column.HtmlType "datetime")}}
       <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" width="180">
         <template slot-scope="scope">
-            <span>{{VueTag "{{"}} parseTime(scope.row.{{$column.HtmlField}}, {y}-{m}-{d}) {{VueTag "}}"}}</span>
+            <span>{{VueTag "{{"}} parseTime(scope.row.{{$column.HtmlField}}, '{y}-{m}-{d}') {{VueTag "}}"}}</span>
         </template>
+      </el-table-column>
+      {{else if and (eq $column.IsList "1") (eq $column.HtmlType "imagefile")}}
+      <el-table-column align="center" label="缩略图" width="100">
+      <template slot-scope="scope">
+        <img v-if="scope.row.{{$column.HtmlField}}!=''" :src="scope.row.{{$column.HtmlField}}|urlCorrection"
+             style="width: 150px; "
+        >
+      </template>
       </el-table-column>
       {{else if and (eq $column.IsList "1") (HasSuffix $column.ColumnName "status")}}
       <el-table-column label="{{$column.ColumnComment}}" align="center">
@@ -156,7 +164,7 @@
     </el-table>
 
     <!-- 添加或修改{{.table.FunctionName}}对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body :close-on-click-modal="false">
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal="false">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
       {{range $index, $column := .table.Columns}}
       {{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}}
@@ -231,7 +239,7 @@
        </el-form-item>
        {{else if eq $column.HtmlType "textarea"}}
        <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
-           <el-input v-model="form.{{$column.HtmlField}}" type="textarea" placeholder="请输入内容" />
+           <el-input v-model="form.{{$column.HtmlField}}" type="textarea" placeholder="请输入{{$column.ColumnComment}}" />
        </el-form-item>
        {{else if eq $column.HtmlType "checkbox" }}
         <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
@@ -242,6 +250,38 @@
                 :label="dict.key"
               >{{ VueTag "{{" }}dict.value {{VueTag "}}"}}</el-checkbox>
            </el-checkbox-group>
+        </el-form-item>
+        {{else if eq $column.HtmlType "richtext"}}
+        <el-form-item label="{{$column.ColumnComment}}">
+          <Editor ref="cke" v-model="form.{{$column.HtmlField}}" @setEditContent="set{{$column.GoField}}EditContent"/>
+        </el-form-item>
+       {{else if eq $column.HtmlType "imagefile"}}
+       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+         <el-upload
+           v-loading="upLoading{{$column.GoField}}"
+           :action="apiUrl+'/system/upload/upImg'"
+           :before-upload="beforeAvatarUpload{{$column.GoField}}"
+           :data="setUpData()"
+           :on-success="handleAvatarSuccess{{$column.GoField}}"
+           :show-file-list="false"
+           class="avatar-uploader"
+           name="file"
+         >
+           <img v-if="imageUrl{{$column.GoField}}" :src="imageUrl{{$column.GoField}}" class="avatar">
+           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+         </el-upload>
+       </el-form-item>
+       {{else if eq $column.HtmlType "images"}}
+       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}" >
+         <up-imgs :action="apiUrl+'/system/upload/upImg'" v-model="form.{{$column.HtmlField}}" @setUpImgList="setUpImgList{{$column.GoField}}"></up-imgs>
+       </el-form-item>
+       {{else if eq $column.HtmlType "file"}}
+        <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}" >
+        <up-file :action="apiUrl+'/system/upload/upFile'" v-model="form.{{$column.HtmlField}}" @setUpFielList="setUpFileList{{$column.GoField}}" :limit="1"></up-file>
+        </el-form-item>
+        {{else if eq $column.HtmlType "files"}}
+        <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}" >
+        <up-file :action="apiUrl+'/system/upload/upFile'" v-model="form.{{$column.HtmlField}}" @setUpFielList="setUpFileList{{$column.GoField}}" :limit="10"></up-file>
         </el-form-item>
        {{end}}
        {{end}}
@@ -274,9 +314,51 @@ import {
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
+{{$tokenImp := false}}
+{{$imgsImp := false}}
+{{$editImp := false }}
+{{$fileImp := false}}
+
+{{range $index,$column:=.table.Columns}}
+{{if eq $column.HtmlType "richtext"}}
+{{$editImp = true}}
+{{else if eq $column.HtmlType "imagefile"}}
+{{$tokenImp = true}}
+{{else if eq $column.HtmlType "images"}}
+{{$imgsImp = true}}
+{{else if eq $column.HtmlType "file" "files"}}
+{{$fileImp = true}}
+{{end}}
+{{end}}
+
+{{if $editImp}}
+import Editor from "@/components/CKeditor";
+{{end}}
+{{if $tokenImp}}
+import { getToken } from '@/utils/auth'
+{{end}}
+{{if $imgsImp}}
+import upImgs from "@/components/upImgs"
+{{end}}
+{{if $fileImp}}
+import upFile from "@/components/upfile"
+{{end}}
+
+
 export default {
   name: "{{.table.ClassName}}",
-  components: { Treeselect },
+  components: {
+    Treeselect,
+    {{if $editImp}}
+    Editor,
+    {{end}}
+    {{if $imgsImp}}
+    upImgs,
+    {{end}}
+    {{if $fileImp}}
+    upFile,
+    {{end}}
+  },
   data() {
     return {
       // 遮罩层
@@ -304,6 +386,11 @@ export default {
       {{else if ne $column.LinkTableName ""}}
       // {{$column.HtmlField}}Options关联表数据
       {{$column.HtmlField}}Options: [],
+      {{else if eq $column.HtmlType "imagefile"}}
+       //图片上传地址
+       imageUrl{{$column.GoField}}: '',
+       //上传加载
+       upLoading{{$column.GoField}}: false,
       {{end}}
       {{end}}
       // 查询参数
@@ -336,6 +423,7 @@ export default {
     this.getList();
   },
   methods: {
+    {{$setUpData:=true}}
     {{range $index, $column := .table.Columns}}
     {{if ne $column.LinkTableName ""}}
     //关联{{$column.LinkTableName}}表选项
@@ -343,6 +431,40 @@ export default {
       this.getItems(list{{$column.LinkTableClass}}, {pageSize:10000}).then(res => {
         this.{{$column.HtmlField}}Options = this.setItems(res, '{{$column.LinkLabelId}}', '{{$column.LinkLabelName}}')
       })
+    },
+    {{else if eq $column.HtmlType "richtext"}}
+    //富文本编辑器{{$column.ColumnComment}}
+    set{{$column.GoField}}EditContent(data) {
+      this.form.{{$column.HtmlField}} = data
+    },
+    {{else if eq $column.HtmlType "imagefile"}}
+    //单图上传{{$column.ColumnComment}}
+    handleAvatarSuccess{{$column.GoField}}(res, file) {
+      if (res.code === 0) {
+        this.imageUrl{{$column.GoField}} = URL.createObjectURL(file.raw)
+        this.form.{{$column.HtmlField}} = res.data.fileInfo.fileUrl
+      } else {
+        this.msgError(res.msg)
+      }
+      this.upLoading{{$column.GoField}} = false
+    },
+    beforeAvatarUpload{{$column.GoField}}(file) {
+      this.upLoading{{$column.GoField}} = true
+      return true
+    },
+    {{if $setUpData}}
+    setUpData() {
+      return { token: getToken() }
+    },
+    {{$setUpData = false}}
+    {{end}}
+    {{else if eq $column.HtmlType "images"}}
+    setUpImgList{{$column.GoField}}(data){
+        this.form.{{$column.HtmlField}} = data
+    },
+    {{else if eq $column.HtmlType "file" "files"}}
+    setUpFileList{{$column.GoField}}(data){
+        this.form.{{$column.HtmlField}} = data
     },
     {{else if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1")}}
     // {{$column.ColumnComment}}修改
@@ -431,6 +553,11 @@ export default {
         {{else}}
         {{$column.HtmlField}}: undefined{{if ne $lens $index}},{{end}}{{end}}{{end}}
       };
+      {{range $index, $column := .table.Columns}}
+      {{if eq $column.HtmlType "imagefile"}}
+      this.imageUrl{{$column.GoField}} = ''
+      {{end}}
+      {{end}}
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -468,6 +595,11 @@ export default {
         data.{{$column.HtmlField}} = data.{{$column.HtmlField}}.split(",")
         {{else if eq $column.HtmlType "radio" "select"}}
         data.{{$column.HtmlField}} = ''+data.{{$column.HtmlField}}
+        {{else if eq $column.HtmlType "imagefile"}}
+        //单图地址赋值
+        this.imageUrl{{$column.GoField}} = data.{{$column.HtmlField}} ? this.getUpFileUrl(process.env.VUE_APP_BASE_API,data.{{$column.HtmlField}}) : ''
+        {{else if eq $column.HtmlType "images" "file" "files"}}
+        data.{{$column.HtmlField}} =data.{{$column.HtmlField}}?JSON.parse(data.{{$column.HtmlField}}):[]
         {{end}}
         {{end}}
         this.form = data;
@@ -520,3 +652,37 @@ export default {
   }
 };
 </script>
+
+
+<style>
+{{range $index,$column:=.table.Columns}}
+{{if eq $column.HtmlType "imagefile"}}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+{{end}}
+{{end}}
+</style>

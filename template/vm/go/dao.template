@@ -30,15 +30,12 @@ type {{.table.BusinessName | CaseCamelLower}}Dao struct {
 }
 
 var (
-	// {{.table.ClassName}} is globally public accessible object for table tools_gen_table operations.
-	{{.table.ClassName}} {{.table.BusinessName | CaseCamelLower}}Dao
+    // {{.table.ClassName}} is globally public accessible object for table tools_gen_table operations.
+    {{.table.ClassName}} = {{.table.BusinessName | CaseCamelLower}}Dao{
+        internal.New{{.table.ClassName}}Dao(),
+    }
 )
 
-func init() {
-	{{.table.ClassName}} = {{.table.BusinessName | CaseCamelLower}}Dao{
-            internal.New{{.table.ClassName}}Dao(),
-	}
-}
 
 // Fill with you ideas below.
 

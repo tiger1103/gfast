@@ -28,6 +28,10 @@ func init() {
 			group.Group("/upload", func(group *ghttp.RouterGroup) {
 				//单图上传
 				group.POST("/upImg", api.Upload.UpImg)
+				group.POST("/ckEditorUp", api.Upload.CkEditorUp)
+				group.POST("/upImgs", api.Upload.UpImgs)
+				group.POST("/upFile", api.Upload.UpFile)
+				group.POST("/upFiles", api.Upload.UpFiles)
 			})
 			//用户相关
 			group.Group("/user", func(group *ghttp.RouterGroup) {
