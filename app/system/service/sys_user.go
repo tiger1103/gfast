@@ -512,14 +512,13 @@ func (s *sysUser) AddUserRole(roleIds interface{}, userId int64) (err error) {
 
 // AddUserPost 添加用户岗位信息
 func (s *sysUser) AddUserPost(postIds []int64, userId int64, tx *gdb.TX) (err error) {
-	if err != nil {
-		g.Log().Error(err)
-		return gerror.New("用户岗位设置失败")
-	}
 	//删除旧岗位信息
 	_, err = dao.SysUserPost.TX(tx).Where(dao.SysUserPost.Columns.UserId, userId).Delete()
 	if err != nil {
 		g.Log().Error(err)
+		return
+	}
+	if len(postIds) == 0 {
 		return
 	}
 	//添加用户岗位信息
