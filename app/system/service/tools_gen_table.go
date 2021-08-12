@@ -689,7 +689,7 @@ func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 			sql := strings.Join(sqlStr, "")
 			gstr.ReplaceByArray(sql, []string{"@parentId", gconv.String(id), "@now", now.Format("Y-m-d H:i:s")})
 			//插入业务
-			res, err = g.DB().Exec(sql)
+			res, err = tx.Exec(sql)
 			if err != nil {
 				tx.Rollback()
 				return
