@@ -648,6 +648,9 @@ func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 	var id int64
 	var tx *gdb.TX
 	tx, err = g.DB().Ctx(ctx).Begin()
+	if err != nil {
+		return
+	}
 	for {
 		bytes, e := br.ReadBytes('\n')
 		if e == io.EOF {
