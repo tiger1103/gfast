@@ -374,6 +374,12 @@ func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
 						}
 						dbColumn.LinkTableClass = linkTable.ClassName
 						dbColumn.LinkTablePackage = linkTable.PackageName
+					} else {
+						dbColumn.LinkTableName = ""
+						dbColumn.LinkTableClass = ""
+						dbColumn.LinkTablePackage = ""
+						dbColumn.LinkLabelId = ""
+						dbColumn.LinkLabelName = ""
 					}
 					_, err = tx.Model(dao.ToolsGenTableColumn.Table).Save(dbColumn)
 					if err != nil {
