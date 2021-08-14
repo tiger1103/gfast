@@ -65,7 +65,7 @@ func (s *online) GetOnlineListPage(req *model.SysUserOnlineSearchReq, hasToken .
 	if len(hasToken) == 0 || !hasToken[0] {
 		model = model.FieldsEx("token")
 	}
-	err = model.Page(page, req.PageSize).Order("create_time DESC").Scan(&list)
+	err = model.Page(req.PageNum, req.PageSize).Order("create_time DESC").Scan(&list)
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取数据失败")
