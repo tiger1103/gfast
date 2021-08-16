@@ -12,12 +12,12 @@ export function list{{.table.ClassName}}(query) {
 }
 
 // 查询{{.table.FunctionName}}详细
-export function get{{.table.ClassName}}({{.table.PkColumn.ColumnName}}) {
+export function get{{.table.ClassName}}({{.table.PkColumn.HtmlField}}) {
   return request({
     url: '/{{.table.ModuleName}}/{{$businessName}}/get',
     method: 'get',
     params: {
-     id: {{.table.PkColumn.ColumnName}}
+     id: {{.table.PkColumn.HtmlField}}.toString()
     }
   })
 }
@@ -41,12 +41,12 @@ export function update{{.table.ClassName}}(data) {
 }
 
 // 删除{{.table.FunctionName}}
-export function del{{.table.ClassName}}({{.table.PkColumn.ColumnName}}s) {
+export function del{{.table.ClassName}}({{.table.PkColumn.HtmlField}}s) {
   return request({
     url: '/{{.table.ModuleName}}/{{$businessName}}/delete',
     method: 'delete',
     data:{
-       ids:{{.table.PkColumn.ColumnName}}s
+       ids:{{.table.PkColumn.HtmlField}}s
     }
   })
 }
@@ -56,9 +56,9 @@ export function del{{.table.ClassName}}({{.table.PkColumn.ColumnName}}s) {
 {{range $index,$column:= .table.Columns}}
 {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
 // {{$.table.FunctionName}}{{$column.ColumnComment}}修改
-export function change{{$.table.ClassName}}{{$column.GoField}}({{$.table.PkColumn.ColumnName}},{{$column.HtmlField}}) {
+export function change{{$.table.ClassName}}{{$column.GoField}}({{$.table.PkColumn.HtmlField}},{{$column.HtmlField}}) {
   const data = {
-    {{$.table.PkColumn.ColumnName}},
+    {{$.table.PkColumn.HtmlField}},
     {{$column.HtmlField}}
   }
   return request({
