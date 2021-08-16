@@ -119,13 +119,15 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 ```
 例如： gf gen dao -path ./tmp  -l "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v2" -t 表名
 ```
-*** 注意：使用gf-cli 版本最好 >= v1.16.4 ***
+**注意：使用gf-cli 版本最好 >= v1.16.4**
 
 ## 交流QQ群
 
 > <img src="https://gitee.com/tiger1103/gfast/raw/master/public/qqcode.png"/>  
 
-> 快来加入群聊【Gfast框架交流群】(群号865697297)，发现精彩内容。
+> 公司团队精力时间有限，目前Gfast QQ交流群有部分用户进行了捐赠，捐赠后请联系作者进vip用户群，vip群中问题将得到优先解答，同时也会根据您的需求进行分析和优先安排，vip群也会提供Gfast的其它福利。
+> 同时您也可以联系我们，雇佣我们团队为您干活，谢谢合作！
+>快来加入群聊【Gfast框架交流群】(群号865697297)，发现精彩内容，记得备注加群来意。
 
 ## 免责声明：
 > 1、Gfast仅限自己学习使用，一切商业行为与Gfast无关。

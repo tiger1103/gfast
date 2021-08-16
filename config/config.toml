@@ -76,7 +76,7 @@
     autoRemovePre = true   #是否自动删除表前缀
     tablePrefix   = "table_,qxkj_"   #表前缀
     templatePath  = "./template/vm"  #代码生成模板路径
-    fontDir = "F:/tools/webProject/p2021/gfast-v2-ui/ruoyi-ui" #前端路径
+    frontDir = "F:/tools/webProject/gfast-ui" #前端路径
 
 # 上传配置
 [upload]

@@ -2,7 +2,7 @@ package global
 
 const (
 	//缓存前缀
-	cachePrefix = "cache_"
+	cachePrefix = "cacheOv2_"
 
 	// SysAuthMenu 缓存菜单KEY
 	SysAuthMenu = cachePrefix + "sysAuthMenu"

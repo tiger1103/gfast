@@ -28,6 +28,10 @@ func init() {
 			group.Group("/upload", func(group *ghttp.RouterGroup) {
 				//单图上传
 				group.POST("/upImg", api.Upload.UpImg)
+				group.POST("/ckEditorUp", api.Upload.CkEditorUp)
+				group.POST("/upImgs", api.Upload.UpImgs)
+				group.POST("/upFile", api.Upload.UpFile)
+				group.POST("/upFiles", api.Upload.UpFiles)
 			})
 			//用户相关
 			group.Group("/user", func(group *ghttp.RouterGroup) {
@@ -146,6 +150,21 @@ func init() {
 					group.GET("detail", api.SysOperLog.Detail)
 					group.DELETE("delete", api.SysOperLog.Delete)
 					group.DELETE("clear", api.SysOperLog.Clear)
+				})
+			})
+			//开发工具
+			group.Group("/tools", func(group *ghttp.RouterGroup) {
+				//代码生成
+				group.Group("/gen", func(group *ghttp.RouterGroup) {
+					group.GET("tableList", api.ToolsGenTable.TableList)
+					group.GET("dataList", api.ToolsGenTable.DataList)
+					group.POST("importTableSave", api.ToolsGenTable.ImportTableSave)
+					group.DELETE("delete", api.ToolsGenTable.Delete)
+					group.GET("columnList", api.ToolsGenTable.ColumnList)
+					group.GET("relationTable", api.ToolsGenTable.RelationTable)
+					group.PUT("editSave", api.ToolsGenTable.EditSave)
+					group.GET("preview", api.ToolsGenTable.Preview)
+					group.PUT("batchGenCode", api.ToolsGenTable.BatchGenCode)
 				})
 			})
 		})
