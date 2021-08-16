@@ -11,9 +11,7 @@ package service
 
 import (
     "context"
-    {{if ne .table.TplCategory "tree"}}
 	comModel "gfast/app/common/model"
-	{{end}}
 	"{{.table.PackageName}}/dao"
 	"{{.table.PackageName}}/model"
 	{{if eq .table.TplCategory "tree"}}
@@ -185,7 +183,7 @@ func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName
 // GetChildrenIds 通过ID获取子级ID
 func (s *{{$structName}})GetChildrenIds(ids []int,ctx context.Context) ([]int, error) {
 	//获取所有
-	_,_,all, err := s.GetList(&dao.{{.table.ClassName}}SearchReq{Ctx:ctx})
+	_,_,all, err := s.GetList(&dao.{{.table.ClassName}}SearchReq{PageReq:comModel.PageReq{Ctx: ctx}})
 	if err != nil {
 		return nil, err
 	}
