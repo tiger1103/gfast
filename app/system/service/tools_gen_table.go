@@ -632,7 +632,10 @@ func (s *toolsGenTable) GenData(tableId int64, ctx context.Context) (data g.MapS
 //剔除多余的换行
 func (s *toolsGenTable) trimBreak(str string) (rStr string, err error) {
 	var b []byte
-	if b, err = gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n\n"), []byte(str)); err == nil {
+	if b, err = gregex.Replace("(([\\s\t]*)\r?\n){2,}", []byte("$2\n"), []byte(str)); err != nil {
+		return
+	}
+	if b, err = gregex.Replace("(([\\s\t]*)/{4}\r?\n)", []byte("$2\n\n"), b); err == nil {
 		rStr = gconv.String(b)
 	}
 	return
