@@ -40,6 +40,7 @@ var (
 // Fill with you ideas below.
 ////
 
+
 // {{.table.ClassName}}SearchReq 分页请求参数
 type {{.table.ClassName}}SearchReq struct {
     {{range $index, $column := .table.Columns}}

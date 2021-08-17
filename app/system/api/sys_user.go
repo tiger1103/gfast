@@ -83,6 +83,16 @@ func (c *user) GetEditUser(r *ghttp.Request) {
 	c.SusJsonExit(r, res)
 }
 
+// UsersGet 获取用户信息列表
+func (c *user) UsersGet(r *ghttp.Request) {
+	ids := r.GetInts("ids")
+	res, err := service.SysUser.GetUsers(ids)
+	if err != nil {
+		c.FailJsonExit(r, err.Error())
+	}
+	c.SusJsonExit(r, res)
+}
+
 // EditUser 编辑用户提交
 func (c *user) EditUser(r *ghttp.Request) {
 	var req *model.EditUserReq

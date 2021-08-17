@@ -113,6 +113,10 @@
             <span>{{VueTag "{{"}} parseTime(scope.row.{{$column.HtmlField}}, '{y}-{m}-{d}') {{VueTag "}}"}}</span>
         </template>
       </el-table-column>
+      {{else if and (eq $column.IsList "1") (eq $column.HtmlField "createdBy")}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="createdUser" />
+      {{else if and (eq $column.IsList "1") (eq $column.HtmlField "updatedBy")}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="updatedUser" />
       {{else if and (eq $column.IsList "1") (eq $column.HtmlType "imagefile")}}
       <el-table-column align="center" label="缩略图" width="100">
       <template slot-scope="scope">
@@ -296,6 +300,28 @@
 </template>
 
 <script>
+
+{{$tokenImp := false}}
+{{$imgsImp := false}}
+{{$editImp := false }}
+{{$fileImp := false}}
+{{$getUserList:=false}}
+
+{{range $index,$column:=.table.Columns}}
+{{if eq $column.HtmlType "richtext"}}
+{{$editImp = true}}
+{{else if eq $column.HtmlType "imagefile"}}
+{{$tokenImp = true}}
+{{else if eq $column.HtmlType "images"}}
+{{$imgsImp = true}}
+{{else if eq $column.HtmlType "file" "files"}}
+{{$fileImp = true}}
+{{end}}
+{{if eq $column.HtmlField "createdBy" "updatedBy"}}
+{{$getUserList = true}}
+{{end}}
+{{end}}
+
 import {
     list{{.table.ClassName}},
     get{{.table.ClassName}},
@@ -310,26 +336,12 @@ import {
     list{{$column.LinkTableClass}},
     {{end}}
     {{end}}
+    {{if $getUserList}}
+    getUserList,
+    {{end}}
 } from "@/api/{{.table.ModuleName}}/{{$businessName}}";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-
-{{$tokenImp := false}}
-{{$imgsImp := false}}
-{{$editImp := false }}
-{{$fileImp := false}}
-
-{{range $index,$column:=.table.Columns}}
-{{if eq $column.HtmlType "richtext"}}
-{{$editImp = true}}
-{{else if eq $column.HtmlType "imagefile"}}
-{{$tokenImp = true}}
-{{else if eq $column.HtmlType "images"}}
-{{$imgsImp = true}}
-{{else if eq $column.HtmlType "file" "files"}}
-{{$fileImp = true}}
-{{end}}
-{{end}}
 
 {{if $editImp}}
 import Editor from "@/components/CKeditor";
@@ -488,7 +500,55 @@ export default {
     getList() {
       this.loading = true;
       list{{.table.ClassName}}(this.queryParams).then(response => {
-        this.{{$businessName}}List = this.handleTree(response.data.list||[], "{{$treeCode}}", "{{$treeParentCode}}");
+        let list = this.handleTree(response.data.list||[], "{{$treeCode}}", "{{$treeParentCode}}");
+        {{$hasCreatedBy := false}}
+        {{$hasUpdatedBy := false}}
+        {{range $index,$column := .table.Columns}}
+        {{if and (eq $column.IsList "1") (eq $column.HtmlField "createdBy")}}
+        {{$hasCreatedBy = true}}
+        {{end}}
+        {{if and (eq $column.IsList "1") (eq $column.HtmlField "updatedBy")}}
+        {{$hasUpdatedBy = true}}
+        {{end}}
+        {{end}}
+        {{if or $hasCreatedBy $hasUpdatedBy}}
+        let listUid = [];
+        {{end}}
+        {{if and $hasCreatedBy $hasUpdatedBy}}
+        list.map(item=>{
+            listUid.push(item.createdBy,item.updatedBy)
+        });
+        {{else if $hasCreatedBy}}
+        listUid = list.map(item=>{
+            return item.createdBy
+        });
+        {{else if $hasUpdatedBy}}
+        listUid = list.map(item=>{
+            return item.updatedBy
+        });
+        {{end}}
+        {{if or $hasCreatedBy $hasUpdatedBy}}
+        getUserList(listUid).then(response =>{
+            let users = response.data||[]
+            list.map(item=>{
+                users.forEach(user=>{
+                    {{if $hasCreatedBy}}
+                    if(item.createdBy==user.id){
+                        item.createdUser = user.userNickname
+                    }
+                    {{end}}
+                    {{if $hasUpdatedBy}}
+                    if(item.updatedBy==user.id){
+                        item.updatedUser = user.userNickname
+                    }
+                    {{end}}
+                })
+            })
+            this.{{$businessName}}List = list;
+        })
+        {{else}}
+        this.{{$businessName}}List = list;
+        {{end}}
         this.loading = false;
       });
     },
