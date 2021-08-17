@@ -4,7 +4,7 @@
 // 生成路径: {{.table.PackageName}}/model/{{.table.TableName}}.go
 // 生成人：{{.table.FunctionAuthor}}
 // ==========================================================================
-
+////
 package model
 
 

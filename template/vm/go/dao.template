@@ -4,7 +4,7 @@
 // 生成路径: {{.table.PackageName}}/dao/{{.table.TableName}}.go
 // 生成人：{{.table.FunctionAuthor}}
 // ==========================================================================
-
+////
 package dao
 
 {{$hasGTime:=false}}
@@ -36,9 +36,9 @@ var (
     }
 )
 
-
+////
 // Fill with you ideas below.
-
+////
 
 // {{.table.ClassName}}SearchReq 分页请求参数
 type {{.table.ClassName}}SearchReq struct {

@@ -4,7 +4,7 @@
 // 生成路径: {{.table.PackageName}}/dao/internal/{{.table.TableName}}.go
 // 生成人：{{.table.FunctionAuthor}}
 // ==========================================================================
-
+////
 package internal
 
 

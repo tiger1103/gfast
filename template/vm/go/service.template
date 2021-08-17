@@ -4,6 +4,7 @@
 // 生成路径: {{.table.PackageName}}/service/{{.table.BusinessName}}.go
 // 生成人：{{.table.FunctionAuthor}}
 // ==========================================================================
+////
 {{$structName := .table.BusinessName | CaseCamelLower}}
 
 package service
