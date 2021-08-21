@@ -11,12 +11,13 @@ import (
 	comModel "gfast/app/common/model"
 	"gfast/app/system/dao"
 	"gfast/app/system/model"
+	"strings"
+
 	"github.com/gogf/gf/container/gset"
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gcron"
 	"github.com/gogf/gf/util/gconv"
-	"strings"
 )
 
 type sysJob struct {
@@ -150,10 +151,28 @@ func (s *sysJob) JobStop(job *model.SysJob) error {
 	return err
 }
 
+//执行任务
+func (s *sysJob) JobRun(job *model.SysJob) error {
+	//可以task目录下是否绑定对应的方法
+	f := TimeTaskList.GetByName(job.InvokeTarget)
+	if f == nil {
+		return gerror.New("当前task目录下没有绑定这个方法")
+	}
+	//传参
+	paramArr := strings.Split(job.JobParams, "|")
+	TimeTaskList.EditParams(f.FuncName, paramArr)
+	task, err := gcron.AddOnce("@every 1s", f.Run)
+	if err != nil || task == nil {
+		return gerror.New("启动执行失败")
+	}
+	return nil
+}
+
 // DeleteJobByIds 删除任务
 func (s *sysJob) DeleteJobByIds(ids []int) (err error) {
 	if len(ids) == 0 {
 		err = gerror.New("参数错误")
+		return
 	}
 	gst := gset.NewFrom(ids)
 	var jobs []*model.SysJob
