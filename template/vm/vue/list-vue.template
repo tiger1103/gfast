@@ -490,7 +490,7 @@ export default {
     getList() {
       this.loading = true;
       list{{.table.ClassName}}(this.queryParams).then(response => {
-        let list = response.data.list;
+        let list = response.data.list || [];
         {{$hasCreatedBy := false}}
         {{$hasUpdatedBy := false}}
         {{range $index,$column := .table.Columns}}
