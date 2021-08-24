@@ -8,7 +8,7 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
     {{range $index, $column := .table.Columns}}
     {{if and (eq $column.IsQuery "1") (ne $column.ColumnName "created_by") (ne $column.ColumnName "updated_by") (ne $column.ColumnName "created_at") (ne $column.ColumnName "updated_at") (ne $column.ColumnName "deleted_at")}}
-    {{if eq $column.HtmlType "input"}}
+    {{if eq $column.HtmlType "input" "textarea"}}
       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
         <el-input
             v-model="queryParams.{{$column.HtmlField}}"

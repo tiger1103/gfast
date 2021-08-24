@@ -665,11 +665,11 @@ func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 		if e == io.EOF {
 			break
 		}
-		if gstr.Trim(string(bytes)) == "" {
+		str := gstr.Trim(string(bytes))
+
+		if str == "" {
 			continue
 		}
-		bytes = bytes[:len(bytes)-2]
-		str := string(bytes)
 
 		if strings.Contains(str, "/*") {
 			isAnnotation = true
