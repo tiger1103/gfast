@@ -10,6 +10,7 @@ package router
 import (
 	"gfast/app/system/api"
 	"gfast/middleware"
+
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -132,6 +133,7 @@ func init() {
 					group.PUT("edit", api.SysJob.Edit)
 					group.PUT("start", api.SysJob.Start)
 					group.PUT("stop", api.SysJob.Stop)
+					group.PUT("run", api.SysJob.Run)
 					group.DELETE("delete", api.SysJob.Delete)
 				})
 				//服务监控
