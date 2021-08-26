@@ -2,10 +2,16 @@ import request from '@/utils/request'
 
 {{$businessName := .table.BusinessName | CaseCamelLower}}
 
+{{$plugin:=""}}
+{{if ContainsI $.table.PackageName "plugins"}}
+{{$plugin = "plugins/"}}
+{{end}}
+
+
 // 查询{{.table.FunctionName}}列表
 export function list{{.table.ClassName}}(query) {
   return request({
-    url: '/{{.table.ModuleName}}/{{$businessName}}/list',
+    url: '/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}/list',
     method: 'get',
     params: query
   })
@@ -14,7 +20,7 @@ export function list{{.table.ClassName}}(query) {
 // 查询{{.table.FunctionName}}详细
 export function get{{.table.ClassName}}({{.table.PkColumn.HtmlField}}) {
   return request({
-    url: '/{{.table.ModuleName}}/{{$businessName}}/get',
+    url: '/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}/get',
     method: 'get',
     params: {
      id: {{.table.PkColumn.HtmlField}}.toString()
@@ -25,7 +31,7 @@ export function get{{.table.ClassName}}({{.table.PkColumn.HtmlField}}) {
 // 新增{{.table.FunctionName}}
 export function add{{.table.ClassName}}(data) {
   return request({
-    url: '/{{.table.ModuleName}}/{{$businessName}}/add',
+    url: '/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}/add',
     method: 'post',
     data: data
   })
@@ -34,7 +40,7 @@ export function add{{.table.ClassName}}(data) {
 // 修改{{.table.FunctionName}}
 export function update{{.table.ClassName}}(data) {
   return request({
-    url: '/{{.table.ModuleName}}/{{$businessName}}/edit',
+    url: '/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}/edit',
     method: 'put',
     data: data
   })
@@ -43,7 +49,7 @@ export function update{{.table.ClassName}}(data) {
 // 删除{{.table.FunctionName}}
 export function del{{.table.ClassName}}({{.table.PkColumn.HtmlField}}s) {
   return request({
-    url: '/{{.table.ModuleName}}/{{$businessName}}/delete',
+    url: '/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}/delete',
     method: 'delete',
     data:{
        ids:{{.table.PkColumn.HtmlField}}s
@@ -63,7 +69,7 @@ export function change{{$.table.ClassName}}{{$column.GoField}}({{$.table.PkColum
     {{$column.HtmlField}}
   }
   return request({
-    url: '/{{$.table.ModuleName}}/{{$businessName}}/change{{$column.GoField}}',
+    url: '/{{$plugin}}{{$.table.ModuleName}}/{{$businessName}}/change{{$column.GoField}}',
     method: 'put',
     data:data
   })
@@ -73,7 +79,7 @@ export function change{{$.table.ClassName}}{{$column.GoField}}({{$.table.PkColum
 // 关联{{$column.LinkTableName}}表选项
 export function list{{$column.LinkTableClass}}(query){
    return request({
-     url: '/{{$.table.ModuleName}}/{{$column.LinkTableName | CaseCamelLower}}/list',
+     url: '/{{$plugin}}{{$.table.ModuleName}}/{{$column.LinkTableName | CaseCamelLower}}/list',
      method: 'get',
      params: query
    })
