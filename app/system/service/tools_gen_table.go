@@ -11,6 +11,7 @@ import (
 	"bufio"
 	"context"
 	"database/sql"
+	"fmt"
 	"gfast/app/common/global"
 	comModel "gfast/app/common/model"
 	comService "gfast/app/common/service"
@@ -467,12 +468,20 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 
 			case "vue":
 				path := strings.Join([]string{frontDir, "/src/views/", extendData.ModuleName, "/", businessName, "/list/index.vue"}, "")
+				if gstr.ContainsI(extendData.PackageName, "plugins") {
+					path = strings.Join([]string{frontDir, "/src/views/plugins/", extendData.ModuleName, "/", businessName, "/list/index.vue"}, "")
+				}
 				err = s.createFile(path, code, false)
 			case "jsApi":
 				path := strings.Join([]string{frontDir, "/src/api/", extendData.ModuleName, "/", businessName, ".js"}, "")
+				if gstr.ContainsI(extendData.PackageName, "plugins") {
+					path = strings.Join([]string{frontDir, "/src/api/plugins/", extendData.ModuleName, "/", businessName, ".js"}, "")
+				}
 				err = s.createFile(path, code, false)
 			}
 		}
+		//生成对应的模块路由
+		err = s.genModuleRouter(curDir, extendData.ModuleName, extendData.PackageName)
 	}
 	return
 }
@@ -516,6 +525,7 @@ func (s *toolsGenTable) GenData(tableId int64, ctx context.Context) (data g.MapS
 		"CaseCamelLower": gstr.CaseCamelLower, //首字母小写驼峰
 		"CaseCamel":      gstr.CaseCamel,      //首字母大写驼峰
 		"HasSuffix":      gstr.HasSuffix,      //是否存在后缀
+		"ContainsI":      gstr.ContainsI,      //是否包含子字符串
 		"VueTag": func(t string) string {
 			return t
 		},
@@ -709,5 +719,18 @@ func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 		}
 	}
 	tx.Commit()
+	return
+}
+
+// GenModuleRouter 生成模块路由
+func (s *toolsGenTable) genModuleRouter(curDir, moduleName, packageName string) (err error) {
+	if gstr.CaseSnake(moduleName) != "system" {
+		routerFilePath := strings.Join([]string{curDir, "/router/", gstr.CaseSnake(moduleName), ".go"}, "")
+		if gstr.ContainsI(packageName, "plugins") {
+			routerFilePath = strings.Join([]string{curDir, "/plugins/router/", gstr.CaseSnake(moduleName), ".go"}, "")
+		}
+		code := fmt.Sprintf(`package router%simport _ "%s/router"`, "\n", packageName)
+		err = s.createFile(routerFilePath, code, false)
+	}
 	return
 }

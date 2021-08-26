@@ -17,11 +17,17 @@ import (
     {{end}}
 )
 
+{{$plugin:=""}}
+{{if ContainsI $.table.PackageName "plugins"}}
+{{$plugin = "plugins/"}}
+{{end}}
+
+
 //加载路由
 func init() {
     s := g.Server()
     s.Group("/", func(group *ghttp.RouterGroup) {
-        group.Group("/{{.table.ModuleName}}", func(group *ghttp.RouterGroup) {
+        group.Group("/{{$plugin}}{{.table.ModuleName}}", func(group *ghttp.RouterGroup) {
             group.Group("/{{.table.BusinessName | CaseCamelLower}}", func(group *ghttp.RouterGroup) {
                 //gToken拦截器
                 {{if ne $.table.ModuleName "system"}}

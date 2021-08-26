@@ -256,6 +256,14 @@
 </template>
 
 <script>
+
+
+{{$plugin:=""}}
+{{if ContainsI $.table.PackageName "plugins"}}
+{{$plugin = "plugins/"}}
+{{end}}
+
+
 import {
     list{{.table.ClassName}},
     get{{.table.ClassName}},
@@ -270,7 +278,7 @@ import {
     list{{$column.LinkTableClass}},
     {{end}}
     {{end}}
-} from "@/api/{{.table.ModuleName}}/{{$businessName}}";
+} from "@/api/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
