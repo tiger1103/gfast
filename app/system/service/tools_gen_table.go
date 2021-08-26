@@ -730,7 +730,7 @@ func (s *toolsGenTable) genModuleRouter(curDir, moduleName, packageName string) 
 			routerFilePath = strings.Join([]string{curDir, "/plugins/router/", gstr.CaseSnake(moduleName), ".go"}, "")
 		}
 		code := fmt.Sprintf(`package router%simport _ "%s/router"`, "\n", packageName)
-		s.createFile(routerFilePath, code, false)
+		err = s.createFile(routerFilePath, code, false)
 	}
 	return
 }
