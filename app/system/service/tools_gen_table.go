@@ -724,11 +724,11 @@ func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 
 // GenModuleRouter 生成模块路由
 func (s *toolsGenTable) genModuleRouter(curDir, moduleName, packageName string) (err error) {
-	routerFilePath := strings.Join([]string{curDir, "/router/", gstr.CaseSnake(moduleName), ".go"}, "")
-	if gstr.ContainsI(packageName, "plugins") {
-		routerFilePath = strings.Join([]string{curDir, "/plugins/router/", gstr.CaseSnake(moduleName), ".go"}, "")
-	}
 	if gstr.CaseSnake(moduleName) != "system" {
+		routerFilePath := strings.Join([]string{curDir, "/router/", gstr.CaseSnake(moduleName), ".go"}, "")
+		if gstr.ContainsI(packageName, "plugins") {
+			routerFilePath = strings.Join([]string{curDir, "/plugins/router/", gstr.CaseSnake(moduleName), ".go"}, "")
+		}
 		code := fmt.Sprintf(`package router%simport _ "%s/router"`, "\n", packageName)
 		s.createFile(routerFilePath, code, false)
 	}
