@@ -10,6 +10,7 @@ package api
 import (
 	"gfast/app/system/dao"
 	"gfast/app/system/service"
+
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/util/gvalid"
@@ -103,6 +104,20 @@ func (c *sysJob) Stop(r *ghttp.Request) {
 		c.FailJsonExit(r, "定时任务管理停止"+err.Error())
 	}
 	c.SusJsonExit(r, "定时任务管理停止成功")
+}
+
+// Run 执行任务
+func (c *sysJob) Run(r *ghttp.Request) {
+	id := r.GetInt64("id")
+	job, err := service.SysJob.GetJobInfoById(id)
+	if err != nil {
+		c.FailJsonExit(r, err.Error())
+	}
+	err = service.SysJob.JobRun(job)
+	if err != nil {
+		c.FailJsonExit(r, "定时任务管理执行"+err.Error())
+	}
+	c.SusJsonExit(r, "定时任务管理执行成功")
 }
 
 // Delete 删除任务
