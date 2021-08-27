@@ -9,6 +9,12 @@
 
 package service
 
+{{$gjson:=false}}
+{{range $index, $column := .table.Columns}}
+{{if eq $column.HtmlType "images" "file" "files"}}
+{{$gjson = true}}
+{{end}}
+{{end}}
 
 import (
     "context"
@@ -19,6 +25,9 @@ import (
 	"github.com/gogf/gf/util/gconv"
 	"gfast/library"
     {{end}}
+	{{if $gjson}}
+	"github.com/gogf/gf/encoding/gjson"
+	{{end}}
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 )
@@ -47,44 +56,45 @@ var {{.table.ClassName}} = new({{$structName}})
 {{end}}
 {{end}}
 
-// GetList 获取任务列表
-func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total, page int, list []*model.{{.table.ClassName}}, err error) {
-	model := dao.{{.table.ClassName}}.Ctx(req.Ctx)
-	if req != nil {
-	{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
+// GetList 获取列表
+func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total, page int, list []*dao.{{.table.ClassName}}ListRes, err error) {
+    m := dao.{{.table.ClassName}}.Ctx(req.Ctx)
+    if req != nil {
+    {{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
         {{if eq $column.QueryType "LIKE"}}
-            if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
-            } {{end}}
+        if req.{{$column.GoField}} != "" {
+            m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
+        } {{end}}
         {{if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
-            if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
-            }
+        if req.{{$column.GoField}} != "" {
+            m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+        }
         {{else if and (eq $column.GoType "Time") (eq $column.ColumnName "created_at")}}
-            if req.BeginTime != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >=", req.BeginTime)
-            }
-            if req.EndTime != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" <", req.EndTime)
-            }
+        if req.BeginTime != "" {
+            m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >=", req.BeginTime)
+        }
+        if req.EndTime != "" {
+            m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" <", req.EndTime)
+        }
         {{else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64") }}
-            if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
-            }
+        if req.{{$column.GoField}} != "" {
+            m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+        }
         {{end}} {{end}}
         {{if and (eq $column.QueryType "BETWEEN") (eq $column.ColumnType "datetime") }}
-            if req.{{$column.GoField}} != nil {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
-            }
+        if req.{{$column.GoField}} != nil {
+            m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
+        }
         {{end}}
-    {{end}}{{end}}
-	}
-	total, err = model.Count()
-	if err != nil {
-		g.Log().Error(err)
-		err = gerror.New("获取总行数失败")
-		return
-	}
+        {{end}}
+        {{end}}
+    }
+    total, err = m.Count()
+    if err != nil {
+        g.Log().Error(err)
+        err = gerror.New("获取总行数失败")
+        return
+    }
     {{if ne .table.TplCategory "tree"}}
     if req.PageNum == 0 {
         req.PageNum = 1
@@ -97,36 +107,78 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
     if req.OrderBy!=""{
         order = req.OrderBy
     }
-    err = model.Page(page, req.PageSize).Order(order).Scan(&list)
+    var res []*model.{{.table.ClassName}}
+    err = m.Fields(dao.{{.table.ClassName}}ListRes{}).Page(page, req.PageSize).Order(order).Scan(&res)
     {{else}}
 	order:= "{{$pk}} asc"
 	if req.OrderBy!=""{
 		order = req.OrderBy
 	}
-	err = model.Order(order).Scan(&list)
+	var res []*model.{{.table.ClassName}}
+	err = m.Fields(dao.{{.table.ClassName}}ListRes{}).Order(order).Scan(&res)
     {{end}}
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取数据失败")
 	}
-	return
+	list = make([]*dao.{{.table.ClassName}}ListRes,len(res))
+    for k,v:=range res{
+        {{range $index, $column := .table.Columns}}
+        {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+        {{$column.HtmlField}}:= ([]*comModel.UpFile)(nil)
+        err = gjson.DecodeTo(v.{{$column.GoField}},&{{$column.HtmlField}})
+        if err!=nil{
+            return
+        }
+        {{end}}
+        {{end}}
+        list[k] = &dao.{{.table.ClassName}}ListRes{
+            {{range $index, $column := .table.Columns}}
+            {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+            {{$column.GoField}} : {{$column.HtmlField}},
+            {{else}}
+            {{$column.GoField}} : v.{{$column.GoField}},
+            {{end}}
+            {{end}}
+        }
+    }
+    return
 }
 
 
 // GetInfoById 通过id获取
-func (s *{{$structName}}) GetInfoById(id int64,ctx context.Context) (info *model.{{.table.ClassName}}, err error) {
-	if id == 0 {
-		err = gerror.New("参数错误")
-		return
-	}
-	err = dao.{{.table.ClassName}}.Ctx(ctx).Where(dao.{{.table.ClassName}}.Columns.{{$pkGoField}}, id).Scan(&info)
-	if err != nil {
-		g.Log().Error(err)
-	}
-	if info == nil || err != nil {
-		err = gerror.New("获取信息失败")
-	}
-	return
+func (s *{{$structName}}) GetInfoById(id int64,ctx context.Context) (info *dao.{{.table.ClassName}}InfoRes, err error) {
+    if id == 0 {
+        err = gerror.New("参数错误")
+        return
+    }
+    var data *model.{{.table.ClassName}}
+    err = dao.{{.table.ClassName}}.Ctx(ctx).Where(dao.{{.table.ClassName}}.Columns.{{$pkGoField}}, id).Scan(&data)
+    if err != nil {
+        g.Log().Error(err)
+    }
+    if data == nil || err != nil {
+        err = gerror.New("获取信息失败")
+    }
+	{{range $index, $column := .table.Columns}}
+    {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+    {{$column.HtmlField}}:= ([]*comModel.UpFile)(nil)
+    err = gjson.DecodeTo(data.{{$column.GoField}},&{{$column.HtmlField}})
+    if err!=nil{
+        return
+    }
+    {{end}}
+    {{end}}
+    info = &dao.{{.table.ClassName}}InfoRes{
+        {{range $index, $column := .table.Columns}}
+        {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+        {{$column.GoField}} : {{$column.HtmlField}},
+        {{else}}
+        {{$column.GoField}} : data.{{$column.GoField}},
+        {{end}}
+        {{end}}
+    }
+    return
 }
 
 // Add 添加

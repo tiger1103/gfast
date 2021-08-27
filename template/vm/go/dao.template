@@ -56,7 +56,7 @@ type {{.table.ClassName}}SearchReq struct {
 type {{.table.ClassName}}AddReq struct {
     {{range $index, $column := .table.Columns}}
     {{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}}
-    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}}   `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
     {{end}}
     {{if eq $column.ColumnName "created_by"}}CreatedBy       uint64 {{end}}
     {{end}}
@@ -68,7 +68,7 @@ type {{.table.ClassName}}EditReq struct {
     {{.table.PkColumn.GoField}}    {{.table.PkColumn.GoType}}  `p:"{{.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"`
     {{range $index, $column := .table.Columns}}
     {{if eq $column.IsEdit "1"}}
-    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`{{end}}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`{{end}}
     {{if eq $column.ColumnName "updated_by"}}UpdatedBy       uint64 {{end}}
     {{end}}
 }
@@ -77,10 +77,27 @@ type {{.table.ClassName}}EditReq struct {
 
 {{range $index,$column:= .table.Columns}}
 {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
-// {{$.table.ClassName}}{{$column.GoField}}Req 设置用户状态参数
+// {{$.table.ClassName}}{{$column.GoField}}Req 设置状态参数
 type {{$.table.ClassName}}{{$column.GoField}}Req struct {
 	{{$.table.PkColumn.GoField}}    {{$.table.PkColumn.GoType}}  `p:"{{$.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"`
 	{{$column.GoField}} {{$column.GoType}}   `p:"{{$column.HtmlField}}" v:"required#{{$column.ColumnComment}}不能为空"`
 }
 {{end}}
 {{end}}
+
+// {{.table.ClassName}}ListRes 列表返回结果
+type {{.table.ClassName}}ListRes struct {
+    {{range $index, $column := .table.Columns}}
+    {{if eq $column.IsList "1" }}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
+    {{end}}
+    {{end}}
+}
+
+// {{.table.ClassName}}InfoRes 数据返回结果
+type {{.table.ClassName}}InfoRes struct {
+    {{range $index, $column := .table.Columns}}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
+    {{end}}
+}
+

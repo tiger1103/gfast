@@ -12,3 +12,9 @@ type PageReq struct {
 	Ctx       context.Context
 	OrderBy   string //排序方式
 }
+
+type UpFile struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Uid  uint64 `json:"uid"`
+}

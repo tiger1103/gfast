@@ -10,13 +10,12 @@
 package api
 
 {{$hasGStr:=false}}
-{{$gjsonTag:=false}}
 {{$libTag:=false}}
 {{range $index,$column:=.table.Columns}}
 {{if eq $column.HtmlType "checkbox"}}
 {{$hasGStr = true}}
 {{else if eq $column.HtmlType "images" "file" "files"}}
-{{$gjsonTag = true}}
+{{$libTag = true}}
 {{$libTag = true}}
 {{end}}
 {{end}}
@@ -35,9 +34,6 @@ import (
     "github.com/gogf/gf/util/gvalid"
     {{if $hasGStr}}
     "github.com/gogf/gf/text/gstr"
-    {{end}}
-    {{if $gjsonTag}}
-    "github.com/gogf/gf/encoding/gjson"
     {{end}}
 )
 
@@ -75,8 +71,9 @@ func (c *{{$structName}}) List(r *ghttp.Request) {
 func (c *{{$structName}}) Add(r *ghttp.Request) {
     var req *dao.{{.table.ClassName}}AddReq
     //获取参数
-    if err := r.Parse(&req); err != nil {
-        c.FailJsonExit(r, err.(gvalid.Error).FirstString())
+    err := r.Parse(&req)
+    if err != nil {
+       c.FailJsonExit(r, err.(gvalid.Error).FirstString())
     }
     {{range $index,$column:= .table.Columns}}
     {{if eq $column.ColumnName "created_by"}}
@@ -90,19 +87,15 @@ func (c *{{$structName}}) Add(r *ghttp.Request) {
        req.{{$column.GoField}} = ""
     }
     {{else if eq $column.HtmlType "images" "file" "files"}}
-    up{{$column.GoField}}:=gjson.New(req.{{$column.GoField}})
-    for _,obj:=range up{{$column.GoField}}.Array(){
-        mp := obj.(g.MapStrAny)
-        var err error
-        mp["url"],err = library.GetFilesPath(mp["url"].(string))
+    for _,obj:=range req.{{$column.GoField}}{
+        obj.Url,err = library.GetFilesPath(obj.Url)
         if err!=nil{
             c.FailJsonExit(r, err.Error())
         }
     }
-    req.{{$column.GoField}} = up{{$column.GoField}}.MustToJsonString()
     {{end}}
     {{end}}
-    err := service.{{.table.ClassName}}.Add(req,r.GetCtx())
+    err = service.{{.table.ClassName}}.Add(req,r.GetCtx())
     if err != nil {
         c.FailJsonExit(r, err.Error())
     }
@@ -124,7 +117,8 @@ func (c *{{$structName}}) Get(r *ghttp.Request) {
 func (c *{{$structName}}) Edit(r *ghttp.Request) {
     var req *dao.{{.table.ClassName}}EditReq
     //获取参数
-    if err := r.Parse(&req); err != nil {
+    err := r.Parse(&req)
+    if err != nil {
         c.FailJsonExit(r, err.(gvalid.Error).FirstString())
     }
     {{range $index,$column:= .table.Columns}}
@@ -139,19 +133,15 @@ func (c *{{$structName}}) Edit(r *ghttp.Request) {
        req.{{$column.GoField}} = ""
     }
     {{else if eq $column.HtmlType "images" "file" "files"}}
-    up{{$column.GoField}}:=gjson.New(req.{{$column.GoField}})
-    for _,obj:=range up{{$column.GoField}}.Array(){
-        mp := obj.(g.MapStrAny)
-        var err error
-        mp["url"],err = library.GetFilesPath(mp["url"].(string))
+    for _,obj:=range req.{{$column.GoField}}{
+        obj.Url,err = library.GetFilesPath(obj.Url)
         if err!=nil{
             c.FailJsonExit(r, err.Error())
         }
     }
-    req.{{$column.GoField}} = up{{$column.GoField}}.MustToJsonString()
     {{end}}
     {{end}}
-    err := service.{{.table.ClassName}}.Edit(req,r.GetCtx())
+    err = service.{{.table.ClassName}}.Edit(req,r.GetCtx())
     if err != nil {
         c.FailJsonExit(r, err.Error())
     }

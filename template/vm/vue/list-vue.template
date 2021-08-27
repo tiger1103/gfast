@@ -636,7 +636,7 @@ export default {
         //单图地址赋值
         this.imageUrl{{$column.GoField}} = data.{{$column.HtmlField}} ? this.getUpFileUrl(process.env.VUE_APP_BASE_API,data.{{$column.HtmlField}}) : ''
         {{else if eq $column.HtmlType "images" "file" "files"}}
-        data.{{$column.HtmlField}} =data.{{$column.HtmlField}}?JSON.parse(data.{{$column.HtmlField}}):[]
+        data.{{$column.HtmlField}} =data.{{$column.HtmlField}} || []
         {{end}}
         {{end}}
         this.form = data;
