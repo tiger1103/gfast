@@ -102,7 +102,7 @@ func (c *{{$structName}}) Add(r *ghttp.Request) {
     req.{{$column.GoField}} = up{{$column.GoField}}.MustToJsonString()
     {{end}}
     {{end}}
-    err := service.{{.table.ClassName}}.Add(req,r.GetCtx())
+    err := service.{{.table.ClassName}}.Add(r.GetCtx(),req)
     if err != nil {
         c.FailJsonExit(r, err.Error())
     }
@@ -113,7 +113,7 @@ func (c *{{$structName}}) Add(r *ghttp.Request) {
 // Get 获取
 func (c *{{$structName}}) Get(r *ghttp.Request) {
 	id := r.GetInt64("id")
-	info, err := service.{{.table.ClassName}}.GetInfoById(id,r.GetCtx())
+	info, err := service.{{.table.ClassName}}.GetInfoById(r.GetCtx(),id)
 	if err != nil {
 		c.FailJsonExit(r, err.Error())
 	}
@@ -151,7 +151,7 @@ func (c *{{$structName}}) Edit(r *ghttp.Request) {
     req.{{$column.GoField}} = up{{$column.GoField}}.MustToJsonString()
     {{end}}
     {{end}}
-    err := service.{{.table.ClassName}}.Edit(req,r.GetCtx())
+    err := service.{{.table.ClassName}}.Edit(r.GetCtx(),req)
     if err != nil {
         c.FailJsonExit(r, err.Error())
     }
@@ -162,7 +162,7 @@ func (c *{{$structName}}) Edit(r *ghttp.Request) {
 // Delete 删除
 func (c *{{$structName}}) Delete(r *ghttp.Request) {
 	ids := r.GetInts("ids")
-	err := service.{{.table.ClassName}}.DeleteByIds(ids,r.GetCtx())
+	err := service.{{.table.ClassName}}.DeleteByIds(r.GetCtx(),ids)
 	if err != nil {
 		c.FailJsonExit(r, err.Error())
 	}
@@ -178,7 +178,7 @@ func (c *{{$structName}})Change{{$column.GoField}}(r *ghttp.Request){
 	   if err := r.Parse(&req); err != nil {
 	       c.FailJsonExit(r, err.(gvalid.Error).FirstString())
 	   }
-	   if err := service.{{$.table.ClassName}}.Change{{$column.GoField}}(req,r.GetCtx()); err != nil {
+	   if err := service.{{$.table.ClassName}}.Change{{$column.GoField}}(r.GetCtx(),req); err != nil {
 	       c.FailJsonExit(r, err.Error())
 	   } else {
 	       c.SusJsonExit(r, "状态设置成功")
