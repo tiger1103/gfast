@@ -147,7 +147,7 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
 
 
 // GetInfoById 通过id获取
-func (s *{{$structName}}) GetInfoById(id int64,ctx context.Context) (info *dao.{{.table.ClassName}}InfoRes, err error) {
+func (s *{{$structName}}) GetInfoById(ctx context.Context,id int64) (info *dao.{{.table.ClassName}}InfoRes, err error) {
     if id == 0 {
         err = gerror.New("参数错误")
         return
@@ -182,13 +182,13 @@ func (s *{{$structName}}) GetInfoById(id int64,ctx context.Context) (info *dao.{
 }
 
 // Add 添加
-func (s *{{$structName}}) Add(req *dao.{{.table.ClassName}}AddReq,ctx context.Context) (err error) {
+func (s *{{$structName}}) Add(ctx context.Context,req *dao.{{.table.ClassName}}AddReq) (err error) {
 	_, err = dao.{{.table.ClassName}}.Ctx(ctx).Insert(req)
 	return
 }
 
 // Edit 修改
-func (s *{{$structName}}) Edit(req *dao.{{.table.ClassName}}EditReq,ctx context.Context) error {
+func (s *{{$structName}}) Edit(ctx context.Context,req *dao.{{.table.ClassName}}EditReq) error {
     {{ $fieldsEx:= concat "dao." $.table.ClassName ".Columns." $pkGoField }}
     {{if ne $createdAt ""}}
         {{$fieldsEx = concat "dao." $.table.ClassName ".Columns." $pkGoField  "," "dao." $.table.ClassName ".Columns." $createdAtGoField}}
@@ -200,13 +200,13 @@ func (s *{{$structName}}) Edit(req *dao.{{.table.ClassName}}EditReq,ctx context.
 
 
 // DeleteByIds 删除
-func (s *{{$structName}}) DeleteByIds(ids []int,ctx context.Context) (err error) {
+func (s *{{$structName}}) DeleteByIds(ctx context.Context,ids []int) (err error) {
 	if len(ids) == 0 {
 		err = gerror.New("参数错误")
 		return
 	}
 	{{if eq .table.TplCategory "tree"}}
-    ids, err = s.GetChildrenIds(ids,ctx)
+    ids, err = s.GetChildrenIds(ctx,ids)
     if err != nil {
         return
     }
@@ -223,7 +223,7 @@ func (s *{{$structName}}) DeleteByIds(ids []int,ctx context.Context) (err error)
 {{range $index,$column:= .table.Columns}}
 {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
 // Change{{$column.GoField}} 修改状态
-func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName}}{{$column.GoField}}Req,ctx context.Context) error {
+func (s *{{$structName}}) Change{{$column.GoField}}(ctx context.Context,req *dao.{{$.table.ClassName}}{{$column.GoField}}Req) error {
 	_, err := dao.{{$.table.ClassName}}.Ctx(ctx).WherePri(req.{{$pkGoField}}).Update(g.Map{
 		dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}: req.{{$column.GoField}},
 	})
@@ -234,7 +234,7 @@ func (s *{{$structName}}) Change{{$column.GoField}}(req *dao.{{$.table.ClassName
 
 {{if eq .table.TplCategory "tree"}}
 // GetChildrenIds 通过ID获取子级ID
-func (s *{{$structName}})GetChildrenIds(ids []int,ctx context.Context) ([]int, error) {
+func (s *{{$structName}})GetChildrenIds(ctx context.Context,ids []int) ([]int, error) {
 	//获取所有
 	_,_,all, err := s.GetList(&dao.{{.table.ClassName}}SearchReq{PageReq:comModel.PageReq{Ctx: ctx}})
 	if err != nil {
