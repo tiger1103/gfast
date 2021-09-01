@@ -49,37 +49,37 @@ var {{.table.ClassName}} = new({{$structName}})
 
 // GetList 获取任务列表
 func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total, page int, list []*model.{{.table.ClassName}}, err error) {
-	model := dao.{{.table.ClassName}}.Ctx(req.Ctx)
+	m := dao.{{.table.ClassName}}.Ctx(req.Ctx)
 	if req != nil {
 	{{range $index, $column := .table.Columns}} {{if eq $column.IsQuery "1"}}
         {{if eq $column.QueryType "LIKE"}}
             if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
+                m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" like ?", "%"+req.{{$column.GoField}}+"%")
             } {{end}}
         {{if eq $column.QueryType "EQ"}} {{if eq $column.GoType "string"}}
             if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+                m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
             }
         {{else if and (eq $column.GoType "Time") (eq $column.ColumnName "created_at")}}
             if req.BeginTime != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >=", req.BeginTime)
+                m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >=", req.BeginTime)
             }
             if req.EndTime != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" <", req.EndTime)
+                m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" <", req.EndTime)
             }
         {{else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64") }}
             if req.{{$column.GoField}} != "" {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
+                m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" = ?", req.{{$column.GoField}})
             }
         {{end}} {{end}}
         {{if and (eq $column.QueryType "BETWEEN") (eq $column.ColumnType "datetime") }}
             if req.{{$column.GoField}} != nil {
-                model = model.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
+                m = m.Where(dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" >= ? AND "+dao.{{$.table.ClassName}}.Columns.{{$column.GoField}}+" < ?", req.{{$column.GoField}}, req.{{$column.GoField}}.Add(gtime.D))
             }
         {{end}}
     {{end}}{{end}}
 	}
-	total, err = model.Count()
+	total, err = m.Count()
 	if err != nil {
 		g.Log().Error(err)
 		err = gerror.New("获取总行数失败")
@@ -97,13 +97,13 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
     if req.OrderBy!=""{
         order = req.OrderBy
     }
-    err = model.Page(page, req.PageSize).Order(order).Scan(&list)
+    err = m.Page(page, req.PageSize).Order(order).Scan(&list)
     {{else}}
 	order:= "{{$pk}} asc"
 	if req.OrderBy!=""{
 		order = req.OrderBy
 	}
-	err = model.Order(order).Scan(&list)
+	err = m.Order(order).Scan(&list)
     {{end}}
 	if err != nil {
 		g.Log().Error(err)
