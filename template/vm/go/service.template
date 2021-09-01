@@ -134,10 +134,12 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
         {{end}}
         list[k] = &dao.{{.table.ClassName}}ListRes{
             {{range $index, $column := .table.Columns}}
-            {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+            {{if eq $column.IsList "1"}}
+            {{if eq $column.HtmlType "images" "file" "files"}}
             {{$column.GoField}} : {{$column.HtmlField}},
             {{else}}
             {{$column.GoField}} : v.{{$column.GoField}},
+            {{end}}
             {{end}}
             {{end}}
         }
