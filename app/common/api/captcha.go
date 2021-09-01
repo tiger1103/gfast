@@ -15,8 +15,8 @@ var Captcha = new(captcha)
 // @Summary 获取验证码图片信息
 // @Description 获取验证码图片信息
 // @Tags 公共
-// @Success 0 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /system/public/verify [post]
+// @Success 0 {object} library.Response "{"code": 200, "data": [...]}"
+// @Router /captcha/get [get]
 // @Security
 func (c *captcha) Img(r *ghttp.Request) {
 	idKeyC, base64stringC := service.Captcha.GetVerifyImgString()

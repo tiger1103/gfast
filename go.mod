@@ -8,6 +8,7 @@ require (
 	github.com/goflyfox/gtoken v1.4.2
 	github.com/gogf/gcache-adapter v0.1.2
 	github.com/gogf/gf v1.16.4
+	github.com/gogf/swagger v1.3.0
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/kr/text v0.2.0 // indirect

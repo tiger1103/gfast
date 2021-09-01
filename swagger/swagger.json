@@ -1,0 +1,189 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "GFast后台管理框架",
+        "title": "GFast",
+        "contact": {},
+        "version": "2.0"
+    },
+    "paths": {
+        "/captcha/get": {
+            "get": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "获取验证码图片信息",
+                "tags": [
+                    "公共"
+                ],
+                "summary": "获取验证码图片信息",
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/library.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/upload/ckEditorUp": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "CkEditor编辑器上传附件",
+                "tags": [
+                    "公共"
+                ],
+                "summary": "CkEditor编辑器上传附件",
+                "parameters": [
+                    {
+                        "description": "upFile",
+                        "name": "upFile",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/library.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/upload/upFile": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "单文件上传",
+                "tags": [
+                    "公共"
+                ],
+                "summary": "单文件上传",
+                "parameters": [
+                    {
+                        "description": "file",
+                        "name": "file",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/library.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/upload/upFiles": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "批量上传文件",
+                "tags": [
+                    "公共"
+                ],
+                "summary": "批量上传文件",
+                "parameters": [
+                    {
+                        "description": "file",
+                        "name": "file",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/library.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/upload/upImgs": {
+            "post": {
+                "security": [
+                    {
+                        "": []
+                    }
+                ],
+                "description": "批量上传图片",
+                "tags": [
+                    "公共"
+                ],
+                "summary": "批量上传图片",
+                "parameters": [
+                    {
+                        "description": "file",
+                        "name": "file",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/library.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "library.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码",
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "description": "数据集",
+                    "type": "object"
+                },
+                "msg": {
+                    "description": "消息",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

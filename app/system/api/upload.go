@@ -35,11 +35,12 @@ func (c *upload) UpImg(r *ghttp.Request) {
 	c.SusJsonExit(r, res)
 }
 
+// CkEditorUp
 // @Summary CkEditor编辑器上传附件
 // @Description CkEditor编辑器上传附件
 // @Tags 公共
 // @Param upFile body string  true "upFile"
-// @Success 0 {object} c.Response "{"code": 200, "data": [...]}"
+// @Success 0 {object} library.Response "{"code": 200, "data": [...]}"
 // @Router /system/upload/ckEditorUp [post]
 // @Security
 func (c *upload) CkEditorUp(r *ghttp.Request) {
@@ -64,11 +65,12 @@ func (c *upload) CkEditorUp(r *ghttp.Request) {
 	}
 }
 
+// UpImgs
 // @Summary 批量上传图片
 // @Description 批量上传图片
 // @Tags 公共
 // @Param file body string  true "file"
-// @Success 0 {object} c.Response "{"code": 200, "data": [...]}"
+// @Success 0 {object} library.Response "{"code": 200, "data": [...]}"
 // @Router /system/upload/upImgs [post]
 // @Security
 func (c *upload) UpImgs(r *ghttp.Request) {
@@ -83,11 +85,12 @@ func (c *upload) UpImgs(r *ghttp.Request) {
 	c.SusJson(true, r, "上传成功", res)
 }
 
+// UpFile
 // @Summary 单文件上传
 // @Description 单文件上传
 // @Tags 公共
 // @Param file body string  true "file"
-// @Success 0 {object} c.Response "{"code": 200, "data": [...]}"
+// @Success 0 {object} library.Response "{"code": 200, "data": [...]}"
 // @Router /system/upload/upFile [post]
 // @Security
 func (c *upload) UpFile(r *ghttp.Request) {
@@ -102,11 +105,12 @@ func (c *upload) UpFile(r *ghttp.Request) {
 	c.SusJson(true, r, "上传成功", res)
 }
 
+// UpFiles
 // @Summary 批量上传文件
 // @Description 批量上传文件
 // @Tags 公共
 // @Param file body string  true "file"
-// @Success 0 {object} c.Response "{"code": 200, "data": [...]}"
+// @Success 0 {object} library.Response "{"code": 200, "data": [...]}"
 // @Router /system/upload/upFiles [post]
 // @Security
 func (c *upload) UpFiles(r *ghttp.Request) {
