@@ -15,7 +15,14 @@ type user struct {
 
 var User = new(user)
 
-// UserList 获取用户列表
+// UserList
+// @Summary 获取用户列表
+// @Description 获取用户列表
+// @Tags 用户管理
+// @Param req query model.SysUserSearchReq  true "data"
+// @Success 0 {object} library.Response "{"code": 200, "data": [...]}"
+// @Router /system/auth/userList [get]
+// @Security
 func (c *user) UserList(r *ghttp.Request) {
 	var req *model.SysUserSearchReq
 	if err := r.Parse(&req); err != nil {
