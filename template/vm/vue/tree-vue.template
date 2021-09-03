@@ -493,7 +493,7 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return change{{$.table.ClassName}}{{$column.GoField}}(row.{{$.table.PkColumn.ColumnName}}, row.{{$column.HtmlField}});
+          return change{{$.table.ClassName}}{{$column.GoField}}(row.{{$.table.PkColumn.HtmlField}}, row.{{$column.HtmlField}});
         }).then(() => {
           this.msgSuccess(text + "成功");
         }).catch(function() {
