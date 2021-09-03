@@ -172,7 +172,7 @@ func (c *{{$structName}}) Delete(r *ghttp.Request) {
 {{range $index,$column:= .table.Columns}}
 {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
 // Change{{$column.GoField}} 修改状态
-func (c *{{$structName}})Change{{$column.GoField}}(r *ghttp.Request){
+func (c *{{$structName}}) Change{{$column.GoField}}(r *ghttp.Request){
 	   var req *dao.{{$.table.ClassName}}{{$column.GoField}}Req
 	   //获取参数
 	   if err := r.Parse(&req); err != nil {
