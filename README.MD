@@ -68,6 +68,10 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 ## 文档地址
 [http://doc.qjit.cn/docs/gfast-v2/introduce](http://doc.qjit.cn/docs/gfast-v2/introduce)
 
+## 相关视频
+[https://space.bilibili.com/254192571/channel/seriesdetail?sid=223204](https://space.bilibili.com/254192571/channel/seriesdetail?sid=223204)
+
+
 ## 演示图
 
 <table>
@@ -113,6 +117,9 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 >casbin [https://github.com/casbin/casbin](https://github.com/casbin/casbin)
 
 
+PHP开源工作流引擎tpflow   [https://gitee.com/ntdgg/tpflow](https://gitee.com/ntdgg/tpflow)
+
+CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](https://gitee.com/opencc/ccflow)
 
 ### 生成dao
 因为我们在开发过程中，goFrame框架的gf-cli 一直在更新功能，如果是修改了表重新生成建议不要直接去覆盖，生成到tmp目录后将需要的文件复制到对应的地方
