@@ -426,6 +426,10 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 		return gerror.New("获取本地路径失败")
 	}
 	frontDir := g.Cfg().GetString("gen.frontDir")
+	if !gfile.IsDir(frontDir){
+		err = gerror.New("项目前端路径不存在，请检查是否已在配置文件中配置！")
+		return
+	}
 	for _, id := range ids {
 		var genData g.MapStrStr
 		var extendData *dao.ToolsGenTableExtend
