@@ -9,7 +9,7 @@ package dao
 
 {{$hasGTime:=false}}
 {{range $index, $column := .table.Columns}}
-{{if and (eq $column.GoType "Time") (or (eq $column.IsInsert "1") (eq $column.IsEdit "1"))}}
+{{if eq $column.GoType "Time"}}
 {{$hasGTime = true}}
 {{end}}
 {{end}}
