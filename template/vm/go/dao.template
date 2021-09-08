@@ -89,7 +89,7 @@ type {{$.table.ClassName}}{{$column.GoField}}Req struct {
 type {{.table.ClassName}}ListRes struct {
     {{range $index, $column := .table.Columns}}
     {{if eq $column.IsList "1" }}
-    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}"`
     {{end}}
     {{end}}
 }
@@ -97,7 +97,7 @@ type {{.table.ClassName}}ListRes struct {
 // {{.table.ClassName}}InfoRes 数据返回结果
 type {{.table.ClassName}}InfoRes struct {
     {{range $index, $column := .table.Columns}}
-    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}"`
     {{end}}
 }
 
