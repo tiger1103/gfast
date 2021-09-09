@@ -87,9 +87,22 @@ type {{$.table.ClassName}}{{$column.GoField}}Req struct {
 
 // {{.table.ClassName}}ListRes 列表返回结果
 type {{.table.ClassName}}ListRes struct {
+    {{if eq .table.TplCategory "tree"}}
+    {{range $index, $column := .table.Columns}}
+    {{if or (eq $column.HtmlField $.table.TreeCode) (eq $column.HtmlField $.table.TreeParentCode) (eq $column.HtmlField $.table.TreeName) }}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}"`
+    {{end}}
+    {{end}}
+    {{range $index, $column := .table.Columns}}
+    {{if and (eq $column.IsList "1") (ne $column.HtmlField $.table.TreeCode) (ne $column.HtmlField $.table.TreeParentCode) (ne $column.HtmlField $.table.TreeName) }}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}"`
+    {{end}}
+    {{end}}
+    {{else}}
     {{range $index, $column := .table.Columns}}
     {{if eq $column.IsList "1" }}
     {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}"`
+    {{end}}
     {{end}}
     {{end}}
 }

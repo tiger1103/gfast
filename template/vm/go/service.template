@@ -132,12 +132,29 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
         {{end}}
         {{end}}
         list[k] = &dao.{{.table.ClassName}}ListRes{
+            {{if eq .table.TplCategory "tree"}}
+            {{range $index, $column := .table.Columns}}
+            {{if or (eq $column.HtmlField $.table.TreeCode) (eq $column.HtmlField $.table.TreeParentCode) (eq $column.HtmlField $.table.TreeName) }}
+            {{$column.GoField}} : v.{{$column.GoField}},
+            {{end}}
+            {{end}}
+            {{range $index, $column := .table.Columns}}
+            {{if and (eq $column.IsList "1") (ne $column.HtmlField $.table.TreeCode) (ne $column.HtmlField $.table.TreeParentCode) (ne $column.HtmlField $.table.TreeName) }}
+            {{if eq $column.HtmlType "images" "file" "files"}}
+            {{$column.GoField}} : {{$column.HtmlField}},
+            {{else}}
+            {{$column.GoField}} : v.{{$column.GoField}},
+            {{end}}
+            {{end}}
+            {{end}}
+            {{else}}
             {{range $index, $column := .table.Columns}}
             {{if eq $column.IsList "1"}}
             {{if eq $column.HtmlType "images" "file" "files"}}
             {{$column.GoField}} : {{$column.HtmlField}},
             {{else}}
             {{$column.GoField}} : v.{{$column.GoField}},
+            {{end}}
             {{end}}
             {{end}}
             {{end}}
