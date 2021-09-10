@@ -497,7 +497,7 @@ export default {
         }).then(() => {
           this.msgSuccess(text + "成功");
         }).catch(function() {
-          row.userStatus =row.userStatus === 0 ?1 : 0;
+          row.{{$column.HtmlField}} =row.{{$column.HtmlField}} === 0 ?1 : 0;
         });
     },
     {{end}}
