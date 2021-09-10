@@ -179,7 +179,7 @@ func (s *{{$structName}}) GetInfoById(ctx context.Context,id int64) (info *dao.{
         err = gerror.New("获取信息失败")
     }
 	{{range $index, $column := .table.Columns}}
-    {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+    {{if eq $column.HtmlType "images" "file" "files"}}
     {{$column.HtmlField}}:= ([]*comModel.UpFile)(nil)
     err = gjson.DecodeTo(data.{{$column.GoField}},&{{$column.HtmlField}})
     if err!=nil{
@@ -189,7 +189,7 @@ func (s *{{$structName}}) GetInfoById(ctx context.Context,id int64) (info *dao.{
     {{end}}
     info = &dao.{{.table.ClassName}}InfoRes{
         {{range $index, $column := .table.Columns}}
-        {{if and (eq $column.IsList "1") (eq $column.HtmlType "images" "file" "files")}}
+        {{if eq $column.HtmlType "images" "file" "files"}}
         {{$column.GoField}} : {{$column.HtmlField}},
         {{else}}
         {{$column.GoField}} : data.{{$column.GoField}},
