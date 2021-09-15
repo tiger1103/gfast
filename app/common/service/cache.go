@@ -56,7 +56,7 @@ func (c *cacheTagService) cacheTagKey(key interface{}, tag interface{}) {
 					g.Log().Error(err)
 					return
 				}
-				keyValue = gconv.SliceAny(js.Value())
+				keyValue = gconv.SliceAny(js.Interface())
 			} else {
 				keyValue = gconv.SliceAny(value)
 			}
@@ -195,7 +195,7 @@ func (c *cacheTagService) RemoveByTag(tag interface{}) {
 				g.Log().Error(err)
 				return
 			}
-			ks := gconv.SliceAny(js.Value())
+			ks := gconv.SliceAny(js.Interface())
 			c.Removes(ks)
 		} else {
 			ks := gconv.SliceAny(keys)

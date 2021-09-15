@@ -33,6 +33,10 @@ func init() {
 				group.POST("/upFile", api.Upload.UpFile)
 				group.POST("/upFiles", api.Upload.UpFiles)
 			})
+			//清除缓存
+			group.Group("/cache", func(group *ghttp.RouterGroup) {
+				group.DELETE("/clear", api.Cache.Clear)
+			})
 			//用户相关
 			group.Group("/user", func(group *ghttp.RouterGroup) {
 				//获取用户信息
