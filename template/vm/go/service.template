@@ -177,6 +177,7 @@ func (s *{{$structName}}) GetInfoById(ctx context.Context,id {{$.table.PkColumn.
     }
     if data == nil || err != nil {
         err = gerror.New("获取信息失败")
+        return
     }
 	{{range $index, $column := .table.Columns}}
     {{if eq $column.HtmlType "images" "file" "files"}}
