@@ -112,7 +112,7 @@ func (c *{{$structName}}) Add(r *ghttp.Request) {
 
 // Get 获取
 func (c *{{$structName}}) Get(r *ghttp.Request) {
-	id := r.GetInt64("id")
+	id := r.Get{{$.table.PkColumn.GoType | CaseCamel}}("id")
 	info, err := service.{{.table.ClassName}}.GetInfoById(r.GetCtx(),id)
 	if err != nil {
 		c.FailJsonExit(r, err.Error())
@@ -161,7 +161,7 @@ func (c *{{$structName}}) Edit(r *ghttp.Request) {
 
 // Delete 删除
 func (c *{{$structName}}) Delete(r *ghttp.Request) {
-	ids := r.GetInts("ids")
+	ids := r.Get{{$.table.PkColumn.GoType | CaseCamel}}s("ids")
 	err := service.{{.table.ClassName}}.DeleteByIds(r.GetCtx(),ids)
 	if err != nil {
 		c.FailJsonExit(r, err.Error())
