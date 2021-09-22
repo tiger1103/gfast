@@ -135,7 +135,9 @@ func (s *sysConfig) GetConfigByKey(key string) (config *model.SysConfig, err err
 	if err != nil {
 		return
 	}
-	cache.Set(global.SysConfigTag+key, config, 0, global.SysConfigTag)
+	if config != nil {
+		cache.Set(global.SysConfigTag+key, config, 0, global.SysConfigTag)
+	}
 	return
 }
 
