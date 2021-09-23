@@ -151,7 +151,7 @@ func (c *{{$structName}}) Edit(r *ghttp.Request) {
 
 // Delete 删除
 func (c *{{$structName}}) Delete(r *ghttp.Request) {
-	ids := r.Get{{$.table.PkColumn.GoType | CaseCamel}}s("ids")
+	ids := r.GetInts("ids")
 	err := service.{{.table.ClassName}}.DeleteByIds(r.GetCtx(),ids)
 	if err != nil {
 		c.FailJsonExit(r, err.Error())

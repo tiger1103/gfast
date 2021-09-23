@@ -219,7 +219,7 @@ func (s *{{$structName}}) Edit(ctx context.Context,req *dao.{{.table.ClassName}}
 
 
 // DeleteByIds 删除
-func (s *{{$structName}}) DeleteByIds(ctx context.Context,ids []{{$.table.PkColumn.GoType}}) (err error) {
+func (s *{{$structName}}) DeleteByIds(ctx context.Context,ids []int) (err error) {
 	if len(ids) == 0 {
 		err = gerror.New("参数错误")
 		return
@@ -253,7 +253,7 @@ func (s *{{$structName}}) Change{{$column.GoField}}(ctx context.Context,req *dao
 
 {{if eq .table.TplCategory "tree"}}
 // GetChildrenIds 通过ID获取子级ID
-func (s *{{$structName}})GetChildrenIds(ctx context.Context,ids []{{$.table.PkColumn.GoType}}) ([]{{$.table.PkColumn.GoType}}, error) {
+func (s *{{$structName}})GetChildrenIds(ctx context.Context,ids []int) ([]int, error) {
 	//获取所有
 	_,_,all, err := s.GetList(&dao.{{.table.ClassName}}SearchReq{PageReq:comModel.PageReq{Ctx: ctx}})
 	if err != nil {
