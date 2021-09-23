@@ -1,22 +1,22 @@
 package global
 
 const (
-	//缓存前缀
-	cachePrefix = "cacheV2_"
+	// CachePrefix 缓存前缀
+	CachePrefix = "cacheV2_"
 
 	// SysAuthMenu 缓存菜单KEY
-	SysAuthMenu = cachePrefix + "sysAuthMenu"
+	SysAuthMenu = CachePrefix + "sysAuthMenu"
 	// SysDict 字典缓存菜单KEY
-	SysDict = cachePrefix + "sysDict"
+	SysDict = CachePrefix + "sysDict"
 	// SysRole 角色缓存key
-	SysRole = cachePrefix + "sysRole"
+	SysRole = CachePrefix + "sysRole"
 	// SysWebSet 站点配置缓存key
-	SysWebSet = cachePrefix + "sysWebSet"
+	SysWebSet = CachePrefix + "sysWebSet"
 
 	// SysAuthTag 权限缓存TAG标签
-	SysAuthTag = cachePrefix + "sysAuthTag"
+	SysAuthTag = CachePrefix + "sysAuthTag"
 	// SysDictTag 字典缓存标签
-	SysDictTag = cachePrefix + "sysDictTag"
+	SysDictTag = CachePrefix + "sysDictTag"
 	// SysConfigTag 系统参数配置
-	SysConfigTag = cachePrefix + "sysConfigTag"
+	SysConfigTag = CachePrefix + "sysConfigTag"
 )
