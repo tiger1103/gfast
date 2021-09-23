@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"gfast/app/common/global"
 	"github.com/gogf/gcache-adapter/adapter"
 	"github.com/gogf/gf/crypto/gmd5"
 	"github.com/gogf/gf/encoding/gjson"
@@ -73,7 +74,7 @@ func (c *cacheTagService) cacheTagKey(key interface{}, tag interface{}) {
 //获取带标签的键名
 func (c *cacheTagService) setTagKey(tag interface{}) {
 	if tag != nil {
-		c.tagKey = interface{}(fmt.Sprintf("cache_tag_%s", gmd5.MustEncryptString(gconv.String(tag))))
+		c.tagKey = interface{}(fmt.Sprintf("%s_tag_%s", global.CachePrefix, gmd5.MustEncryptString(gconv.String(tag))))
 	}
 }
 
