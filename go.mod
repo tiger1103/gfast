@@ -22,4 +22,6 @@ require (
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )
 
+replace github.com/goflyfox/gtoken v1.4.3 => github.com/tiger1103/gtoken v1.4.6
+
 go 1.16

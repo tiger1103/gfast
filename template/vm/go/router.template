@@ -31,9 +31,9 @@ func init() {
             group.Group("/{{.table.BusinessName | CaseCamelLower}}", func(group *ghttp.RouterGroup) {
                 //gToken拦截器
                 {{if ne $.table.ModuleName "system"}}
-                sysApi.GfToken.Middleware(group)
+                sysApi.GfToken.AuthMiddleware(group)
                 {{else}}
-                api.GfToken.Middleware(group)
+                api.GfToken.AuthMiddleware(group)
                 {{end}}
                 //context拦截器
                 group.Middleware(middleware.Ctx, middleware.Auth)

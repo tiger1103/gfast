@@ -22,13 +22,10 @@ github.com/go-ole/go-ole v1.2.5/go.mod h1:pprOEPIfldk/42T2oK7lQ4v4JSDwmV0As9GaiU
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/go-sql-driver/mysql v1.6.0 h1:BCTh4TKNUYmOmMUcQ3IipzF5prigylS7XXjEkfCHuOE=
 github.com/go-sql-driver/mysql v1.6.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
-github.com/goflyfox/gtoken v1.4.3 h1:RgwU6k20TT7sgzayABhD8WFPa3d1I/XHkTo0m3H/JDY=
-github.com/goflyfox/gtoken v1.4.3/go.mod h1:GGp6tB/RIr/75ti5aQFpsI/+CeoDFfurEtQzXCN6LYQ=
 github.com/gogf/gcache-adapter v0.1.2 h1:m/be20UC3tbQqIKu9VOWmE21z1CztvjLYbcqxnPrsVU=
 github.com/gogf/gcache-adapter v0.1.2/go.mod h1:LGkbo4Jp+23kEuPWiagDs+bpg93n1EZls82LCzKohaI=
 github.com/gogf/gf v1.15.3/go.mod h1:K3FG9L4JBUeNLxQR/jCzDgB9+G9sayn49uQwx2zAn4A=
 github.com/gogf/gf v1.16.4/go.mod h1:EjnxZXddTwfFoLPofDE3NokFWx+immofINtSyFCj280=
-github.com/gogf/gf v1.16.5/go.mod h1:QaYTIiafVdCo5aF/TV/sduU2jLmwJ7JphVCjkZ5v+Jg=
 github.com/gogf/gf v1.16.6 h1:Yp5YfwnGz41d1tiVqxcWXiPXyuzjTb7ax4SnPSXxDE8=
 github.com/gogf/gf v1.16.6/go.mod h1:4LoHfEBl2jbVmZpVx+qk2La3zWr1V315FtF2PVZuyQ8=
 github.com/gogf/mysql v1.6.1-0.20210603073548-16164ae25579/go.mod h1:52e6mXyNnHAsFrXrSnj5JPRSKsZKpHylVtA3j4AtMz8=
@@ -95,6 +92,8 @@ github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.194/go.mod 
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/kms v1.0.194/go.mod h1:yrBKWhChnDqNz1xuXdSbWXG56XawEq0G5j1lg4VwBD4=
 github.com/tencentyun/cos-go-sdk-v5 v0.7.27 h1:rLlBZyC13xvDcaW/uNK68aSqtMktlFlXqAq2qNULg7E=
 github.com/tencentyun/cos-go-sdk-v5 v0.7.27/go.mod h1:4E4+bQ2gBVJcgEC9Cufwylio4mXOct2iu05WjgEBx1o=
+github.com/tiger1103/gtoken v1.4.6 h1:79bZqruv3IBmtCPm92YNgvJVgCUjAiE0bc33qDWkUV0=
+github.com/tiger1103/gtoken v1.4.6/go.mod h1:L5ZZcffdFABsJHyLaWnp8CwTppy83doMpXJ78F3T4yA=
 github.com/tklauser/go-sysconf v0.3.7 h1:HT7h4+536gjqeq1ZIJPgOl1rg1XFatQGVZWp7Py53eg=
 github.com/tklauser/go-sysconf v0.3.7/go.mod h1:JZIdXh4RmBvZDBZ41ld2bGxRV3n4daiiqA3skYhAoQ4=
 github.com/tklauser/numcpus v0.2.3 h1:nQ0QYpiritP6ViFhrKYsiv6VVxOpum2Gks5GhnJbS/8=
