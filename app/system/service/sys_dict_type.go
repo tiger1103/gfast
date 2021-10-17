@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/errors/gerror"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gconv"
+	_ "github.com/lib/pq"
 )
 
 type sysDictType struct {
