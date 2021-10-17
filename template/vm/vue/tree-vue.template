@@ -1,0 +1,536 @@
+<template>
+{{$lens := .table.Columns|len}}
+{{$businessName := .table.BusinessName | CaseCamelLower}}
+{{$treeParentCode := .table.TreeParentCode}}
+{{$treeCode := .table.TreeCode}}
+{{$treeName := .table.TreeName}}
+  <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    {{range $index, $column := .table.Columns}}
+    {{if and (eq $column.IsQuery "1") (ne $column.ColumnName "created_by") (ne $column.ColumnName "updated_by") (ne $column.ColumnName "created_at") (ne $column.ColumnName "updated_at") (ne $column.ColumnName "deleted_at")}}
+    {{if eq $column.HtmlType "input" "textarea"}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+        <el-input
+            v-model="queryParams.{{$column.HtmlField}}"
+            placeholder="请输入{{$column.ColumnComment}}"
+            clearable
+            size="small"
+            @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      {{else if and (eq $column.HtmlType "select" "radio" "checkbox") (ne $column.DictType "") }}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+        <el-select v-model="queryParams.{{$column.HtmlField}}" placeholder="请选择{{$column.ColumnComment}}" clearable size="small">
+            <el-option
+                v-for="dict in {{$column.HtmlField}}Options"
+                :key="dict.key"
+                :label="dict.value"
+                :value="dict.key"
+            />
+        </el-select>
+      </el-form-item>
+      {{else if eq $column.HtmlType "datetime"}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+        <el-date-picker
+            clearable size="small" style="width: 200px"
+            v-model="queryParams.{{$column.HtmlField}}"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择{{$column.ColumnComment}}">
+        </el-date-picker>
+      </el-form-item>
+      {{else if and (eq $column.HtmlType "select" "radio" "checkbox") (ne $column.LinkTableName "")}}
+        <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+          <el-select v-model="queryParams.{{$column.HtmlField}}" placeholder="请选择{{$column.ColumnComment}}" clearable size="small">
+              <el-option
+                  v-for="item in {{$column.HtmlField}}Options"
+                  :key="item.key"
+                  :label="item.value"
+                  :value="item.key"
+              />
+          </el-select>
+        </el-form-item>
+        {{else}}
+        <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+          <el-select v-model="queryParams.{{$column.HtmlField}}" placeholder="请选择{{$column.ColumnComment}}" clearable size="small">
+              <el-option label="请选择字典生成" value="" />
+          </el-select>
+        </el-form-item>
+      {{end}}
+      {{end}}
+      {{end}}
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['{{.table.ModuleName}}/{{$businessName}}/add']"
+        >新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['{{.table.ModuleName}}/{{$businessName}}/edit']"
+        >修改</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['{{.table.ModuleName}}/{{$businessName}}/delete']"
+        >删除</el-button>
+      </el-col>
+    </el-row>
+
+    <el-table v-loading="loading" :data="{{$businessName}}List"
+        @selection-change="handleSelectionChange"
+        row-key="{{$treeCode}}"
+        default-expand-all
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column type="selection" width="55" align="center" />
+      {{range $index, $column := .table.Columns}}
+      {{if eq $column.IsPk "1"}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" />
+      {{else if and (eq $column.IsList "1") (eq $column.HtmlType "datetime")}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" width="180">
+        <template slot-scope="scope">
+            <span>{{VueTag "{{"}} parseTime(scope.row.{{$column.HtmlField}}, '{y}-{m}-{d}') {{VueTag "}}"}}</span>
+        </template>
+      </el-table-column>
+      {{else if and (eq $column.IsList "1") (HasSuffix $column.ColumnName "status")}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center">
+        <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.{{$column.HtmlField}}"
+              :active-value="1"
+              :inactive-value="0"
+              @change="{{$column.HtmlField}}Change(scope.row)"
+            ></el-switch>
+        </template>
+      </el-table-column>
+      {{else if ne $column.LinkTableName ""}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" :formatter="{{$column.HtmlField}}Format" width="100">
+        <template slot-scope="scope">
+          {{VueTag "{{" }} {{$column.HtmlField}}Format(scope.row) {{VueTag "}}" }}
+        </template>
+      </el-table-column>
+      {{else if and (eq $column.IsList "1") (ne $column.DictType "")}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" :formatter="{{$column.HtmlField}}Format" />
+      {{else if and (eq $column.IsList "1") (ne $column.HtmlField "")}}
+      <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" />
+      {{end}}{{end}}
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['{{.table.ModuleName}}/{{$businessName}}/edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['{{.table.ModuleName}}/{{$businessName}}/delete']"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 添加或修改{{.table.FunctionName}}对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal="false">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      {{range $index, $column := .table.Columns}}
+      {{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}}
+      {{if and (ne $treeParentCode "") (eq $column.HtmlField $treeParentCode)}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$treeParentCode}}">
+      <treeselect v-model="form.{{$treeParentCode}}" :options="{{$businessName}}Options" :normalizer="normalizer" placeholder="请选择{{$column.ColumnComment}}" />
+      </el-form-item>
+      {{else if eq $column.HtmlType "input"}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+           <el-input v-model="form.{{$column.HtmlField}}" placeholder="请输入{{$column.ColumnComment}}" />
+      </el-form-item>
+      {{else if eq $column.HtmlType "select" }}
+      {{if ne $column.LinkTableName ""}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+          <el-select v-model="form.{{$column.HtmlField}}" placeholder="请选择{{$column.ColumnComment}}">
+              <el-option
+                  v-for="item in {{$column.HtmlField}}Options"
+                  :key="item.key"
+                  :label="item.value"
+                  :value="item.key"
+              ></el-option>
+          </el-select>
+      </el-form-item>
+      {{else if ne $column.DictType ""}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+          <el-select v-model="form.{{$column.HtmlField}}" placeholder="请选择{{$column.ColumnComment}}">
+              <el-option
+                  v-for="dict in {{$column.HtmlField}}Options"
+                  :key="dict.key"
+                  :label="dict.value"
+                  {{if eq $column.GoType "Integer"}}
+                  :value="parseInt(dict.key)"
+                  {{else}}
+                      :value="dict.key"
+                  {{end}}
+              ></el-option>
+          </el-select>
+      </el-form-item>
+      {{else}}
+      <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+          <el-select v-model="form.{{$column.HtmlField}}" placeholder="请选择{{$column.ColumnComment}}">
+              <el-option label="请选择字典生成" value="" />
+          </el-select>
+      </el-form-item>
+      {{end}}
+      {{else if eq $column.HtmlType "radio" }}
+      {{if ne $column.DictType ""}}
+       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+           <el-radio-group v-model="form.{{$column.HtmlField}}">
+               <el-radio
+                v-for="dict in {{$column.HtmlField}}Options"
+                :key="dict.key"
+                :label="dict.key"
+               >{{ VueTag "{{" }}dict.value {{VueTag "}}"}}</el-radio>
+           </el-radio-group>
+       </el-form-item>
+       {{else}}
+       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+           <el-radio-group v-model="form.{{$column.HtmlField}}">
+               <el-radio label="1">请选择字典生成</el-radio>
+           </el-radio-group>
+       </el-form-item>
+       {{end}}
+       {{else if eq $column.HtmlType "datetime"}}
+       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+           <el-date-picker clearable size="small" style="width: 200px"
+               v-model="form.{{$column.HtmlField}}"
+               type="date"
+               value-format="yyyy-MM-dd"
+               placeholder="选择{{$column.ColumnComment}}">
+           </el-date-picker>
+       </el-form-item>
+       {{else if eq $column.HtmlType "textarea"}}
+       <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+           <el-input v-model="form.{{$column.HtmlField}}" type="textarea" placeholder="请输入{{$column.ColumnComment}}" />
+       </el-form-item>
+       {{else if eq $column.HtmlType "checkbox" }}
+        <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}">
+           <el-checkbox-group v-model="form.{{$column.HtmlField}}">
+              <el-checkbox
+                v-for="dict in {{$column.HtmlField}}Options"
+                :key="dict.key"
+                :label="dict.key"
+              >{{ VueTag "{{" }}dict.value {{VueTag "}}"}}</el-checkbox>
+           </el-checkbox-group>
+        </el-form-item>
+       {{end}}
+       {{end}}
+       {{end}}
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+
+
+{{$plugin:=""}}
+{{if ContainsI $.table.PackageName "plugins"}}
+{{$plugin = "plugins/"}}
+{{end}}
+
+
+import {
+    list{{.table.ClassName}},
+    get{{.table.ClassName}},
+    del{{.table.ClassName}},
+    add{{.table.ClassName}},
+    update{{.table.ClassName}},
+    {{range $index,$column:= .table.Columns}}
+    {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
+    change{{$.table.ClassName}}{{$column.GoField}},
+    {{end}}
+    {{if ne $column.LinkTableName ""}}
+    list{{$column.LinkTableClass}},
+    {{end}}
+    {{end}}
+} from "@/api/{{$plugin}}{{.table.ModuleName}}/{{$businessName}}";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+
+export default {
+  name: "{{.table.ClassName}}",
+  components: {Treeselect},
+  data() {
+    return {
+      // 遮罩层
+      loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 总条数
+      total: 0,
+      // {{.table.FunctionName}}表格数据
+      {{$businessName}}List: [],
+      // {{.table.FunctionName}}树选项
+      {{$businessName}}Options: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+      {{range $index, $column := .table.Columns}}
+      {{if ne $column.DictType ""}}
+      // {{$column.HtmlField}}Options字典数据
+      {{$column.HtmlField}}Options: [],
+      {{else if ne $column.LinkTableName ""}}
+      // {{$column.HtmlField}}Options关联表数据
+      {{$column.HtmlField}}Options: [],
+      {{end}}
+      {{end}}
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,{{range $index, $column := .table.Columns}}{{if eq $column.IsQuery "1"}}
+        {{$column.HtmlField}}: undefined{{if ne $lens $index}},{{end}}{{end}}{{end}}
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: { {{range $index, $column := .table.Columns}}{{if eq $column.IsRequired "1"}}
+        {{$column.HtmlField}} : [
+          { required: true, message: "{{$column.ColumnComment}}不能为空", trigger: "blur" }
+        ]{{if ne $lens $index}},{{end}}{{end}}{{end}}
+      }
+    };
+  },
+  created() {
+    {{range $index, $column := .table.Columns}}
+    {{if ne $column.DictType ""}}
+    this.getDicts("{{$column.DictType}}").then(response => {
+      this.{{$column.HtmlField}}Options = response.data.values||[];
+    });
+    {{else if ne $column.LinkTableName ""}}
+    this.get{{$column.LinkTableClass}}Items()
+    {{end}}
+    {{end}}
+
+    this.getList();
+  },
+  methods: {
+    {{$setUpData:=true}}
+    {{range $index, $column := .table.Columns}}
+    {{if ne $column.LinkTableName ""}}
+    //关联{{$column.LinkTableName}}表选项
+    get{{$column.LinkTableClass}}Items() {
+      this.getItems(list{{$column.LinkTableClass}}, {pageSize:10000}).then(res => {
+        this.{{$column.HtmlField}}Options = this.setItems(res, '{{$column.LinkLabelId}}', '{{$column.LinkLabelName}}')
+      })
+    },
+    {{else if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1")}}
+    // {{$column.ColumnComment}}修改
+    {{$column.HtmlField}}Change(row) {
+      let text = row.{{$column.HtmlField}} === 1 ? "启用" : "停用";
+      this.$confirm('确认要"' + text + '"：吗?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return change{{$.table.ClassName}}{{$column.GoField}}(row.{{$.table.PkColumn.HtmlField}}, row.{{$column.HtmlField}});
+        }).then(() => {
+          this.msgSuccess(text + "成功");
+        }).catch(function() {
+          row.userStatus =row.userStatus === 0 ?1 : 0;
+        });
+    },
+    {{end}}
+    {{end}}
+    /** 查询{{.table.FunctionName}}列表 */
+    getList() {
+      this.loading = true;
+      list{{.table.ClassName}}(this.queryParams).then(response => {
+        this.{{$businessName}}List = this.handleTree(response.data.list||[], "{{$treeCode}}", "{{$treeParentCode}}");
+        this.loading = false;
+      });
+    },
+    /** 转换{{.table.FunctionName}}数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.{{$treeCode}},
+        label: node.{{$treeName}},
+        children: node.children
+      };
+    },
+    /** 查询{{.table.FunctionName}}下拉树结构 */
+    getTreeselect() {
+      list{{.table.ClassName}}(this.queryParams).then(response => {
+        this.{{$businessName}}Options = [];
+        const data = { {{$treeCode}}: 0, {{$treeName}}: '顶级节点', children: [] };
+        data.children = this.handleTree(response.data.list||[], "{{$treeCode}}", "{{$treeParentCode}}");
+        this.{{$businessName}}Options.push(data);
+      });
+    },
+    {{range $index, $column := .table.Columns}}
+    {{if ne $column.DictType ""}}
+    {{if eq $column.HtmlType "checkbox"}}
+    // {{$column.ColumnComment}}字典翻译
+    {{$column.HtmlField}}Format(row, column) {
+      let {{$column.HtmlField}} = row.{{$column.HtmlField}}.split(",")
+      let data = [];
+      {{$column.HtmlField}}.map(item=>{
+        data.push(this.selectDictLabel(this.{{$column.HtmlField}}Options, item))
+      })
+      return data.join(",")
+    },
+    {{else}}
+    // {{$column.ColumnComment}}字典翻译
+    {{$column.HtmlField}}Format(row, column) {
+      return this.selectDictLabel(this.{{$column.HtmlField}}Options, row.{{$column.HtmlField}});
+    },
+    {{end}}
+    {{else if ne $column.LinkTableName ""}}
+    // {{$column.ColumnComment}}关联表翻译
+    {{$column.HtmlField}}Format(row, column) {
+      return this.selectItemsLabel(this.{{$column.HtmlField}}Options, row.{{$column.HtmlField}});
+    },
+    {{end}}
+    {{end}}
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        {{range $index, $column := .table.Columns}}
+        {{if eq $column.HtmlType "radio"}}
+        {{$column.HtmlField}}: "0" {{if ne $lens $index}},{{end}}
+        {{else if eq $column.HtmlType "checkbox"}}
+        {{$column.HtmlField}}: [] {{if ne $lens $index}},{{end}}
+        {{else}}
+        {{$column.HtmlField}}: undefined{{if ne $lens $index}},{{end}}{{end}}{{end}}
+      };
+      {{range $index, $column := .table.Columns}}
+      {{if eq $column.HtmlType "imagefile"}}
+      this.imageUrl{{$column.GoField}} = ''
+      {{end}}
+      {{end}}
+      this.resetForm("form");
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.{{.table.PkColumn.HtmlField}})
+      this.single = selection.length!=1
+      this.multiple = !selection.length
+    },
+    /** 新增按钮操作 */
+    handleAdd() {
+      this.reset();
+      this.getTreeselect()
+      this.open = true;
+      this.title = "添加{{.table.FunctionName}}";
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      this.getTreeselect()
+      const {{.table.PkColumn.HtmlField}} = row.{{.table.PkColumn.HtmlField}} || this.ids
+      get{{.table.ClassName}}({{.table.PkColumn.HtmlField}}).then(response => {
+        let data = response.data;
+        {{range $index, $column := .table.Columns}}
+        {{if eq $column.HtmlType "checkbox"}}
+        data.{{$column.HtmlField}} = data.{{$column.HtmlField}}.split(",")
+        {{else if eq $column.HtmlType "radio" "select"}}
+        data.{{$column.HtmlField}} = ''+data.{{$column.HtmlField}}
+        {{end}}
+        {{end}}
+        this.form = data;
+        this.open = true;
+        this.title = "修改{{.table.FunctionName}}";
+      });
+    },
+    /** 提交按钮 */
+    submitForm: function() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.{{.table.PkColumn.HtmlField}} != undefined) {
+            update{{.table.ClassName}}(this.form).then(response => {
+              if (response.code === 0) {
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+              } else {
+                this.msgError(response.msg);
+              }
+            });
+          } else {
+            add{{.table.ClassName}}(this.form).then(response => {
+              if (response.code === 0) {
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
+              } else {
+                this.msgError(response.msg);
+              }
+            });
+          }
+        }
+      });
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const {{.table.PkColumn.HtmlField}}s = row.{{.table.PkColumn.HtmlField}} || this.ids;
+      this.$confirm('是否确认删除{{.table.FunctionName}}编号为"' + {{.table.PkColumn.HtmlField}}s + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return del{{.table.ClassName}}({{.table.PkColumn.HtmlField}}s);
+        }).then(() => {
+          this.getList();
+          this.msgSuccess("删除成功");
+        }).catch(function() {});
+    }
+  }
+};
+</script>

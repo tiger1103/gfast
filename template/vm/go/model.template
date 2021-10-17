@@ -1,0 +1,27 @@
+// ==========================================================================
+// GFast自动生成model代码，无需手动修改，重新生成会自动覆盖.
+// 生成日期：{{.table.CreateTime}}
+// 生成路径: {{.table.PackageName}}/model/{{.table.TableName}}.go
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+////
+package model
+
+
+{{$hasGTime:=false}}
+{{range $index, $column := .table.Columns}}
+{{if eq $column.GoType "Time"}}
+{{$hasGTime = true}}
+{{end}}
+{{end}}
+
+{{if $hasGTime}}
+import "github.com/gogf/gf/os/gtime"
+{{end}}
+
+// {{.table.ClassName}} is the golang structure for table {{.table.TableName}}.
+type {{.table.ClassName}} struct {
+	{{range $index, $column := .table.Columns}}
+        {{if eq $column.IsPk "1"}} {{$column.GoField}}       {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}}         `orm:"{{$column.ColumnName}},primary" json:"{{$column.HtmlField}}"`    // {{$column.ColumnComment}} {{else}} {{$column.GoField}}    {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}}         `orm:"{{$column.ColumnName}}" json:"{{$column.HtmlField}}"`    // {{$column.ColumnComment}} {{end}}
+    {{end}}
+}

@@ -1,0 +1,36 @@
+2021-09-17 07:10:05.677 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 07:10:05.683 [DEBU] [  3 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 07:20:05.887 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 07:20:05.890 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 07:30:05.115 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 07:30:05.117 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 07:40:05.748 [DEBU] [  9 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 07:40:05.751 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 07:50:05.870 [DEBU] [ 33 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 07:50:05.878 [DEBU] [  7 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 08:00:05.932 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 08:00:05.934 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 18:40:05.610 [DEBU] [  9 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 18:40:05.613 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 18:50:05.157 [DEBU] [  6 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 18:50:05.159 [DEBU] [  1 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 19:00:05.707 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 19:00:05.710 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 19:10:06.012 [DEBU] [ 27 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 19:10:06.021 [DEBU] [  8 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 19:20:05.751 [DEBU] [ 34 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 19:20:05.767 [DEBU] [ 14 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 19:30:05.875 [DEBU] [  7 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 19:30:05.877 [DEBU] [  1 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 21:20:05.087 [DEBU] [  7 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 21:20:05.089 [DEBU] [  1 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 21:30:05.158 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 21:30:05.160 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 21:40:05.138 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 21:40:05.140 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 21:50:05.115 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 21:50:05.118 [DEBU] [  3 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 22:00:05.078 [DEBU] [  9 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 22:00:05.081 [DEBU] [  2 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 
+2021-09-17 22:10:05.941 [DEBU] [ 10 ms] [default] SELECT COUNT(1) FROM `sys_user_online` 
+2021-09-17 22:10:05.946 [DEBU] [  5 ms] [default] SELECT `id`,`uuid`,`token`,`create_time`,`user_name`,`ip`,`explorer`,`os` FROM `sys_user_online` ORDER BY `create_time` DESC LIMIT 0,50 

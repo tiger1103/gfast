@@ -1,0 +1,946 @@
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:71
+3.  gfast/app/system/api.(*user).GetInfo
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:112
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:83
+3.  gfast/app/system/api.(*user).GetInfo
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:112
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:84
+3.  gfast/app/system/api.(*user).GetInfo
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:112
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:71
+3.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:163
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:83
+3.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:163
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:84
+3.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:163
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/service.(*rule).GetIsMenuStatusList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:19
+4.  gfast/app/system/service.(*sysUser).GetAllMenus
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_user.go:203
+5.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:181
+6.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+7.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+8.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+9.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+10. gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/service.(*rule).GetIsMenuStatusList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:19
+4.  gfast/app/system/service.(*sysUser).GetAllMenus
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_user.go:203
+5.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:181
+6.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+7.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+8.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+9.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+10. gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:11:53 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:12 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:69
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:12 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:12 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:96
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:12 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:12 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:12 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:18 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:69
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:18 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:96
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:18 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:18 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:18 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:18 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:69
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:69
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:69
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:96
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:96
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.sysDictData.GetDictWithDataByType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_data.go:96
+3.  gfast/app/system/api.(*dictData).GetDictData
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_data.go:114
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:23 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:29 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:29 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:42 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:12:42 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysDictType).GetAllDictType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_type.go:164
+3.  gfast/app/system/api.(*dictType).OptionSelect
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_type.go:101
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*sysDictType).GetAllDictType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_type.go:176
+3.  gfast/app/system/api.(*dictType).OptionSelect
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_type.go:101
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:13:36 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:71
+3.  gfast/app/system/api.(*user).GetInfo
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:112
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:83
+3.  gfast/app/system/api.(*user).GetInfo
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:112
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:84
+3.  gfast/app/system/api.(*user).GetInfo
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:112
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:71
+3.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:163
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:83
+3.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:163
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysRole).GetRoleList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_role.go:84
+3.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:163
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/service.(*rule).GetIsMenuStatusList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:19
+4.  gfast/app/system/service.(*sysUser).GetAllMenus
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_user.go:203
+5.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:181
+6.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+7.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+8.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+9.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+10. gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/service.(*rule).GetIsMenuStatusList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:19
+4.  gfast/app/system/service.(*sysUser).GetAllMenus
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_user.go:203
+5.  gfast/app/system/api.(*user).GetRouters
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_user.go:181
+6.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+7.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+8.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+9.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+10. gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*sysDictType).GetAllDictType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_type.go:164
+3.  gfast/app/system/api.(*dictType).OptionSelect
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_type.go:101
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*sysDictType).GetAllDictType
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_dict_type.go:176
+3.  gfast/app/system/api.(*dictType).OptionSelect
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_dict_type.go:101
+4.  gfast/middleware.Auth
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:72
+5.  gfast/middleware.Ctx
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/auth.go:46
+6.  gfast/app/system/api.(*auth).authAfterFunc
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/auth.go:126
+7.  github.com/goflyfox/gtoken/gtoken.(*GfToken).authMiddleware
+    /Users/apple/go/pkg/mod/github.com/goflyfox/gtoken@v1.4.3/gtoken/gtoken.go:324
+8.  gfast/middleware.CORS
+    /Users/apple/work/code/go/gfastv2/gfast/middleware/cors.go:15
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Get
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:125
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:36
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 
+2021-09-11 08:14:33 [ERRO] /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89: dial tcp 127.0.0.1:6379: connect: connection refused 
+Stack:
+1.  gfast/app/common/service.(*cacheTagService).Set
+    /Users/apple/work/code/go/gfastv2/gfast/app/common/service/cache.go:89
+2.  gfast/app/system/service.(*rule).GetMenuList
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/service/sys_auth_rule.go:47
+3.  gfast/app/system/api.(*sysOperLog).OperationLog
+    /Users/apple/work/code/go/gfastv2/gfast/app/system/api/sys_oper_log.go:86
+ 

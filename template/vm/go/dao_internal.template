@@ -1,0 +1,67 @@
+// ==========================================================================
+// GFast自动生成dao internal操作代码，无需手动修改，重新生成会自动覆盖.
+// 生成日期：{{.table.CreateTime}}
+// 生成路径: {{.table.PackageName}}/dao/internal/{{.table.TableName}}.go
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+////
+package internal
+
+
+import (
+    "context"
+    "github.com/gogf/gf/database/gdb"
+    "github.com/gogf/gf/frame/g"
+)
+
+
+// {{.table.ClassName}}Dao is the manager for logic model data accessing and custom defined data operations functions management.
+type {{.table.ClassName}}Dao struct {
+    Table   string         // Table is the underlying table name of the DAO.
+    Group   string         // Group is the database configuration group name of current DAO.
+    Columns {{.table.ClassName}}Columns // Columns is the short type for Columns, which contains all the column names of Table for convenient usage.
+}
+
+
+// {{.table.ClassName}}Columns defines and stores column names for table {{.table.TableName}}.
+type {{.table.ClassName}}Columns struct {
+    {{range $index, $column := .table.Columns}}
+    {{$column.GoField}}  string  // {{$column.ColumnComment}}
+    {{end}}
+}
+
+var {{.table.BusinessName | CaseCamelLower}}Columns = {{.table.ClassName}}Columns{
+    {{range $index, $column := .table.Columns}}
+    {{$column.GoField}}:  "{{$column.ColumnName}}",
+    {{end}}
+}
+
+// New{{.table.ClassName}}Dao creates and returns a new DAO object for table data access.
+func New{{.table.ClassName}}Dao() *{{.table.ClassName}}Dao {
+	return &{{.table.ClassName}}Dao{
+        Group:    "default",
+        Table: "{{.table.TableName}}",
+        Columns:{{.table.BusinessName | CaseCamelLower}}Columns,
+	}
+}
+
+
+// DB retrieves and returns the underlying raw database management object of current DAO.
+func (dao *{{.table.ClassName}}Dao) DB() gdb.DB {
+	return g.DB(dao.Group)
+}
+
+// Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
+func (dao *{{.table.ClassName}}Dao) Ctx(ctx context.Context) *gdb.Model {
+	return dao.DB().Model(dao.Table).Safe().Ctx(ctx)
+}
+
+// Transaction wraps the transaction logic using function f.
+// It rollbacks the transaction and returns the error from function f if it returns non-nil error.
+// It commits the transaction and returns nil if function f returns nil.
+//
+// Note that, you should not Commit or Rollback the transaction in function f
+// as it is automatically handled by this function.
+func (dao *{{.table.ClassName}}Dao) Transaction(ctx context.Context, f func(ctx context.Context, tx *gdb.TX) error) (err error) {
+	return dao.Ctx(ctx).Transaction(ctx, f)
+}

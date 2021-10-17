@@ -1,0 +1,86 @@
+// ==========================================================================
+// GFast自动生成dao操作代码，无需手动修改，重新生成不会自动覆盖.
+// 生成日期：{{.table.CreateTime}}
+// 生成路径: {{.table.PackageName}}/dao/{{.table.TableName}}.go
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+////
+package dao
+
+{{$hasGTime:=false}}
+{{range $index, $column := .table.Columns}}
+{{if eq $column.GoType "Time"}}
+{{$hasGTime = true}}
+{{end}}
+{{end}}
+
+import (
+    comModel "gfast/app/common/model"
+    "{{.table.PackageName}}/dao/internal"
+    {{if $hasGTime}}
+    "github.com/gogf/gf/os/gtime"
+    {{end}}
+)
+
+
+// {{.table.BusinessName | CaseCamelLower}}Dao is the manager for logic model data accessing and custom defined data operations functions management.
+// You can define custom methods on it to extend its functionality as you wish.
+type {{.table.BusinessName | CaseCamelLower}}Dao struct {
+	*internal.{{.table.BusinessName | CaseCamel}}Dao
+}
+
+var (
+    // {{.table.ClassName}} is globally public accessible object for table tools_gen_table operations.
+    {{.table.ClassName}} = {{.table.BusinessName | CaseCamelLower}}Dao{
+        internal.New{{.table.ClassName}}Dao(),
+    }
+)
+
+////
+// Fill with you ideas below.
+////
+
+
+// {{.table.ClassName}}SearchReq 分页请求参数
+type {{.table.ClassName}}SearchReq struct {
+    {{range $index, $column := .table.Columns}}
+    {{if eq $column.IsQuery "1"}}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if or (eq $column.GoType "int") (eq $column.GoType "int64") (eq $column.GoType "uint") (eq $column.GoType "uint64")}}string{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}"` //{{$column.ColumnComment}}
+    {{end}}
+    {{end}}
+    comModel.PageReq
+}
+
+
+// {{.table.ClassName}}AddReq 添加操作请求参数
+type {{.table.ClassName}}AddReq struct {
+    {{range $index, $column := .table.Columns}}
+    {{if and (eq $column.IsInsert "1") (ne $column.IsPk "1")}}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}}   `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`
+    {{end}}
+    {{if eq $column.ColumnName "created_by"}}CreatedBy       uint64 {{end}}
+    {{end}}
+}
+
+
+// {{.table.ClassName}}EditReq 修改操作请求参数
+type {{.table.ClassName}}EditReq struct {
+    {{.table.PkColumn.GoField}}    {{.table.PkColumn.GoType}}  `p:"{{.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"`
+    {{range $index, $column := .table.Columns}}
+    {{if eq $column.IsEdit "1"}}
+    {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else}}{{$column.GoType}}{{end}} `p:"{{$column.HtmlField}}" {{if eq $column.IsRequired "1"}}v:"required#{{$column.ColumnComment}}不能为空"{{end}}`{{end}}
+    {{if eq $column.ColumnName "updated_by"}}UpdatedBy       uint64 {{end}}
+    {{end}}
+}
+
+
+
+{{range $index,$column:= .table.Columns}}
+{{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
+// {{$.table.ClassName}}{{$column.GoField}}Req 设置用户状态参数
+type {{$.table.ClassName}}{{$column.GoField}}Req struct {
+	{{$.table.PkColumn.GoField}}    {{$.table.PkColumn.GoType}}  `p:"{{$.table.PkColumn.HtmlField}}" v:"required#主键ID不能为空"`
+	{{$column.GoField}} {{$column.GoType}}   `p:"{{$column.HtmlField}}" v:"required#{{$column.ColumnComment}}不能为空"`
+}
+{{end}}
+{{end}}

@@ -1,0 +1,6 @@
+2021-09-12 22:38:09.494 [DEBU] [ 24 ms] [default] SHOW FULL COLUMNS FROM `sys_job` 
+2021-09-12 22:38:09.517 [DEBU] [ 10 ms] [default] SELECT `job_id`,`job_name`,`job_params`,`job_group`,`invoke_target`,`cron_expression`,`misfire_policy`,`concurrent`,`status`,`create_by`,`update_by`,`remark`,`created_at`,`updated_at`,`deleted_at` FROM `sys_job` WHERE (`status`=0) AND `deleted_at` IS NULL 
+2021-09-12 22:38:09.526 [DEBU] [  5 ms] [default] UPDATE `sys_job` SET `status`=0 WHERE `job_id`=8 
+2021-09-12 22:38:17.337 [DEBU] [ 14 ms] [default] SHOW FULL COLUMNS FROM `sys_job` 
+2021-09-12 22:38:17.350 [DEBU] [ 12 ms] [default] SELECT `job_id`,`job_name`,`job_params`,`job_group`,`invoke_target`,`cron_expression`,`misfire_policy`,`concurrent`,`status`,`create_by`,`update_by`,`remark`,`created_at`,`updated_at`,`deleted_at` FROM `sys_job` WHERE (`status`=0) AND `deleted_at` IS NULL 
+2021-09-12 22:38:17.364 [DEBU] [ 11 ms] [default] UPDATE `sys_job` SET `status`=0 WHERE `job_id`=8 

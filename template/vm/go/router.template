@@ -1,0 +1,57 @@
+// ==========================================================================
+// GFast自动生成路由代码，只生成一次，按需修改,再次生成不会覆盖.
+// 生成日期：{{.table.CreateTime}}
+// 生成路径: {{.table.PackageName}}/router/{{.table.BusinessName}}.go
+// 生成人：{{.table.FunctionAuthor}}
+// ==========================================================================
+////
+package router
+
+import (
+    "{{.table.PackageName}}/api"
+    "gfast/middleware"
+    "github.com/gogf/gf/frame/g"
+    "github.com/gogf/gf/net/ghttp"
+    {{if ne $.table.ModuleName "system"}}
+    sysApi "gfast/app/system/api"
+    {{end}}
+)
+
+{{$plugin:=""}}
+{{if ContainsI $.table.PackageName "plugins"}}
+{{$plugin = "plugins/"}}
+{{end}}
+
+
+//加载路由
+func init() {
+    s := g.Server()
+    s.Group("/", func(group *ghttp.RouterGroup) {
+        group.Group("/{{$plugin}}{{.table.ModuleName}}", func(group *ghttp.RouterGroup) {
+            group.Group("/{{.table.BusinessName | CaseCamelLower}}", func(group *ghttp.RouterGroup) {
+                //gToken拦截器
+                {{if ne $.table.ModuleName "system"}}
+                sysApi.GfToken.Middleware(group)
+                {{else}}
+                api.GfToken.Middleware(group)
+                {{end}}
+                //context拦截器
+                group.Middleware(middleware.Ctx, middleware.Auth)
+                {{if ne $.table.ModuleName "system"}}
+                //后台操作日志记录
+                group.Hook("/*", ghttp.HookAfterOutput, sysApi.SysOperLog.OperationLog)
+                {{end}}
+                group.GET("list", api.{{.table.ClassName}}.List)
+                group.GET("get", api.{{.table.ClassName}}.Get)
+                group.POST("add", api.{{.table.ClassName}}.Add)
+                group.PUT("edit", api.{{.table.ClassName}}.Edit)
+                group.DELETE("delete", api.{{.table.ClassName}}.Delete)
+                {{range $index,$column:= .table.Columns}}
+                {{if and (HasSuffix $column.ColumnName "status") (eq $column.IsList "1") }}
+                group.PUT("change{{$column.GoField}}",api.{{$.table.ClassName}}.Change{{$column.GoField}})
+                {{end}}
+                {{end}}
+            })
+        })
+    })
+}
