@@ -76,8 +76,8 @@ func (s *toolsGenTable) SelectListByPage(param *dao.ToolsGenTableSearchReq) (tot
 // SelectDbTableList 查询据库表
 func (s *toolsGenTable) SelectDbTableList(param *dao.ToolsGenTableSearchReq) (total int, list []*model.ToolsGenTable, err error) {
 	db := g.DB()
-	if s.getDbDriver() != "mysql" {
-		err = gerror.New("代码生成暂时只支持mysql数据库")
+	if s.getDbDriver() != "postgres" {
+		err = gerror.New("代码生成暂时只支持postgres数据库")
 		return
 	}
 	sql := " from information_schema.tables where table_schema = (select database())" +

@@ -31,7 +31,7 @@
 # Database.
 [database]
     #link  = "mysql:root:root@tcp(localhost:3306)/gfast-v2-os"
-    link  = "pgsql:user=postgres password=123456 host=127.0.0.1 port=5432 dbname=db5 sslmode=disable"
+    link  = "pgsql:user=gleke password=gleke host=127.0.0.1 port=5432 dbname=dbsync sslmode=disable"
     charset   = "utf8mb4" #数据库编码
     debug = true
     dryRun = false #空跑type: pgsql
@@ -48,13 +48,13 @@
 
 # Redis数据库配置
 [redis]
-    open = true #是否开启 redis 缓存 若不开启使用gchache缓存方式
+    open = false #是否开启 redis 缓存 若不开启使用gchache缓存方式
     default = "127.0.0.1:6379,9?idleTimeout=20&maxActive=100"
 
 #jwt配置
 [gToken]
     [gToken.system]
-        CacheMode = 2
+        CacheMode = 1
         CacheKey = "GToken:"
         Timeout = 10800000 #3个小时
         MaxRefresh = 0

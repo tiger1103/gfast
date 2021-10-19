@@ -33,6 +33,7 @@ func init() {
 		g.Log().Error(err)
 	}
 	for _, job := range jobs {
+		g.Log().Infof(job.JobParams)
 		service.SysJob.JobStart(job)
 	}
 }
