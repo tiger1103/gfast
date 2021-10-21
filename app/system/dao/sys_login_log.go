@@ -28,7 +28,7 @@ var (
 
 // SaveLog 保存日志信息
 func (d sysLoginLogDao) SaveLog(data *model.SysLoginLog) {
-	_, err := d.Insert(data)
+	_, err := d.FieldsEx("info_id").Insert(data)
 	if err != nil {
 		g.Log().Error(err)
 	}

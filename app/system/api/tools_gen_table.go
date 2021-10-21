@@ -151,7 +151,9 @@ func (c *toolsGenTable) EditSave(r *ghttp.Request) {
 	if err := r.Parse(&req); err != nil {
 		c.FailJsonExit(r, err.(gvalid.Error).FirstString())
 	}
+	g.Log().Infof("EditSave(r *ghttp.Request)")
 	err := service.ToolsGenTable.SaveEdit(req)
+	g.Log().Error(err)
 	if err != nil {
 		c.FailJsonExit(r, err.Error())
 	}

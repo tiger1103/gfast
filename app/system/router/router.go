@@ -26,8 +26,6 @@ func init() {
 			//后台操作日志记录
 			group.Hook("/*", ghttp.HookAfterOutput, api.SysOperLog.OperationLog)
 
-			group.POST("/syncTable",api.SyncTable.FunSyncTable)
-
 			//后台上传
 			group.Group("/upload", func(group *ghttp.RouterGroup) {
 				//单图上传

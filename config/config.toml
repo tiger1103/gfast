@@ -73,19 +73,19 @@
 
 # Gen
 [gen]
-    author        = "gfast"
+    author        = "happyown"
     moduleName    = "system"
-    packageName   = "gfast/app/system"
+    packageName   = "dbsync/app/system"
     autoRemovePre = true   #是否自动删除表前缀
-    tablePrefix   = "table_,qxkj_"   #表前缀
+    tablePrefix   = "happyown_,gleke_"   #表前缀
     templatePath  = "./template/vm"  #代码生成模板路径
-    frontDir = "../gfast-ui" #前端路径
+    frontDir = "../dbsync-ui" #前端路径
 
 # 上传配置
 [upload]
     type = "local"  #local：本地，tencentCOS:腾讯云 , 七牛云 阿里云等开发中...
     [upload.tencentCOS] #腾讯云cos配置
-        UpPath =    "/gfast/"
+        UpPath =    "/dbsync/"
         RawUrl =    "https://您的cos空间域名.cos.ap-chongqing.myqcloud.com"
         SecretID =  "填写您的SecretID"
         SecretKey = "填写您的SecretKey"

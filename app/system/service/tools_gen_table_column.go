@@ -43,10 +43,10 @@ type toolsGenTableColumn struct {
 func (s *toolsGenTableColumn) SelectDbTableColumnsByName(tableName string) ([]*model.ToolsGenTableColumn, error) {
 	db := g.DB()
 	var res []*model.ToolsGenTableColumn
-	sql := " select column_name, (case when (is_nullable = 'no' && column_key != 'PRI') then '1' else null end) as is_required, " +
-		"(case when column_key = 'PRI' then '1' else '0' end) as is_pk, ordinal_position as sort, column_comment," +
-		" (case when extra = 'auto_increment' then '1' else '0' end) as is_increment, column_type from information_schema.columns" +
-		" where table_schema = (select database()) "
+	sql := " select column_name, (case when (is_nullable = 'no' ) then '1' else null end) as is_required, " +
+		"(case when column_default like '%nextval%' then '1' else '0' end) as is_pk, " +
+		" (case when column_default like '%nextval%' then '1' else '0' end) as is_increment, data_type as column_type from information_schema.columns" +
+		" where table_schema = 'public' "
 	sql += " and " + gdb.FormatSqlWithArgs(" table_name=? ", []interface{}{tableName}) + " order by ordinal_position ASC "
 	err := db.GetScan(&res, sql)
 	if err != nil {

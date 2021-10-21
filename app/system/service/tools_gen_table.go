@@ -76,28 +76,31 @@ func (s *toolsGenTable) SelectListByPage(param *dao.ToolsGenTableSearchReq) (tot
 // SelectDbTableList 查询据库表
 func (s *toolsGenTable) SelectDbTableList(param *dao.ToolsGenTableSearchReq) (total int, list []*model.ToolsGenTable, err error) {
 	db := g.DB()
-	if s.getDbDriver() != "postgres" {
+
+	if s.getDbDriver() != "pgsql" {
 		err = gerror.New("代码生成暂时只支持postgres数据库")
 		return
 	}
-	sql := " from information_schema.tables where table_schema = (select database())" +
-		" and table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%' and table_name NOT IN (select table_name from " + dao.ToolsGenTable.Table + ") "
+	sql := "  from pg_tables where schemaname='public'"
+
+	//sql := " from information_schema.tables where table_schema = (select database())" +
+	//	" and table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%' and table_name NOT IN (select tablename from " + dao.ToolsGenTable.Table + ") "
 	if param != nil {
 		if param.TableName != "" {
-			sql += gdb.FormatSqlWithArgs(" and lower(table_name) like lower(?)", []interface{}{"%" + param.TableName + "%"})
+			sql += gdb.FormatSqlWithArgs(" and lower(tablename) like lower(?)", []interface{}{"%" + param.TableName + "%"})
 		}
 
-		if param.TableComment != "" {
-			sql += gdb.FormatSqlWithArgs(" and lower(table_comment) like lower(?)", []interface{}{"%" + param.TableComment + "%"})
-		}
-
-		if param.BeginTime != "" {
-			sql += gdb.FormatSqlWithArgs(" and date_format(create_time,'%y%m%d') >= date_format(?,'%y%m%d') ", []interface{}{param.BeginTime})
-		}
-
-		if param.EndTime != "" {
-			sql += gdb.FormatSqlWithArgs(" and date_format(create_time,'%y%m%d') <= date_format(?,'%y%m%d') ", []interface{}{param.EndTime})
-		}
+		//if param.TableComment != "" {
+		//	sql += gdb.FormatSqlWithArgs(" and lower(table_comment) like lower(?)", []interface{}{"%" + param.TableComment + "%"})
+		//}
+		//
+		//if param.BeginTime != "" {
+		//	sql += gdb.FormatSqlWithArgs(" and date_format(create_time,'%y%m%d') >= date_format(?,'%y%m%d') ", []interface{}{param.BeginTime})
+		//}
+		//
+		//if param.EndTime != "" {
+		//	sql += gdb.FormatSqlWithArgs(" and date_format(create_time,'%y%m%d') <= date_format(?,'%y%m%d') ", []interface{}{param.EndTime})
+		//}
 	}
 	countSql := "select count(1) " + sql
 	total, err = db.GetCount(countSql)
@@ -106,7 +109,8 @@ func (s *toolsGenTable) SelectDbTableList(param *dao.ToolsGenTableSearchReq) (to
 		err = gerror.New("读取总表数失败")
 		return
 	}
-	sql = "table_name, table_comment, create_time, update_time " + sql
+	//sql = "table_name, table_comment, create_time, update_time " + sql
+	sql = "tablename " + sql
 
 	if param.PageNum == 0 {
 		param.PageNum = 1
@@ -116,7 +120,8 @@ func (s *toolsGenTable) SelectDbTableList(param *dao.ToolsGenTableSearchReq) (to
 		param.PageSize = comModel.PageSize
 	}
 	page := (param.PageNum - 1) * param.PageSize
-	sql += " order by create_time desc,table_name asc limit  " + gconv.String(page) + "," + gconv.String(param.PageSize)
+	sql += " order by tablename asc limit  " + gconv.String(param.PageSize) + " offset " + gconv.String(page)
+
 	err = db.GetScan(&list, "select "+sql)
 	if err != nil {
 		g.Log().Error(err)
@@ -133,16 +138,17 @@ func (s *toolsGenTable) getDbDriver() string {
 
 // SelectDbTableListByNames 查询数据库中对应的表数据
 func (s *toolsGenTable) SelectDbTableListByNames(tableNames []string) ([]*model.ToolsGenTable, error) {
-	if s.getDbDriver() != "mysql" {
-		return nil, gerror.New("代码生成只支持mysql数据库")
+	if s.getDbDriver() != "pgsql" {
+		return nil, gerror.New("代码生成只支持postgres数据库")
 	}
 	db := g.DB()
-	sql := "select * from information_schema.tables where table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%' " +
-		" and table_schema = (select database()) "
+	sql := "select * from information_schema.tables where table_name NOT LIKE 'gleke_%' and table_name NOT LIKE 'gen_%' " +
+		" and table_schema = 'public' "
 	if len(tableNames) > 0 {
 		in := gstr.TrimRight(gstr.Repeat("?,", len(tableNames)), ",")
 		sql += " and " + gdb.FormatSqlWithArgs("table_name in ("+in+")", gconv.SliceAny(tableNames))
 	}
+
 	var result []*model.ToolsGenTable
 	err := db.GetScan(&result, sql)
 	if err != nil {
@@ -154,6 +160,7 @@ func (s *toolsGenTable) SelectDbTableListByNames(tableNames []string) ([]*model.
 
 // ImportGenTable 导入表结构
 func (s *toolsGenTable) ImportGenTable(tableList []*model.ToolsGenTable) error {
+
 	if tableList != nil {
 		tx, err := g.DB().Begin()
 		if err != nil {
@@ -162,14 +169,17 @@ func (s *toolsGenTable) ImportGenTable(tableList []*model.ToolsGenTable) error {
 		for _, table := range tableList {
 			tableName := table.TableName
 			s.InitTable(table)
-			result, err := tx.Model(dao.ToolsGenTable.Table).Insert(table)
+			_, err := tx.Model(dao.ToolsGenTable.Table).FieldsEx("table_id").Insert(table)
 			if err != nil {
+				g.Log().Error("ImportGenTable", err)
 				return err
 			}
 
-			tmpId, err := result.LastInsertId()
+			tableIDMax, errMax := tx.Model(dao.ToolsGenTable.Table).Max("table_id")
 
-			if err != nil || tmpId <= 0 {
+			tmpId := int64(tableIDMax)
+
+			if errMax != nil || tmpId <= 0 {
 				tx.Rollback()
 				return gerror.New("保存数据失败")
 			}
@@ -177,15 +187,15 @@ func (s *toolsGenTable) ImportGenTable(tableList []*model.ToolsGenTable) error {
 			table.TableId = tmpId
 
 			// 保存列信息
-			genTableColumns, err := ToolsGenTableColumn.SelectDbTableColumnsByName(tableName)
+			genTableColumns, errTable := ToolsGenTableColumn.SelectDbTableColumnsByName(tableName)
 
-			if err != nil || len(genTableColumns) <= 0 {
+			if errTable != nil || len(genTableColumns) <= 0 {
 				tx.Rollback()
 				return gerror.New("获取列数据失败")
 			}
 			for _, column := range genTableColumns {
 				ToolsGenTableColumn.InitColumnField(column, table)
-				_, err = tx.Model(dao.ToolsGenTableColumn.Table).Insert(column)
+				_, err = tx.Model(dao.ToolsGenTableColumn.Table).FieldsEx("column_id").Insert(column)
 				if err != nil {
 					tx.Rollback()
 					return gerror.New("保存列数据失败")
@@ -271,14 +281,19 @@ func (s *toolsGenTable) GetTableInfoByTableId(tableId int64) (info *model.ToolsG
 
 // SaveEdit 更新表及字段生成信息
 func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
+	err = nil
 	if req == nil {
 		err = gerror.New("参数错误")
 		return
 	}
 	var table *model.ToolsGenTable
 	err = dao.ToolsGenTable.Where("table_id=?", req.TableId).Scan(&table)
+	g.Log().Info(req.TableId)
+	g.Log().Info(table)
+	//g.Log().Error("table_id=?",err)
 	if err != nil || table == nil {
 		err = gerror.New("数据不存在")
+		g.Log().Error(err)
 		return
 	}
 	if req.TableName != "" {
@@ -333,18 +348,22 @@ func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
 	if err != nil {
 		return
 	}
-	_, err = tx.Model(dao.ToolsGenTable.Table).Save(table)
+	g.Log().Info("tx.Model(dao.ToolsGenTable.Table).Save(table)")
+	_, err = tx.Model(dao.ToolsGenTable.Table).Where("table_id=?", req.TableId).Update(table)
+	g.Log().Error("tx.Model(dao.ToolsGenTable.Table).Save(table)", err)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
 
 	//保存列数据
+	g.Log().Infof("req.Columns")
 	if req.Columns != nil {
 		for _, column := range req.Columns {
 			if column.ColumnId > 0 {
 				var dbColumn *model.ToolsGenTableColumn
 				err = dao.ToolsGenTableColumn.Where("column_id=?", column.ColumnId).Scan(&dbColumn)
+				g.Log().Error("保存列数据", err)
 				if dbColumn != nil {
 					dbColumn.ColumnComment = column.ColumnComment
 					dbColumn.GoType = column.GoType
@@ -369,6 +388,8 @@ func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
 						dbColumn.LinkLabelName = column.LinkLabelName
 						var linkTable *model.ToolsGenTable
 						err = dao.ToolsGenTable.Where("table_name =?", column.LinkTableName).Scan(&linkTable)
+						g.Log().Error("获取字段关联表信息", err)
+						g.Log().Info("获取字段关联表信息")
 						if err != nil {
 							tx.Rollback()
 							return
@@ -382,7 +403,9 @@ func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
 						dbColumn.LinkLabelId = ""
 						dbColumn.LinkLabelName = ""
 					}
-					_, err = tx.Model(dao.ToolsGenTableColumn.Table).Save(dbColumn)
+					_, err = tx.Model(dao.ToolsGenTableColumn.Table).Where("column_id=?", column.ColumnId).Update(dbColumn)
+					g.Log().Info("Save(dbColumn)")
+					g.Log().Error("Save(dbColumn)", err)
 					if err != nil {
 						tx.Rollback()
 						return
@@ -513,6 +536,8 @@ func (s *toolsGenTable) GenData(tableId int64, ctx context.Context) (data g.MapS
 		err = gerror.New("表格数据不存在")
 		return
 	}
+	g.Log().Info(extendData)
+	g.Log().Info(extendData.Columns)
 	ToolsGenTableColumn.SetPkColumn(extendData, extendData.Columns)
 	view := gview.New()
 	view.SetConfigWithMap(g.Map{
@@ -712,6 +737,7 @@ func (s *toolsGenTable) writeDb(path string, ctx context.Context) (err error) {
 			sql := strings.Join(sqlStr, "")
 			gstr.ReplaceByArray(sql, []string{"@parentId", gconv.String(id), "@now", now.Format("Y-m-d H:i:s")})
 			//插入业务
+			g.Log().Info(sql)
 			res, err = tx.Exec(sql)
 			if err != nil {
 				tx.Rollback()
