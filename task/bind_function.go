@@ -22,6 +22,7 @@ func init() {
 		FuncName: "test2",
 		Run:      Test2,
 	}
+
 	checkUserOnlineTask := &service.TimeTask{
 		FuncName: "checkUserOnline",
 		Run:      api.Auth.CheckUserOnline,
@@ -29,11 +30,11 @@ func init() {
 	service.TimeTaskList.AddTask(task1).AddTask(task2).AddTask(checkUserOnlineTask)
 	//自动执行已开启的任务
 	jobs, err := service.SysJob.GetJobs()
+
 	if err != nil {
 		g.Log().Error(err)
 	}
 	for _, job := range jobs {
-		g.Log().Infof(job.JobParams)
 		service.SysJob.JobStart(job)
 	}
 }

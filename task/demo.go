@@ -13,7 +13,7 @@ import (
 )
 
 func Test1() {
-	//fmt.Println("Test1()无参测试")
+	fmt.Println("Test1()无参测试")
 }
 
 func Test2() {
@@ -22,8 +22,10 @@ func Test2() {
 	if t == nil {
 		return
 	}
-	//for _, v := range t.Param {
-	//	fmt.Printf("Test2()参数:%s;  ", v)
-	//}
-	fmt.Println()
+
+	for _, v := range t.Param {
+		fmt.Printf("Test2()参数:%s;  ", v)
+		fmt.Println()
+	}
+
 }
