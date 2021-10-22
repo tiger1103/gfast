@@ -30,16 +30,18 @@
 
 # Database.
 [database]
-    #link  = "mysql:root:root@tcp(localhost:3306)/gfast-v2-os"
-    link  = "pgsql:user=gleke password=gleke host=127.0.0.1 port=5432 dbname=dbsync sslmode=disable"
-    charset   = "utf8mb4" #数据库编码
-    debug = true
-    dryRun = false #空跑type: pgsql
+    [database.default]
+        
+        link  = "pgsql:user=gleke password=gleke host=127.0.0.1 port=5432 dbname=dbsync sslmode=disable"
+        charset   = "utf8mb4" #数据库编码
+        debug = true
+        dryRun = false #空跑type: pgsql
 
 
-    maxIdle      = "10" #连接池最大闲置的连接数
-    maxOpen     = "10" #连接池最大打开的连接数
-    maxLifetime  = "30" #(单位秒)连接对象可重复使用的时间长度
+        maxIdle      = "10" #连接池最大闲置的连接数
+        maxOpen     = "10" #连接池最大打开的连接数
+        maxLifetime  = "30" #(单位秒)连接对象可重复使用的时间长度
+    
     # Database logger.
     [database.logger]
         Path   = "./data/log/gf-app/sql"

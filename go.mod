@@ -12,6 +12,7 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.3
+	github.com/mattn/go-oci8 v0.1.1
 	github.com/mojocn/base64Captcha v1.3.1
 	github.com/mozillazg/go-httpheader v0.3.0 // indirect
 	github.com/mssola/user_agent v0.5.1

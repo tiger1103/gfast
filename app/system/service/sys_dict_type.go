@@ -13,6 +13,8 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gconv"
 	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-oci8"
+
 )
 
 type sysDictType struct {

@@ -1,9 +1,4 @@
-/*
-* @desc:测试定时任务
-* @company:云南省奇讯科技有限公司
-* @Author: yixiaohu
-* @Date:   2021/7/16 15:52
- */
+
 
 package task
 
@@ -13,7 +8,7 @@ import (
 )
 
 func Test1() {
-	fmt.Println("Test1()无参测试")
+	fmt.Printf("Test1()参数 ")
 }
 
 func Test2() {
