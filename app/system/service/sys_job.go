@@ -171,6 +171,7 @@ func (s *sysJob) JobRun(job *model.SysJob) error {
 func (s *sysJob) DeleteJobByIds(ids []int) (err error) {
 	if len(ids) == 0 {
 		err = gerror.New("参数错误")
+		return
 	}
 	gst := gset.NewFrom(ids)
 	var jobs []*model.SysJob

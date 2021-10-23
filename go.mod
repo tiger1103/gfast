@@ -5,7 +5,7 @@ require (
 	github.com/casbin/casbin/v2 v2.31.9
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
-	github.com/goflyfox/gtoken v1.4.3
+	github.com/goflyfox/gtoken v1.4.5
 	github.com/gogf/gcache-adapter v0.1.2
 	github.com/gogf/gf v1.16.6
 	github.com/gogf/swagger v1.3.0
@@ -22,6 +22,6 @@ require (
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )
 
-replace github.com/goflyfox/gtoken v1.4.3 => github.com/tiger1103/gtoken v1.4.6
+replace github.com/goflyfox/gtoken v1.4.5 => github.com/tiger1103/gtoken v1.4.8
 
 go 1.16
