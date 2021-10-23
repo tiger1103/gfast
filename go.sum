@@ -92,8 +92,8 @@ github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.194/go.mod 
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/kms v1.0.194/go.mod h1:yrBKWhChnDqNz1xuXdSbWXG56XawEq0G5j1lg4VwBD4=
 github.com/tencentyun/cos-go-sdk-v5 v0.7.27 h1:rLlBZyC13xvDcaW/uNK68aSqtMktlFlXqAq2qNULg7E=
 github.com/tencentyun/cos-go-sdk-v5 v0.7.27/go.mod h1:4E4+bQ2gBVJcgEC9Cufwylio4mXOct2iu05WjgEBx1o=
-github.com/tiger1103/gtoken v1.4.6 h1:79bZqruv3IBmtCPm92YNgvJVgCUjAiE0bc33qDWkUV0=
-github.com/tiger1103/gtoken v1.4.6/go.mod h1:L5ZZcffdFABsJHyLaWnp8CwTppy83doMpXJ78F3T4yA=
+github.com/tiger1103/gtoken v1.4.8 h1:+HUU1jXJpyA0z7FDubgdO40ClTEBKrXx2dNzLk21uqY=
+github.com/tiger1103/gtoken v1.4.8/go.mod h1:L5ZZcffdFABsJHyLaWnp8CwTppy83doMpXJ78F3T4yA=
 github.com/tklauser/go-sysconf v0.3.7 h1:HT7h4+536gjqeq1ZIJPgOl1rg1XFatQGVZWp7Py53eg=
 github.com/tklauser/go-sysconf v0.3.7/go.mod h1:JZIdXh4RmBvZDBZ41ld2bGxRV3n4daiiqA3skYhAoQ4=
 github.com/tklauser/numcpus v0.2.3 h1:nQ0QYpiritP6ViFhrKYsiv6VVxOpum2Gks5GhnJbS/8=
