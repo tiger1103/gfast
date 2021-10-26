@@ -11,12 +11,28 @@ import (
 	"gfast/app/common/model"
 	"gfast/app/common/service"
 	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/text/gregex"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 )
+
+func init() {
+	var adp UploadAdapter
+	if upType == "local" {
+		//使用本地上传
+		upPath := g.Cfg().GetString("upload.local.UpPath")
+		adp = UploadLocalAdapter{
+			UpPath:     "/pub_upload/",
+			UploadPath: g.Cfg().GetString("server.ServerRoot") + upPath,
+		}
+		Upload = &upload{
+			adapter: adp,
+		}
+	}
+}
 
 type UploadLocalAdapter struct {
 	UpPath     string

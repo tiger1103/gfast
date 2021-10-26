@@ -36,29 +36,6 @@ var (
 	Upload *upload
 )
 
-func init() {
-	var adp UploadAdapter
-	switch upType {
-	case "local":
-		//使用本地上传
-		adp = UploadLocalAdapter{
-			UpPath:     "/pub_upload/",
-			UploadPath: g.Cfg().GetString("server.ServerRoot") + "/pub_upload/",
-		}
-	case "tencentCOS":
-		//使用腾讯云COS上传
-		adp = UploadTencentCOSAdapter{
-			UpPath:    g.Cfg().GetString("upload.tencentCOS.UpPath"),
-			RawUrl:    g.Cfg().GetString("upload.tencentCOS.RawUrl"),
-			SecretID:  g.Cfg().GetString("upload.tencentCOS.SecretID"),
-			SecretKey: g.Cfg().GetString("upload.tencentCOS.SecretKey"),
-		}
-	}
-	Upload = &upload{
-		adapter: adp,
-	}
-}
-
 func (u upload) UpImg(file *ghttp.UploadFile) (fileInfo *FileInfo, err error) {
 	return u.adapter.UpImg(file)
 }
