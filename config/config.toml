@@ -86,3 +86,5 @@
         RawUrl =    "https://您的cos空间域名.cos.ap-chongqing.myqcloud.com"
         SecretID =  "填写您的SecretID"
         SecretKey = "填写您的SecretKey"
+    [upload.local] #本地上传配置
+        UpPath = "/pub_upload/" #上传路径

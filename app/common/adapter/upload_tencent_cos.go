@@ -12,6 +12,7 @@ import (
 	"gfast/app/common/model"
 	"gfast/app/common/service"
 	"github.com/gogf/gf/errors/gerror"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gfile"
 	"github.com/gogf/gf/os/gtime"
@@ -27,6 +28,22 @@ import (
 	"strconv"
 	"strings"
 )
+
+func init() {
+	var adp UploadAdapter
+	if upType == "tencentCOS" {
+		//使用腾讯云COS上传
+		adp = UploadTencentCOSAdapter{
+			UpPath:    g.Cfg().GetString("upload.tencentCOS.UpPath"),
+			RawUrl:    g.Cfg().GetString("upload.tencentCOS.RawUrl"),
+			SecretID:  g.Cfg().GetString("upload.tencentCOS.SecretID"),
+			SecretKey: g.Cfg().GetString("upload.tencentCOS.SecretKey"),
+		}
+		Upload = &upload{
+			adapter: adp,
+		}
+	}
+}
 
 type UploadTencentCOSAdapter struct {
 	UpPath    string
