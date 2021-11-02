@@ -349,6 +349,7 @@ func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
 					dbColumn.ColumnComment = column.ColumnComment
 					dbColumn.GoType = column.GoType
 					dbColumn.HtmlType = column.HtmlType
+					dbColumn.HtmlField = column.HtmlField
 					dbColumn.QueryType = column.QueryType
 					dbColumn.GoField = column.GoField
 					dbColumn.DictType = column.DictType
