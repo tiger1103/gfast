@@ -349,6 +349,7 @@ func (s *toolsGenTable) SaveEdit(req *dao.ToolsGenTableEditReq) (err error) {
 					dbColumn.ColumnComment = column.ColumnComment
 					dbColumn.GoType = column.GoType
 					dbColumn.HtmlType = column.HtmlType
+					dbColumn.HtmlField = column.HtmlField
 					dbColumn.QueryType = column.QueryType
 					dbColumn.GoField = column.GoField
 					dbColumn.DictType = column.DictType
@@ -426,7 +427,7 @@ func (s *toolsGenTable) GenCode(ids []int, ctx context.Context) (err error) {
 		return gerror.New("获取本地路径失败")
 	}
 	frontDir := g.Cfg().GetString("gen.frontDir")
-	if !gfile.IsDir(frontDir){
+	if !gfile.IsDir(frontDir) {
 		err = gerror.New("项目前端路径不存在，请检查是否已在配置文件中配置！")
 		return
 	}

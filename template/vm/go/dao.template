@@ -100,7 +100,7 @@ type {{.table.ClassName}}ListRes struct {
     {{end}}
     {{else}}
     {{range $index, $column := .table.Columns}}
-    {{if eq $column.IsList "1" }}
+    {{if or (eq $column.IsList "1") (eq $column.IsPk "1") }}
     {{$column.GoField}}  {{if eq $column.GoType "Time"}}*gtime.Time{{else if eq $column.HtmlType "images" "file" "files"}}[]*comModel.UpFile{{else}}{{$column.GoType}}{{end}}   `json:"{{$column.HtmlField}}"`
     {{end}}
     {{end}}

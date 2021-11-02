@@ -97,7 +97,7 @@
     <el-table v-loading="loading" :data="{{$businessName}}List" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       {{range $index, $column := .table.Columns}}
-      {{if eq $column.IsPk "1"}}
+      {{if and (eq $column.IsPk "1") (eq $column.IsList "1")}}
       <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" />
       {{else if and (eq $column.IsList "1") (eq $column.HtmlType "datetime")}}
       <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" width="180">
@@ -128,7 +128,7 @@
             ></el-switch>
         </template>
       </el-table-column>
-      {{else if ne $column.LinkTableName ""}}
+      {{else if and (eq $column.IsList "1") (ne $column.LinkTableName "")}}
       <el-table-column label="{{$column.ColumnComment}}" align="center" prop="{{$column.HtmlField}}" :formatter="{{$column.HtmlField}}Format" width="100">
         <template slot-scope="scope">
           {{VueTag "{{" }} {{$column.HtmlField}}Format(scope.row) {{VueTag "}}" }}

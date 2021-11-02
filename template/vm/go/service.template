@@ -149,7 +149,7 @@ func (s *{{$structName}}) GetList(req *dao.{{.table.ClassName}}SearchReq) (total
             {{end}}
             {{else}}
             {{range $index, $column := .table.Columns}}
-            {{if eq $column.IsList "1"}}
+            {{if or (eq $column.IsList "1") (eq $column.IsPk "1")}}
             {{if eq $column.HtmlType "images" "file" "files"}}
             {{$column.GoField}} : {{$column.HtmlField}},
             {{else}}
