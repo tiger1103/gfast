@@ -147,3 +147,7 @@ CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](h
 ## 商用说明
 > 商用注意事项
 如果您将此项目用于商业用途，请遵守Apache2.0协议并保留作者技术支持声明。
+
+
+## [感谢JetBrains提供的免费GoLand](https://jb.gg/OpenSource)
+[![avatar](https://camo.githubusercontent.com/323657c6e81419b8e151e9da4c71f409e3fcc65d630535170c59fe4807dbc905/68747470733a2f2f676f6672616d652e6f72672f646f776e6c6f61642f7468756d626e61696c732f313131343131392f6a6574627261696e732e706e67)](https://jb.gg/OpenSource)
