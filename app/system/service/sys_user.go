@@ -815,7 +815,7 @@ func (s *sysUser) GetDataWhere(userInfo *dao.CtxUser, entity interface{}) (where
 					if err != nil {
 						return
 					}
-					var dList g.ListStrAny
+					var dList g.List
 					for _, d := range depts {
 						m := g.Map{
 							"id":    d.DeptId,
