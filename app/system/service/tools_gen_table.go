@@ -17,6 +17,10 @@ import (
 	comService "gfast/app/common/service"
 	"gfast/app/system/dao"
 	"gfast/app/system/model"
+	"io"
+	"os"
+	"strings"
+
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/errors/gerror"
@@ -27,9 +31,6 @@ import (
 	"github.com/gogf/gf/text/gregex"
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
-	"io"
-	"os"
-	"strings"
 )
 
 type toolsGenTable struct{}

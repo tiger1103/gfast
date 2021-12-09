@@ -68,7 +68,7 @@ func (s *dept) GetDeptListTree(pid int64, list []*model.SysDept) []*dao.SysDeptT
 				SysDept: v,
 			}
 			child := s.GetDeptListTree(v.DeptId, list)
-			if child != nil && len(child) > 0 {
+			if len(child) > 0 {
 				t.Children = child
 			}
 			tree = append(tree, t)
