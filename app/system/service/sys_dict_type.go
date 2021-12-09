@@ -7,6 +7,7 @@ import (
 	comService "gfast/app/common/service"
 	"gfast/app/system/dao"
 	"gfast/app/system/model"
+
 	"github.com/gogf/gf/container/garray"
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/errors/gerror"
@@ -101,7 +102,7 @@ func (s *sysDictType) Edit(ctx context.Context, req *model.SysDictTypeEditReq) e
 		//修改字段数据的类型
 		_, err = dao.SysDictData.TX(tx).Data(g.Map{dao.SysDictData.Columns.DictType: req.DictType}).
 			Where(dao.SysDictData.Columns.DictType, dt.DictType).Update()
-		return nil
+		return err
 	})
 	if err != nil {
 		g.Log().Debug(err)
