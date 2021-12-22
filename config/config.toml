@@ -88,3 +88,8 @@
         SecretKey = "填写您的SecretKey"
     [upload.local] #本地上传配置
         UpPath = "/pub_upload/" #上传路径
+
+
+# 插件管理
+[plugin]
+    serverUrl = "http://localhost:8199"  #获取插件商城插件列表

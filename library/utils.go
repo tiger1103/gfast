@@ -14,6 +14,9 @@ import (
 	"github.com/gogf/gf/text/gstr"
 	"github.com/gogf/gf/util/gconv"
 	"net"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -246,4 +249,14 @@ func CurrencyLong(currency interface{}) int64 {
 		return gconv.Int64(strArr[0])*100 + gconv.Int64(strArr[1])
 	}
 	return 0
+}
+
+func GetExcPath() string {
+	file, _ := exec.LookPath(os.Args[0])
+	// 获取包含可执行文件名称的路径
+	path, _ := filepath.Abs(file)
+	// 获取可执行文件所在目录
+	index := strings.LastIndex(path, string(os.PathSeparator))
+	ret := path[:index]
+	return strings.Replace(ret, "\\", "/", -1)
 }
