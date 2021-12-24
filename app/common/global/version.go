@@ -7,4 +7,4 @@
 
 package global
 
-const Version = "2.0.3"
+const Version = "2.0.4"
