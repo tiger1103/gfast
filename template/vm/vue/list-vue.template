@@ -277,11 +277,11 @@
        </el-form-item>
        {{else if eq $column.HtmlType "file"}}
         <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}" >
-        <up-file :action="apiUrl+'/system/upload/upFile'" v-model="form.{{$column.HtmlField}}" @setUpFielList="setUpFileList{{$column.GoField}}" :limit="1"></up-file>
+        <up-file :action="apiUrl+'/system/upload/upFile'" v-model="form.{{$column.HtmlField}}" @set-up-file-list="setUpFileList{{$column.GoField}}" :limit="1"></up-file>
         </el-form-item>
         {{else if eq $column.HtmlType "files"}}
         <el-form-item label="{{$column.ColumnComment}}" prop="{{$column.HtmlField}}" >
-        <up-file :action="apiUrl+'/system/upload/upFile'" v-model="form.{{$column.HtmlField}}" @setUpFielList="setUpFileList{{$column.GoField}}" :limit="10"></up-file>
+        <up-file :action="apiUrl+'/system/upload/upFile'" v-model="form.{{$column.HtmlField}}" @set-up-file-list="setUpFileList{{$column.GoField}}" :limit="10"></up-file>
         </el-form-item>
        {{end}}
        {{end}}

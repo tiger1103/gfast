@@ -46,7 +46,7 @@
 # Redis数据库配置
 [redis]
     open = true #是否开启 redis 缓存 若不开启使用gchache缓存方式
-    default = "127.0.0.1:6379,9?idleTimeout=20&maxActive=100"
+    default = "127.0.0.1:6379,2?idleTimeout=20&maxActive=100"
 
 #jwt配置
 [gToken]
@@ -88,3 +88,8 @@
         SecretKey = "填写您的SecretKey"
     [upload.local] #本地上传配置
         UpPath = "/pub_upload/" #上传路径
+
+
+# 插件管理
+[plugin]
+    serverUrl = "http://localhost:8199"  #获取插件商城插件列表
