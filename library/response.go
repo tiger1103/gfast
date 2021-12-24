@@ -1,11 +1,10 @@
 package library
 
 import (
-	"github.com/gogf/gf/frame/g"
+	"fmt"
+	"github.com/gogf/gf/encoding/gurl"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gview"
-	"github.com/gogf/gf/text/gstr"
-	"github.com/gogf/gf/util/gconv"
 )
 
 const (
@@ -87,35 +86,16 @@ func (res *Response) FailJson(isExit bool, r *ghttp.Request, msg string, data ..
 
 //模板输出
 func (res *Response) WriteTpl(r *ghttp.Request, tpl string, view *gview.View, params ...gview.Params) error {
-	//绑定模板中需要用到的方法
-	view.BindFuncMap(g.Map{
-		// 根据长度i来切割字符串
-		"subStr": func(str interface{}, i int) (s string) {
-			s1 := gconv.String(str)
-			if gstr.LenRune(s1) > i {
-				s = gstr.SubStrRune(s1, 0, i) + "..."
-				return s
-			}
-			return s1
-		},
-		// 格式化时间戳 年月日
-		"timeFormatYear": func(time interface{}) string {
-			return TimeStampToDate(gconv.Int64(time))
-		},
-		// 格式化时间戳 年月日时分秒
-		"timeFormatDateTime": func(time interface{}) string {
-			return TimeStampToDateTime(gconv.Int64(time))
-		},
-		"add": func(a, b interface{}) int {
-			return gconv.Int(a) + gconv.Int(b)
-		},
-	})
 	//设置全局变量
-	domain, _ := GetDomain(r)
-	view.Assigns(g.Map{
-		"domain": domain,
-	})
-	return r.Response.WriteTpl(tpl, params...)
+	urlInfo, _ := gurl.ParseURL(r.GetUrl(), -1)
+	view.Assign("urlInfo", urlInfo)
+	r.SetView(view)
+	err := r.Response.WriteTpl(tpl, params...)
+	if err != nil {
+		fmt.Println(err.Error())
+		r.Response.WriteExit(err.Error())
+	}
+	return nil
 }
 
 func (res *Response) Redirect(r *ghttp.Request, location string, code ...int) {
