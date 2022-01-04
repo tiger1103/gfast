@@ -92,4 +92,4 @@
 
 # 插件管理
 [plugin]
-    serverUrl = "http://localhost:8199"  #获取插件商城插件列表
+    serverUrl = "https://plugins.g-fast.cn"  #获取插件商城插件列表
