@@ -14,7 +14,6 @@ import (
 	"gfast/app/common/global"
 	"gfast/app/system/dao"
 	"gfast/app/system/model"
-	"gfast/library"
 	"github.com/gogf/gf/container/garray"
 	"github.com/gogf/gf/container/gmap"
 	"github.com/gogf/gf/encoding/gcompress"
@@ -374,7 +373,7 @@ func (s *pluginsManage) downloadAndInstall(ctx context.Context, url string) erro
 // InstallFile 安装插件文件
 func (s *pluginsManage) InstallFile(ctx context.Context, data []byte, fileName string) (err error) {
 	//获取插件下载路径
-	downloadPath := library.GetExcPath() + "/data/installPlugins"
+	downloadPath := gfile.MainPkgPath() + "/data/installPlugins"
 	if !gfile.IsDir(downloadPath) {
 		err = gfile.Mkdir(downloadPath)
 		if err != nil {
@@ -411,7 +410,7 @@ func (s *pluginsManage) InstallFile(ctx context.Context, data []byte, fileName s
 	}
 	//复制插件文件到对应目录
 	//1.后端
-	err = gfile.Copy(downloadPath+"/"+fileName+"/go/", library.GetExcPath())
+	err = gfile.Copy(downloadPath+"/"+fileName+"/go/", gfile.MainPkgPath())
 	if err != nil {
 		return
 	}
