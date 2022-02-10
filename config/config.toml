@@ -63,6 +63,7 @@
         MultiLogin = true  #后台是否允许多端同时在线
 [system]
     notCheckAuthAdminIds = [1,2,31]  #无需验证后台权限的用户id
+    dataDir = "./data"
 
 #casbin配置
 [casbin]
