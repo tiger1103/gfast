@@ -1,0 +1,1 @@
+# GoFrame Template For SingleRepo

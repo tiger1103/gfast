@@ -1,0 +1,15 @@
+2022-02-23 15:56:27.060 [DEBU] swagger ui is serving at address: http://127.0.0.1:8201/swagger/ 
+2022-02-23 15:56:27.061 [DEBU] openapi specification is serving at address: http://127.0.0.1:8201/api.json 
+2022-02-23 15:56:27.063 16328: http server started listening on [:8201] 
+
+  ADDRESS | METHOD |   ROUTE    |                                 HANDLER                                  |           MIDDLEWARE             
+----------|--------|------------|--------------------------------------------------------------------------|----------------------------------
+  :8201   | ALL    | /*         | github.com/gogf/gf/v2/net/ghttp.internalMiddlewareServerTracing          | GLOBAL MIDDLEWARE                
+----------|--------|------------|--------------------------------------------------------------------------|----------------------------------
+  :8201   | ALL    | /api.json  | github.com/gogf/gf/v2/net/ghttp.(*Server).openapiSpec                    |                                  
+----------|--------|------------|--------------------------------------------------------------------------|----------------------------------
+  :8201   | GET    | /hello     | github.com/tiger1103/gfast/v3/internal/system/controller.(*cHello).Hello | ghttp.MiddlewareHandlerResponse  
+----------|--------|------------|--------------------------------------------------------------------------|----------------------------------
+  :8201   | ALL    | /swagger/* | github.com/gogf/gf/v2/net/ghttp.(*Server).swaggerUI                      | HOOK_BEFORE_SERVE                
+----------|--------|------------|--------------------------------------------------------------------------|----------------------------------
+ 
