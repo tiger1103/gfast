@@ -9,10 +9,16 @@ package router
 
 import (
 	"github.com/gogf/gf/v2/net/ghttp"
-	systemRouter "github.com/tiger1103/gfast/v3/internal/system/router"
+	commonRouter "github.com/tiger1103/gfast/v3/internal/app/common/router"
+	demoRouter "github.com/tiger1103/gfast/v3/internal/app/demo/router"
+	systemRouter "github.com/tiger1103/gfast/v3/internal/app/system/router"
 )
 
 func BindController(group *ghttp.RouterGroup) {
 	// 绑定后台路由
 	systemRouter.BindController(group)
+	// 绑定测试路由
+	demoRouter.BindController(group)
+	// 绑定公共路由
+	commonRouter.BindController(group)
 }

@@ -9,4 +9,5 @@ type HelloReq struct {
 }
 type HelloRes struct {
 	g.Meta `mime:"text/html" example:"string"`
+	Data   g.Map `json:"data"`
 }

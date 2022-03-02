@@ -19,3 +19,5 @@ main
 output/
 manifest/output/
 *.exe
+tmp/
+resource/log/

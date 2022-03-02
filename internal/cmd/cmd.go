@@ -2,13 +2,12 @@ package cmd
 
 import (
 	"context"
-	"github.com/gogf/gf/v2/protocol/goai"
-	consts "github.com/tiger1103/gfast/v3/internal/const"
-	"github.com/tiger1103/gfast/v3/internal/router"
-
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
+	"github.com/gogf/gf/v2/protocol/goai"
+	consts "github.com/tiger1103/gfast/v3/internal/const"
+	"github.com/tiger1103/gfast/v3/internal/router"
 )
 
 var (
@@ -28,7 +27,6 @@ var (
 		},
 	}
 )
-
 
 func enhanceOpenAPIDoc(s *ghttp.Server) {
 	openapi := s.GetOpenApi()
