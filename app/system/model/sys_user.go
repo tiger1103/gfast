@@ -112,3 +112,9 @@ type ProfileUpdatePwdReq struct {
 	OldPassword string `p:"oldPassword" v:"required#旧密码不能为空"`
 	NewPassword string `p:"newPassword" v:"required#新密码不能为空"`
 }
+
+// SysUserRes 用于查询用户信息对象
+type SysUserRes struct {
+	Id           uint64 `json:"id" orm:"id"`
+	UserNickname string `json:"userNickname" orm:"user_nickname"`
+}

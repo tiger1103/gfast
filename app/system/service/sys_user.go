@@ -18,6 +18,7 @@ import (
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/grand"
 	"github.com/mssola/user_agent"
+	"reflect"
 )
 
 type sysUser struct {
@@ -772,4 +773,78 @@ func (s *sysUser) ProfileUpdatePwd(req *model.ProfileUpdatePwdReq) error {
 		dao.SysUser.Columns.UserPassword: newPassword,
 	})
 	return err
+}
+
+// GetDataWhere 获取数据权限判断条件
+func (s *sysUser) GetDataWhere(userInfo *dao.CtxUser, entity interface{}) (where g.Map, err error) {
+	t := reflect.TypeOf(entity)
+	for i := 0; i < t.Elem().NumField(); i++ {
+		if t.Elem().Field(i).Name == "CreatedBy" {
+			//若存在用户id的字段，则生成判断数据权限的条件
+			//1、获取当前用户所属角色
+			allRoles := ([]*model.SysRole)(nil)
+			allRoles, err = SysRole.GetRoleList()
+			if err != nil {
+				return nil, err
+			}
+			roles := ([]*model.SysRole)(nil)
+			roles, err = s.GetAdminRole(userInfo.Id, allRoles)
+			if err != nil {
+				return nil, err
+			}
+			//2获取角色对应数据权限
+			deptIdArr := gset.New()
+			for _, role := range roles {
+				switch role.DataScope {
+				case 1: //全部数据权限
+					return
+				case 2: //自定数据权限
+					var deptIds []int64
+					deptIds, err = Dept.GetRoleDepts(gconv.Int64(role.Id))
+					if err != nil {
+						return
+					}
+					deptIdArr.Add(gconv.Interfaces(deptIds)...)
+				case 3: //本部门数据权限
+					deptIdArr.Add(gconv.Int64(userInfo.DeptId))
+				case 4: //本部门及以下数据权限
+					deptIdArr.Add(gconv.Int64(userInfo.DeptId))
+					//获取正常状态部门数据
+					depts := ([]*model.SysDept)(nil)
+					depts, err = Dept.GetList(&dao.SysDeptSearchParams{Status: "1"})
+					if err != nil {
+						return
+					}
+					var dList g.List
+					for _, d := range depts {
+						m := g.Map{
+							"id":    d.DeptId,
+							"pid":   d.ParentId,
+							"label": d.DeptName,
+						}
+						dList = append(dList, m)
+					}
+					l := library.FindSonByParentId(dList, gconv.Int(userInfo.DeptId), "pid", "id")
+					for _, li := range l {
+						deptIdArr.Add(gconv.Int64(li["id"]))
+					}
+				}
+			}
+			if deptIdArr.Size() > 0 {
+				where = g.Map{"user.dept_id": deptIdArr.Slice()}
+			}
+		}
+	}
+	return
+}
+
+// GetUsers 通过用户ids查询多个用户信息
+func (s *sysUser) GetUsers(ids []int) (users []*model.SysUserRes, err error) {
+	if len(ids) == 0 {
+		return
+	}
+	idsSet := gset.NewIntSetFrom(ids).Slice()
+	err = dao.SysUser.Where(dao.SysUser.Columns.Id+" in(?)", idsSet).Fields(model.SysUserRes{}).
+		Order(dao.SysUser.Columns.Id + " ASC").Scan(&users)
+	return
 }

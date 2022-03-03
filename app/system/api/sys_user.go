@@ -103,6 +103,16 @@ func (c *user) EditUser(r *ghttp.Request) {
 	c.SusJsonExit(r, "修改管理员成功")
 }
 
+// UsersGet 获取用户信息列表
+func (c *user) UsersGet(r *ghttp.Request) {
+	ids := r.GetInts("ids")
+	res, err := service.SysUser.GetUsers(ids)
+	if err != nil {
+		c.FailJsonExit(r, err.Error())
+	}
+	c.SusJsonExit(r, res)
+}
+
 // GetInfo 获取登陆用户信息
 func (c *user) GetInfo(r *ghttp.Request) {
 	userInfo := c.GetCurrentUser(r.Context())

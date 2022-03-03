@@ -115,6 +115,7 @@ func init() {
 				//用户管理
 				group.GET("userList", api.User.UserList)
 				group.GET("userGet", api.User.Get)
+				group.GET("usersGet", api.User.UsersGet)
 				group.POST("addUser", api.User.AddUser)
 				group.GET("getEditUser", api.User.GetEditUser)
 				group.PUT("editUser", api.User.EditUser)
