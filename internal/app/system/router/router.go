@@ -17,7 +17,7 @@ func BindController(group *ghttp.RouterGroup) {
 	group.Group("/system", func(group *ghttp.RouterGroup) {
 		group.Middleware(libMiddleware.ExceptionHandle)
 		group.Bind(
-			controller.Hello,
+			controller.User,
 		)
 	})
 }
