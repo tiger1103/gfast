@@ -15,7 +15,7 @@ import (
 
 func BindController(group *ghttp.RouterGroup) {
 	group.Group("/demo", func(group *ghttp.RouterGroup) {
-		group.Middleware(libMiddleware.ExceptionHandle)
+		group.Middleware(libMiddleware.MiddlewareCORS)
 		group.Bind(
 			controller.Demo,
 		)

@@ -7,22 +7,12 @@
 
 package libMiddleware
 
-import (
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/net/ghttp"
-	"github.com/gogf/gf/v2/text/gstr"
-)
+import "github.com/gogf/gf/v2/net/ghttp"
 
-// ExceptionHandle 异常处理
-func ExceptionHandle(r *ghttp.Request) {
+func MiddlewareCORS(r *ghttp.Request) {
+	corsOptions := r.Response.DefaultCORSOptions()
+	// you can set options
+	//corsOptions.AllowDomain = []string{"goframe.org", "baidu.com"}
+	r.Response.CORS(corsOptions)
 	r.Middleware.Next()
-	if err := r.GetError(); err != nil {
-		msg := err.Error()
-		pos := gstr.Pos(msg, ":")
-		if pos > 0 {
-			msg = gstr.SubStr(msg, pos+2)
-		}
-		r.Response.ClearBuffer()
-		r.Response.WriteJson(g.Map{"code": 500, "message": msg})
-	}
 }

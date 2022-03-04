@@ -5,13 +5,13 @@ import (
 )
 
 type UserLoginReq struct {
-	g.Meta     `path:"/hello" tags:"Hello" method:"get" summary:"You first hello api"`
+	g.Meta     `path:"/login" tags:"login" method:"post" summary:"用户登录"`
 	Username   string `p:"username" v:"required#用户名不能为空"`
 	Password   string `p:"password" v:"required#密码不能为空"`
 	VerifyCode string `p:"verifyCode" v:"required#验证码不能为空"`
 	VerifyKey  string `p:"verifyKey"`
 }
 type UserLoginRes struct {
-	g.Meta `mime:"text/html" example:"string"`
+	g.Meta `mime:"text/html" example:""`
 	Data   g.Map `json:"data"`
 }

@@ -13,14 +13,17 @@ import (
 	"github.com/tiger1103/gfast/v3/internal/app/common/service"
 )
 
-var Captcha = cCaptcha{}
+var Captcha = captchaController{}
 
-type cCaptcha struct {
+type captchaController struct {
 }
 
 // Get 获取验证码
-func (c *cCaptcha) Get(ctx context.Context, req *common.CaptchaReq) (res *common.CaptchaRes, err error) {
-	idKeyC, base64stringC := service.Captcha.GetVerifyImgString(ctx)
+func (c *captchaController) Get(ctx context.Context, req *common.CaptchaReq) (res *common.CaptchaRes, err error) {
+	var (
+		idKeyC, base64stringC string
+	)
+	idKeyC, base64stringC, err = service.Captcha.GetVerifyImgString(ctx)
 	res = &common.CaptchaRes{
 		Key: idKeyC,
 		Img: base64stringC,

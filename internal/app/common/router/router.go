@@ -15,7 +15,7 @@ import (
 
 func BindController(group *ghttp.RouterGroup) {
 	group.Group("/pub", func(group *ghttp.RouterGroup) {
-		group.Middleware(libMiddleware.ExceptionHandle)
+		group.Middleware(libMiddleware.MiddlewareCORS)
 		group.Group("/captcha", func(group *ghttp.RouterGroup) {
 			group.Bind(
 				controller.Captcha,

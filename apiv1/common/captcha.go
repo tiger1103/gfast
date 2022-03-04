@@ -13,7 +13,7 @@ type CaptchaReq struct {
 	g.Meta `path:"/get" tags:"get captcha" method:"get" summary:"获取验证码"`
 }
 type CaptchaRes struct {
-	g.Meta `mime:"application/json" example:"string"`
+	g.Meta `mime:"application/json" example:""`
 	Key    string `json:"key"`
 	Img    string `json:"img"`
 }
