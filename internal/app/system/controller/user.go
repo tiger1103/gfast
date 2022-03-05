@@ -25,5 +25,8 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 			return
 		}
 	}
+	//ip := libUtils.GetClientIp(ctx)
+	//userAgent := libUtils.GetUserAgent(ctx)
+
 	return
 }
