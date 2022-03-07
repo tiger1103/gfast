@@ -7,7 +7,9 @@
 
 package libMiddleware
 
-import "github.com/gogf/gf/v2/net/ghttp"
+import (
+	"github.com/gogf/gf/v2/net/ghttp"
+)
 
 func MiddlewareCORS(r *ghttp.Request) {
 	corsOptions := r.Response.DefaultCORSOptions()

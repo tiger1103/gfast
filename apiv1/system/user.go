@@ -2,6 +2,7 @@ package system
 
 import (
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 )
 
 type UserLoginReq struct {
@@ -12,6 +13,6 @@ type UserLoginReq struct {
 	VerifyKey  string `p:"verifyKey"`
 }
 type UserLoginRes struct {
-	g.Meta `mime:"text/html" example:""`
-	Data   g.Map `json:"data"`
+	g.Meta   `mime:"text/html" example:""`
+	UserInfo *model.LoginUserRes
 }

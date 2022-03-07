@@ -6,6 +6,7 @@ import (
 	"github.com/gogf/gf/v2/os/genv"
 	"github.com/tiger1103/gfast/v3/apiv1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service"
 )
 
@@ -18,6 +19,7 @@ type UserController struct {
 }
 
 func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (res *system.UserLoginRes, err error) {
+	var user *model.LoginUserRes
 	//判断验证码是否正确
 	debug := genv.GetWithCmd("gf.debug")
 	if debug.Int() != 1 {
@@ -28,6 +30,12 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 	}
 	//ip := libUtils.GetClientIp(ctx)
 	//userAgent := libUtils.GetUserAgent(ctx)
-	service.User().GetAdminUserByUsernamePassword(ctx, req)
+	user, err = service.User().GetAdminUserByUsernamePassword(ctx, req)
+	if err != nil {
+		return
+	}
+	res = &system.UserLoginRes{
+		UserInfo: user,
+	}
 	return
 }

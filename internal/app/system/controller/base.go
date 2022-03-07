@@ -20,5 +20,5 @@ type baseController struct {
 // Init 自动执行的初始化方法
 func (c *baseController) Init(r *ghttp.Request) {
 	c.BaseController.Init(r)
-	g.Log().Debug(r.GetCtx(), "BBBBBBBBBBBBBBBB")
+	g.Log().Debug(r.GetCtx(), "system.baseController.Init")
 }

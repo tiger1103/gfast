@@ -23,7 +23,7 @@ func (c *captchaController) Get(ctx context.Context, req *common.CaptchaReq) (re
 	var (
 		idKeyC, base64stringC string
 	)
-	idKeyC, base64stringC, err = service.Captcha.GetVerifyImgString(ctx)
+	idKeyC, base64stringC, err = service.Captcha().GetVerifyImgString(ctx)
 	res = &common.CaptchaRes{
 		Key: idKeyC,
 		Img: base64stringC,

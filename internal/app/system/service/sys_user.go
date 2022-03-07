@@ -54,7 +54,7 @@ func (s *userImpl) GetAdminUserByUsernamePassword(ctx context.Context, req *syst
 func (s *userImpl) GetUserByUsername(ctx context.Context, userName string) (user *model.LoginUserRes, err error) {
 	err = g.Try(func() {
 		user = &model.LoginUserRes{}
-		err = dao.SysUser.Ctx(ctx).Fields(user).Where(dao.SysUser.Columns().UserName, userName).Scan(user)
+		err = dao.SysUser.Ctx(ctx).Fields(user).Where("a=12").Where(dao.SysUser.Columns().UserName, userName).Scan(user)
 		liberr.ErrIsNil(ctx, err, "获取用户信息失败")
 	})
 	return
