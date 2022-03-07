@@ -777,6 +777,7 @@ func (s *sysUser) ProfileUpdatePwd(req *model.ProfileUpdatePwdReq) error {
 
 // GetDataWhere 获取数据权限判断条件
 func (s *sysUser) GetDataWhere(userInfo *dao.CtxUser, entity interface{}) (where g.Map, err error) {
+	whereJustMe := g.Map{} //本人数据权限
 	t := reflect.TypeOf(entity)
 	for i := 0; i < t.Elem().NumField(); i++ {
 		if t.Elem().Field(i).Name == "CreatedBy" {
@@ -829,12 +830,13 @@ func (s *sysUser) GetDataWhere(userInfo *dao.CtxUser, entity interface{}) (where
 						deptIdArr.Add(gconv.Int64(li["id"]))
 					}
 				case 5: //仅本人数据权限
-					where = g.Map{"user.id": userInfo.Id}
-					return
+					whereJustMe = g.Map{"user.id": userInfo.Id}
 				}
 			}
 			if deptIdArr.Size() > 0 {
 				where = g.Map{"user.dept_id": deptIdArr.Slice()}
+			} else if len(whereJustMe) > 0 {
+				where = whereJustMe
 			}
 		}
 	}
