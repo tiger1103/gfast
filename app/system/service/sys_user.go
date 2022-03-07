@@ -828,6 +828,9 @@ func (s *sysUser) GetDataWhere(userInfo *dao.CtxUser, entity interface{}) (where
 					for _, li := range l {
 						deptIdArr.Add(gconv.Int64(li["id"]))
 					}
+				case 5: //仅本人数据权限
+					where = g.Map{"user.id": userInfo.Id}
+					return
 				}
 			}
 			if deptIdArr.Size() > 0 {
