@@ -16,17 +16,23 @@ type captchaImpl struct {
 	store  base64Captcha.Store
 }
 
-var Captcha ICaptcha = &captchaImpl{
-	driver: &base64Captcha.DriverString{
-		Height:          80,
-		Width:           240,
-		NoiseCount:      50,
-		ShowLineOptions: 20,
-		Length:          4,
-		Source:          "abcdefghjkmnpqrstuvwxyz23456789",
-		Fonts:           []string{"chromohv.ttf"},
-	},
-	store: base64Captcha.DefaultMemStore,
+var (
+	captcha = captchaImpl{
+		driver: &base64Captcha.DriverString{
+			Height:          80,
+			Width:           240,
+			NoiseCount:      50,
+			ShowLineOptions: 20,
+			Length:          4,
+			Source:          "abcdefghjkmnpqrstuvwxyz23456789",
+			Fonts:           []string{"chromohv.ttf"},
+		},
+		store: base64Captcha.DefaultMemStore,
+	}
+)
+
+func Captcha() ICaptcha {
+	return ICaptcha(&captcha)
 }
 
 // GetVerifyImgString 获取字母数字混合验证码
