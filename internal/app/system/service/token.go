@@ -16,21 +16,27 @@ import (
 	"sync"
 )
 
-var (
+type gft struct {
 	options *model.TokenOptions
 	gT      commonService.IGfToken
-	lock    = &sync.Mutex{}
-)
+	lock    *sync.Mutex
+}
+
+var gftService = &gft{
+	options: nil,
+	gT:      nil,
+	lock:    &sync.Mutex{},
+}
 
 func GfToken(ctx context.Context) commonService.IGfToken {
-	if gT == nil {
-		lock.Lock()
-		defer lock.Unlock()
-		if gT == nil {
-			err := g.Cfg().MustGet(ctx, "gfToken").Struct(&options)
+	if gftService.gT == nil {
+		gftService.lock.Lock()
+		defer gftService.lock.Unlock()
+		if gftService.gT == nil {
+			err := g.Cfg().MustGet(ctx, "gfToken").Struct(&gftService.options)
 			liberr.ErrIsNil(ctx, err)
-			gT = commonService.GfToken(options)
+			gftService.gT = commonService.GfToken(gftService.options)
 		}
 	}
-	return gT
+	return gftService.gT
 }
