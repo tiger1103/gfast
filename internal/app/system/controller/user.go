@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gogf/gf/v2/crypto/gmd5"
 	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/genv"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/apiv1/system"
@@ -62,11 +63,11 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 		Msg:       "登录成功",
 		Module:    "系统后台",
 	})
-	token, err = service.GfToken(ctx).GenerateToken(
-		ctx,
-		gconv.String(user.Id)+"-"+gmd5.MustEncryptString(user.UserName)+gmd5.MustEncryptString(user.UserPassword),
-		user,
-	)
+	key := gconv.String(user.Id) + "-" + gmd5.MustEncryptString(user.UserName) + gmd5.MustEncryptString(user.UserPassword)
+	if g.Cfg().MustGet(ctx, "gfToken.multiLogin").Bool() {
+		key = gconv.String(user.Id) + "-" + gmd5.MustEncryptString(user.UserName) + gmd5.MustEncryptString(user.UserPassword+ip+userAgent)
+	}
+	token, err = service.GfToken(ctx).GenerateToken(ctx, key, user)
 	if err != nil {
 		return
 	}

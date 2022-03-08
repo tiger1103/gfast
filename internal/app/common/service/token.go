@@ -29,23 +29,19 @@ var gT = gfTokenImpl{
 }
 
 func GfToken(options *model.TokenOptions) IGfToken {
+	var fun gftoken.OptionFunc
 	if options.CacheModel == model.CacheModelRedis {
-		gT.GfToken = gftoken.NewGfToken(
-			gftoken.WithCacheKey(options.CacheKey),
-			gftoken.WithTimeout(options.Timeout),
-			gftoken.WithMaxRefresh(options.MaxRefresh),
-			gftoken.WithMultiLogin(options.MultiLogin),
-			gftoken.WithExcludePaths(options.ExcludePaths),
-			gftoken.WithGRedis(),
-		)
+		fun = gftoken.WithGRedis()
 	} else {
-		gT.GfToken = gftoken.NewGfToken(
-			gftoken.WithCacheKey(options.CacheKey),
-			gftoken.WithTimeout(options.Timeout),
-			gftoken.WithMaxRefresh(options.MaxRefresh),
-			gftoken.WithMultiLogin(options.MultiLogin),
-			gftoken.WithExcludePaths(options.ExcludePaths),
-		)
+		fun = gftoken.WithGCache()
 	}
+	gT.GfToken = gftoken.NewGfToken(
+		gftoken.WithCacheKey(options.CacheKey),
+		gftoken.WithTimeout(options.Timeout),
+		gftoken.WithMaxRefresh(options.MaxRefresh),
+		gftoken.WithMultiLogin(options.MultiLogin),
+		gftoken.WithExcludePaths(options.ExcludePaths),
+		fun,
+	)
 	return IGfToken(&gT)
 }

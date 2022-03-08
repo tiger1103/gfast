@@ -77,10 +77,10 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/tiger1103/gfast-token v0.0.2 h1:z2WfVAQV4ocKJeAL90pMVW2ryHVv2pijFG1GZffQ/EI=
-github.com/tiger1103/gfast-token v0.0.2/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
 github.com/tiger1103/gfast-token v0.0.3 h1:uXZMeNXSb5j/GNLHAgkhwzhG/1M3eL3Ho0RNfl5LUpw=
 github.com/tiger1103/gfast-token v0.0.3/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
+github.com/tiger1103/gfast-token v0.0.4 h1:h59pbFd/VyORNunsDdzIdqJkZIHYHsYCzdmPbcqGkZs=
+github.com/tiger1103/gfast-token v0.0.4/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 go.opentelemetry.io/otel v1.0.0 h1:qTTn6x71GVBvoafHK/yaRUmFzI4LcONZD0/kXxl5PHI=

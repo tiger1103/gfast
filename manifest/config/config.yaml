@@ -47,6 +47,17 @@ gfToken:
   encryptKey: "49c54195e750b04e74a8429b17896586"
   cacheModel: "redis"
 
+# Redis 配置示例
+redis:
+  # 单实例配置示例1
+  default:
+    address: 127.0.0.1:6379
+    db: 1
+    idleTimeout: 600
+    maxActive: 100
+
+
+
 # CLI.
 gfcli:
   gen:
