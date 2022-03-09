@@ -11,6 +11,7 @@ import (
 	"context"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/tiger1103/gfast-token/gftoken"
+	"github.com/tiger1103/gfast/v3/internal/app/common/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/common/model"
 )
 
@@ -30,7 +31,7 @@ var gT = gfTokenImpl{
 
 func GfToken(options *model.TokenOptions) IGfToken {
 	var fun gftoken.OptionFunc
-	if options.CacheModel == model.CacheModelRedis {
+	if options.CacheModel == consts.CacheModelRedis {
 		fun = gftoken.WithGRedis()
 	} else {
 		fun = gftoken.WithGCache()

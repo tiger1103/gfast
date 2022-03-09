@@ -49,21 +49,26 @@ gfToken:
 
 # Redis 配置示例
 redis:
-  # 单实例配置示例1
+  # 单实例配置
   default:
     address: 127.0.0.1:6379
     db: 1
     idleTimeout: 600
     maxActive: 100
 
-
+system:
+  notCheckAuthAdminIds: [1,2,31]  #无需验证后台权限的用户id
+  dataDir: "./data"
+  cache:
+    model: "redis"  #缓存模式 memory OR redis
+    prefix: "gFastV3Cache_" #缓存前缀
 
 # CLI.
 gfcli:
   gen:
     dao:
       - link:            "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v3"
-        tables:          "sys_login_log"
+        tables:          "sys_auth_rule,sys_role"
         removePrefix:    "gf_"
         descriptionTag:  true
         noModelComment:  true

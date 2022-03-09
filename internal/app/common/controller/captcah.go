@@ -9,7 +9,7 @@ package controller
 
 import (
 	"context"
-	"github.com/tiger1103/gfast/v3/apiv1/common"
+	"github.com/tiger1103/gfast/v3/api/v1/common"
 	"github.com/tiger1103/gfast/v3/internal/app/common/service"
 )
 

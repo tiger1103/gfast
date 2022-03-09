@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/genv"
 	"github.com/gogf/gf/v2/util/gconv"
-	"github.com/tiger1103/gfast/v3/apiv1/system"
+	"github.com/tiger1103/gfast/v3/api/v1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service"
@@ -71,6 +71,12 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 	if err != nil {
 		return
 	}
+	//获取用户菜单数据
+	roleList, err := service.Role().GetRoleList(ctx)
+	if err != nil {
+		return
+	}
+	g.Log().Debug(ctx, roleList)
 	res = &system.UserLoginRes{
 		UserInfo: user,
 		Token:    token,

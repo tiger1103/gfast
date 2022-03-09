@@ -9,11 +9,12 @@ package service
 
 import (
 	"context"
+	"github.com/gogf/gf/v2/container/gset"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/mssola/user_agent"
-	"github.com/tiger1103/gfast/v3/apiv1/system"
+	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
@@ -21,21 +22,30 @@ import (
 	"github.com/tiger1103/gfast/v3/library/liberr"
 )
 
+type IUser interface {
+	GetAdminUserByUsernamePassword(ctx context.Context, req *system.UserLoginReq) (user *model.LoginUserRes, err error)
+	LoginLog(ctx context.Context, params *model.LoginLogParams)
+	UpdateLoginInfo(ctx context.Context, id uint64, ip string) (err error)
+	NotCheckAuthAdminIds(ctx context.Context) *gset.Set
+}
+
+type userImpl struct{}
+
 var (
-	user = userImpl{}
+	notCheckAuthAdminIds *gset.Set //无需验证权限的用户id
+	user                 = userImpl{}
 )
 
 func User() IUser {
 	return IUser(&user)
 }
 
-type IUser interface {
-	GetAdminUserByUsernamePassword(ctx context.Context, req *system.UserLoginReq) (user *model.LoginUserRes, err error)
-	LoginLog(ctx context.Context, params *model.LoginLogParams)
-	UpdateLoginInfo(ctx context.Context, id uint64, ip string) (err error)
-}
-
-type userImpl struct {
+func (s *userImpl) NotCheckAuthAdminIds(ctx context.Context) *gset.Set {
+	ids := g.Cfg().MustGet(ctx, "system.notCheckAuthAdminIds")
+	if !g.IsNil(ids) {
+		notCheckAuthAdminIds = gset.NewFrom(ids)
+	}
+	return notCheckAuthAdminIds
 }
 
 func (s *userImpl) GetAdminUserByUsernamePassword(ctx context.Context, req *system.UserLoginReq) (user *model.LoginUserRes, err error) {

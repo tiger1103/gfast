@@ -11,11 +11,6 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-const (
-	CacheModelMem   = "memory"
-	CacheModelRedis = "redis"
-)
-
 type TokenOptions struct {
 	//  server name
 	ServerName string `json:"serverName"`
