@@ -9,13 +9,13 @@ package service
 
 import (
 	"context"
-	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
+	"github.com/tiger1103/gfast/v3/library/liberr"
 )
 
 type IRole interface {
@@ -35,21 +35,23 @@ func Role() IRole {
 func (s *roleImpl) GetRoleList(ctx context.Context) (list []*entity.SysRole, err error) {
 	cache := commonService.Cache(ctx)
 	//从缓存获取
-	iList := cache.GetOrSetFuncLock(ctx, consts.SysRole, func(ctx context.Context) (value interface{}, err error) {
+	iList := cache.GetOrSetFuncLock(ctx, consts.CacheSysRole, s.getRoleListFromDb, 0, consts.CacheSysAuthTag)
+	if iList != nil {
+		err = gconv.Struct(iList, &list)
+	}
+	return
+}
+
+// 从数据库获取所有角色
+func (s *roleImpl) getRoleListFromDb(ctx context.Context) (value interface{}, err error) {
+	err = g.Try(func() {
 		var v []*entity.SysRole
 		//从数据库获取
 		err = dao.SysRole.Ctx(ctx).
 			Order(dao.SysRole.Columns().ListOrder + " asc," + dao.SysRole.Columns().Id + " asc").
 			Scan(&v)
-		if err != nil {
-			g.Log().Error(ctx, err)
-			err = gerror.New("获取角色数据失败")
-		}
+		liberr.ErrIsNil(ctx, err, "获取角色数据失败")
 		value = v
-		return
-	}, 0, consts.SysAuthTag)
-	if iList != nil {
-		err = gconv.Struct(iList, &list)
-	}
+	})
 	return
 }

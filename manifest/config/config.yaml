@@ -57,21 +57,27 @@ redis:
     maxActive: 100
 
 system:
-  notCheckAuthAdminIds: [1,2,31]  #无需验证后台权限的用户id
+  notCheckAuthAdminIds: [1,2]  #无需验证后台权限的用户id
   dataDir: "./data"
   cache:
     model: "redis"  #缓存模式 memory OR redis
     prefix: "gFastV3Cache_" #缓存前缀
+
+#casbin配置
+casbin:
+  modelFile: "./resource/casbin/rbac_model.conf"
+  policyFile: "./resource/casbin/rbac_policy.csv"
+
 
 # CLI.
 gfcli:
   gen:
     dao:
       - link:            "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v3"
-        tables:          "sys_auth_rule,sys_role"
+        tables:          "casbin_rule"
         removePrefix:    "gf_"
         descriptionTag:  true
         noModelComment:  true
-        path: "./internal/app/system"
+        path: "./internal/app/common"
 
 

@@ -72,14 +72,14 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 		return
 	}
 	//获取用户菜单数据
-	roleList, err := service.Role().GetRoleList(ctx)
+	menuList, err := service.User().GetAdminRules(ctx, user.Id)
 	if err != nil {
 		return
 	}
-	g.Log().Debug(ctx, roleList)
 	res = &system.UserLoginRes{
 		UserInfo: user,
 		Token:    token,
+		MenuList: menuList,
 	}
 	return
 }

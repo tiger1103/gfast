@@ -16,4 +16,5 @@ type UserLoginRes struct {
 	g.Meta   `mime:"text/html" example:""`
 	UserInfo *model.LoginUserRes `json:"userInfo"`
 	Token    string              `json:"token"`
+	MenuList []*model.UserMenus  `json:"menuList"`
 }

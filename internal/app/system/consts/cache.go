@@ -8,25 +8,25 @@
 package consts
 
 const (
-	// SysAuthMenu 缓存菜单KEY
-	SysAuthMenu = "sysAuthMenu"
-	// SysDict 字典缓存菜单KEY
-	SysDict = "sysDict"
-	// SysRole 角色缓存key
-	SysRole = "sysRole"
-	// SysWebSet 站点配置缓存key
-	SysWebSet = "sysWebSet"
-	// SysCmsMenu cms缓存key
-	SysCmsMenu = "sysCmsMenu"
+	// CacheSysAuthMenu 缓存菜单KEY
+	CacheSysAuthMenu = "sysAuthMenu"
+	// CacheSysDict 字典缓存菜单KEY
+	CacheSysDict = "sysDict"
+	// CacheSysRole 角色缓存key
+	CacheSysRole = "sysRole"
+	// CacheSysWebSet 站点配置缓存key
+	CacheSysWebSet = "sysWebSet"
+	// CacheSysCmsMenu cms缓存key
+	CacheSysCmsMenu = "sysCmsMenu"
 
-	// SysAuthTag 权限缓存TAG标签
-	SysAuthTag = "sysAuthTag"
-	// SysDictTag 字典缓存标签
-	SysDictTag = "sysDictTag"
-	// SysConfigTag 系统参数配置
-	SysConfigTag = "sysConfigTag"
-	// SysModelTag 模型缓存标签
-	SysModelTag = "sysModelTag"
-	// SysCmsTag cms缓存标签
-	SysCmsTag = "sysCmsTag"
+	// CacheSysAuthTag 权限缓存TAG标签
+	CacheSysAuthTag = "sysAuthTag"
+	// CacheSysDictTag 字典缓存标签
+	CacheSysDictTag = "sysDictTag"
+	// CacheSysConfigTag 系统参数配置
+	CacheSysConfigTag = "sysConfigTag"
+	// CacheSysModelTag 模型缓存标签
+	CacheSysModelTag = "sysModelTag"
+	// CacheSysCmsTag cms缓存标签
+	CacheSysCmsTag = "sysCmsTag"
 )

@@ -9,13 +9,18 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/gogf/gf/v2/container/gset"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
+	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/mssola/user_agent"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
+	"github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
 	"github.com/tiger1103/gfast/v3/library/libUtils"
@@ -27,6 +32,7 @@ type IUser interface {
 	LoginLog(ctx context.Context, params *model.LoginLogParams)
 	UpdateLoginInfo(ctx context.Context, id uint64, ip string) (err error)
 	NotCheckAuthAdminIds(ctx context.Context) *gset.Set
+	GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, err error)
 }
 
 type userImpl struct{}
@@ -105,4 +111,171 @@ func (s *userImpl) UpdateLoginInfo(ctx context.Context, id uint64, ip string) (e
 		liberr.ErrIsNil(ctx, err, "更新用户登录信息失败")
 	})
 	return
+}
+
+// GetAdminRules 获取用户菜单数据
+func (s *userImpl) GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, err error) {
+	err = g.Try(func() {
+		//是否超管
+		isSuperAdmin := false
+		//获取无需验证权限的用户id
+		s.NotCheckAuthAdminIds(ctx).Iterator(func(v interface{}) bool {
+			if gconv.Uint64(v) == userId {
+				isSuperAdmin = true
+				return false
+			}
+			return true
+		})
+		//获取用户菜单数据
+		allRoles, err := Role().GetRoleList(ctx)
+		liberr.ErrIsNil(ctx, err)
+		roles, err := s.GetAdminRole(ctx, userId, allRoles)
+		liberr.ErrIsNil(ctx, err)
+		name := make([]string, len(roles))
+		roleIds := make([]uint, len(roles))
+		for k, v := range roles {
+			name[k] = v.Name
+			roleIds[k] = v.Id
+		}
+		//获取菜单信息
+		if isSuperAdmin {
+			//超管获取所有菜单
+			menuList, err = s.GetAllMenus(ctx)
+		} else {
+			menuList, err = s.GetAdminMenusByRoleIds(ctx, roleIds)
+		}
+	})
+	return
+}
+
+// GetAdminRole 获取用户角色
+func (s *userImpl) GetAdminRole(ctx context.Context, userId uint64, allRoleList []*entity.SysRole) (roles []*entity.SysRole, err error) {
+	var roleIds []uint
+	roleIds, err = s.GetAdminRoleIds(ctx, userId)
+	if err != nil {
+		return
+	}
+	roles = make([]*entity.SysRole, 0, len(allRoleList))
+	for _, v := range allRoleList {
+		for _, id := range roleIds {
+			if id == v.Id {
+				roles = append(roles, v)
+			}
+		}
+		if len(roles) == len(roleIds) {
+			break
+		}
+	}
+	return
+}
+
+// GetAdminRoleIds 获取用户角色ids
+func (s *userImpl) GetAdminRoleIds(ctx context.Context, userId uint64) (roleIds []uint, err error) {
+	enforcer, e := service.CasbinEnforcer(ctx)
+	if e != nil {
+		err = e
+		return
+	}
+	//查询关联角色规则
+	groupPolicy := enforcer.GetFilteredGroupingPolicy(0, gconv.String(userId))
+	if len(groupPolicy) > 0 {
+		roleIds = make([]uint, len(groupPolicy))
+		//得到角色id的切片
+		for k, v := range groupPolicy {
+			roleIds[k] = gconv.Uint(v[1])
+		}
+	}
+	return
+}
+
+func (s *userImpl) GetAllMenus(ctx context.Context) (menus []*model.UserMenus, err error) {
+	//获取所有开启的菜单
+	var allMenus []*model.SysAuthRuleInfoRes
+	allMenus, err = Rule().GetIsMenuStatusList(ctx)
+	if err != nil {
+		return
+	}
+	menus = make([]*model.UserMenus, len(allMenus))
+	for k, v := range allMenus {
+		var menu *model.UserMenu
+		menu = s.setMenuData(menu, v)
+		menus[k] = &model.UserMenus{UserMenu: menu}
+	}
+	menus = s.GetMenusTree(menus, 0)
+	return
+}
+
+func (s *userImpl) GetAdminMenusByRoleIds(ctx context.Context, roleIds []uint) (menus []*model.UserMenus, err error) {
+	//获取角色对应的菜单id
+	err = g.Try(func() {
+		enforcer, e := service.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, e)
+		menuIds := map[int64]int64{}
+		for _, roleId := range roleIds {
+			//查询当前权限
+			gp := enforcer.GetFilteredPolicy(0, fmt.Sprintf("%d", roleId))
+			for _, p := range gp {
+				mid := gconv.Int64(p[1])
+				menuIds[mid] = mid
+			}
+		}
+		//获取所有开启的菜单
+		allMenus, err := Rule().GetIsMenuStatusList(ctx)
+		liberr.ErrIsNil(ctx, err)
+		menus = make([]*model.UserMenus, 0, len(allMenus))
+		for _, v := range allMenus {
+			if _, ok := menuIds[gconv.Int64(v.Id)]; gstr.Equal(v.Condition, "nocheck") || ok {
+				var roleMenu *model.UserMenu
+				roleMenu = s.setMenuData(roleMenu, v)
+				menus = append(menus, &model.UserMenus{UserMenu: roleMenu})
+			}
+		}
+		menus = s.GetMenusTree(menus, 0)
+	})
+	return
+}
+
+func (s *userImpl) GetMenusTree(menus []*model.UserMenus, pid uint) []*model.UserMenus {
+	returnList := make([]*model.UserMenus, 0, len(menus))
+	for _, menu := range menus {
+		if menu.Pid == pid {
+			menu.Children = s.GetMenusTree(menus, menu.Id)
+			returnList = append(returnList, menu)
+		}
+	}
+	return returnList
+}
+
+func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleInfoRes) *model.UserMenu {
+	menu = &model.UserMenu{
+		SysAuthRuleInfoRes: entity,
+		Index:              entity.Name,
+		Name:               gstr.UcFirst(entity.Path),
+		MenuName:           entity.Title,
+		Meta: struct {
+			Icon  string `json:"icon"`
+			Title string `json:"title"`
+		}(struct {
+			Icon  string
+			Title string
+		}{Icon: entity.Icon, Title: entity.Title}),
+	}
+	if entity.MenuType != 0 {
+		menu.Component = entity.Component
+		menu.Path = entity.Path
+	} else {
+		menu.Component = "Layout"
+		menu.Path = "/" + entity.Path
+	}
+	if entity.AlwaysShow == 1 {
+		menu.Hidden = false
+	} else {
+		menu.Hidden = true
+	}
+	if entity.AlwaysShow == 1 && entity.MenuType == 0 {
+		menu.AlwaysShow = true
+	} else {
+		menu.AlwaysShow = false
+	}
+	return menu
 }
