@@ -43,6 +43,6 @@ type UserMenu struct {
 }
 
 type UserMenus struct {
-	*UserMenu
-	Children []*UserMenus `json:"children"`
+	*UserMenu `json:""`
+	Children  []*UserMenus `json:"children"`
 }
