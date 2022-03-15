@@ -253,17 +253,36 @@ func (s *userImpl) GetMenusTree(menus []*model.UserMenus, pid uint) []*model.Use
 
 func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleInfoRes) *model.UserMenu {
 	menu = &model.UserMenu{
-		SysAuthRuleInfoRes: entity,
-		Index:              entity.Name,
-		Name:               gstr.UcFirst(entity.Path),
-		MenuName:           entity.Title,
+		Id:       entity.Id,
+		Pid:      entity.Pid,
+		Index:    entity.Name,
+		Name:     gstr.UcFirst(entity.Path),
+		MenuName: entity.Title,
 		Meta: struct {
-			Icon  string `json:"icon"`
-			Title string `json:"title"`
+			Icon        string `json:"icon"`
+			Title       string `json:"title"`
+			IsLink      string `json:"isLink"`
+			IsHide      bool   `json:"isHide"`
+			IsKeepAlive bool   `json:"isKeepAlive"`
+			IsAffix     bool   `json:"isAffix"`
+			IsIframe    bool   `json:"isIframe"`
 		}(struct {
-			Icon  string
-			Title string
-		}{Icon: entity.Icon, Title: entity.Title}),
+			Icon        string
+			Title       string
+			IsLink      string
+			IsHide      bool
+			IsKeepAlive bool
+			IsAffix     bool
+			IsIframe    bool
+		}{
+			Icon:        entity.Icon,
+			Title:       entity.Title,
+			IsLink:      "",
+			IsHide:      false,
+			IsKeepAlive: false,
+			IsAffix:     false,
+			IsIframe:    false,
+		}),
 	}
 	if entity.MenuType != 0 {
 		menu.Component = entity.Component
@@ -273,14 +292,14 @@ func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 		menu.Path = "/" + entity.Path
 	}
 	if entity.AlwaysShow == 1 {
-		menu.Hidden = false
+		menu.Meta.IsHide = false
 	} else {
-		menu.Hidden = true
+		menu.Meta.IsHide = true
 	}
 	if entity.AlwaysShow == 1 && entity.MenuType == 0 {
-		menu.AlwaysShow = true
+		menu.Meta.IsHide = true
 	} else {
-		menu.AlwaysShow = false
+		menu.Meta.IsHide = false
 	}
 	return menu
 }

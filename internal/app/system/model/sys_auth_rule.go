@@ -28,18 +28,22 @@ type SysAuthRuleInfoRes struct {
 }
 
 type UserMenu struct {
-	*SysAuthRuleInfoRes
+	Id        uint   `json:"id"`
+	Pid       uint   `json:"pid"`
 	Index     string `json:"index"`
 	Name      string `json:"name"`
 	MenuName  string `json:"menuName"`
 	Component string `json:"component"`
 	Path      string `json:"path"`
 	Meta      struct {
-		Icon  string `json:"icon"`
-		Title string `json:"title"`
+		Icon        string `json:"icon"`
+		Title       string `json:"title"`
+		IsLink      string `json:"isLink"`
+		IsHide      bool   `json:"isHide"`
+		IsKeepAlive bool   `json:"isKeepAlive"`
+		IsAffix     bool   `json:"isAffix"`
+		IsIframe    bool   `json:"isIframe"`
 	} `json:"meta"`
-	Hidden     bool `json:"hidden"`
-	AlwaysShow bool `json:"alwaysShow"`
 }
 
 type UserMenus struct {
