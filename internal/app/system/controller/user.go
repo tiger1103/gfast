@@ -24,8 +24,10 @@ type UserController struct {
 
 func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (res *system.UserLoginRes, err error) {
 	var (
-		user  *model.LoginUserRes
-		token string
+		user        *model.LoginUserRes
+		token       string
+		permissions []string
+		menuList    []*model.UserMenus
 	)
 	//判断验证码是否正确
 	debug := genv.GetWithCmd("gf.debug")
@@ -72,14 +74,15 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 		return
 	}
 	//获取用户菜单数据
-	menuList, err := service.User().GetAdminRules(ctx, user.Id)
+	menuList, permissions, err = service.User().GetAdminRules(ctx, user.Id)
 	if err != nil {
 		return
 	}
 	res = &system.UserLoginRes{
-		UserInfo: user,
-		Token:    token,
-		MenuList: menuList,
+		UserInfo:    user,
+		Token:       token,
+		MenuList:    menuList,
+		Permissions: permissions,
 	}
 	return
 }

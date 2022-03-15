@@ -21,6 +21,7 @@ import (
 type IRule interface {
 	GetIsMenuStatusList(ctx context.Context) ([]*model.SysAuthRuleInfoRes, error)
 	GetMenuList(ctx context.Context) (list []*model.SysAuthRuleInfoRes, err error)
+	GetIsButtonStatusList(ctx context.Context) ([]*model.SysAuthRuleInfoRes, error)
 }
 
 type ruleImpl struct {
@@ -69,4 +70,19 @@ func (s *ruleImpl) getMenuListFromDb(ctx context.Context) (value interface{}, er
 		value = v
 	})
 	return
+}
+
+// GetIsButtonStatusList 获取所有按钮isMenu=2 且status=1的菜单列表
+func (s *ruleImpl) GetIsButtonStatusList(ctx context.Context) ([]*model.SysAuthRuleInfoRes, error) {
+	list, err := s.GetMenuList(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var gList = make([]*model.SysAuthRuleInfoRes, 0, len(list))
+	for _, v := range list {
+		if v.MenuType == 2 && v.Status == 1 {
+			gList = append(gList, v)
+		}
+	}
+	return gList, nil
 }

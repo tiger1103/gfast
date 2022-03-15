@@ -32,7 +32,7 @@ type IUser interface {
 	LoginLog(ctx context.Context, params *model.LoginLogParams)
 	UpdateLoginInfo(ctx context.Context, id uint64, ip string) (err error)
 	NotCheckAuthAdminIds(ctx context.Context) *gset.Set
-	GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, err error)
+	GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, permissions []string, err error)
 }
 
 type userImpl struct{}
@@ -114,7 +114,7 @@ func (s *userImpl) UpdateLoginInfo(ctx context.Context, id uint64, ip string) (e
 }
 
 // GetAdminRules 获取用户菜单数据
-func (s *userImpl) GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, err error) {
+func (s *userImpl) GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, permissions []string, err error) {
 	err = g.Try(func() {
 		//是否超管
 		isSuperAdmin := false
@@ -140,9 +140,14 @@ func (s *userImpl) GetAdminRules(ctx context.Context, userId uint64) (menuList [
 		//获取菜单信息
 		if isSuperAdmin {
 			//超管获取所有菜单
+			permissions = []string{"*/*/*"}
 			menuList, err = s.GetAllMenus(ctx)
+			liberr.ErrIsNil(ctx, err)
 		} else {
 			menuList, err = s.GetAdminMenusByRoleIds(ctx, roleIds)
+			liberr.ErrIsNil(ctx, err)
+			permissions, err = s.GetPermissions(ctx, roleIds)
+			liberr.ErrIsNil(ctx, err)
 		}
 	})
 	return
@@ -278,4 +283,31 @@ func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 		menu.AlwaysShow = false
 	}
 	return menu
+}
+
+func (s *userImpl) GetPermissions(ctx context.Context, roleIds []uint) (userButtons []string, err error) {
+	err = g.Try(func() {
+		//获取角色对应的菜单id
+		enforcer, err := service.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, err)
+		menuIds := map[int64]int64{}
+		for _, roleId := range roleIds {
+			//查询当前权限
+			gp := enforcer.GetFilteredPolicy(0, gconv.String(roleId))
+			for _, p := range gp {
+				mid := gconv.Int64(p[1])
+				menuIds[mid] = mid
+			}
+		}
+		//获取所有开启的按钮
+		allButtons, err := Rule().GetIsButtonStatusList(ctx)
+		liberr.ErrIsNil(ctx, err)
+		userButtons = make([]string, 0, len(allButtons))
+		for _, button := range allButtons {
+			if _, ok := menuIds[gconv.Int64(button.Id)]; gstr.Equal(button.Condition, "nocheck") || ok {
+				userButtons = append(userButtons, button.Name)
+			}
+		}
+	})
+	return
 }

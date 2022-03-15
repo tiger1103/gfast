@@ -13,8 +13,9 @@ type UserLoginReq struct {
 	VerifyKey  string `p:"verifyKey"`
 }
 type UserLoginRes struct {
-	g.Meta   `mime:"application/json" example:""`
-	UserInfo *model.LoginUserRes `json:"userInfo"`
-	Token    string              `json:"token"`
-	MenuList []*model.UserMenus  `json:"menuList"`
+	g.Meta      `mime:"application/json" example:""`
+	UserInfo    *model.LoginUserRes `json:"userInfo"`
+	Token       string              `json:"token"`
+	MenuList    []*model.UserMenus  `json:"menuList"`
+	Permissions []string            `json:"permissions"`
 }
