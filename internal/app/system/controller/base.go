@@ -8,6 +8,7 @@
 package controller
 
 import (
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast-token/gftoken"
@@ -24,21 +25,34 @@ type baseController struct {
 // Init 自动执行的初始化方法
 func (c *baseController) Init(r *ghttp.Request) {
 	c.BaseController.Init(r)
-	ctx := r.GetCtx()
-	// 验证用户是否登录
-	b, failed := service.GfToken(ctx).IsLogin(r)
+	b, failed := c.setLoginUser(r)
 	if !b {
 		libResponse.JsonExit(r, failed.Code, failed.Message)
+	}
+}
+
+//判断登录并设置用户信息
+func (c *baseController) setLoginUser(r *ghttp.Request) (b bool, failed *gftoken.AuthFailed) {
+	ctx := r.GetCtx()
+	b = true
+	// 验证用户是否登录
+	b, failed = service.GfToken(ctx).IsLogin(r)
+	if !b {
+		return
 	}
 	// 初始化登录用户信息
 	data, err := service.GfToken(ctx).ParseToken(r)
 	if err != nil {
-		libResponse.JsonExit(r, gftoken.FailedAuthCode, err.Error())
+		return
 	}
-	context := new(model.Context)
-	err = gconv.Struct(data.Data, &context.User)
-	if err != nil {
-		libResponse.JsonExit(r, gftoken.FailedAuthCode, err.Error())
+	if data != nil {
+		context := new(model.Context)
+		err = gconv.Struct(data.Data, &context.User)
+		if err != nil {
+			g.Log().Error(ctx, err)
+			return
+		}
+		service.Context().Init(r, context)
 	}
-	service.Context().Init(r, context)
+	return
 }

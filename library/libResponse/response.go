@@ -47,7 +47,7 @@ func WriteTpl(r *ghttp.Request, tpl string, view *gview.View, params ...gview.Pa
 // 返回JSON数据并退出当前HTTP执行函数。
 func (res *Response) JsonExit(r *ghttp.Request, code int, msg string, data ...interface{}) {
 	res.RJson(r, code, msg, data...)
-	r.Exit()
+	r.ExitAll()
 }
 
 // 标准返回结果数据结构封装。
