@@ -69,6 +69,7 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 	if g.Cfg().MustGet(ctx, "gfToken.multiLogin").Bool() {
 		key = gconv.String(user.Id) + "-" + gmd5.MustEncryptString(user.UserName) + gmd5.MustEncryptString(user.UserPassword+ip+userAgent)
 	}
+	user.UserPassword = ""
 	token, err = service.GfToken(ctx).GenerateToken(ctx, key, user)
 	if err != nil {
 		return
@@ -81,6 +82,21 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 	res = &system.UserLoginRes{
 		UserInfo:    user,
 		Token:       token,
+		MenuList:    menuList,
+		Permissions: permissions,
+	}
+	return
+}
+
+// GetUserMenus 获取用户菜单及按钮权限
+func (c *UserController) GetUserMenus(ctx context.Context, req *system.UserMenusReq) (res *system.UserMenusRes, err error) {
+	var (
+		permissions []string
+		menuList    []*model.UserMenus
+	)
+	userId := service.Context().GetUserId(ctx)
+	menuList, permissions, err = service.User().GetAdminRules(ctx, userId)
+	res = &system.UserMenusRes{
 		MenuList:    menuList,
 		Permissions: permissions,
 	}

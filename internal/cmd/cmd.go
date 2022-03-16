@@ -18,7 +18,6 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			s := g.Server()
 			s.Group("/", func(group *ghttp.RouterGroup) {
-				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				router.BindController(group)
 			})
 			enhanceOpenAPIDoc(s)

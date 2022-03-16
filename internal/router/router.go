@@ -15,10 +15,14 @@ import (
 )
 
 func BindController(group *ghttp.RouterGroup) {
-	// 绑定后台路由
-	systemRouter.BindController(group)
-	// 绑定测试路由
-	demoRouter.BindController(group)
-	// 绑定公共路由
-	commonRouter.BindController(group)
+	group.Group("/api/v1", func(group *ghttp.RouterGroup) {
+		group.Middleware(ghttp.MiddlewareHandlerResponse)
+		// 绑定后台路由
+		systemRouter.BindController(group)
+		// 绑定测试路由
+		demoRouter.BindController(group)
+		// 绑定公共路由
+		commonRouter.BindController(group)
+	})
+
 }

@@ -19,6 +19,7 @@ type IGfToken interface {
 	GenerateToken(ctx context.Context, key string, data interface{}) (keys string, err error)
 	Middleware(group *ghttp.RouterGroup) error
 	ParseToken(r *ghttp.Request) (*gftoken.CustomClaims, error)
+	IsLogin(r *ghttp.Request) (b bool, failed *gftoken.AuthFailed)
 }
 
 type gfTokenImpl struct {

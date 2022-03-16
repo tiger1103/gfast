@@ -12,10 +12,22 @@ type UserLoginReq struct {
 	VerifyCode string `p:"verifyCode" v:"required#验证码不能为空"`
 	VerifyKey  string `p:"verifyKey"`
 }
+
 type UserLoginRes struct {
 	g.Meta      `mime:"application/json" example:""`
 	UserInfo    *model.LoginUserRes `json:"userInfo"`
 	Token       string              `json:"token"`
 	MenuList    []*model.UserMenus  `json:"menuList"`
 	Permissions []string            `json:"permissions"`
+}
+
+type UserMenusReq struct {
+	g.Meta        `path:"/getUserMenus" tags:"getUserMenus" method:"get" summary:"获取用户菜单"`
+	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
+}
+
+type UserMenusRes struct {
+	g.Meta      `mime:"application/json" example:""`
+	MenuList    []*model.UserMenus `json:"menuList"`
+	Permissions []string           `json:"permissions"`
 }

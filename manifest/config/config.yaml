@@ -46,6 +46,8 @@ gfToken:
   multiLogin: true
   encryptKey: "49c54195e750b04e74a8429b17896586"
   cacheModel: "redis"
+  excludePaths:
+    - "/api/v1/system/login"
 
 # Redis 配置示例
 redis:

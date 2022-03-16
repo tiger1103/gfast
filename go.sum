@@ -26,6 +26,8 @@ github.com/go-sql-driver/mysql v1.6.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LB
 github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0/go.mod h1:fyg7847qk6SyHyPtNmDHnmrv/HOrqktSC+C9fM+CJOE=
 github.com/gogf/gf/v2 v2.0.0-rc.0.20220117131058-9345eb5e946f/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/gogf/gf/v2 v2.0.0-rc3/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
+github.com/gogf/gf/v2 v2.0.4 h1:m5F/f2lX+etXhI6rAQCR6szQoHE1ulAYlIvH0UXa2wM=
+github.com/gogf/gf/v2 v2.0.4/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/golang-jwt/jwt v3.2.2+incompatible h1:IfV12K8xAKAnZqdXVzCZ+TOjboZ2keLg81eXfW3O+oY=
 github.com/golang-jwt/jwt v3.2.2+incompatible/go.mod h1:8pz2t5EyA70fFQQSrl6XZXzqecmYZeUEB8OUGHkxJ+I=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 h1:DACJavvAHhabrF08vX0COfcOBJRhZ8lUbR+ZWIs0Y5g=
@@ -83,12 +85,10 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/tiger1103/gf/v2 v2.0.4 h1:RQmqPGIhRi6Y3ZLvMz/0OVZHiKXFuf+Ly3d1bEPDaTg=
-github.com/tiger1103/gf/v2 v2.0.4/go.mod h1:apktt6TleWtCIwpz63vBqUnw8MX8gWKoZyxgDpXFtgM=
 github.com/tiger1103/gfast-cache v0.0.6 h1:H40Txv6co5bjaRlFQ/ixcMfpgsihhPpNftvCHm7hLpI=
 github.com/tiger1103/gfast-cache v0.0.6/go.mod h1:s6cRWyr87wz6IJNGKRV6Ahq9hcuVz8h2PAtGrO66JO8=
-github.com/tiger1103/gfast-token v0.0.4 h1:h59pbFd/VyORNunsDdzIdqJkZIHYHsYCzdmPbcqGkZs=
-github.com/tiger1103/gfast-token v0.0.4/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
+github.com/tiger1103/gfast-token v0.0.7 h1:LJxa4wvtorig/aiXcrqbO9BpJwuGVNAgp1fQVcR0Des=
+github.com/tiger1103/gfast-token v0.0.7/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 go.opentelemetry.io/otel v1.0.0 h1:qTTn6x71GVBvoafHK/yaRUmFzI4LcONZD0/kXxl5PHI=

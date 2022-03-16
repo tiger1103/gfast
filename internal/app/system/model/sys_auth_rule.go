@@ -35,18 +35,20 @@ type UserMenu struct {
 	MenuName  string `json:"menuName"`
 	Component string `json:"component"`
 	Path      string `json:"path"`
-	Meta      struct {
-		Icon        string `json:"icon"`
-		Title       string `json:"title"`
-		IsLink      string `json:"isLink"`
-		IsHide      bool   `json:"isHide"`
-		IsKeepAlive bool   `json:"isKeepAlive"`
-		IsAffix     bool   `json:"isAffix"`
-		IsIframe    bool   `json:"isIframe"`
-	} `json:"meta"`
+	*MenuMeta `json:"meta"`
 }
 
 type UserMenus struct {
 	*UserMenu `json:""`
 	Children  []*UserMenus `json:"children"`
+}
+
+type MenuMeta struct {
+	Icon        string `json:"icon"`
+	Title       string `json:"title"`
+	IsLink      string `json:"isLink"`
+	IsHide      bool   `json:"isHide"`
+	IsKeepAlive bool   `json:"isKeepAlive"`
+	IsAffix     bool   `json:"isAffix"`
+	IsIframe    bool   `json:"isIframe"`
 }
