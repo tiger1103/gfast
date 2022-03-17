@@ -30,9 +30,7 @@ type SysAuthRuleInfoRes struct {
 type UserMenu struct {
 	Id        uint   `json:"id"`
 	Pid       uint   `json:"pid"`
-	Index     string `json:"index"`
 	Name      string `json:"name"`
-	MenuName  string `json:"menuName"`
 	Component string `json:"component"`
 	Path      string `json:"path"`
 	*MenuMeta `json:"meta"`

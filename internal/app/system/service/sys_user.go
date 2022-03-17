@@ -253,11 +253,9 @@ func (s *userImpl) GetMenusTree(menus []*model.UserMenus, pid uint) []*model.Use
 
 func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleInfoRes) *model.UserMenu {
 	menu = &model.UserMenu{
-		Id:       entity.Id,
-		Pid:      entity.Pid,
-		Index:    entity.Name,
-		Name:     gstr.UcFirst(entity.Path),
-		MenuName: entity.Title,
+		Id:   entity.Id,
+		Pid:  entity.Pid,
+		Name: gstr.CaseCamelLower(gstr.Replace(entity.Name, "/", "_")),
 		MenuMeta: &model.MenuMeta{
 			Icon:        entity.Icon,
 			Title:       entity.Title,
@@ -272,18 +270,13 @@ func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 		menu.Component = entity.Component
 		menu.Path = entity.Path
 	} else {
-		menu.Component = "Layout"
+		menu.Component = "layout/routerView/parent"
 		menu.Path = "/" + entity.Path
 	}
 	if entity.AlwaysShow == 1 {
 		menu.MenuMeta.IsHide = false
 	} else {
 		menu.MenuMeta.IsHide = true
-	}
-	if entity.AlwaysShow == 1 && entity.MenuType == 0 {
-		menu.MenuMeta.IsHide = true
-	} else {
-		menu.MenuMeta.IsHide = false
 	}
 	return menu
 }

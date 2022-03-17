@@ -59,7 +59,7 @@ redis:
     maxActive: 100
 
 system:
-  notCheckAuthAdminIds: [1,2]  #无需验证后台权限的用户id
+  notCheckAuthAdminIds: [1,2,31]  #无需验证后台权限的用户id
   dataDir: "./data"
   cache:
     model: "redis"  #缓存模式 memory OR redis

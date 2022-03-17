@@ -18,9 +18,10 @@ import (
 func BindController(group *ghttp.RouterGroup) {
 	group.Group("/system", func(group *ghttp.RouterGroup) {
 		group.Middleware(commonService.Middleware().MiddlewareCORS)
+		//登录验证拦截
+		service.GfToken(gctx.New()).Middleware(group)
 		//context拦截器
 		group.Middleware(service.Middleware().Ctx, service.Middleware().Auth)
-		service.GfToken(gctx.New()).Middleware(group)
 		group.Bind(
 			controller.User,
 		)
