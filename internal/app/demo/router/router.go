@@ -9,13 +9,13 @@ package router
 
 import (
 	"github.com/gogf/gf/v2/net/ghttp"
+	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/demo/controller"
-	"github.com/tiger1103/gfast/v3/library/libMiddleware"
 )
 
 func BindController(group *ghttp.RouterGroup) {
 	group.Group("/demo", func(group *ghttp.RouterGroup) {
-		group.Middleware(libMiddleware.MiddlewareCORS)
+		group.Middleware(commonService.Middleware().MiddlewareCORS)
 		group.Bind(
 			controller.Demo,
 		)

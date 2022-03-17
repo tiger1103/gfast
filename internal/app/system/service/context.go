@@ -64,5 +64,9 @@ func (s *contextServiceImpl) GetLoginUser(ctx context.Context) *model.ContextUse
 
 // GetUserId 获取当前登录用户id
 func (s *contextServiceImpl) GetUserId(ctx context.Context) uint64 {
-	return s.GetLoginUser(ctx).Id
+	user := s.GetLoginUser(ctx)
+	if user != nil {
+		return user.Id
+	}
+	return 0
 }

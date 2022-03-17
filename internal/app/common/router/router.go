@@ -10,12 +10,12 @@ package router
 import (
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/tiger1103/gfast/v3/internal/app/common/controller"
-	"github.com/tiger1103/gfast/v3/library/libMiddleware"
+	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 )
 
 func BindController(group *ghttp.RouterGroup) {
 	group.Group("/pub", func(group *ghttp.RouterGroup) {
-		group.Middleware(libMiddleware.MiddlewareCORS)
+		group.Middleware(commonService.Middleware().MiddlewareCORS)
 		group.Group("/captcha", func(group *ghttp.RouterGroup) {
 			group.Bind(
 				controller.Captcha,
