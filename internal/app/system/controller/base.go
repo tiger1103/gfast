@@ -12,11 +12,11 @@ import (
 	commonController "github.com/tiger1103/gfast/v3/internal/app/common/controller"
 )
 
-type baseController struct {
+type BaseController struct {
 	commonController.BaseController
 }
 
 // Init 自动执行的初始化方法
-func (c *baseController) Init(r *ghttp.Request) {
+func (c *BaseController) Init(r *ghttp.Request) {
 	c.BaseController.Init(r)
 }

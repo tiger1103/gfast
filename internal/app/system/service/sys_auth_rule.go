@@ -11,6 +11,7 @@ import (
 	"context"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
@@ -22,6 +23,7 @@ type IRule interface {
 	GetIsMenuStatusList(ctx context.Context) ([]*model.SysAuthRuleInfoRes, error)
 	GetMenuList(ctx context.Context) (list []*model.SysAuthRuleInfoRes, err error)
 	GetIsButtonStatusList(ctx context.Context) ([]*model.SysAuthRuleInfoRes, error)
+	Add(ctx context.Context, req *system.RuleAddReq) (err error)
 }
 
 type ruleImpl struct {
@@ -85,4 +87,13 @@ func (s *ruleImpl) GetIsButtonStatusList(ctx context.Context) ([]*model.SysAuthR
 		}
 	}
 	return gList, nil
+}
+
+// Add 添加菜单
+func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) {
+	err = g.Try(func() {
+		_, err = dao.SysAuthRule.Ctx(ctx).Insert(req)
+		liberr.ErrIsNil(ctx, err, "添加菜单失败")
+	})
+	return
 }

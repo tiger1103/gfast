@@ -15,14 +15,14 @@ import (
 )
 
 var (
-	User = UserController{}
+	User = userController{}
 )
 
-type UserController struct {
-	baseController
+type userController struct {
+	BaseController
 }
 
-func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (res *system.UserLoginRes, err error) {
+func (c *userController) Login(ctx context.Context, req *system.UserLoginReq) (res *system.UserLoginRes, err error) {
 	var (
 		user        *model.LoginUserRes
 		token       string
@@ -89,7 +89,7 @@ func (c *UserController) Login(ctx context.Context, req *system.UserLoginReq) (r
 }
 
 // GetUserMenus 获取用户菜单及按钮权限
-func (c *UserController) GetUserMenus(ctx context.Context, req *system.UserMenusReq) (res *system.UserMenusRes, err error) {
+func (c *userController) GetUserMenus(ctx context.Context, req *system.UserMenusReq) (res *system.UserMenusRes, err error) {
 	var (
 		permissions []string
 		menuList    []*model.UserMenus
