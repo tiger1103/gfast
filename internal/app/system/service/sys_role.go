@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
@@ -52,6 +53,20 @@ func (s *roleImpl) getRoleListFromDb(ctx context.Context) (value interface{}, er
 			Scan(&v)
 		liberr.ErrIsNil(ctx, err, "获取角色数据失败")
 		value = v
+	})
+	return
+}
+
+// AddRoleRule 添加角色权限
+func (s *roleImpl) AddRoleRule(ctx context.Context, iRule interface{}, roleId int64) (err error) {
+	err = g.Try(func() {
+		enforcer, e := commonService.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, e)
+		rule := gconv.Strings(iRule)
+		for _, v := range rule {
+			_, err = enforcer.AddPolicy(fmt.Sprintf("%d", roleId), fmt.Sprintf("%s", v), "All")
+			liberr.ErrIsNil(ctx, err)
+		}
 	})
 	return
 }

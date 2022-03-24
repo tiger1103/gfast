@@ -196,7 +196,7 @@ func (s *userImpl) GetAdminRoleIds(ctx context.Context, userId uint64) (roleIds 
 func (s *userImpl) GetAllMenus(ctx context.Context) (menus []*model.UserMenus, err error) {
 	//获取所有开启的菜单
 	var allMenus []*model.SysAuthRuleInfoRes
-	allMenus, err = Rule().GetIsMenuStatusList(ctx)
+	allMenus, err = Rule().GetIsMenuList(ctx)
 	if err != nil {
 		return
 	}
@@ -225,7 +225,7 @@ func (s *userImpl) GetAdminMenusByRoleIds(ctx context.Context, roleIds []uint) (
 			}
 		}
 		//获取所有开启的菜单
-		allMenus, err := Rule().GetIsMenuStatusList(ctx)
+		allMenus, err := Rule().GetIsMenuList(ctx)
 		liberr.ErrIsNil(ctx, err)
 		menus = make([]*model.UserMenus, 0, len(allMenus))
 		for _, v := range allMenus {
@@ -260,10 +260,10 @@ func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 			Icon:        entity.Icon,
 			Title:       entity.Title,
 			IsLink:      "",
-			IsHide:      false,
-			IsKeepAlive: false,
-			IsAffix:     false,
-			IsIframe:    false,
+			IsHide:      entity.IsHide == 1,
+			IsKeepAlive: entity.IsCached == 1,
+			IsAffix:     entity.IsAffix == 1,
+			IsIframe:    entity.IsIframe == 1,
 		},
 	}
 	if entity.MenuType != 0 {
@@ -273,10 +273,8 @@ func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 		menu.Component = "layout/routerView/parent"
 		menu.Path = "/" + entity.Path
 	}
-	if entity.AlwaysShow == 1 {
-		menu.MenuMeta.IsHide = false
-	} else {
-		menu.MenuMeta.IsHide = true
+	if menu.MenuMeta.IsIframe || entity.IsLink == 1 {
+		menu.MenuMeta.IsLink = entity.LinkUrl
 	}
 	return menu
 }
@@ -296,7 +294,7 @@ func (s *userImpl) GetPermissions(ctx context.Context, roleIds []uint) (userButt
 			}
 		}
 		//获取所有开启的按钮
-		allButtons, err := Rule().GetIsButtonStatusList(ctx)
+		allButtons, err := Rule().GetIsButtonList(ctx)
 		liberr.ErrIsNil(ctx, err)
 		userButtons = make([]string, 0, len(allButtons))
 		for _, button := range allButtons {

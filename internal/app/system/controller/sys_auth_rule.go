@@ -22,3 +22,15 @@ func (c *menuController) Add(ctx context.Context, req *system.RuleAddReq) (res *
 	err = service.Rule().Add(ctx, req)
 	return
 }
+
+// GetAddParams 获取菜单添加及编辑相关参数
+func (c *menuController) GetAddParams(ctx context.Context, req *system.RuleGetParamsReq) (res *system.RuleGetParamsRes, err error) {
+	// 获取角色列表
+	res = new(system.RuleGetParamsRes)
+	res.Roles, err = service.Role().GetRoleList(ctx)
+	if err != nil {
+		return
+	}
+	res.Menus, err = service.Rule().GetIsMenuList(ctx)
+	return
+}

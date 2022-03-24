@@ -21,16 +21,17 @@ type SysAuthRule struct {
 	Remark     interface{} // 备注
 	MenuType   interface{} // 类型 0目录 1菜单 2按钮
 	Weigh      interface{} // 权重
-	Status     interface{} // 状态
-	AlwaysShow interface{} // 显示状态
+	IsHide     interface{} // 显示状态
 	Path       interface{} // 路由地址
-	JumpPath   interface{} // 跳转路由
 	Component  interface{} // 组件路径
 	IsLink     interface{} // 是否外链 1是 0否
 	ModuleType interface{} // 所属模块
 	ModelId    interface{} // 模型ID
 	IsIframe   interface{} // 是否内嵌iframe
 	IsCached   interface{} // 是否缓存
+	Redirect   interface{} // 路由重定向地址
+	IsAffix    interface{} // 是否固定
+	LinkUrl    interface{} // 链接地址
 	CreatedAt  *gtime.Time // 创建日期
 	UpdatedAt  *gtime.Time // 修改日期
 }

@@ -7,29 +7,45 @@
 
 package system
 
-import "github.com/gogf/gf/v2/frame/g"
+import (
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
+)
 
 type RuleAddReq struct {
-	g.Meta        `path:"/menu/add" tags:"menu add" method:"post" summary:"添加菜单"`
+	g.Meta        `path:"/menu/add" tags:"菜单管理" method:"post" summary:"添加菜单"`
 	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
 	MenuType      uint   `p:"menuType"  v:"min:0|max:2#菜单类型最小值为:min|菜单类型最大值为:max"`
 	Pid           uint   `p:"parentId"  v:"min:0"`
 	Name          string `p:"name" v:"required#请填写规则名称"`
 	Title         string `p:"menuName" v:"required|length:1,100#请填写标题|标题长度在:min到:max位"`
 	Icon          string `p:"icon"`
-	Weigh         int    `p:"orderNum" `
+	Weigh         int    `p:"menuSort" `
 	Condition     string `p:"condition" `
 	Remark        string `p:"remark" `
-	Status        uint   `p:"status" `
-	AlwaysShow    uint   `p:"visible"`
+	IsHide        uint   `p:"isHide"`
 	Path          string `p:"path"`
+	Redirect      string `p:"redirect"` // 路由重定向
+	Roles         []uint `p:"roles"`    // 角色ids
 	Component     string `p:"component" v:"required-if:menuType,1#组件路径不能为空"`
 	IsLink        uint   `p:"isLink"`
 	IsIframe      uint   `p:"isIframe"`
-	IsCached      uint   `p:"isCached"`
-	ModuleType    string `p:"moduleType"`
-	ModelId       uint   `p:"modelId"`
+	IsCached      uint   `p:"isKeepAlive"`
+	IsAffix       uint   `p:"isAffix"`
+	LinkUrl       string `p:"linkUrl"`
 }
 
 type RuleAddRes struct {
+}
+
+type RuleGetParamsReq struct {
+	g.Meta        `path:"/menu/getParams" tags:"菜单管理" method:"get" summary:"获取添加、编辑菜单相关参数"`
+	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
+}
+
+type RuleGetParamsRes struct {
+	g.Meta `mime:"application/json"`
+	Roles  []*entity.SysRole           `json:"roles"`
+	Menus  []*model.SysAuthRuleInfoRes `json:"menus"`
 }

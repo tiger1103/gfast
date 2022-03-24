@@ -13,6 +13,6 @@ type DmReq struct {
 	g.Meta `path:"/demo" tags:"Demo" method:"get" summary:"demo api"`
 }
 type DmRes struct {
-	g.Meta `mime:"text/html" example:"string"`
+	g.Meta `mime:"text/html"`
 	Name   string `json:"name"`
 }

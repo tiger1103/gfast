@@ -76,10 +76,10 @@ gfcli:
   gen:
     dao:
       - link:            "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v3"
-        tables:          "sys_dict_type,sys_dict_data,sys_config"
+        tables:          "sys_auth_rule"
         removePrefix:    "gf_"
         descriptionTag:  true
         noModelComment:  true
-        path: "./internal/app/common"
+        path: "./internal/app/system"
 
 

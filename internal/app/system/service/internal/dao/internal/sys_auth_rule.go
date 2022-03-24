@@ -28,16 +28,17 @@ type SysAuthRuleColumns struct {
 	Remark     string // 备注
 	MenuType   string // 类型 0目录 1菜单 2按钮
 	Weigh      string // 权重
-	Status     string // 状态
-	AlwaysShow string // 显示状态
+	IsHide     string // 显示状态
 	Path       string // 路由地址
-	JumpPath   string // 跳转路由
 	Component  string // 组件路径
 	IsLink     string // 是否外链 1是 0否
 	ModuleType string // 所属模块
 	ModelId    string // 模型ID
 	IsIframe   string // 是否内嵌iframe
 	IsCached   string // 是否缓存
+	Redirect   string // 路由重定向地址
+	IsAffix    string // 是否固定
+	LinkUrl    string // 链接地址
 	CreatedAt  string // 创建日期
 	UpdatedAt  string // 修改日期
 }
@@ -53,16 +54,17 @@ var sysAuthRuleColumns = SysAuthRuleColumns{
 	Remark:     "remark",
 	MenuType:   "menu_type",
 	Weigh:      "weigh",
-	Status:     "status",
-	AlwaysShow: "always_show",
+	IsHide:     "is_hide",
 	Path:       "path",
-	JumpPath:   "jump_path",
 	Component:  "component",
 	IsLink:     "is_link",
 	ModuleType: "module_type",
 	ModelId:    "model_id",
 	IsIframe:   "is_iframe",
 	IsCached:   "is_cached",
+	Redirect:   "redirect",
+	IsAffix:    "is_affix",
+	LinkUrl:    "link_url",
 	CreatedAt:  "created_at",
 	UpdatedAt:  "updated_at",
 }

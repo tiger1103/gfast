@@ -14,14 +14,15 @@ import (
 
 // GetDictReq 获取字典信息请求参数
 type GetDictReq struct {
-	g.Meta       `path:"/dict/data/getDictData" tags:"get dict data" method:"get" summary:"获取字典数据公共方法"`
-	DictType     string `p:"dictType" v:"required#字典类型不能为空"`
-	DefaultValue string `p:"defaultValue"`
+	g.Meta        `path:"/dict/data/getDictData" tags:"字典管理" method:"get" summary:"获取字典数据公共方法"`
+	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
+	DictType      string `p:"dictType" v:"required#字典类型不能为空"`
+	DefaultValue  string `p:"defaultValue"`
 }
 
 // GetDictRes 完整的一个字典信息
 type GetDictRes struct {
-	g.Meta `mime:"application/json" example:""`
+	g.Meta `mime:"application/json"`
 	Info   *commonModel.DictTypeRes   `json:"info"`
 	Values []*commonModel.DictDataRes `json:"values"`
 }
