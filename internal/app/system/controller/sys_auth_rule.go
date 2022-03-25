@@ -34,3 +34,10 @@ func (c *menuController) GetAddParams(ctx context.Context, req *system.RuleGetPa
 	res.Menus, err = service.Rule().GetIsMenuList(ctx)
 	return
 }
+
+// Get 获取菜单信息
+func (c *menuController) Get(ctx context.Context, req *system.RuleInfoReq) (res *system.RuleInfoRes, err error) {
+	res = new(system.RuleInfoRes)
+	res.Rule, err = service.Rule().Get(ctx, req.Id)
+	return
+}

@@ -11,6 +11,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
@@ -18,6 +19,7 @@ import (
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
 	"github.com/tiger1103/gfast/v3/library/liberr"
@@ -28,6 +30,7 @@ type IRule interface {
 	GetMenuList(ctx context.Context) (list []*model.SysAuthRuleInfoRes, err error)
 	GetIsButtonList(ctx context.Context) ([]*model.SysAuthRuleInfoRes, error)
 	Add(ctx context.Context, req *system.RuleAddReq) (err error)
+	Get(ctx context.Context, id uint) (rule *entity.SysAuthRule, err error)
 }
 
 type ruleImpl struct {
@@ -95,6 +98,10 @@ func (s *ruleImpl) GetIsButtonList(ctx context.Context) ([]*model.SysAuthRuleInf
 
 // Add 添加菜单
 func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) {
+	if s.menuNameExists(ctx, req.Name, 0) {
+		err = gerror.New("接口规则已经存在")
+		return
+	}
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		err = g.Try(func() {
 			//菜单数据
@@ -124,7 +131,25 @@ func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) 
 		})
 		return err
 	})
+	if err == nil {
+		// 删除相关缓存
+		commonService.Cache(ctx).RemoveByTag(ctx, consts.CacheSysAuthTag)
+	}
 	return
+}
+
+//检查菜单规则是否存在
+func (s *ruleImpl) menuNameExists(ctx context.Context, name string, id int) bool {
+	m := dao.SysAuthRule.Ctx(ctx).Where("name=?", name)
+	if id != 0 {
+		m = m.Where("id!=?", id)
+	}
+	c, err := m.Fields(dao.SysAuthRule.Columns().Id).Limit(1).One()
+	if err != nil {
+		g.Log().Error(ctx, err)
+		return false
+	}
+	return !c.IsEmpty()
 }
 
 // BindRoleRule 绑定角色权限
@@ -136,6 +161,14 @@ func (s *ruleImpl) BindRoleRule(ctx context.Context, ruleId interface{}, roleIds
 			_, err = enforcer.AddPolicy(fmt.Sprintf("%d", roleId), fmt.Sprintf("%d", ruleId), "All")
 			liberr.ErrIsNil(ctx, err)
 		}
+	})
+	return
+}
+
+func (s *ruleImpl) Get(ctx context.Context, id uint) (rule *entity.SysAuthRule, err error) {
+	err = g.Try(func() {
+		err = dao.SysAuthRule.Ctx(ctx).WherePri(id).Scan(&rule)
+		liberr.ErrIsNil(ctx, err, "获取菜单失败")
 	})
 	return
 }

@@ -49,3 +49,14 @@ type RuleGetParamsRes struct {
 	Roles  []*entity.SysRole           `json:"roles"`
 	Menus  []*model.SysAuthRuleInfoRes `json:"menus"`
 }
+
+type RuleInfoReq struct {
+	g.Meta        `path:"/menu/get" tags:"菜单管理" method:"get" summary:"获取菜单信息"`
+	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
+	Id            uint   `p:"required#菜单id必须"`
+}
+
+type RuleInfoRes struct {
+	g.Meta `mime:"application/json"`
+	Rule   *entity.SysAuthRule `json:"rule"`
+}
