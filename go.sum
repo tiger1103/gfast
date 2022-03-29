@@ -85,8 +85,8 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/tiger1103/gfast-cache v0.0.6 h1:H40Txv6co5bjaRlFQ/ixcMfpgsihhPpNftvCHm7hLpI=
-github.com/tiger1103/gfast-cache v0.0.6/go.mod h1:s6cRWyr87wz6IJNGKRV6Ahq9hcuVz8h2PAtGrO66JO8=
+github.com/tiger1103/gfast-cache v0.0.7 h1:YRuSFxFdvNlIsHAndS7XjYRLd4tmXGWhvHt9rK0LVT0=
+github.com/tiger1103/gfast-cache v0.0.7/go.mod h1:s6cRWyr87wz6IJNGKRV6Ahq9hcuVz8h2PAtGrO66JO8=
 github.com/tiger1103/gfast-token v0.0.9 h1:+cKNu4zAMZpqaeILy3QIjuEO0HQMXtMSqVGPmhKAP90=
 github.com/tiger1103/gfast-token v0.0.9/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

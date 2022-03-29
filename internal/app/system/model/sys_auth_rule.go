@@ -28,6 +28,12 @@ type SysAuthRuleInfoRes struct {
 	LinkUrl   string `orm:"link_url" json:"linkUrl"`      //链接地址
 }
 
+// SysAuthRuleTreeRes 菜单树形结构
+type SysAuthRuleTreeRes struct {
+	*SysAuthRuleInfoRes
+	Children []*SysAuthRuleTreeRes `json:"children"`
+}
+
 type UserMenu struct {
 	Id        uint   `json:"id"`
 	Pid       uint   `json:"pid"`

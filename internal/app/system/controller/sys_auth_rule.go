@@ -10,12 +10,31 @@ package controller
 import (
 	"context"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service"
 )
 
 var Menu = menuController{}
 
 type menuController struct {
+}
+
+func (c *menuController) List(ctx context.Context, req *system.RuleSearchReq) (res *system.RuleListRes, err error) {
+	var list []*model.SysAuthRuleInfoRes
+	res = &system.RuleListRes{
+		Rules: make([]*model.SysAuthRuleTreeRes, 0),
+	}
+	list, err = service.Rule().GetMenuListSearch(ctx, req)
+	if req.Title != "" || req.Component != "" {
+		for _, menu := range list {
+			res.Rules = append(res.Rules, &model.SysAuthRuleTreeRes{
+				SysAuthRuleInfoRes: menu,
+			})
+		}
+	} else {
+		res.Rules = service.Rule().GetMenuListTree(0, list)
+	}
+	return
 }
 
 func (c *menuController) Add(ctx context.Context, req *system.RuleAddReq) (res *system.RuleAddRes, err error) {
@@ -39,5 +58,15 @@ func (c *menuController) GetAddParams(ctx context.Context, req *system.RuleGetPa
 func (c *menuController) Get(ctx context.Context, req *system.RuleInfoReq) (res *system.RuleInfoRes, err error) {
 	res = new(system.RuleInfoRes)
 	res.Rule, err = service.Rule().Get(ctx, req.Id)
+	if err != nil {
+		return
+	}
+	res.RoleIds, err = service.Rule().GetMenuRoles(ctx, req.Id)
+	return
+}
+
+// Update 菜单修改
+func (c *menuController) Update(ctx context.Context, req *system.RuleUpdateReq) (res *system.RuleUpdateRes, err error) {
+	err = service.Rule().Update(ctx, req)
 	return
 }
