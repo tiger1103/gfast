@@ -35,6 +35,7 @@ type IRule interface {
 	Update(ctx context.Context, req *system.RuleUpdateReq) (err error)
 	GetMenuListSearch(ctx context.Context, req *system.RuleSearchReq) (res []*model.SysAuthRuleInfoRes, err error)
 	GetMenuListTree(pid uint, list []*model.SysAuthRuleInfoRes) []*model.SysAuthRuleTreeRes
+	DeleteMenuByIds(ctx context.Context, ids []int) (err error)
 }
 
 type ruleImpl struct {
@@ -277,4 +278,49 @@ func (s *ruleImpl) GetMenuListTree(pid uint, list []*model.SysAuthRuleInfoRes) [
 		}
 	}
 	return tree
+}
+
+// DeleteMenuByIds 删除菜单
+func (s *ruleImpl) DeleteMenuByIds(ctx context.Context, ids []int) (err error) {
+	var list []*model.SysAuthRuleInfoRes
+	list, err = s.GetMenuList(ctx)
+	if err != nil {
+		return
+	}
+	childrenIds := make([]int, 0, len(list))
+	for _, id := range ids {
+		rules := s.FindSonByParentId(list, gconv.Uint(id))
+		for _, child := range rules {
+			childrenIds = append(childrenIds, gconv.Int(child.Id))
+		}
+	}
+	ids = append(ids, childrenIds...)
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		return g.Try(func() {
+			_, err = dao.SysAuthRule.Ctx(ctx).Where("id in (?)", ids).Delete()
+			liberr.ErrIsNil(ctx, err, "删除失败")
+			//删除权限
+			enforcer, err := commonService.CasbinEnforcer(ctx)
+			liberr.ErrIsNil(ctx, err)
+			for _, v := range ids {
+				_, err = enforcer.RemoveFilteredPolicy(1, gconv.String(v))
+				liberr.ErrIsNil(ctx, err)
+			}
+			// 删除相关缓存
+			commonService.Cache(ctx).RemoveByTag(ctx, consts.CacheSysAuthTag)
+		})
+	})
+	return
+}
+
+func (s *ruleImpl) FindSonByParentId(list []*model.SysAuthRuleInfoRes, pid uint) []*model.SysAuthRuleInfoRes {
+	children := make([]*model.SysAuthRuleInfoRes, 0, len(list))
+	for _, v := range list {
+		if v.Pid == pid {
+			children = append(children, v)
+			fChildren := s.FindSonByParentId(list, v.Id)
+			children = append(children, fChildren...)
+		}
+	}
+	return children
 }

@@ -70,3 +70,9 @@ func (c *menuController) Update(ctx context.Context, req *system.RuleUpdateReq) 
 	err = service.Rule().Update(ctx, req)
 	return
 }
+
+// Delete 删除菜单
+func (c *menuController) Delete(ctx context.Context, req *system.RuleDeleteReq) (res *system.RuleDeleteRes, err error) {
+	err = service.Rule().DeleteMenuByIds(ctx, req.Ids)
+	return
+}

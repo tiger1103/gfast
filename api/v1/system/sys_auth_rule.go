@@ -100,3 +100,12 @@ type RuleUpdateReq struct {
 
 type RuleUpdateRes struct {
 }
+
+type RuleDeleteReq struct {
+	g.Meta        `path:"/menu/delete" tags:"菜单管理" method:"delete" summary:"删除菜单"`
+	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
+	Ids           []int  `p:"ids" v:"required#菜单id必须"`
+}
+
+type RuleDeleteRes struct {
+}
