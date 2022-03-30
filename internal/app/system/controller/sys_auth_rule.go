@@ -17,6 +17,7 @@ import (
 var Menu = menuController{}
 
 type menuController struct {
+	BaseController
 }
 
 func (c *menuController) List(ctx context.Context, req *system.RuleSearchReq) (res *system.RuleListRes, err error) {

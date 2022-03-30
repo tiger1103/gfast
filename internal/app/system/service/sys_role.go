@@ -9,9 +9,9 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/tiger1103/gfast/v3/api/v1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
@@ -21,6 +21,7 @@ import (
 
 type IRole interface {
 	GetRoleList(ctx context.Context) (list []*entity.SysRole, err error)
+	GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error)
 }
 
 type roleImpl struct {
@@ -30,6 +31,31 @@ var role = roleImpl{}
 
 func Role() IRole {
 	return IRole(&role)
+}
+
+func (s *roleImpl) GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error) {
+	res = new(system.RoleListRes)
+	g.Try(func() {
+		model := dao.SysRole.Ctx(ctx)
+		if req.RoleName != "" {
+			model = model.Where("name like ?", "%"+req.RoleName+"%")
+		}
+		if req.Status != "" {
+			model = model.Where("status", gconv.Int(req.Status))
+		}
+		res.Total, err = model.Count()
+		liberr.ErrIsNil(ctx, err, "获取角色数据失败")
+		if req.PageNum == 0 {
+			req.PageNum = 1
+		}
+		res.CurrentPage = req.PageNum
+		if req.PageSize == 0 {
+			req.PageSize = consts.PageSize
+		}
+		err = model.Page(res.CurrentPage, req.PageSize).Order("id asc").Scan(&res.List)
+		liberr.ErrIsNil(ctx, err, "获取数据失败")
+	})
+	return
 }
 
 // GetRoleList 获取角色列表
@@ -62,9 +88,9 @@ func (s *roleImpl) AddRoleRule(ctx context.Context, iRule interface{}, roleId in
 	err = g.Try(func() {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
-		rule := gconv.Strings(iRule)
-		for _, v := range rule {
-			_, err = enforcer.AddPolicy(fmt.Sprintf("%d", roleId), fmt.Sprintf("%s", v), "All")
+		ruleIds := gconv.Strings(iRule)
+		for _, v := range ruleIds {
+			_, err = enforcer.AddPolicy(gconv.String(roleId), gconv.String(v), "All")
 			liberr.ErrIsNil(ctx, err)
 		}
 	})

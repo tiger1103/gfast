@@ -18,7 +18,7 @@ type SysAuthRuleInfoRes struct {
 	MenuType  uint   `orm:"menu_type"   json:"menuType"`  // 类型 0目录 1菜单 2按钮
 	Weigh     int    `orm:"weigh"       json:"weigh"`     // 权重
 	IsHide    uint   `orm:"is_hide" json:"isHide"`        // 显示状态
-	IsCached  uint   `orm:"is_hide"  json:"isCached"`     // 是否缓存
+	IsCached  uint   `orm:"is_cached"  json:"isCached"`   // 是否缓存
 	IsAffix   uint   `orm:"is_affix" json:"isAffix"`      //是否固定
 	Path      string `orm:"path"        json:"path"`      // 路由地址
 	Redirect  string `orm:"redirect"   json:"redirect"`   // 跳转路由
