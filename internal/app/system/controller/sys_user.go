@@ -5,8 +5,8 @@ import (
 	"github.com/gogf/gf/v2/crypto/gmd5"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/genv"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/gogf/gf/v2/util/gmode"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
@@ -30,8 +30,8 @@ func (c *userController) Login(ctx context.Context, req *system.UserLoginReq) (r
 		menuList    []*model.UserMenus
 	)
 	//判断验证码是否正确
-	debug := genv.GetWithCmd("gf.debug")
-	if debug.Int() != 1 {
+	debug := gmode.IsDevelop()
+	if !debug {
 		if !commonService.Captcha().VerifyString(req.VerifyKey, req.VerifyCode) {
 			err = gerror.New("验证码输入错误")
 			return
