@@ -34,7 +34,7 @@ func Middleware() IMiddleware {
 func (s *middlewareImpl) Ctx(r *ghttp.Request) {
 	ctx := r.GetCtx()
 	// 初始化登录用户信息
-	data, err := GfToken(ctx).ParseToken(r)
+	data, err := GfToken().ParseToken(r)
 	if err != nil {
 		// 执行下一步请求逻辑
 		r.Middleware.Next()

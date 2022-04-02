@@ -8,8 +8,8 @@
 package service
 
 import (
-	"context"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/tiger1103/gfast/v3/internal/app/common/model"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/library/liberr"
@@ -28,11 +28,12 @@ var gftService = &gft{
 	lock:    &sync.Mutex{},
 }
 
-func GfToken(ctx context.Context) commonService.IGfToken {
+func GfToken() commonService.IGfToken {
 	if gftService.gT == nil {
 		gftService.lock.Lock()
 		defer gftService.lock.Unlock()
 		if gftService.gT == nil {
+			ctx := gctx.New()
 			err := g.Cfg().MustGet(ctx, "gfToken").Struct(&gftService.options)
 			liberr.ErrIsNil(ctx, err)
 			gftService.gT = commonService.GfToken(gftService.options)

@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
@@ -22,6 +23,7 @@ import (
 type IRole interface {
 	GetRoleList(ctx context.Context) (list []*entity.SysRole, err error)
 	GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error)
+	AddRole(ctx context.Context, req *system.RoleAddReq) (err error)
 }
 
 type roleImpl struct {
@@ -60,7 +62,7 @@ func (s *roleImpl) GetRoleListSearch(ctx context.Context, req *system.RoleListRe
 
 // GetRoleList 获取角色列表
 func (s *roleImpl) GetRoleList(ctx context.Context) (list []*entity.SysRole, err error) {
-	cache := commonService.Cache(ctx)
+	cache := commonService.Cache()
 	//从缓存获取
 	iList := cache.GetOrSetFuncLock(ctx, consts.CacheSysRole, s.getRoleListFromDb, 0, consts.CacheSysAuthTag)
 	if iList != nil {
@@ -84,15 +86,31 @@ func (s *roleImpl) getRoleListFromDb(ctx context.Context) (value interface{}, er
 }
 
 // AddRoleRule 添加角色权限
-func (s *roleImpl) AddRoleRule(ctx context.Context, iRule interface{}, roleId int64) (err error) {
+func (s *roleImpl) AddRoleRule(ctx context.Context, ruleIds []uint, roleId int64) (err error) {
 	err = g.Try(func() {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
-		ruleIds := gconv.Strings(iRule)
-		for _, v := range ruleIds {
-			_, err = enforcer.AddPolicy(gconv.String(roleId), gconv.String(v), "All")
+		ruleIdsStr := gconv.Strings(ruleIds)
+		for _, v := range ruleIdsStr {
+			_, err = enforcer.AddPolicy(gconv.String(roleId), v, "All")
 			liberr.ErrIsNil(ctx, err)
 		}
+	})
+	return
+}
+
+func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err error) {
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		err = g.Try(func() {
+			roleId, e := dao.SysRole.Ctx(ctx).TX(tx).InsertAndGetId(req)
+			liberr.ErrIsNil(ctx, e, "添加角色失败")
+			//添加角色权限
+			e = s.AddRoleRule(ctx, req.MenuIds, roleId)
+			liberr.ErrIsNil(ctx, e)
+			//清除TAG缓存
+			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		})
+		return err
 	})
 	return
 }

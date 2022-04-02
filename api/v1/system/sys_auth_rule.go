@@ -75,7 +75,7 @@ type RuleInfoRes struct {
 }
 
 type RuleUpdateReq struct {
-	g.Meta        `path:"/menu/update" tags:"菜单管理" method:"post" summary:"修改菜单"`
+	g.Meta        `path:"/menu/update" tags:"菜单管理" method:"put" summary:"修改菜单"`
 	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
 	Id            uint   `p:"id" v:"required#id必须"`
 	MenuType      uint   `p:"menuType"  v:"min:0|max:2#菜单类型最小值为:min|菜单类型最大值为:max"`

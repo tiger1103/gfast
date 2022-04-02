@@ -8,8 +8,8 @@
 package service
 
 import (
-	"context"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/tiger1103/gfast-cache/cache"
 	"github.com/tiger1103/gfast/v3/internal/app/common/consts"
 )
@@ -25,8 +25,11 @@ type cacheImpl struct {
 
 var c = cacheImpl{}
 
-func Cache(ctx context.Context) ICache {
-	ch := c
+func Cache() ICache {
+	var (
+		ch  = c
+		ctx = gctx.New()
+	)
 	prefix := g.Cfg().MustGet(ctx, "system.cache.prefix").String()
 	model := g.Cfg().MustGet(ctx, "system.cache.model").String()
 	if model == consts.CacheModelRedis {

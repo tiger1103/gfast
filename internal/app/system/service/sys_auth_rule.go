@@ -79,7 +79,7 @@ func (s *ruleImpl) GetIsMenuList(ctx context.Context) ([]*model.SysAuthRuleInfoR
 
 // GetMenuList 获取所有菜单
 func (s *ruleImpl) GetMenuList(ctx context.Context) (list []*model.SysAuthRuleInfoRes, err error) {
-	cache := service.Cache(ctx)
+	cache := service.Cache()
 	//从缓存获取
 	iList := cache.GetOrSetFuncLock(ctx, consts.CacheSysAuthMenu, s.getMenuListFromDb, 0, consts.CacheSysAuthTag)
 	if iList != nil {
@@ -153,7 +153,7 @@ func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) 
 	})
 	if err == nil {
 		// 删除相关缓存
-		commonService.Cache(ctx).RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
 	}
 	return
 }
@@ -241,7 +241,7 @@ func (s *ruleImpl) Update(ctx context.Context, req *system.RuleUpdateReq) (err e
 	})
 	if err == nil {
 		// 删除相关缓存
-		commonService.Cache(ctx).RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
 	}
 	return
 }
@@ -307,7 +307,7 @@ func (s *ruleImpl) DeleteMenuByIds(ctx context.Context, ids []int) (err error) {
 				liberr.ErrIsNil(ctx, err)
 			}
 			// 删除相关缓存
-			commonService.Cache(ctx).RemoveByTag(ctx, consts.CacheSysAuthTag)
+			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
 		})
 	})
 	return

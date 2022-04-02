@@ -9,7 +9,6 @@ package router
 
 import (
 	"github.com/gogf/gf/v2/net/ghttp"
-	"github.com/gogf/gf/v2/os/gctx"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/controller"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service"
@@ -19,7 +18,7 @@ func BindController(group *ghttp.RouterGroup) {
 	group.Group("/system", func(group *ghttp.RouterGroup) {
 		group.Middleware(commonService.Middleware().MiddlewareCORS)
 		//登录验证拦截
-		service.GfToken(gctx.New()).Middleware(group)
+		service.GfToken().Middleware(group)
 		//context拦截器
 		group.Middleware(service.Middleware().Ctx, service.Middleware().Auth)
 		group.Bind(

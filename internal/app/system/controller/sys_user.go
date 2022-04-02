@@ -70,7 +70,7 @@ func (c *userController) Login(ctx context.Context, req *system.UserLoginReq) (r
 		key = gconv.String(user.Id) + "-" + gmd5.MustEncryptString(user.UserName) + gmd5.MustEncryptString(user.UserPassword+ip+userAgent)
 	}
 	user.UserPassword = ""
-	token, err = service.GfToken(ctx).GenerateToken(ctx, key, user)
+	token, err = service.GfToken().GenerateToken(ctx, key, user)
 	if err != nil {
 		return
 	}

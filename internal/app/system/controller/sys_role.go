@@ -24,3 +24,16 @@ func (c *roleController) List(ctx context.Context, req *system.RoleListReq) (res
 	res, err = service.Role().GetRoleListSearch(ctx, req)
 	return
 }
+
+// GetParams 获取角色表单参数
+func (c *roleController) GetParams(ctx context.Context, req *system.RoleGetParamsReq) (res *system.RoleGetParamsRes, err error) {
+	res = new(system.RoleGetParamsRes)
+	res.Menu, err = service.Rule().GetMenuList(ctx)
+	return
+}
+
+// Add 添加角色信息
+func (c *roleController) Add(ctx context.Context, req *system.RoleAddReq) (res *system.RoleAddRes, err error) {
+	err = service.Role().AddRole(ctx, req)
+	return
+}

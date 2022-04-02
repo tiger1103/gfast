@@ -12,7 +12,7 @@ import (
 type SysRole struct {
 	Id        uint        `json:"id"        description:""`
 	Status    uint        `json:"status"    description:"状态;0:禁用;1:正常"`
-	ListOrder float64     `json:"listOrder" description:"排序"`
+	ListOrder uint        `json:"listOrder" description:"排序"`
 	Name      string      `json:"name"      description:"角色名称"`
 	Remark    string      `json:"remark"    description:"备注"`
 	DataScope uint        `json:"dataScope" description:"数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）"`

@@ -35,7 +35,7 @@ func DictData() IDictData {
 // GetDictWithDataByType 通过字典键类型获取选项
 func (s dictDataImpl) GetDictWithDataByType(ctx context.Context, req *system.GetDictReq) (dict *system.GetDictRes,
 	err error) {
-	cache := Cache(ctx)
+	cache := Cache()
 	cacheKey := commonConsts.CacheSysDict + "_" + req.DictType
 	//从缓存获取
 	iDict := cache.GetOrSetFuncLock(ctx, cacheKey, func(ctx context.Context) (value interface{}, err error) {
