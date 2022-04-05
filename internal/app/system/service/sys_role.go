@@ -17,6 +17,7 @@ import (
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
+	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
 	"github.com/tiger1103/gfast/v3/library/liberr"
 )
 
@@ -24,6 +25,9 @@ type IRole interface {
 	GetRoleList(ctx context.Context) (list []*entity.SysRole, err error)
 	GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error)
 	AddRole(ctx context.Context, req *system.RoleAddReq) (err error)
+	Get(ctx context.Context, id uint) (res *entity.SysRole, err error)
+	GetFilteredNamedPolicy(ctx context.Context, id uint) (gpSlice []int, err error)
+	EditRole(ctx context.Context, req *system.RoleEditReq) error
 }
 
 type roleImpl struct {
@@ -99,6 +103,17 @@ func (s *roleImpl) AddRoleRule(ctx context.Context, ruleIds []uint, roleId int64
 	return
 }
 
+// DelRoleRule 删除角色权限
+func (s *roleImpl) DelRoleRule(ctx context.Context, roleId int64) (err error) {
+	err = g.Try(func() {
+		enforcer, e := commonService.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, e)
+		_, err = enforcer.RemoveFilteredPolicy(0, gconv.String(roleId))
+		liberr.ErrIsNil(ctx, e)
+	})
+	return
+}
+
 func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		err = g.Try(func() {
@@ -106,6 +121,53 @@ func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err err
 			liberr.ErrIsNil(ctx, e, "添加角色失败")
 			//添加角色权限
 			e = s.AddRoleRule(ctx, req.MenuIds, roleId)
+			liberr.ErrIsNil(ctx, e)
+			//清除TAG缓存
+			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		})
+		return err
+	})
+	return
+}
+
+func (s *roleImpl) Get(ctx context.Context, id uint) (res *entity.SysRole, err error) {
+	err = g.Try(func() {
+		err = dao.SysRole.Ctx(ctx).WherePri(id).Scan(&res)
+		liberr.ErrIsNil(ctx, err, "获取角色信息失败")
+	})
+	return
+}
+
+// GetFilteredNamedPolicy 获取角色关联的菜单规则
+func (s *roleImpl) GetFilteredNamedPolicy(ctx context.Context, id uint) (gpSlice []int, err error) {
+	err = g.Try(func() {
+		enforcer, e := commonService.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, e)
+		gp := enforcer.GetFilteredNamedPolicy("p", 0, gconv.String(id))
+		gpSlice = make([]int, len(gp))
+		for k, v := range gp {
+			gpSlice[k] = gconv.Int(v[1])
+		}
+	})
+	return
+}
+
+// EditRole 修改角色
+func (s *roleImpl) EditRole(ctx context.Context, req *system.RoleEditReq) (err error) {
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		err = g.Try(func() {
+			_, e := dao.SysRole.Ctx(ctx).TX(tx).WherePri(req.Id).Data(&do.SysRole{
+				Status:    req.Status,
+				ListOrder: req.ListOrder,
+				Name:      req.Name,
+				Remark:    req.Remark,
+			}).Update()
+			liberr.ErrIsNil(ctx, e, "修改角色失败")
+			//删除角色权限
+			e = s.DelRoleRule(ctx, req.Id)
+			liberr.ErrIsNil(ctx, e)
+			//添加角色权限
+			e = s.AddRoleRule(ctx, req.MenuIds, req.Id)
 			liberr.ErrIsNil(ctx, e)
 			//清除TAG缓存
 			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)

@@ -37,3 +37,20 @@ func (c *roleController) Add(ctx context.Context, req *system.RoleAddReq) (res *
 	err = service.Role().AddRole(ctx, req)
 	return
 }
+
+// Get 获取角色信息
+func (c *roleController) Get(ctx context.Context, req *system.RoleGetReq) (res *system.RoleGetRes, err error) {
+	res = new(system.RoleGetRes)
+	res.Role, err = service.Role().Get(ctx, req.Id)
+	if err != nil {
+		return
+	}
+	res.MenuIds, err = service.Role().GetFilteredNamedPolicy(ctx, req.Id)
+	return
+}
+
+// Edit 修改角色信息
+func (c *roleController) Edit(ctx context.Context, req *system.RoleEditReq) (res *system.RoleEditRes, err error) {
+	err = service.Role().EditRole(ctx, req)
+	return
+}
