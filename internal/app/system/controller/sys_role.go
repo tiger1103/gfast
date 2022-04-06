@@ -54,3 +54,9 @@ func (c *roleController) Edit(ctx context.Context, req *system.RoleEditReq) (res
 	err = service.Role().EditRole(ctx, req)
 	return
 }
+
+// Delete 删除角色
+func (c *roleController) Delete(ctx context.Context, req *system.RoleDeleteReq) (res *system.RoleDeleteRes, err error) {
+	err = service.Role().DeleteByIds(ctx, req.Ids)
+	return
+}

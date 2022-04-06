@@ -22,13 +22,13 @@ type sysLoginLogImpl struct {
 }
 
 var (
-	sysLoginLog = sysLoginLogImpl{
+	sysLoginLogService = sysLoginLogImpl{
 		Pool: grpool.New(100),
 	}
 )
 
 func SysLoginLog() ISysLoginLog {
-	return ISysLoginLog(&sysLoginLog)
+	return ISysLoginLog(&sysLoginLogService)
 }
 
 func (s *sysLoginLogImpl) Invoke(ctx context.Context, data *model.LoginLogParams) {

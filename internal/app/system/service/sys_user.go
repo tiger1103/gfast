@@ -39,11 +39,11 @@ type userImpl struct{}
 
 var (
 	notCheckAuthAdminIds *gset.Set //无需验证权限的用户id
-	user                 = userImpl{}
+	userService          = userImpl{}
 )
 
 func User() IUser {
-	return IUser(&user)
+	return IUser(&userService)
 }
 
 func (s *userImpl) NotCheckAuthAdminIds(ctx context.Context) *gset.Set {

@@ -28,15 +28,16 @@ type IRole interface {
 	Get(ctx context.Context, id uint) (res *entity.SysRole, err error)
 	GetFilteredNamedPolicy(ctx context.Context, id uint) (gpSlice []int, err error)
 	EditRole(ctx context.Context, req *system.RoleEditReq) error
+	DeleteByIds(ctx context.Context, ids []int64) (err error)
 }
 
 type roleImpl struct {
 }
 
-var role = roleImpl{}
+var roleService = roleImpl{}
 
 func Role() IRole {
-	return IRole(&role)
+	return IRole(&roleService)
 }
 
 func (s *roleImpl) GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error) {
@@ -171,6 +172,23 @@ func (s *roleImpl) EditRole(ctx context.Context, req *system.RoleEditReq) (err e
 			liberr.ErrIsNil(ctx, e)
 			//清除TAG缓存
 			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		})
+		return err
+	})
+	return
+}
+
+// DeleteByIds 删除角色
+func (s *roleImpl) DeleteByIds(ctx context.Context, ids []int64) (err error) {
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		err = g.Try(func() {
+			_, err = dao.SysRole.Ctx(ctx).TX(tx).Where(dao.SysRole.Columns().Id+" in(?)", ids).Delete()
+			liberr.ErrIsNil(ctx, err, "删除角色失败")
+			//删除角色权限
+			for _, v := range ids {
+				err = s.DelRoleRule(ctx, v)
+				liberr.ErrIsNil(ctx, err)
+			}
 		})
 		return err
 	})

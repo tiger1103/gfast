@@ -16,8 +16,8 @@ import (
 
 type RoleListReq struct {
 	g.Meta   `path:"/role/list" tags:"角色管理" method:"get" summary:"角色列表"`
-	RoleName string `p:"roleName"` //参数名称
-	Status   string `p:"status"`   //状态
+	RoleName string `p:"roleName"`   //参数名称
+	Status   string `p:"roleStatus"` //状态
 	commonApi.PageReq
 }
 
@@ -70,4 +70,12 @@ type RoleEditReq struct {
 }
 
 type RoleEditRes struct {
+}
+
+type RoleDeleteReq struct {
+	g.Meta `path:"/role/delete" tags:"角色管理" method:"delete" summary:"删除角色"`
+	Ids    []int64 `p:"ids" v:"required#角色id不能为空"`
+}
+
+type RoleDeleteRes struct {
 }

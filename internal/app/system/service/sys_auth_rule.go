@@ -41,10 +41,10 @@ type IRule interface {
 type ruleImpl struct {
 }
 
-var rule = ruleImpl{}
+var ruleService = ruleImpl{}
 
 func Rule() IRule {
-	return IRule(&rule)
+	return IRule(&ruleService)
 }
 
 func (s *ruleImpl) GetMenuListSearch(ctx context.Context, req *system.RuleSearchReq) (res []*model.SysAuthRuleInfoRes, err error) {
