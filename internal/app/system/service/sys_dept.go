@@ -26,6 +26,7 @@ type IDept interface {
 	Add(ctx context.Context, req *system.DeptAddReq) (err error)
 	Edit(ctx context.Context, req *system.DeptEditReq) (err error)
 	GetFromCache(ctx context.Context) (list []*entity.SysDept, err error)
+	Delete(ctx context.Context, id int64) (err error)
 }
 
 var deptService = deptImpl{}

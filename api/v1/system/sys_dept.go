@@ -54,7 +54,7 @@ type DeptEditRes struct {
 
 type DeptDeleteReq struct {
 	g.Meta `path:"/dept/delete" tags:"部门管理" method:"delete" summary:"删除部门"`
-	Id     int `p:"id" v:"required#id不能为空"`
+	Id     int64 `p:"id" v:"required#id不能为空"`
 }
 
 type DeptDeleteRes struct {

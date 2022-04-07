@@ -39,6 +39,6 @@ func (c *sysDeptController) Edit(ctx context.Context, req *system.DeptEditReq) (
 }
 
 func (c *sysDeptController) Delete(ctx context.Context, req *system.DeptDeleteReq) (res *system.DeptDeleteRes, err error) {
-
+	err = service.Dept().Delete(ctx, req.Id)
 	return
 }
