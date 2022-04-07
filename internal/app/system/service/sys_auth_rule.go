@@ -15,7 +15,6 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
-	"github.com/tiger1103/gfast/v3/internal/app/common/service"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
@@ -79,11 +78,12 @@ func (s *ruleImpl) GetIsMenuList(ctx context.Context) ([]*model.SysAuthRuleInfoR
 
 // GetMenuList 获取所有菜单
 func (s *ruleImpl) GetMenuList(ctx context.Context) (list []*model.SysAuthRuleInfoRes, err error) {
-	cache := service.Cache()
+	cache := commonService.Cache()
 	//从缓存获取
 	iList := cache.GetOrSetFuncLock(ctx, consts.CacheSysAuthMenu, s.getMenuListFromDb, 0, consts.CacheSysAuthTag)
 	if iList != nil {
 		err = gconv.Struct(iList, &list)
+		liberr.ErrIsNil(ctx, err)
 	}
 	return
 }
@@ -248,7 +248,7 @@ func (s *ruleImpl) Update(ctx context.Context, req *system.RuleUpdateReq) (err e
 
 func (s *ruleImpl) UpdateRoleRule(ctx context.Context, ruleId uint, roleIds []uint) (err error) {
 	err = g.Try(func() {
-		enforcer, e := service.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		//删除旧权限
 		_, e = enforcer.RemoveFilteredPolicy(1, gconv.String(ruleId))

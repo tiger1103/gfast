@@ -31,3 +31,14 @@ func (c *sysDeptController) Add(ctx context.Context, req *system.DeptAddReq) (re
 	err = service.Dept().Add(ctx, req)
 	return
 }
+
+// Edit 修改部门
+func (c *sysDeptController) Edit(ctx context.Context, req *system.DeptEditReq) (res *system.DeptEditRes, err error) {
+	err = service.Dept().Edit(ctx, req)
+	return
+}
+
+func (c *sysDeptController) Delete(ctx context.Context, req *system.DeptDeleteReq) (res *system.DeptDeleteRes, err error) {
+
+	return
+}
