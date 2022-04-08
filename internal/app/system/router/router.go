@@ -26,6 +26,7 @@ func BindController(group *ghttp.RouterGroup) {
 			controller.Menu,
 			controller.Role,
 			controller.Dept,
+			controller.Post,
 			controller.DictData,
 		)
 	})

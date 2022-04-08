@@ -14,11 +14,15 @@ import (
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
+	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
 	"github.com/tiger1103/gfast/v3/library/liberr"
 )
 
 type IPost interface {
 	List(ctx context.Context, req *system.PostSearchReq) (res *system.PostSearchRes, err error)
+	Add(ctx context.Context, req *system.PostAddReq) (err error)
+	Edit(ctx context.Context, req *system.PostEditReq) (err error)
+	Delete(ctx context.Context, ids []int) (err error)
 }
 
 type postImpl struct {
@@ -32,6 +36,7 @@ func Post() IPost {
 
 // List 岗位列表
 func (s *postImpl) List(ctx context.Context, req *system.PostSearchReq) (res *system.PostSearchRes, err error) {
+	res = new(system.PostSearchRes)
 	err = g.Try(func() {
 		m := dao.SysPost.Ctx(ctx)
 		if req != nil {
@@ -53,9 +58,46 @@ func (s *postImpl) List(ctx context.Context, req *system.PostSearchReq) (res *sy
 		if req.PageSize == 0 {
 			req.PageSize = consts.PageSize
 		}
-		res = new(system.PostSearchRes)
 		err = m.Page(req.PageNum, req.PageSize).Order("post_sort asc,post_id asc").Scan(&res.PostList)
 		liberr.ErrIsNil(ctx, err, "获取岗位失败")
+	})
+	return
+}
+
+func (s *postImpl) Add(ctx context.Context, req *system.PostAddReq) (err error) {
+	err = g.Try(func() {
+		_, err = dao.SysPost.Ctx(ctx).Insert(do.SysPost{
+			PostCode:  req.PostCode,
+			PostName:  req.PostName,
+			PostSort:  req.PostSort,
+			Status:    req.Status,
+			Remark:    req.Remark,
+			CreatedBy: Context().GetUserId(ctx),
+		})
+		liberr.ErrIsNil(ctx, err, "添加岗位失败")
+	})
+	return
+}
+
+func (s *postImpl) Edit(ctx context.Context, req *system.PostEditReq) (err error) {
+	err = g.Try(func() {
+		_, err = dao.SysPost.Ctx(ctx).WherePri(req.PostId).Update(do.SysPost{
+			PostCode:  req.PostCode,
+			PostName:  req.PostName,
+			PostSort:  req.PostSort,
+			Status:    req.Status,
+			Remark:    req.Remark,
+			UpdatedBy: Context().GetUserId(ctx),
+		})
+		liberr.ErrIsNil(ctx, err, "修改岗位失败")
+	})
+	return
+}
+
+func (s *postImpl) Delete(ctx context.Context, ids []int) (err error) {
+	err = g.Try(func() {
+		_, err = dao.SysPost.Ctx(ctx).Where(dao.SysPost.Columns().PostId+" in(?)", ids).Delete()
+		liberr.ErrIsNil(ctx, err, "删除失败")
 	})
 	return
 }

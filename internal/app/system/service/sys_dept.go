@@ -108,7 +108,7 @@ func (s *deptImpl) Edit(ctx context.Context, req *system.DeptEditReq) (err error
 			Phone:     req.Phone,
 			Email:     req.Email,
 			Status:    req.Status,
-			CreatedBy: Context().GetUserId(ctx),
+			UpdatedBy: Context().GetUserId(ctx),
 		})
 		liberr.ErrIsNil(ctx, err, "修改部门失败")
 		// 删除缓存
