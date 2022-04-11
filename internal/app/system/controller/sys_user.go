@@ -115,6 +115,7 @@ func (c *userController) List(ctx context.Context, req *system.UserSearchReq) (r
 		return
 	}
 	res = new(system.UserSearchRes)
+	res.Total = total
 	res.UserList, err = service.User().GetUsersRoleDept(ctx, userList)
 	return
 }

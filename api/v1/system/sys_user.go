@@ -39,7 +39,7 @@ type UserSearchReq struct {
 	DeptIds  []int64 //所属部门id数据
 	Mobile   string  `p:"mobile"`
 	Status   string  `p:"status"`
-	KeyWords string  `p:"userName"`
+	KeyWords string  `p:"keyWords"`
 	commonApi.PageReq
 }
 
