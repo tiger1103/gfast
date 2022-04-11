@@ -58,6 +58,7 @@ func (s *postImpl) List(ctx context.Context, req *system.PostSearchReq) (res *sy
 		if req.PageSize == 0 {
 			req.PageSize = consts.PageSize
 		}
+		res.CurrentPage = req.PageNum
 		err = m.Page(req.PageNum, req.PageSize).Order("post_sort asc,post_id asc").Scan(&res.PostList)
 		liberr.ErrIsNil(ctx, err, "获取岗位失败")
 	})

@@ -19,6 +19,7 @@ import (
 	"github.com/mssola/user_agent"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/common/service"
+	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
@@ -33,6 +34,8 @@ type IUser interface {
 	UpdateLoginInfo(ctx context.Context, id uint64, ip string) (err error)
 	NotCheckAuthAdminIds(ctx context.Context) *gset.Set
 	GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, permissions []string, err error)
+	List(ctx context.Context, req *system.UserSearchReq) (total int, userList []*entity.SysUser, err error)
+	GetUsersRoleDept(ctx context.Context, userList []*entity.SysUser) (users []*model.SysUserRoleDeptRes, err error)
 }
 
 type userImpl struct{}
@@ -295,6 +298,76 @@ func (s *userImpl) GetPermissions(ctx context.Context, roleIds []uint) (userButt
 		for _, button := range allButtons {
 			if _, ok := menuIds[gconv.Int64(button.Id)]; gstr.Equal(button.Condition, "nocheck") || ok {
 				userButtons = append(userButtons, button.Name)
+			}
+		}
+	})
+	return
+}
+
+// List 用户列表
+func (s *userImpl) List(ctx context.Context, req *system.UserSearchReq) (total int, userList []*entity.SysUser, err error) {
+	err = g.Try(func() {
+		m := dao.SysUser.Ctx(ctx)
+		if req.KeyWords != "" {
+			keyWords := "%" + req.KeyWords + "%"
+			m = m.Where("user_name like ? or  user_nickname like ?", keyWords, keyWords)
+		}
+		if len(req.DeptIds) != 0 {
+			m = m.Where("dept_id in (?)", req.DeptIds)
+		}
+		if req.Status != "" {
+			m = m.Where("user_status", gconv.Int(req.Status))
+		}
+		if req.Mobile != "" {
+			m = m.Where("mobile like ?", "%"+req.Mobile+"%")
+		}
+		if req.BeginTime != "" {
+			m = m.Where("created_at >=?", req.BeginTime)
+		}
+		if req.EndTime != "" {
+			m = m.Where("created_at <=?", req.EndTime)
+		}
+		if req.PageSize == 0 {
+			req.PageSize = consts.PageSize
+		}
+		if req.PageNum == 0 {
+			req.PageNum = 1
+		}
+		total, err = m.Count()
+		liberr.ErrIsNil(ctx, err, "获取用户数据失败")
+		err = m.FieldsEx(dao.SysUser.Columns().UserPassword, dao.SysUser.Columns().UserSalt).
+			Page(req.PageNum, req.PageSize).Order("id asc").Scan(&userList)
+		liberr.ErrIsNil(ctx, err, "获取用户列表失败")
+	})
+	return
+}
+
+// GetUsersRoleDept 获取多个用户角色 部门信息
+func (s *userImpl) GetUsersRoleDept(ctx context.Context, userList []*entity.SysUser) (users []*model.SysUserRoleDeptRes, err error) {
+	err = g.Try(func() {
+		allRoles, e := Role().GetRoleList(ctx)
+		liberr.ErrIsNil(ctx, e)
+		depts, e := Dept().GetFromCache(ctx)
+		liberr.ErrIsNil(ctx, e)
+		users = make([]*model.SysUserRoleDeptRes, len(userList))
+		for k, u := range userList {
+			var dept *entity.SysDept
+			users[k] = &model.SysUserRoleDeptRes{
+				SysUser: u,
+			}
+			for _, d := range depts {
+				if u.DeptId == uint64(d.DeptId) {
+					dept = d
+				}
+			}
+			users[k].Dept = dept
+			roles, e := s.GetAdminRole(ctx, u.Id, allRoles)
+			liberr.ErrIsNil(ctx, e)
+			for _, r := range roles {
+				users[k].RoleInfo = append(users[k].RoleInfo, &struct {
+					RoleId uint   `json:"roleId"`
+					Name   string `json:"name"`
+				}{RoleId: r.Id, Name: r.Name})
 			}
 		}
 	})

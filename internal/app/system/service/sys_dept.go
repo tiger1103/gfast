@@ -15,6 +15,7 @@ import (
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
@@ -27,6 +28,7 @@ type IDept interface {
 	Edit(ctx context.Context, req *system.DeptEditReq) (err error)
 	GetFromCache(ctx context.Context) (list []*entity.SysDept, err error)
 	Delete(ctx context.Context, id int64) (err error)
+	GetListTree(pid int64, list []*entity.SysDept) (deptTree []*model.SysDeptTreeRes)
 }
 
 var deptService = deptImpl{}
@@ -146,4 +148,22 @@ func (s *deptImpl) FindSonByParentId(deptList []*entity.SysDept, deptId int64) [
 		}
 	}
 	return children
+}
+
+// GetListTree 部门树形菜单
+func (s *deptImpl) GetListTree(pid int64, list []*entity.SysDept) (deptTree []*model.SysDeptTreeRes) {
+	deptTree = make([]*model.SysDeptTreeRes, 0, len(list))
+	for _, v := range list {
+		if v.ParentId == pid {
+			t := &model.SysDeptTreeRes{
+				SysDept: v,
+			}
+			child := s.GetListTree(v.DeptId, list)
+			if len(child) > 0 {
+				t.Children = child
+			}
+			deptTree = append(deptTree, t)
+		}
+	}
+	return
 }

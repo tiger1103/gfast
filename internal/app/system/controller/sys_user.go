@@ -10,6 +10,7 @@ import (
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service"
 	"github.com/tiger1103/gfast/v3/library/libUtils"
 )
@@ -100,5 +101,20 @@ func (c *userController) GetUserMenus(ctx context.Context, req *system.UserMenus
 		MenuList:    menuList,
 		Permissions: permissions,
 	}
+	return
+}
+
+// List 用户列表
+func (c *userController) List(ctx context.Context, req *system.UserSearchReq) (res *system.UserSearchRes, err error) {
+	var (
+		total    int
+		userList []*entity.SysUser
+	)
+	total, userList, err = service.User().List(ctx, req)
+	if err != nil || total == 0 {
+		return
+	}
+	res = new(system.UserSearchRes)
+	res.UserList, err = service.User().GetUsersRoleDept(ctx, userList)
 	return
 }

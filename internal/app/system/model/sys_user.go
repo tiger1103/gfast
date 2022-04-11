@@ -7,6 +7,8 @@
 
 package model
 
+import "github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
+
 // LoginUserRes 登录返回
 type LoginUserRes struct {
 	Id           uint64 `orm:"id,primary"       json:"id"`           //
@@ -18,4 +20,18 @@ type LoginUserRes struct {
 	IsAdmin      int    `orm:"is_admin"         json:"isAdmin"`      // 是否后台管理员 1 是  0   否
 	Avatar       string `orm:"avatar" json:"avatar"`                 //头像
 	DeptId       uint64 `orm:"dept_id"       json:"deptId"`          //部门id
+}
+
+// SysUserRoleDeptRes 带有部门、角色、岗位信息的用户数据
+type SysUserRoleDeptRes struct {
+	*entity.SysUser
+	Dept     *entity.SysDept `json:"dept"`
+	RoleInfo []*struct {
+		RoleId uint   `json:"roleId"`
+		Name   string `json:"name"`
+	} `json:"roleInfo"`
+	Post []*struct {
+		PostId   int64  `json:"postId"`
+		PostName string `json:"postName"`
+	} `json:"post"`
 }

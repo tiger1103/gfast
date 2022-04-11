@@ -10,6 +10,7 @@ package controller
 import (
 	"context"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service"
 )
 
@@ -38,7 +39,22 @@ func (c *sysDeptController) Edit(ctx context.Context, req *system.DeptEditReq) (
 	return
 }
 
+// Delete 删除部门
 func (c *sysDeptController) Delete(ctx context.Context, req *system.DeptDeleteReq) (res *system.DeptDeleteRes, err error) {
 	err = service.Dept().Delete(ctx, req.Id)
+	return
+}
+
+// TreeSelect 获取部门数据结构数据
+func (c *sysDeptController) TreeSelect(ctx context.Context, req *system.DeptTreeSelectReq) (res *system.DeptTreeSelectRes, err error) {
+	var deptList []*entity.SysDept
+	deptList, err = service.Dept().GetList(ctx, &system.DeptSearchReq{
+		Status: "1", //正常状态数据
+	})
+	if err != nil {
+		return
+	}
+	res = new(system.DeptTreeSelectRes)
+	res.Deps = service.Dept().GetListTree(0, deptList)
 	return
 }

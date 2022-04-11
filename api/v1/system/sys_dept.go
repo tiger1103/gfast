@@ -9,6 +9,7 @@ package system
 
 import (
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 )
 
@@ -58,4 +59,13 @@ type DeptDeleteReq struct {
 }
 
 type DeptDeleteRes struct {
+}
+
+type DeptTreeSelectReq struct {
+	g.Meta `path:"/dept/treeSelect" tags:"部门管理" method:"get" summary:"获取部门树形菜单"`
+}
+
+type DeptTreeSelectRes struct {
+	g.Meta `mime:"application/json"`
+	Deps   []*model.SysDeptTreeRes `json:"deps"`
 }
