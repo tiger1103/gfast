@@ -76,7 +76,7 @@ gfcli:
   gen:
     dao:
       - link:            "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v3"
-        tables:          "sys_post"
+        tables:          "sys_user_post"
         removePrefix:    "gf_"
         descriptionTag:  true
         noModelComment:  true

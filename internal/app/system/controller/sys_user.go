@@ -110,12 +110,45 @@ func (c *userController) List(ctx context.Context, req *system.UserSearchReq) (r
 		total    int
 		userList []*entity.SysUser
 	)
+	res = new(system.UserSearchRes)
 	total, userList, err = service.User().List(ctx, req)
 	if err != nil || total == 0 {
 		return
 	}
-	res = new(system.UserSearchRes)
 	res.Total = total
 	res.UserList, err = service.User().GetUsersRoleDept(ctx, userList)
+	return
+}
+
+// GetParams 获取用户维护相关参数
+func (c *userController) GetParams(ctx context.Context, req *system.UserGetParamsReq) (res *system.UserGetParamsRes, err error) {
+	res = new(system.UserGetParamsRes)
+	res.RoleList, err = service.Role().GetRoleList(ctx)
+	if err != nil {
+		return
+	}
+	res.Posts, err = service.Post().GetUsedPost(ctx)
+	return
+}
+
+// Add 添加用户
+func (c *userController) Add(ctx context.Context, req *system.UserAddReq) (res *system.UserAddRes, err error) {
+	err = service.User().Add(ctx, req)
+	return
+}
+
+// GetEditUser 获取修改用户信息
+func (c *userController) GetEditUser(ctx context.Context, req *system.UserGetEditReq) (res *system.UserGetEditRes, err error) {
+	res, err = service.User().GetEditUser(ctx, req.Id)
+	return
+}
+
+func (c *userController) Edit(ctx context.Context, req *system.UserEditReq) (res *system.UserEditRes, err error) {
+	err = service.User().Edit(ctx, req)
+	return
+}
+
+func (c *userController) ResetPwd(ctx context.Context, req *system.UserResetPwdReq) (res *system.UserResetPwdRes, err error) {
+	err = service.User().ResetUserPwd(ctx, req)
 	return
 }

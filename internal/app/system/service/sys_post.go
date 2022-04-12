@@ -13,6 +13,7 @@ import (
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/system/service/internal/do"
 	"github.com/tiger1103/gfast/v3/library/liberr"
@@ -23,6 +24,7 @@ type IPost interface {
 	Add(ctx context.Context, req *system.PostAddReq) (err error)
 	Edit(ctx context.Context, req *system.PostEditReq) (err error)
 	Delete(ctx context.Context, ids []int) (err error)
+	GetUsedPost(ctx context.Context) (list []*entity.SysPost, err error)
 }
 
 type postImpl struct {
@@ -99,6 +101,16 @@ func (s *postImpl) Delete(ctx context.Context, ids []int) (err error) {
 	err = g.Try(func() {
 		_, err = dao.SysPost.Ctx(ctx).Where(dao.SysPost.Columns().PostId+" in(?)", ids).Delete()
 		liberr.ErrIsNil(ctx, err, "删除失败")
+	})
+	return
+}
+
+// GetUsedPost 获取正常状态的岗位
+func (s *postImpl) GetUsedPost(ctx context.Context) (list []*entity.SysPost, err error) {
+	err = g.Try(func() {
+		err = dao.SysPost.Ctx(ctx).Where(dao.SysPost.Columns().Status, 1).
+			Order(dao.SysPost.Columns().PostSort + " ASC, " + dao.SysPost.Columns().PostId + " ASC ").Scan(&list)
+		liberr.ErrIsNil(ctx, err, "获取岗位数据失败")
 	})
 	return
 }

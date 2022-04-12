@@ -25,13 +25,17 @@ type LoginUserRes struct {
 // SysUserRoleDeptRes 带有部门、角色、岗位信息的用户数据
 type SysUserRoleDeptRes struct {
 	*entity.SysUser
-	Dept     *entity.SysDept `json:"dept"`
-	RoleInfo []*struct {
-		RoleId uint   `json:"roleId"`
-		Name   string `json:"name"`
-	} `json:"roleInfo"`
-	Post []*struct {
-		PostId   int64  `json:"postId"`
-		PostName string `json:"postName"`
-	} `json:"post"`
+	Dept     *entity.SysDept       `json:"dept"`
+	RoleInfo []*SysUserRoleInfoRes `json:"roleInfo"`
+	Post     []*SysUserPostInfoRes `json:"post"`
+}
+
+type SysUserRoleInfoRes struct {
+	RoleId uint   `json:"roleId"`
+	Name   string `json:"name"`
+}
+
+type SysUserPostInfoRes struct {
+	PostId   int64  `json:"postId"`
+	PostName string `json:"postName"`
 }

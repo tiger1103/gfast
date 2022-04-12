@@ -7,7 +7,7 @@
 
 package common
 
-//
+// PageReq 公共请求参数
 type PageReq struct {
 	BeginTime string `p:"beginTime"` //开始时间
 	EndTime   string `p:"endTime"`   //结束时间

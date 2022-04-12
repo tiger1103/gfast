@@ -29,6 +29,7 @@ type IDept interface {
 	GetFromCache(ctx context.Context) (list []*entity.SysDept, err error)
 	Delete(ctx context.Context, id int64) (err error)
 	GetListTree(pid int64, list []*entity.SysDept) (deptTree []*model.SysDeptTreeRes)
+	FindSonByParentId(deptList []*entity.SysDept, deptId int64) []*entity.SysDept
 }
 
 var deptService = deptImpl{}

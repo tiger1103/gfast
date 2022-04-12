@@ -11,14 +11,16 @@ import (
 	"context"
 	"fmt"
 	"github.com/gogf/gf/v2/container/gset"
+	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/gogf/gf/v2/util/grand"
 	"github.com/mssola/user_agent"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
-	"github.com/tiger1103/gfast/v3/internal/app/common/service"
+	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
 	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
@@ -36,6 +38,10 @@ type IUser interface {
 	GetAdminRules(ctx context.Context, userId uint64) (menuList []*model.UserMenus, permissions []string, err error)
 	List(ctx context.Context, req *system.UserSearchReq) (total int, userList []*entity.SysUser, err error)
 	GetUsersRoleDept(ctx context.Context, userList []*entity.SysUser) (users []*model.SysUserRoleDeptRes, err error)
+	Add(ctx context.Context, req *system.UserAddReq) (err error)
+	GetEditUser(ctx context.Context, id uint64) (res *system.UserGetEditRes, err error)
+	Edit(ctx context.Context, req *system.UserEditReq) (err error)
+	ResetUserPwd(ctx context.Context, req *system.UserResetPwdReq) (err error)
 }
 
 type userImpl struct{}
@@ -179,7 +185,7 @@ func (s *userImpl) GetAdminRole(ctx context.Context, userId uint64, allRoleList 
 
 // GetAdminRoleIds 获取用户角色ids
 func (s *userImpl) GetAdminRoleIds(ctx context.Context, userId uint64) (roleIds []uint, err error) {
-	enforcer, e := service.CasbinEnforcer(ctx)
+	enforcer, e := commonService.CasbinEnforcer(ctx)
 	if e != nil {
 		err = e
 		return
@@ -216,7 +222,7 @@ func (s *userImpl) GetAllMenus(ctx context.Context) (menus []*model.UserMenus, e
 func (s *userImpl) GetAdminMenusByRoleIds(ctx context.Context, roleIds []uint) (menus []*model.UserMenus, err error) {
 	//获取角色对应的菜单id
 	err = g.Try(func() {
-		enforcer, e := service.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		menuIds := map[int64]int64{}
 		for _, roleId := range roleIds {
@@ -280,7 +286,7 @@ func (s *userImpl) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 func (s *userImpl) GetPermissions(ctx context.Context, roleIds []uint) (userButtons []string, err error) {
 	err = g.Try(func() {
 		//获取角色对应的菜单id
-		enforcer, err := service.CasbinEnforcer(ctx)
+		enforcer, err := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, err)
 		menuIds := map[int64]int64{}
 		for _, roleId := range roleIds {
@@ -312,8 +318,10 @@ func (s *userImpl) List(ctx context.Context, req *system.UserSearchReq) (total i
 			keyWords := "%" + req.KeyWords + "%"
 			m = m.Where("user_name like ? or  user_nickname like ?", keyWords, keyWords)
 		}
-		if len(req.DeptIds) != 0 {
-			m = m.Where("dept_id in (?)", req.DeptIds)
+		if req.DeptId != "" {
+			deptIds, e := s.getSearchDeptIds(ctx, gconv.Int64(req.DeptId))
+			liberr.ErrIsNil(ctx, e)
+			m = m.Where("dept_id in (?)", deptIds)
 		}
 		if req.Status != "" {
 			m = m.Where("user_status", gconv.Int(req.Status))
@@ -364,12 +372,224 @@ func (s *userImpl) GetUsersRoleDept(ctx context.Context, userList []*entity.SysU
 			roles, e := s.GetAdminRole(ctx, u.Id, allRoles)
 			liberr.ErrIsNil(ctx, e)
 			for _, r := range roles {
-				users[k].RoleInfo = append(users[k].RoleInfo, &struct {
-					RoleId uint   `json:"roleId"`
-					Name   string `json:"name"`
-				}{RoleId: r.Id, Name: r.Name})
+				users[k].RoleInfo = append(users[k].RoleInfo, &model.SysUserRoleInfoRes{RoleId: r.Id, Name: r.Name})
 			}
 		}
+	})
+	return
+}
+
+func (s *userImpl) getSearchDeptIds(ctx context.Context, deptId int64) (deptIds []int64, err error) {
+	err = g.Try(func() {
+		deptAll, e := Dept().GetFromCache(ctx)
+		liberr.ErrIsNil(ctx, e)
+		deptWithChildren := Dept().FindSonByParentId(deptAll, gconv.Int64(deptId))
+		deptIds = make([]int64, len(deptWithChildren))
+		for k, v := range deptWithChildren {
+			deptIds[k] = v.DeptId
+		}
+		deptIds = append(deptIds, deptId)
+	})
+	return
+}
+
+func (s *userImpl) Add(ctx context.Context, req *system.UserAddReq) (err error) {
+	err = s.userNameOrMobileExists(ctx, req.UserName, req.Mobile)
+	if err != nil {
+		return
+	}
+	req.UserSalt = grand.S(10)
+	req.Password = libUtils.EncryptPassword(req.Password, req.UserSalt)
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		err = g.Try(func() {
+			userId, e := dao.SysUser.Ctx(ctx).TX(tx).InsertAndGetId(do.SysUser{
+				UserName:     req.UserName,
+				Mobile:       req.Mobile,
+				UserNickname: req.NickName,
+				UserPassword: req.Password,
+				UserSalt:     req.UserSalt,
+				UserStatus:   req.Status,
+				UserEmail:    req.Email,
+				Sex:          req.Sex,
+				DeptId:       req.DeptId,
+				Remark:       req.Remark,
+				IsAdmin:      req.IsAdmin,
+			})
+			liberr.ErrIsNil(ctx, e, "添加用户失败")
+			e = s.addUserRole(ctx, req.RoleIds, userId)
+			liberr.ErrIsNil(ctx, e, "设置用户权限失败")
+			e = s.AddUserPost(ctx, tx, req.PostIds, userId)
+			liberr.ErrIsNil(ctx, e)
+		})
+		return err
+	})
+	return
+}
+
+func (s *userImpl) Edit(ctx context.Context, req *system.UserEditReq) (err error) {
+	err = s.userNameOrMobileExists(ctx, "", req.Mobile, req.UserId)
+	if err != nil {
+		return
+	}
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		err = g.Try(func() {
+			_, err = dao.SysUser.Ctx(ctx).TX(tx).WherePri(req.UserId).Update(do.SysUser{
+				Mobile:       req.Mobile,
+				UserNickname: req.NickName,
+				UserStatus:   req.Status,
+				UserEmail:    req.Email,
+				Sex:          req.Sex,
+				DeptId:       req.DeptId,
+				Remark:       req.Remark,
+				IsAdmin:      req.IsAdmin,
+			})
+			liberr.ErrIsNil(ctx, err, "修改用户信息失败")
+			//设置用户所属角色信息
+			err = s.EditUserRole(ctx, req.RoleIds, req.UserId)
+			liberr.ErrIsNil(ctx, err, "设置用户权限失败")
+			err = s.AddUserPost(ctx, tx, req.PostIds, req.UserId)
+			liberr.ErrIsNil(ctx, err)
+		})
+		return err
+	})
+	return
+}
+
+// AddUserPost 添加用户岗位信息
+func (s *userImpl) AddUserPost(ctx context.Context, tx *gdb.TX, postIds []int64, userId int64) (err error) {
+	err = g.Try(func() {
+		//删除旧岗位信息
+		_, err = dao.SysUserPost.Ctx(ctx).TX(tx).Where(dao.SysUserPost.Columns().UserId, userId).Delete()
+		liberr.ErrIsNil(ctx, err, "设置用户岗位失败")
+		if len(postIds) == 0 {
+			return
+		}
+		//添加用户岗位信息
+		data := g.List{}
+		for _, v := range postIds {
+			data = append(data, g.Map{
+				dao.SysUserPost.Columns().UserId: userId,
+				dao.SysUserPost.Columns().PostId: v,
+			})
+		}
+		_, err = dao.SysUserPost.Ctx(ctx).TX(tx).Data(data).Insert()
+		liberr.ErrIsNil(ctx, err, "设置用户岗位失败")
+	})
+	return
+}
+
+// AddUserRole 添加用户角色信息
+func (s *userImpl) addUserRole(ctx context.Context, roleIds []int64, userId int64) (err error) {
+	err = g.Try(func() {
+		enforcer, e := commonService.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, e)
+		for _, v := range roleIds {
+			_, e = enforcer.AddGroupingPolicy(gconv.String(userId), gconv.String(v))
+			liberr.ErrIsNil(ctx, e)
+		}
+	})
+	return
+}
+
+// EditUserRole 修改用户角色信息
+func (s *userImpl) EditUserRole(ctx context.Context, roleIds []int64, userId int64) (err error) {
+	err = g.Try(func() {
+		enforcer, e := commonService.CasbinEnforcer(ctx)
+		liberr.ErrIsNil(ctx, e)
+
+		//删除用户旧角色信息
+		enforcer.RemoveFilteredGroupingPolicy(0, gconv.String(userId))
+		for _, v := range roleIds {
+			_, err = enforcer.AddGroupingPolicy(gconv.String(userId), gconv.String(v))
+			liberr.ErrIsNil(ctx, err)
+		}
+	})
+	return
+}
+
+func (s *userImpl) userNameOrMobileExists(ctx context.Context, userName, mobile string, id ...int64) error {
+	user := (*entity.SysUser)(nil)
+	err := g.Try(func() {
+		m := dao.SysUser.Ctx(ctx)
+		if len(id) > 0 {
+			m = m.Where(dao.SysUser.Columns().Id+" != ", id)
+		}
+		m = m.Where(fmt.Sprintf("%s='%s' OR %s='%s'",
+			dao.SysUser.Columns().UserName,
+			userName,
+			dao.SysUser.Columns().Mobile,
+			mobile))
+		err := m.Limit(1).Scan(&user)
+		liberr.ErrIsNil(ctx, err, "获取用户信息失败")
+		if user == nil {
+			return
+		}
+		if user.UserName == userName {
+			liberr.ErrIsNil(ctx, gerror.New("用户名已存在"))
+		}
+		if user.Mobile == mobile {
+			liberr.ErrIsNil(ctx, gerror.New("手机号已存在"))
+		}
+	})
+	return err
+}
+
+// GetEditUser 获取编辑用户信息
+func (s *userImpl) GetEditUser(ctx context.Context, id uint64) (res *system.UserGetEditRes, err error) {
+	res = new(system.UserGetEditRes)
+	err = g.Try(func() {
+		//获取用户信息
+		res.User, err = s.GetUserInfoById(ctx, id)
+		liberr.ErrIsNil(ctx, err)
+		//获取已选择的角色信息
+		res.CheckedRoleIds, err = s.GetAdminRoleIds(ctx, id)
+		liberr.ErrIsNil(ctx, err)
+		res.CheckedPosts, err = s.GetUserPostIds(ctx, id)
+		liberr.ErrIsNil(ctx, err)
+	})
+	return
+}
+
+// GetUserInfoById 通过Id获取用户信息
+func (s *userImpl) GetUserInfoById(ctx context.Context, id uint64, withPwd ...bool) (user *entity.SysUser, err error) {
+	err = g.Try(func() {
+		if len(withPwd) > 0 && withPwd[0] {
+			//用户用户信息
+			err = dao.SysUser.Ctx(ctx).Where(dao.SysUser.Columns().Id, id).Scan(&user)
+		} else {
+			//用户用户信息
+			err = dao.SysUser.Ctx(ctx).Where(dao.SysUser.Columns().Id, id).
+				FieldsEx(dao.SysUser.Columns().UserPassword, dao.SysUser.Columns().UserSalt).Scan(&user)
+		}
+		liberr.ErrIsNil(ctx, err, "获取用户数据失败")
+	})
+	return
+}
+
+// GetUserPostIds 获取用户岗位
+func (s *userImpl) GetUserPostIds(ctx context.Context, userId uint64) (postIds []int64, err error) {
+	err = g.Try(func() {
+		var list []*entity.SysUserPost
+		err = dao.SysUserPost.Ctx(ctx).Where(dao.SysUserPost.Columns().UserId, userId).Scan(&list)
+		liberr.ErrIsNil(ctx, err, "获取用户岗位信息失败")
+		postIds = make([]int64, 0)
+		for _, entity := range list {
+			postIds = append(postIds, entity.PostId)
+		}
+	})
+	return
+}
+
+// ResetUserPwd 重置用户密码
+func (s *userImpl) ResetUserPwd(ctx context.Context, req *system.UserResetPwdReq) (err error) {
+	salt := grand.S(10)
+	password := libUtils.EncryptPassword(req.Password, salt)
+	err = g.Try(func() {
+		_, err = dao.SysUser.Ctx(ctx).WherePri(req.Id).Update(g.Map{
+			dao.SysUser.Columns().UserSalt:     salt,
+			dao.SysUser.Columns().UserPassword: password,
+		})
+		liberr.ErrIsNil(ctx, err, "重置用户密码失败")
 	})
 	return
 }
