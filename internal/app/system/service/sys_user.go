@@ -42,6 +42,8 @@ type IUser interface {
 	GetEditUser(ctx context.Context, id uint64) (res *system.UserGetEditRes, err error)
 	Edit(ctx context.Context, req *system.UserEditReq) (err error)
 	ResetUserPwd(ctx context.Context, req *system.UserResetPwdReq) (err error)
+	ChangeUserStatus(ctx context.Context, req *system.UserStatusReq) (err error)
+	Delete(ctx context.Context, ids []int) (err error)
 }
 
 type userImpl struct{}
@@ -590,6 +592,35 @@ func (s *userImpl) ResetUserPwd(ctx context.Context, req *system.UserResetPwdReq
 			dao.SysUser.Columns().UserPassword: password,
 		})
 		liberr.ErrIsNil(ctx, err, "重置用户密码失败")
+	})
+	return
+}
+
+func (s *userImpl) ChangeUserStatus(ctx context.Context, req *system.UserStatusReq) (err error) {
+	err = g.Try(func() {
+		_, err = dao.SysUser.Ctx(ctx).WherePri(req.Id).Update(do.SysUser{UserStatus: req.UserStatus})
+		liberr.ErrIsNil(ctx, err, "设置用户状态失败")
+	})
+	return
+}
+
+// Delete 删除用户
+func (s *userImpl) Delete(ctx context.Context, ids []int) (err error) {
+	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		err = g.Try(func() {
+			_, err = dao.SysUser.Ctx(ctx).TX(tx).Where(dao.SysUser.Columns().Id+" in(?)", ids).Delete()
+			liberr.ErrIsNil(ctx, err, "删除用户失败")
+			//删除对应权限
+			enforcer, e := commonService.CasbinEnforcer(ctx)
+			liberr.ErrIsNil(ctx, e)
+			for _, v := range ids {
+				enforcer.RemoveFilteredGroupingPolicy(0, gconv.String(v))
+			}
+			//删除用户对应的岗位
+			_, err = dao.SysUserPost.Ctx(ctx).TX(tx).Delete(dao.SysUserPost.Columns().UserId+" in (?)", ids)
+			liberr.ErrIsNil(ctx, err, "删除用户的岗位失败")
+		})
+		return err
 	})
 	return
 }

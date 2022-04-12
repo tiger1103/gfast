@@ -117,3 +117,21 @@ type UserResetPwdReq struct {
 
 type UserResetPwdRes struct {
 }
+
+// UserStatusReq 设置用户状态参数
+type UserStatusReq struct {
+	g.Meta     `path:"/user/setStatus" tags:"用户管理" method:"put" summary:"设置用户状态"`
+	Id         uint64 `p:"userId" v:"required#用户id不能为空"`
+	UserStatus uint   `p:"status" v:"required#用户状态不能为空"`
+}
+
+type UserStatusRes struct {
+}
+
+type UserDeleteReq struct {
+	g.Meta `path:"/user/delete" tags:"用户管理" method:"delete" summary:"删除用户"`
+	Ids    []int `p:"ids"`
+}
+
+type UserDeleteRes struct {
+}

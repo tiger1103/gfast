@@ -143,12 +143,26 @@ func (c *userController) GetEditUser(ctx context.Context, req *system.UserGetEdi
 	return
 }
 
+// Edit 修改用户
 func (c *userController) Edit(ctx context.Context, req *system.UserEditReq) (res *system.UserEditRes, err error) {
 	err = service.User().Edit(ctx, req)
 	return
 }
 
+// ResetPwd 重置密码
 func (c *userController) ResetPwd(ctx context.Context, req *system.UserResetPwdReq) (res *system.UserResetPwdRes, err error) {
 	err = service.User().ResetUserPwd(ctx, req)
+	return
+}
+
+// SetStatus 修改用户状态
+func (c *userController) SetStatus(ctx context.Context, req *system.UserStatusReq) (res *system.UserStatusRes, err error) {
+	err = service.User().ChangeUserStatus(ctx, req)
+	return
+}
+
+// Delete 删除用户
+func (c *userController) Delete(ctx context.Context, req *system.UserDeleteReq) (res *system.UserDeleteRes, err error) {
+	err = service.User().Delete(ctx, req.Ids)
 	return
 }
