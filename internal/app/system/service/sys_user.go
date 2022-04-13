@@ -331,11 +331,8 @@ func (s *userImpl) List(ctx context.Context, req *system.UserSearchReq) (total i
 		if req.Mobile != "" {
 			m = m.Where("mobile like ?", "%"+req.Mobile+"%")
 		}
-		if req.BeginTime != "" {
-			m = m.Where("created_at >=?", req.BeginTime)
-		}
-		if req.EndTime != "" {
-			m = m.Where("created_at <=?", req.EndTime)
+		if len(req.DateRange) > 0 {
+			m = m.Where("created_at >=? AND created_at <=?", req.DateRange[0], req.DateRange[1])
 		}
 		if req.PageSize == 0 {
 			req.PageSize = consts.PageSize
