@@ -31,7 +31,7 @@ database:
     Path: "resource/log/sql"
 
   default:
-    link:   "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v3"
+    link:   "mysql:gfast3:gfast333@tcp(192.168.0.212:3306)/gfast-v3"
     debug:  true
     charset: "utf8mb4" #数据库编码
     dryRun: false #空跑
@@ -75,7 +75,7 @@ casbin:
 gfcli:
   gen:
     dao:
-      - link:            "mysql:root:123456@tcp(127.0.0.1:3306)/gfast-v3"
+      - link:            "mysql:gfast3:gfast333@tcp(192.168.0.212:3306)/gfast-v3"
         tables:          "sys_user_post"
         removePrefix:    "gf_"
         descriptionTag:  true
