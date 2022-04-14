@@ -21,3 +21,4 @@ manifest/output/
 *.exe
 tmp/
 resource/log/
+manifest/config/config.yaml
