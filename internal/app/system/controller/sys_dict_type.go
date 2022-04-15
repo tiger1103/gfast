@@ -31,7 +31,20 @@ func (c *SysDictTypeController) Add(ctx context.Context, req *system.DictTypeAdd
 	return
 }
 
+// Get 获取字典类型
 func (c *SysDictTypeController) Get(ctx context.Context, req *system.DictTypeGetReq) (res *system.DictTypeGetRes, err error) {
+	res = new(system.DictTypeGetRes)
+	res.DictType, err = commonService.DictType().Get(ctx, req)
+	return
+}
 
+// Edit 修改字典数据
+func (c *SysDictTypeController) Edit(ctx context.Context, req *system.DictTypeEditReq) (res *system.DictTypeEditRes, err error) {
+	err = commonService.DictType().Edit(ctx, req, service.Context().GetUserId(ctx))
+	return
+}
+
+func (c *SysDictTypeController) Delete(ctx context.Context, req *system.DictTypeDeleteReq) (res *system.DictTypeDeleteRes, err error) {
+	err = commonService.DictType().Delete(ctx, req.DictIds)
 	return
 }
