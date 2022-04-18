@@ -7,7 +7,6 @@
 
 package service
 
-import "C"
 import (
 	"context"
 	"github.com/gogf/gf/v2/container/garray"
@@ -16,12 +15,12 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
-	commonConsts "github.com/tiger1103/gfast/v3/internal/app/common/consts"
+	"github.com/tiger1103/gfast/v3/internal/app/common/consts"
 	"github.com/tiger1103/gfast/v3/internal/app/common/model"
 	"github.com/tiger1103/gfast/v3/internal/app/common/model/entity"
 	"github.com/tiger1103/gfast/v3/internal/app/common/service/internal/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/common/service/internal/do"
-	"github.com/tiger1103/gfast/v3/internal/app/system/consts"
+	systemConsts "github.com/tiger1103/gfast/v3/internal/app/system/consts"
 	"github.com/tiger1103/gfast/v3/library/liberr"
 )
 
@@ -63,7 +62,7 @@ func (s *dictTypeImpl) List(ctx context.Context, req *system.DictTypeSearchReq) 
 		}
 		res.CurrentPage = req.PageNum
 		if req.PageSize == 0 {
-			req.PageSize = consts.PageSize
+			req.PageSize = systemConsts.PageSize
 		}
 		err = m.Fields(model.SysDictTypeInfoRes{}).Page(req.PageNum, req.PageSize).
 			Order(dao.SysDictType.Columns().DictId + " asc").Scan(&res.DictTypeList)
@@ -86,7 +85,7 @@ func (s *dictTypeImpl) Add(ctx context.Context, req *system.DictTypeAddReq, user
 		})
 		liberr.ErrIsNil(ctx, err, "添加字典类型失败")
 		//清除缓存
-		Cache().RemoveByTag(ctx, commonConsts.CacheSysDictTag)
+		Cache().RemoveByTag(ctx, consts.CacheSysDictTag)
 	})
 	return
 }
@@ -115,7 +114,7 @@ func (s *dictTypeImpl) Edit(ctx context.Context, req *system.DictTypeEditReq, us
 				Where(dao.SysDictData.Columns().DictType, dictType.DictType).Update()
 			liberr.ErrIsNil(ctx, e, "修改字典数据失败")
 			//清除缓存
-			Cache().RemoveByTag(ctx, commonConsts.CacheSysDictTag)
+			Cache().RemoveByTag(ctx, consts.CacheSysDictTag)
 		})
 		return err
 	})
@@ -166,7 +165,7 @@ func (s *dictTypeImpl) Delete(ctx context.Context, dictIds []int) (err error) {
 				liberr.ErrIsNil(ctx, err, "删除字典数据失败")
 			}
 			//清除缓存
-			Cache().RemoveByTag(ctx, commonConsts.CacheSysDictTag)
+			Cache().RemoveByTag(ctx, consts.CacheSysDictTag)
 		})
 		return err
 	})

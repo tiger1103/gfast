@@ -6,5 +6,3 @@
  */
 
 package consts
-
-const ()
