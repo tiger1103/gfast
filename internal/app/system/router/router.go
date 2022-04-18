@@ -29,6 +29,7 @@ func BindController(group *ghttp.RouterGroup) {
 			controller.Post,
 			controller.DictType,
 			controller.DictData,
+			controller.Config,
 		)
 	})
 }
