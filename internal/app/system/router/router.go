@@ -30,6 +30,7 @@ func BindController(group *ghttp.RouterGroup) {
 			controller.DictType,
 			controller.DictData,
 			controller.Config,
+			controller.Monitor,
 		)
 	})
 }
