@@ -54,7 +54,7 @@ func (s *configTmpl) List(ctx context.Context, req *system.ConfigSearchReq) (res
 				m = m.Where("config_key like ?", "%"+req.ConfigKey+"%")
 			}
 			if len(req.DateRange) > 0 {
-				m = m.Where("create_time >= ? AND create_time<=?", req.DateRange[0], req.DateRange[1])
+				m = m.Where("created_at >= ? AND created_at<=?", req.DateRange[0], req.DateRange[1])
 			}
 		}
 		res.Total, err = m.Count()
@@ -105,7 +105,7 @@ func (s *configTmpl) CheckConfigKeyUnique(ctx context.Context, configKey string,
 			liberr.ErrIsNil(ctx, errors.New("参数键名重复"))
 		}
 	})
-	return nil
+	return
 }
 
 // Get 获取系统参数
