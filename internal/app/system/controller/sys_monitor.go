@@ -18,7 +18,7 @@ import (
 	"time"
 )
 
-var Monitor = &sysMonitorController{
+var Monitor = sysMonitorController{
 	startTime: gtime.Now(),
 }
 
@@ -113,7 +113,7 @@ func (c *sysMonitorController) List(ctx context.Context, req *system.MonitorSear
 		}
 	}
 	res = new(system.MonitorSearchRes)
-	*res = system.MonitorSearchRes{
+	res = &system.MonitorSearchRes{
 		"cpuNum":          cpuNum,
 		"cpuUsed":         cpuUsed,
 		"cpuAvg5":         cpuAvg5,

@@ -58,14 +58,15 @@ func (s *middlewareImpl) Auth(r *ghttp.Request) {
 	ctx := r.GetCtx()
 	//获取登陆用户id
 	adminId := Context().GetUserId(ctx)
-	/*if r.Method != "GET" && adminId!=1{
-		library.FailJson(true, r, "演示系统，您没有操作权限！")
-	}*/
 	accessParams := r.Get("accessParams").Strings()
 	accessParamsStr := ""
 	if len(accessParams) > 0 && accessParams[0] != "undefined" {
 		accessParamsStr = "?" + gstr.Join(accessParams, "&")
 	}
+	url := gstr.TrimLeft(r.Request.URL.Path, "/") + accessParamsStr
+	/*if r.Method != "GET" && adminId!=1 && !gstr.Contains(url,"api/v1/system/login"){
+		libResponse.FailJson(true, r, "对不起！演示系统，不能删改数据！")
+	}*/
 	//获取无需验证权限的用户id
 	tagSuperAdmin := false
 	User().NotCheckAuthAdminIds(ctx).Iterator(func(v interface{}) bool {
@@ -80,7 +81,6 @@ func (s *middlewareImpl) Auth(r *ghttp.Request) {
 		//不要再往后面执行
 		return
 	}
-	url := gstr.TrimLeft(r.Request.URL.Path, "/") + accessParamsStr
 	//获取地址对应的菜单id
 	menuList, err := Rule().GetIsMenuList(ctx)
 	if err != nil {
