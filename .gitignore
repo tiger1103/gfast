@@ -22,3 +22,4 @@ manifest/output/
 tmp/
 resource/log/
 manifest/config/config.yaml
+/manifest/config/db.yaml
