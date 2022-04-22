@@ -8,7 +8,7 @@ import (
 	"runtime"
 )
 
-var DbInit = &sysDbInitController{}
+var DbInit = sysDbInitController{}
 
 type sysDbInitController struct {
 	BaseController
