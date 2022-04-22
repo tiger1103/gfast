@@ -6,7 +6,7 @@ import (
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
 	"github.com/gogf/gf/v2/protocol/goai"
-	consts "github.com/tiger1103/gfast/v3/internal/const"
+	"github.com/tiger1103/gfast/v3/internal/consts"
 	"github.com/tiger1103/gfast/v3/internal/router"
 )
 

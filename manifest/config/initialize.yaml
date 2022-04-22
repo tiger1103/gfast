@@ -1,4 +1,4 @@
 initialize:
-  autoInit: false  # 开启系统自动初始化
+  autoInit: true  # 开启系统自动初始化
   configPath: "./manifest/config/db.yaml" # 生成的配置文件所在路径
-  sqlFilePath: "./gfast-v3.sql"   # sql文件所在路径
+  sqlFilePath: "./resource/data/gfast-v3.sql"   # sql文件所在路径
