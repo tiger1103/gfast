@@ -22,4 +22,5 @@ manifest/output/
 tmp/
 resource/log/
 manifest/config/config.yaml
+GFastV3
 /manifest/config/db.yaml
