@@ -19,7 +19,7 @@ type Response struct {
 	// 数据集
 	Data interface{} `json:"data"`
 	// 消息
-	Msg string `json:"msg"`
+	Msg string `json:"message"`
 }
 
 var response = new(Response)
