@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"github.com/gogf/gf/v2/container/gvar"
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/database/gredis"
@@ -27,6 +28,9 @@ type ISysInit interface {
 
 	// 是否已生成配置文件
 	IsCreateConfigFile() bool
+
+	//创建数据库
+	CreateDataBaseByName(ctx context.Context, req *system.DbInitCreateDbReq) (err error)
 }
 
 func SysInit() ISysInit {
@@ -45,6 +49,28 @@ func init() {
 	}
 	SysInitConfig = make(map[string]*gvar.Var)
 	SysInitConfig = c.MapStrVar()
+}
+
+// 创建数据库
+func (s *sysInit) CreateDataBaseByName(ctx context.Context, req *system.DbInitCreateDbReq) (err error) {
+	db, err := gdb.New(gdb.ConfigNode{
+		Type: "mysql",
+		Host: req.DbHost,
+		Port: fmt.Sprintf("%d", req.DbPort),
+		User: req.DbUser,
+		Pass: req.DbPass,
+	})
+	if err != nil {
+		return
+	}
+	defer db.Close(ctx)
+
+	_, err = db.Exec(ctx, fmt.Sprintf("CREATE DATABASE IF NOT EXISTS  `%s` DEFAULT CHARSET utf8mb4  COLLATE utf8mb4_general_ci", req.DbName))
+	if err != nil {
+		return
+	}
+
+	return
 }
 
 // 是否已经生成配置文件

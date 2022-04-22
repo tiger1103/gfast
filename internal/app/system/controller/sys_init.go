@@ -43,6 +43,12 @@ func (c *sysDbInitController) GetEnvInfo(ctx context.Context, req *system.DbInit
 
 // 创建配置文件及数据库等
 func (c *sysDbInitController) CreateDb(ctx context.Context, req *system.DbInitCreateDbReq) (res *system.DbInitCreateDbRes, err error) {
+	// 生成数据库
+	err = service.SysInit().CreateDataBaseByName(ctx, req)
+	if err != nil {
+		return
+	}
+
 	// 生成配置文件
 	err = service.SysInit().CreateConfigFile(ctx, req)
 	if err != nil {
@@ -55,7 +61,7 @@ func (c *sysDbInitController) CreateDb(ctx context.Context, req *system.DbInitCr
 		return
 	}
 
-	// 生成数据库
+	// 生成数据库表机构及数据
 	err = service.SysInit().CreateDataBase(ctx, req.DbName)
 	if err != nil {
 		return
