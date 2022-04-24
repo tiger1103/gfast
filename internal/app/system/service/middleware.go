@@ -64,9 +64,9 @@ func (s *middlewareImpl) Auth(r *ghttp.Request) {
 		accessParamsStr = "?" + gstr.Join(accessParams, "&")
 	}
 	url := gstr.TrimLeft(r.Request.URL.Path, "/") + accessParamsStr
-	if r.Method != "GET" && adminId != 1 && !gstr.Contains(url, "api/v1/system/login") {
+	/*if r.Method != "GET" && adminId != 1 && !gstr.Contains(url, "api/v1/system/login") {
 		libResponse.FailJson(true, r, "对不起！演示系统，不能删改数据！")
-	}
+	}*/
 	//获取无需验证权限的用户id
 	tagSuperAdmin := false
 	User().NotCheckAuthAdminIds(ctx).Iterator(func(v interface{}) bool {
