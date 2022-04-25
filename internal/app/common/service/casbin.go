@@ -46,8 +46,7 @@ func (s *cabinImpl) newAdapter(ctx context.Context) (a *adapterCasbin) {
 func (a *adapterCasbin) initPolicy(ctx context.Context) {
 	// Because the DB is empty at first,
 	// so we need to load the policy from the file adapter (.CSV) first.
-	e, err := casbin.NewSyncedEnforcer(g.Cfg().MustGet(ctx, "casbin.modelFile").String(),
-		g.Cfg().MustGet(ctx, "casbin.policyFile").String())
+	e, err := casbin.NewSyncedEnforcer(g.Cfg().MustGet(ctx, "casbin.modelFile").String(), a)
 
 	if err != nil {
 		a.EnforcerErr = err
@@ -62,7 +61,7 @@ func (a *adapterCasbin) initPolicy(ctx context.Context) {
 	//	return err
 	//}
 	//set adapter
-	e.SetAdapter(a)
+	//e.SetAdapter(a)
 	// Clear the current policy.
 	e.ClearPolicy()
 	a.Enforcer = e
