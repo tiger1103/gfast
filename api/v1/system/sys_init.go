@@ -13,13 +13,13 @@ type DbInitIsInitReq struct {
 type DbInitIsInitRes bool
 
 type DbInitGetEnvInfoReq struct {
-	g.Meta `path:"/dbInit/getEnvInfo" tags:"获取环境信息" method:"get" summary:"获取环境信息"`
+	g.Meta `path:"/dbInit/getEnvInfo" tags:"系统初始化" method:"get" summary:"获取环境信息"`
 }
 
 type DbInitGetEnvInfoRes g.Map
 
 type DbInitCreateDbReq struct {
-	g.Meta       `path:"/dbInit/createDb" tags:"创建配置文件" method:"post" summary:"创建配置文件"`
+	g.Meta       `path:"/dbInit/createDb" tags:"系统初始化" method:"post" summary:"创建配置文件"`
 	DbHost       string `json:"dbHost" p:"dbHost" v:"required#数据库地址必须"`
 	DbPort       int    `json:"dbPort" p:"dbPort" v:"required#数据库端口必须"`
 	DbUser       string `json:"dbUser" p:"dbUser" v:"required#数据库用户名称必须"`

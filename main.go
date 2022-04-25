@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/gogf/gf/v2/os/glog"
@@ -11,7 +10,7 @@ import (
 )
 
 func init() {
-	ctx := context.TODO()
+	ctx := gctx.New()
 	if service.SysInitConfig["autoInit"].Bool() && service.SysInit().IsCreateConfigFile() {
 		// 加载配置文件
 		err := service.SysInit().LoadConfigFile()

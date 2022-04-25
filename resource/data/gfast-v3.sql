@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 20/04/2022 21:33:36
+ Date: 22/04/2022 18:17:11
 */
 
 SET NAMES utf8mb4;
@@ -53,7 +53,6 @@ INSERT INTO `casbin_rule` VALUES ('g', '1', '1', '', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '1', '2', '', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '2', '3', '', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '2', '2', '', '', '', '');
-INSERT INTO `casbin_rule` VALUES ('g', '3', '2', '', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '4', '2', '', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '5', '2', '', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '7', '2', '', '', '', '');
@@ -67,6 +66,7 @@ INSERT INTO `casbin_rule` VALUES ('p', '2', '1', 'All', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('p', '8', '1', 'All', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('p', '1', '1', 'All', '', '', '');
 INSERT INTO `casbin_rule` VALUES ('g', '6', '2', '', '', '', '');
+INSERT INTO `casbin_rule` VALUES ('g', '3', '2', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_auth_rule
@@ -99,7 +99,7 @@ CREATE TABLE `sys_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单节点表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单节点表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_auth_rule
@@ -108,8 +108,8 @@ INSERT INTO `sys_auth_rule` VALUES (1, 0, 'api/v1/system/auth', '权限管理', 
 INSERT INTO `sys_auth_rule` VALUES (2, 1, 'api/v1/system/auth/menuList', '菜单管理', 'ele-Calendar', '', '', 1, 0, 0, '/system/auth/menuList', 'system/menu/index', 0, '', 0, 0, 1, '', 0, '', '2022-03-24 17:24:13', '2022-03-29 10:54:49');
 INSERT INTO `sys_auth_rule` VALUES (3, 2, 'api/v1/system/menu/add', '添加菜单', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-03-29 16:48:43', '2022-03-29 17:05:19');
 INSERT INTO `sys_auth_rule` VALUES (4, 2, 'api/v1/system/menu/update', '修改菜单', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-03-29 17:04:25', '2022-03-29 18:11:36');
-INSERT INTO `sys_auth_rule` VALUES (11, 2, 'api/v1/system/menu/delete', '删除菜单', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-04-06 14:49:10', '2022-04-06 14:49:17');
 INSERT INTO `sys_auth_rule` VALUES (10, 1, 'api/v1/system/role/list', '角色管理', 'iconfont icon-juxingkaobei', '', '', 1, 0, 0, '/system/auth/roleList', 'system/role/index', 0, '', 0, 0, 1, '', 0, '', '2022-03-29 18:15:03', '2022-03-30 10:25:34');
+INSERT INTO `sys_auth_rule` VALUES (11, 2, 'api/v1/system/menu/delete', '删除菜单', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-04-06 14:49:10', '2022-04-06 14:49:17');
 INSERT INTO `sys_auth_rule` VALUES (12, 10, 'api/v1/system/role/add', '添加角色', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-04-06 14:49:46', '2022-04-06 14:49:46');
 INSERT INTO `sys_auth_rule` VALUES (13, 10, '/api/v1/system/role/edit', '修改角色', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-04-06 14:50:08', '2022-04-06 14:50:08');
 INSERT INTO `sys_auth_rule` VALUES (14, 10, '/api/v1/system/role/delete', '删除角色', '', '', '', 2, 0, 0, '', '', 0, '', 0, 0, 1, '', 0, '', '2022-04-06 14:50:22', '2022-04-06 14:50:22');
@@ -131,6 +131,7 @@ INSERT INTO `sys_auth_rule` VALUES (29, 27, 'api/v1/system/dict/dataList', '字�
 INSERT INTO `sys_auth_rule` VALUES (30, 27, 'api/v1/system/config/list', '参数管理', 'ele-Cherry', '', '', 1, 0, 0, '/system/config/list', 'system/config/index', 0, '', 0, 0, 1, '', 0, '', '2022-04-18 21:05:20', '2022-04-18 21:13:19');
 INSERT INTO `sys_auth_rule` VALUES (31, 0, 'api/v1/system/monitor', '系统监控', 'iconfont icon-xuanzeqi', '', '', 0, 30, 0, '/system/monitor', 'layout/routerView/parent', 0, '', 0, 0, 1, '', 0, '', '2022-04-19 10:40:19', '2022-04-19 10:44:38');
 INSERT INTO `sys_auth_rule` VALUES (32, 31, 'api/v1/system/monitor/server', '服务监控', 'iconfont icon-shuju', '', '', 1, 0, 0, '/system/monitor/server', 'system/monitor/server/index', 0, '', 0, 0, 1, '', 0, '', '2022-04-19 10:43:32', '2022-04-19 10:44:47');
+INSERT INTO `sys_auth_rule` VALUES (33, 31, 'api/swagger', 'api文档', 'iconfont icon--chaifenlie', '', '', 1, 0, 0, '/system/swagger', 'layout/routerView/iframes', 1, '', 0, 1, 1, '', 0, 'http://localhost:8201/swagger', '2022-04-21 09:23:43', '2022-04-21 11:19:49');
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -149,7 +150,7 @@ CREATE TABLE `sys_config`  (
   `updated_at` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`config_id`) USING BTREE,
   UNIQUE INDEX `uni_config_key`(`config_key`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config
@@ -220,7 +221,7 @@ CREATE TABLE `sys_dict_data`  (
   `created_at` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -309,7 +310,7 @@ CREATE TABLE `sys_dict_type`  (
   `updated_at` datetime(0) NULL DEFAULT NULL COMMENT '修改日期',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -354,7 +355,7 @@ CREATE TABLE `sys_login_log`  (
   `login_time` datetime(0) NULL DEFAULT NULL COMMENT '登录时间',
   `module` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录模块',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 881 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 886 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_login_log
@@ -791,6 +792,11 @@ INSERT INTO `sys_login_log` VALUES (877, 'demo', '::1', '云南省 曲靖市', '
 INSERT INTO `sys_login_log` VALUES (878, 'demo', '::1', '云南省 曲靖市', 'Chrome', 'Windows 10', 1, '登录成功', '2022-04-20 14:38:28', '系统后台');
 INSERT INTO `sys_login_log` VALUES (879, 'demo', '127.0.0.1', '内网IP', 'ApiPOST', '', 1, '登录成功', '2022-04-20 16:26:04', '系统后台');
 INSERT INTO `sys_login_log` VALUES (880, 'demo', '::1', '云南省 曲靖市', 'Chrome', 'Windows 10', 1, '登录成功', '2022-04-20 16:27:13', '系统后台');
+INSERT INTO `sys_login_log` VALUES (881, 'demo', '::1', '云南省 曲靖市', 'Chrome', 'Windows 10', 1, '登录成功', '2022-04-21 08:31:03', '系统后台');
+INSERT INTO `sys_login_log` VALUES (882, 'demo', '::1', '云南省 曲靖市', 'Chrome', 'Windows 10', 1, '登录成功', '2022-04-21 09:22:27', '系统后台');
+INSERT INTO `sys_login_log` VALUES (883, 'demo', '127.0.0.1', '内网IP', 'ApiPOST', '', 1, '登录成功', '2022-04-21 17:17:35', '系统后台');
+INSERT INTO `sys_login_log` VALUES (884, 'demo', '127.0.0.1', '内网IP', 'ApiPOST', '', 1, '登录成功', '2022-04-21 17:27:48', '系统后台');
+INSERT INTO `sys_login_log` VALUES (885, 'demo', '127.0.0.1', '内网IP', 'ApiPOST', '', 1, '登录成功', '2022-04-21 17:28:09', '系统后台');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -814,7 +820,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -931,7 +937,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 'admin', '13578342363', '超级管理员', 0, 'c567ae329f9929b518759d3bea13f492', 'f9aZTAa8yz', 1, 'yxh669@qq.com', 1, 'https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2021-07-19/ccwpeuqz1i2s769hua.jpeg', 101, '', 1, 'asdasfdsaf大发放打发士大夫发按时', '描述信息', '::1', '2022-04-19 16:38:37', '2021-06-22 17:58:00', '2022-04-19 16:38:37', NULL);
 INSERT INTO `sys_user` VALUES (2, 'yixiaohu', '13699885599', '奈斯', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, 'yxh@qq.com', 1, 'pub_upload/2020-11-02/c6sntzg7r96c7p9gqf.jpeg', 102, '备注', 1, '', '', '[::1]', '2022-02-14 18:10:40', '2021-06-22 17:58:00', '2022-04-13 11:20:03', NULL);
-INSERT INTO `sys_user` VALUES (3, 'zs', '16399669855', '张三', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, 'zs@qq.com', 0, 'https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2021-08-02/cd8nif79egjg9kbkgk.jpeg', 101, '', 1, '', '', '127.0.0.1', '2022-03-18 15:22:13', '2021-06-22 17:58:00', '2022-04-12 17:55:23', NULL);
+INSERT INTO `sys_user` VALUES (3, 'zs', '16399669855', '张三', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, 'zs@qq.com', 0, 'https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2021-08-02/cd8nif79egjg9kbkgk.jpeg', 101, '', 1, '', '', '127.0.0.1', '2022-03-18 15:22:13', '2021-06-22 17:58:00', '2022-04-21 11:20:06', NULL);
 INSERT INTO `sys_user` VALUES (4, 'qlgl', '13758596696', '测试c', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, 'qlgl@qq.com', 0, '', 102, '', 1, '', '', '127.0.0.1', NULL, '2021-06-22 17:58:00', '2022-04-12 17:55:28', NULL);
 INSERT INTO `sys_user` VALUES (5, 'test', '13845696696', '测试2', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '123@qq.com', 0, '', 101, '', 0, '', '', '::1', '2022-03-30 10:50:39', '2021-06-22 17:58:00', '2022-04-12 17:55:31', NULL);
 INSERT INTO `sys_user` VALUES (6, '18999998889', '13755866654', '刘大大', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '1223@qq.com', 0, '', 103, '', 1, '', '', '[::1]', '2022-02-25 14:29:22', '2021-06-22 17:58:00', '2022-04-14 21:11:06', NULL);
@@ -946,7 +952,7 @@ INSERT INTO `sys_user` VALUES (22, 'yxfmlbb', '15969423326', '大数据部门测
 INSERT INTO `sys_user` VALUES (23, 'wangming', '13699888855', '王明', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '', 0, '', 0, '', 1, '', '', '', NULL, '2021-06-22 17:58:00', '2021-06-22 17:58:00', NULL);
 INSERT INTO `sys_user` VALUES (24, 'zhk', '13699885591', '综合科', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '', 0, '', 0, '', 1, '', '', '192.168.0.146', NULL, '2021-06-22 17:58:00', '2021-06-22 17:58:00', NULL);
 INSERT INTO `sys_user` VALUES (28, 'demo3', '18699888855', '测试账号1', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '123132@qq.com', 0, '', 109, '', 1, '', '', '192.168.0.229', NULL, '2021-06-22 17:58:00', '2021-06-22 17:58:00', NULL);
-INSERT INTO `sys_user` VALUES (31, 'demo', '15334455789', '李四', 0, '39978de67915a11e94bfe9c879b2d9a1', 'gqwLs4n95E', 1, '223@qq.com', 2, 'https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2021-11-30/cg30rab8myj85vjzcf.jpeg', 109, '', 1, '云南省曲靖市22223', '12345', '::1', '2022-04-20 16:27:13', '2021-06-22 17:58:00', '2022-04-20 16:27:13', NULL);
+INSERT INTO `sys_user` VALUES (31, 'demo', '15334455789', '李四', 0, '39978de67915a11e94bfe9c879b2d9a1', 'gqwLs4n95E', 1, '223@qq.com', 2, 'https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2021-11-30/cg30rab8myj85vjzcf.jpeg', 109, '', 1, '云南省曲靖市22223', '12345', '127.0.0.1', '2022-04-21 17:28:09', '2021-06-22 17:58:00', '2022-04-21 17:28:09', NULL);
 INSERT INTO `sys_user` VALUES (32, 'demo100', '18699888859', '测试账号1', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '', 0, '', 0, '', 1, '', '', '[::1]', '2021-11-24 18:01:21', '2021-06-22 17:58:00', '2021-06-22 17:58:00', NULL);
 INSERT INTO `sys_user` VALUES (33, 'demo110', '18699888853', '测试账号1', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '', 0, '', 0, '', 1, '', '', '', NULL, '2021-06-22 17:58:00', '2021-06-22 17:58:00', NULL);
 INSERT INTO `sys_user` VALUES (34, 'yxfmlbb2', '15969423327', '研发部门测试', 0, '542a6e44dbac171f260fc4a032cd5522', 'dlqVVBTADg', 1, '1111@qqq.com', 1, '', 103, '', 0, '', '', '127.0.0.1', NULL, '2021-06-22 17:58:00', '2021-06-22 17:58:00', NULL);
@@ -974,7 +980,7 @@ CREATE TABLE `sys_user_online`  (
   `os` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作系统',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uni_token`(`token`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 17387 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户在线状态表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17387 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户在线状态表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_user_post

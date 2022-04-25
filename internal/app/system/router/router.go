@@ -35,6 +35,7 @@ func BindController(group *ghttp.RouterGroup) {
 			controller.DictData,
 			controller.Config,
 			controller.Monitor,
+			controller.LoginLog,
 		)
 	})
 }
