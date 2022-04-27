@@ -95,7 +95,7 @@ func (s *deptImpl) Add(ctx context.Context, req *system.DeptAddReq) (err error) 
 		})
 		liberr.ErrIsNil(ctx, err, "添加部门失败")
 		// 删除缓存
-		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().Remove(ctx, consts.CacheSysDept)
 	})
 	return
 }
@@ -115,7 +115,7 @@ func (s *deptImpl) Edit(ctx context.Context, req *system.DeptEditReq) (err error
 		})
 		liberr.ErrIsNil(ctx, err, "修改部门失败")
 		// 删除缓存
-		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().Remove(ctx, consts.CacheSysDept)
 	})
 	return
 }
@@ -134,7 +134,7 @@ func (s *deptImpl) Delete(ctx context.Context, id int64) (err error) {
 		_, err = dao.SysDept.Ctx(ctx).Where(dao.SysDept.Columns().DeptId+" in (?)", ids).Delete()
 		liberr.ErrIsNil(ctx, err, "删除部门失败")
 		// 删除缓存
-		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().Remove(ctx, consts.CacheSysDept)
 	})
 	return
 }

@@ -46,11 +46,15 @@ type IUser interface {
 	Delete(ctx context.Context, ids []int) (err error)
 }
 
-type userImpl struct{}
+type userImpl struct {
+	CasBinUserPrefix string //CasBin 用户id前缀
+}
 
 var (
 	notCheckAuthAdminIds *gset.Set //无需验证权限的用户id
-	userService          = userImpl{}
+	userService          = userImpl{
+		CasBinUserPrefix: "u_",
+	}
 )
 
 func User() IUser {
@@ -193,7 +197,7 @@ func (s *userImpl) GetAdminRoleIds(ctx context.Context, userId uint64) (roleIds 
 		return
 	}
 	//查询关联角色规则
-	groupPolicy := enforcer.GetFilteredGroupingPolicy(0, gconv.String(userId))
+	groupPolicy := enforcer.GetFilteredGroupingPolicy(0, fmt.Sprintf("%s%d", s.CasBinUserPrefix, userId))
 	if len(groupPolicy) > 0 {
 		roleIds = make([]uint, len(groupPolicy))
 		//得到角色id的切片
@@ -229,7 +233,7 @@ func (s *userImpl) GetAdminMenusByRoleIds(ctx context.Context, roleIds []uint) (
 		menuIds := map[int64]int64{}
 		for _, roleId := range roleIds {
 			//查询当前权限
-			gp := enforcer.GetFilteredPolicy(0, fmt.Sprintf("%d", roleId))
+			gp := enforcer.GetFilteredPolicy(0, gconv.String(roleId))
 			for _, p := range gp {
 				mid := gconv.Int64(p[1])
 				menuIds[mid] = mid
@@ -483,7 +487,7 @@ func (s *userImpl) addUserRole(ctx context.Context, roleIds []int64, userId int6
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		for _, v := range roleIds {
-			_, e = enforcer.AddGroupingPolicy(gconv.String(userId), gconv.String(v))
+			_, e = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", s.CasBinUserPrefix, userId), gconv.String(v))
 			liberr.ErrIsNil(ctx, e)
 		}
 	})
@@ -497,9 +501,9 @@ func (s *userImpl) EditUserRole(ctx context.Context, roleIds []int64, userId int
 		liberr.ErrIsNil(ctx, e)
 
 		//删除用户旧角色信息
-		enforcer.RemoveFilteredGroupingPolicy(0, gconv.String(userId))
+		enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("%s%d", s.CasBinUserPrefix, userId))
 		for _, v := range roleIds {
-			_, err = enforcer.AddGroupingPolicy(gconv.String(userId), gconv.String(v))
+			_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", s.CasBinUserPrefix, userId), gconv.String(v))
 			liberr.ErrIsNil(ctx, err)
 		}
 	})
@@ -611,7 +615,7 @@ func (s *userImpl) Delete(ctx context.Context, ids []int) (err error) {
 			enforcer, e := commonService.CasbinEnforcer(ctx)
 			liberr.ErrIsNil(ctx, e)
 			for _, v := range ids {
-				enforcer.RemoveFilteredGroupingPolicy(0, gconv.String(v))
+				enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("%s%d", s.CasBinUserPrefix, v))
 			}
 			//删除用户对应的岗位
 			_, err = dao.SysUserPost.Ctx(ctx).TX(tx).Delete(dao.SysUserPost.Columns().UserId+" in (?)", ids)

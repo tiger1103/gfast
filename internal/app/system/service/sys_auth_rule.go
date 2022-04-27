@@ -153,7 +153,7 @@ func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) 
 	})
 	if err == nil {
 		// 删除相关缓存
-		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().Remove(ctx, consts.CacheSysAuthMenu)
 	}
 	return
 }
@@ -241,7 +241,7 @@ func (s *ruleImpl) Update(ctx context.Context, req *system.RuleUpdateReq) (err e
 	})
 	if err == nil {
 		// 删除相关缓存
-		commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+		commonService.Cache().Remove(ctx, consts.CacheSysAuthMenu)
 	}
 	return
 }
@@ -307,7 +307,7 @@ func (s *ruleImpl) DeleteMenuByIds(ctx context.Context, ids []int) (err error) {
 				liberr.ErrIsNil(ctx, err)
 			}
 			// 删除相关缓存
-			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+			commonService.Cache().Remove(ctx, consts.CacheSysAuthMenu)
 		})
 	})
 	return

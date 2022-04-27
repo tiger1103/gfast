@@ -21,6 +21,10 @@ func BindController(group *ghttp.RouterGroup) {
 		group.Bind(
 			controller.DbInit,
 		)
+		group.Bind(
+			//登录
+			controller.Login,
+		)
 		//登录验证拦截
 		service.GfToken().Middleware(group)
 		//context拦截器

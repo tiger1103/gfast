@@ -47,7 +47,8 @@ gfToken:
   encryptKey: "49c54195e750b04e74a8429b17896586"
   cacheModel: "redis"
   excludePaths:
-    - "/api/v1/system/login"
+    - "/api/v1/system/xxx"
+    - "/api/v1/system/xxx2"
 
 # Redis 配置示例
 redis:

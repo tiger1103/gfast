@@ -8,6 +8,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/text/gstr"
@@ -111,17 +112,11 @@ func (s *middlewareImpl) Auth(r *ghttp.Request) {
 				g.Log().Error(ctx, err)
 				libResponse.FailJson(true, r, "获取权限失败")
 			}
-			groupPolicy := enforcer.GetFilteredGroupingPolicy(0,
-				gconv.String(adminId))
-			if len(groupPolicy) == 0 {
-				libResponse.FailJson(true, r, "没有访问权限")
-			}
 			hasAccess := false
-			for _, v := range groupPolicy {
-				if enforcer.HasPolicy(v[1], gconv.String(menuId), "All") {
-					hasAccess = true
-					break
-				}
+			hasAccess, err = enforcer.Enforce(fmt.Sprintf("%s%d", userService.CasBinUserPrefix, adminId), gconv.String(menuId), "All")
+			if err != nil {
+				g.Log().Error(ctx, err)
+				libResponse.FailJson(true, r, "判断权限失败")
 			}
 			if !hasAccess {
 				libResponse.FailJson(true, r, "没有访问权限")

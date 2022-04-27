@@ -123,8 +123,8 @@ func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err err
 			//添加角色权限
 			e = s.AddRoleRule(ctx, req.MenuIds, roleId)
 			liberr.ErrIsNil(ctx, e)
-			//清除TAG缓存
-			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+			//清除缓存
+			commonService.Cache().Remove(ctx, consts.CacheSysRole)
 		})
 		return err
 	})
@@ -170,8 +170,8 @@ func (s *roleImpl) EditRole(ctx context.Context, req *system.RoleEditReq) (err e
 			//添加角色权限
 			e = s.AddRoleRule(ctx, req.MenuIds, req.Id)
 			liberr.ErrIsNil(ctx, e)
-			//清除TAG缓存
-			commonService.Cache().RemoveByTag(ctx, consts.CacheSysAuthTag)
+			//清除缓存
+			commonService.Cache().Remove(ctx, consts.CacheSysRole)
 		})
 		return err
 	})
@@ -189,6 +189,8 @@ func (s *roleImpl) DeleteByIds(ctx context.Context, ids []int64) (err error) {
 				err = s.DelRoleRule(ctx, v)
 				liberr.ErrIsNil(ctx, err)
 			}
+			//清除缓存
+			commonService.Cache().Remove(ctx, consts.CacheSysRole)
 		})
 		return err
 	})
