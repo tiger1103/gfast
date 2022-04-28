@@ -83,7 +83,7 @@ func (s *middlewareImpl) Auth(r *ghttp.Request) {
 		return
 	}
 	//获取地址对应的菜单id
-	menuList, err := Rule().GetIsMenuList(ctx)
+	menuList, err := Rule().GetMenuList(ctx)
 	if err != nil {
 		g.Log().Error(ctx, err)
 		libResponse.FailJson(true, r, "请求数据失败")
