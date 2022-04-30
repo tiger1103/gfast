@@ -43,7 +43,7 @@ type ruleImpl struct {
 var ruleService = ruleImpl{}
 
 func Rule() IRule {
-	return IRule(&ruleService)
+	return &ruleService
 }
 
 func (s *ruleImpl) GetMenuListSearch(ctx context.Context, req *system.RuleSearchReq) (res []*model.SysAuthRuleInfoRes, err error) {

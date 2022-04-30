@@ -28,7 +28,7 @@ var contextService = contextServiceImpl{}
 type contextServiceImpl struct{}
 
 func Context() IContext {
-	return IContext(&contextService)
+	return &contextService
 }
 
 // Init 初始化上下文对象指针到上下文对象中，以便后续的请求流程中可以修改。

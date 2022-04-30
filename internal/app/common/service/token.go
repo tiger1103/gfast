@@ -45,5 +45,5 @@ func GfToken(options *model.TokenOptions) IGfToken {
 		gftoken.WithExcludePaths(options.ExcludePaths),
 		fun,
 	)
-	return IGfToken(&gT)
+	return &gT
 }

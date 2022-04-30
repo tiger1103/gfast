@@ -35,7 +35,7 @@ type IDept interface {
 var deptService = deptImpl{}
 
 func Dept() IDept {
-	return IDept(&deptService)
+	return &deptService
 }
 
 type deptImpl struct {

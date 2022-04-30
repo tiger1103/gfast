@@ -37,7 +37,7 @@ var (
 )
 
 func SysLoginLog() ISysLoginLog {
-	return ISysLoginLog(&sysLoginLogService)
+	return &sysLoginLogService
 }
 
 func (s *sysLoginLogImpl) Invoke(ctx context.Context, data *model.LoginLogParams) {

@@ -58,7 +58,7 @@ var (
 )
 
 func User() IUser {
-	return IUser(&userService)
+	return &userService
 }
 
 func (s *userImpl) NotCheckAuthAdminIds(ctx context.Context) *gset.Set {

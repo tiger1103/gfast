@@ -28,7 +28,7 @@ type middlewareImpl struct{}
 var middleService = middlewareImpl{}
 
 func Middleware() IMiddleware {
-	return IMiddleware(&middleService)
+	return &middleService
 }
 
 // Ctx 自定义上下文对象
