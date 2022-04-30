@@ -37,7 +37,7 @@ type roleImpl struct {
 var roleService = roleImpl{}
 
 func Role() IRole {
-	return IRole(&roleService)
+	return &roleService
 }
 
 func (s *roleImpl) GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error) {

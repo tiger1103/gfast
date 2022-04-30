@@ -36,7 +36,7 @@ type dictDataImpl struct {
 var dictData = dictDataImpl{}
 
 func DictData() IDictData {
-	return IDictData(&dictData)
+	return &dictData
 }
 
 // GetDictWithDataByType 通过字典键类型获取选项

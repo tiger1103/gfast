@@ -35,7 +35,7 @@ type configTmpl struct {
 var configService = configTmpl{}
 
 func Config() IConfig {
-	return IConfig(&configService)
+	return &configService
 }
 
 // List 系统参数列表
