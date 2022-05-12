@@ -18,7 +18,7 @@ type middlewareImpl struct{}
 var middleService = middlewareImpl{}
 
 func Middleware() IMiddleware {
-	return IMiddleware(&middleService)
+	return &middleService
 }
 
 func (s *middlewareImpl) MiddlewareCORS(r *ghttp.Request) {

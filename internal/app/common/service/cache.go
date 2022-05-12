@@ -38,5 +38,5 @@ func Cache() ICache {
 	} else {
 		ch.GfCache = cache.New(prefix)
 	}
-	return ICache(&ch)
+	return &ch
 }

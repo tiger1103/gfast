@@ -27,3 +27,11 @@ type UserLoginRes struct {
 	MenuList    []*model.UserMenus  `json:"menuList"`
 	Permissions []string            `json:"permissions"`
 }
+
+type UserLoginOutReq struct {
+	g.Meta        `path:"/loginOut" tags:"登录" method:"delete" summary:"退出登录"`
+	Authorization string `p:"Authorization" in:"header" dc:"Bearer {{token}}"`
+}
+
+type UserLoginOutRes struct {
+}

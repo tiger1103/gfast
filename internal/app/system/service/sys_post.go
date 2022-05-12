@@ -33,7 +33,7 @@ type postImpl struct {
 var postService = postImpl{}
 
 func Post() IPost {
-	return IPost(&postService)
+	return &postService
 }
 
 // List 岗位列表

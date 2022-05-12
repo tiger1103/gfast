@@ -20,6 +20,8 @@ type IGfToken interface {
 	Middleware(group *ghttp.RouterGroup) error
 	ParseToken(r *ghttp.Request) (*gftoken.CustomClaims, error)
 	IsLogin(r *ghttp.Request) (b bool, failed *gftoken.AuthFailed)
+	GetRequestToken(r *ghttp.Request) (token string)
+	RemoveToken(ctx context.Context, token string) (err error)
 }
 
 type gfTokenImpl struct {
@@ -45,5 +47,5 @@ func GfToken(options *model.TokenOptions) IGfToken {
 		gftoken.WithExcludePaths(options.ExcludePaths),
 		fun,
 	)
-	return IGfToken(&gT)
+	return &gT
 }

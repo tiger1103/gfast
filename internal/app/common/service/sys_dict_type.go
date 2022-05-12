@@ -38,7 +38,7 @@ type dictTypeImpl struct {
 var dictTypeService = dictTypeImpl{}
 
 func DictType() IDictType {
-	return IDictType(&dictTypeService)
+	return &dictTypeService
 }
 
 // List 字典类型列表

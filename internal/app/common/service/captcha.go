@@ -32,7 +32,7 @@ var (
 )
 
 func Captcha() ICaptcha {
-	return ICaptcha(&captcha)
+	return &captcha
 }
 
 // GetVerifyImgString 获取字母数字混合验证码

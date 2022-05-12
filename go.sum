@@ -116,8 +116,8 @@ github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMT
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/tiger1103/gfast-cache v0.0.7 h1:YRuSFxFdvNlIsHAndS7XjYRLd4tmXGWhvHt9rK0LVT0=
 github.com/tiger1103/gfast-cache v0.0.7/go.mod h1:s6cRWyr87wz6IJNGKRV6Ahq9hcuVz8h2PAtGrO66JO8=
-github.com/tiger1103/gfast-token v0.0.9 h1:+cKNu4zAMZpqaeILy3QIjuEO0HQMXtMSqVGPmhKAP90=
-github.com/tiger1103/gfast-token v0.0.9/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
+github.com/tiger1103/gfast-token v0.1.0 h1:C41f0lZ5nLizHtgfRNvE3nf7hVQ+IO0dCCgg3a9/Oa4=
+github.com/tiger1103/gfast-token v0.1.0/go.mod h1:RnVRqmWD3h4qfTU1vJNXNhQjh2L5ht1vxLnjwShwGuY=
 github.com/tklauser/go-sysconf v0.3.10 h1:IJ1AZGZRWbY8T5Vfk04D9WOA5WSejdflXxP03OUqALw=
 github.com/tklauser/go-sysconf v0.3.10/go.mod h1:C8XykCvCb+Gn0oNCWPIlcb0RuglQTYaQ2hGm7jmxEFk=
 github.com/tklauser/numcpus v0.4.0 h1:E53Dm1HjH1/R2/aoCtXtPgzmElmn51aOkhCFSuZq//o=
