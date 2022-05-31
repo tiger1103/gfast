@@ -17,6 +17,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"net"
+	"net/http"
 	"os"
 	"path"
 	"strings"
@@ -123,4 +124,50 @@ func ParseFilePath(pathStr string) (fileName string, fileType string) {
 	fileType = path.Ext(fileNameWithSuffix)
 	fileName = strings.TrimSuffix(fileNameWithSuffix, fileType)
 	return
+}
+
+// IsNotExistMkDir 检查文件夹是否存在
+// 如果不存在则新建文件夹
+func IsNotExistMkDir(src string) error {
+	if exist := !FileIsExisted(src); exist == false {
+		if err := MkDir(src); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MkDir 新建文件夹
+func MkDir(src string) error {
+	err := os.MkdirAll(src, os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//获取文件后缀
+func GetExt(fileName string) string {
+	return path.Ext(fileName)
+}
+
+// GetType 获取文件类型
+func GetType(p string) (result string, err error) {
+	file, err := os.Open(p)
+	if err != nil {
+		g.Log().Error(context.TODO(), err)
+		return
+	}
+	buff := make([]byte, 512)
+
+	_, err = file.Read(buff)
+
+	if err != nil {
+		g.Log().Error(context.TODO(), err)
+		return
+	}
+	filetype := http.DetectContentType(buff)
+	return filetype, nil
 }

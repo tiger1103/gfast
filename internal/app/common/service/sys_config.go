@@ -10,6 +10,7 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
@@ -27,6 +28,8 @@ type IConfig interface {
 	Get(ctx context.Context, id int) (res *system.ConfigGetRes, err error)
 	Edit(ctx context.Context, req *system.ConfigEditReq, userId uint64) (err error)
 	Delete(ctx context.Context, ids []int) (err error)
+	GetConfigByKey(ctx context.Context, key string) (config *entity.SysConfig, err error)
+	GetByKey(ctx context.Context, key string) (config *entity.SysConfig, err error)
 }
 
 type configTmpl struct {
@@ -146,5 +149,37 @@ func (s *configTmpl) Delete(ctx context.Context, ids []int) (err error) {
 		//清除缓存
 		Cache().RemoveByTag(ctx, consts.CacheSysConfigTag)
 	})
+	return
+}
+
+// GetConfigByKey 通过key获取参数（从缓存获取）
+func (s *configTmpl) GetConfigByKey(ctx context.Context, key string) (config *entity.SysConfig, err error) {
+	if key == "" {
+		err = gerror.New("参数key不能为空")
+		return
+	}
+	cache := Cache()
+	cf := cache.Get(ctx, consts.CacheSysConfigTag+key)
+	if cf != nil && !cf.IsEmpty() {
+		err = gconv.Struct(cf, &config)
+		return
+	}
+	config, err = s.GetByKey(ctx, key)
+	if err != nil {
+		return
+	}
+	if config != nil {
+		cache.Set(ctx, consts.CacheSysConfigTag+key, config, 0, consts.CacheSysConfigTag)
+	}
+	return
+}
+
+// GetByKey 通过key获取参数（从数据库获取）
+func (s *configTmpl) GetByKey(ctx context.Context, key string) (config *entity.SysConfig, err error) {
+	err = dao.SysConfig.Ctx(ctx).Where("config_key", key).Scan(&config)
+	if err != nil {
+		g.Log().Error(ctx, err)
+		err = gerror.New("获取配置失败")
+	}
 	return
 }

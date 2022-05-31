@@ -83,4 +83,11 @@ gfcli:
         noModelComment:  true
         path: "./internal/app/system"
 
-
+# 上传配置
+upload:
+  default: 0   # 默认上传至本地
+  tencentCOS:
+    upPath : "/gfast/"
+    rawUrl :    "https://yxh-1301841944.cos.ap-chongqing.myqcloud.com"
+    secretID :  "AKIDsKckd83HTh0795wlKcyreyCfvDHYZmbk"
+    secretKey : "2tc6Lj6LODppZ3aWCeqElBLcqzwz06zg"

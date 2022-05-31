@@ -21,5 +21,12 @@ func BindController(group *ghttp.RouterGroup) {
 				controller.Captcha,
 			)
 		})
+
+		// 文件上传
+		group.Group("/upload", func(group *ghttp.RouterGroup) {
+			group.Bind(
+				controller.Upload,
+			)
+		})
 	})
 }

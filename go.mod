@@ -11,6 +11,7 @@ require (
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/mssola/user_agent v0.5.3
 	github.com/shirou/gopsutil v3.21.11+incompatible
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.34 // indirect
 	github.com/tiger1103/gfast-cache v0.0.7
 	github.com/tiger1103/gfast-token v0.1.0
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
