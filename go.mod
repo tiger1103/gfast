@@ -17,5 +17,5 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	go.opentelemetry.io/otel/sdk v1.6.1 // indirect
 	golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f // indirect
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 )
