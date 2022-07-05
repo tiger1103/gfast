@@ -135,7 +135,7 @@ CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](h
 
 ## 交流QQ群
 
-> <img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/qqcode.png"/>  
+> <img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/1.png" width="400px"/>  
 
 > 感谢你使用GFast,公司团队精力时间有限，因此我们不再提供免费的技术服务，目前Gfast QQ交流群有部分用户进行了捐赠，捐赠后请联系作者进vip用户群，vip群中问题将得到优先解答，同时也会根据您的需求进行分析和优先安排，vip群也会提供Gfast的其它福利。
 > 同时您也可以联系我们，雇佣我们团队为您干活，谢谢合作！
