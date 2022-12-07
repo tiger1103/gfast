@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -63,7 +64,7 @@ func (s *deptImpl) GetList(ctx context.Context, req *system.DeptSearchReq) (list
 }
 
 func (s *deptImpl) GetFromCache(ctx context.Context) (list []*entity.SysDept, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		cache := commonService.Cache()
 		//从缓存获取
 		iList := cache.GetOrSetFuncLock(ctx, consts.CacheSysDept, func(ctx context.Context) (value interface{}, err error) {
@@ -82,7 +83,7 @@ func (s *deptImpl) GetFromCache(ctx context.Context) (list []*entity.SysDept, er
 
 // Add 添加部门
 func (s *deptImpl) Add(ctx context.Context, req *system.DeptAddReq) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysDept.Ctx(ctx).Insert(do.SysDept{
 			ParentId:  req.ParentID,
 			DeptName:  req.DeptName,
@@ -102,7 +103,7 @@ func (s *deptImpl) Add(ctx context.Context, req *system.DeptAddReq) (err error) 
 
 // Edit 部门修改
 func (s *deptImpl) Edit(ctx context.Context, req *system.DeptEditReq) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysDept.Ctx(ctx).WherePri(req.DeptId).Update(do.SysDept{
 			ParentId:  req.ParentID,
 			DeptName:  req.DeptName,
@@ -121,7 +122,7 @@ func (s *deptImpl) Edit(ctx context.Context, req *system.DeptEditReq) (err error
 }
 
 func (s *deptImpl) Delete(ctx context.Context, id int64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		var list []*entity.SysDept
 		err = dao.SysDept.Ctx(ctx).Scan(&list)
 		liberr.ErrIsNil(ctx, err, "不存在部门信息")

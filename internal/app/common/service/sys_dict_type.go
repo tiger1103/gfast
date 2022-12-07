@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/container/garray"
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -44,7 +45,7 @@ func DictType() IDictType {
 // List 字典类型列表
 func (s *dictTypeImpl) List(ctx context.Context, req *system.DictTypeSearchReq) (res *system.DictTypeSearchRes, err error) {
 	res = new(system.DictTypeSearchRes)
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		m := dao.SysDictType.Ctx(ctx)
 		if req.DictName != "" {
 			m = m.Where(dao.SysDictType.Columns().DictName+" like ?", "%"+req.DictName+"%")
@@ -73,7 +74,7 @@ func (s *dictTypeImpl) List(ctx context.Context, req *system.DictTypeSearchReq) 
 
 // Add 添加字典类型
 func (s *dictTypeImpl) Add(ctx context.Context, req *system.DictTypeAddReq, userId uint64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = s.ExistsDictType(ctx, req.DictType)
 		liberr.ErrIsNil(ctx, err)
 		_, err = dao.SysDictType.Ctx(ctx).Insert(do.SysDictType{
@@ -93,7 +94,7 @@ func (s *dictTypeImpl) Add(ctx context.Context, req *system.DictTypeAddReq, user
 // Edit 修改字典类型
 func (s *dictTypeImpl) Edit(ctx context.Context, req *system.DictTypeEditReq, userId uint64) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			err = s.ExistsDictType(ctx, req.DictType, req.DictId)
 			liberr.ErrIsNil(ctx, err)
 			dictType := (*entity.SysDictType)(nil)
@@ -122,7 +123,7 @@ func (s *dictTypeImpl) Edit(ctx context.Context, req *system.DictTypeEditReq, us
 }
 
 func (s *dictTypeImpl) Get(ctx context.Context, req *system.DictTypeGetReq) (dictType *entity.SysDictType, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = dao.SysDictType.Ctx(ctx).Where(dao.SysDictType.Columns().DictId, req.DictId).Scan(&dictType)
 		liberr.ErrIsNil(ctx, err, "获取字典类型失败")
 	})
@@ -131,7 +132,7 @@ func (s *dictTypeImpl) Get(ctx context.Context, req *system.DictTypeGetReq) (dic
 
 // ExistsDictType 检查类型是否已经存在
 func (s *dictTypeImpl) ExistsDictType(ctx context.Context, dictType string, dictId ...int64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		m := dao.SysDictType.Ctx(ctx).Fields(dao.SysDictType.Columns().DictId).
 			Where(dao.SysDictType.Columns().DictType, dictType)
 		if len(dictId) > 0 {
@@ -149,7 +150,7 @@ func (s *dictTypeImpl) ExistsDictType(ctx context.Context, dictType string, dict
 // Delete 删除字典类型
 func (s *dictTypeImpl) Delete(ctx context.Context, dictIds []int) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			discs := ([]*entity.SysDictType)(nil)
 			err = dao.SysDictType.Ctx(ctx).Fields(dao.SysDictType.Columns().DictType).
 				Where(dao.SysDictType.Columns().DictId+" in (?) ", dictIds).Scan(&discs)

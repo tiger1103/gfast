@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
@@ -34,7 +35,7 @@ func (c *userController) GetUserMenus(ctx context.Context, req *system.UserMenus
 // List 用户列表
 func (c *userController) List(ctx context.Context, req *system.UserSearchReq) (res *system.UserSearchRes, err error) {
 	var (
-		total    int
+		total    int64
 		userList []*entity.SysUser
 	)
 	res = new(system.UserSearchRes)

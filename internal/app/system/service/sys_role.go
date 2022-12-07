@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -42,7 +43,7 @@ func Role() IRole {
 
 func (s *roleImpl) GetRoleListSearch(ctx context.Context, req *system.RoleListReq) (res *system.RoleListRes, err error) {
 	res = new(system.RoleListRes)
-	g.Try(func() {
+	g.Try(ctx, func(ctx context.Context) {
 		model := dao.SysRole.Ctx(ctx)
 		if req.RoleName != "" {
 			model = model.Where("name like ?", "%"+req.RoleName+"%")
@@ -78,7 +79,7 @@ func (s *roleImpl) GetRoleList(ctx context.Context) (list []*entity.SysRole, err
 
 // 从数据库获取所有角色
 func (s *roleImpl) getRoleListFromDb(ctx context.Context) (value interface{}, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		var v []*entity.SysRole
 		//从数据库获取
 		err = dao.SysRole.Ctx(ctx).
@@ -92,7 +93,7 @@ func (s *roleImpl) getRoleListFromDb(ctx context.Context) (value interface{}, er
 
 // AddRoleRule 添加角色权限
 func (s *roleImpl) AddRoleRule(ctx context.Context, ruleIds []uint, roleId int64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		ruleIdsStr := gconv.Strings(ruleIds)
@@ -106,7 +107,7 @@ func (s *roleImpl) AddRoleRule(ctx context.Context, ruleIds []uint, roleId int64
 
 // DelRoleRule 删除角色权限
 func (s *roleImpl) DelRoleRule(ctx context.Context, roleId int64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		_, err = enforcer.RemoveFilteredPolicy(0, gconv.String(roleId))
@@ -117,7 +118,7 @@ func (s *roleImpl) DelRoleRule(ctx context.Context, roleId int64) (err error) {
 
 func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			roleId, e := dao.SysRole.Ctx(ctx).TX(tx).InsertAndGetId(req)
 			liberr.ErrIsNil(ctx, e, "添加角色失败")
 			//添加角色权限
@@ -132,7 +133,7 @@ func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err err
 }
 
 func (s *roleImpl) Get(ctx context.Context, id uint) (res *entity.SysRole, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = dao.SysRole.Ctx(ctx).WherePri(id).Scan(&res)
 		liberr.ErrIsNil(ctx, err, "获取角色信息失败")
 	})
@@ -141,7 +142,7 @@ func (s *roleImpl) Get(ctx context.Context, id uint) (res *entity.SysRole, err e
 
 // GetFilteredNamedPolicy 获取角色关联的菜单规则
 func (s *roleImpl) GetFilteredNamedPolicy(ctx context.Context, id uint) (gpSlice []int, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		gp := enforcer.GetFilteredNamedPolicy("p", 0, gconv.String(id))
@@ -156,7 +157,7 @@ func (s *roleImpl) GetFilteredNamedPolicy(ctx context.Context, id uint) (gpSlice
 // EditRole 修改角色
 func (s *roleImpl) EditRole(ctx context.Context, req *system.RoleEditReq) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			_, e := dao.SysRole.Ctx(ctx).TX(tx).WherePri(req.Id).Data(&do.SysRole{
 				Status:    req.Status,
 				ListOrder: req.ListOrder,
@@ -181,7 +182,7 @@ func (s *roleImpl) EditRole(ctx context.Context, req *system.RoleEditReq) (err e
 // DeleteByIds 删除角色
 func (s *roleImpl) DeleteByIds(ctx context.Context, ids []int64) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			_, err = dao.SysRole.Ctx(ctx).TX(tx).Where(dao.SysRole.Columns().Id+" in(?)", ids).Delete()
 			liberr.ErrIsNil(ctx, err, "删除角色失败")
 			//删除角色权限
