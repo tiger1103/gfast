@@ -12,6 +12,7 @@ import (
 
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	commonService "github.com/tiger1103/gfast/v3/internal/app/common/service"
@@ -119,7 +120,14 @@ func (s *roleImpl) DelRoleRule(ctx context.Context, roleId int64) (err error) {
 func (s *roleImpl) AddRole(ctx context.Context, req *system.RoleAddReq) (err error) {
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		err = g.Try(ctx, func(ctx context.Context) {
-			roleId, e := dao.SysRole.Ctx(ctx).TX(tx).InsertAndGetId(req)
+			roleId, e := dao.SysRole.Ctx(ctx).TX(tx).InsertAndGetId(do.SysRole{
+				Status:    req.Status,
+				ListOrder: req.ListOrder,
+				Name:      req.Name,
+				Remark:    req.Remark,
+				CreatedAt: gtime.Now(),
+				UpdatedAt: gtime.Now(),
+			})
 			liberr.ErrIsNil(ctx, e, "添加角色失败")
 			//添加角色权限
 			e = s.AddRoleRule(ctx, req.MenuIds, roleId)
