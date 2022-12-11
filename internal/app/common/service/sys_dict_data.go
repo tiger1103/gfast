@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -46,7 +47,7 @@ func (s dictDataImpl) GetDictWithDataByType(ctx context.Context, req *system.Get
 	cacheKey := consts.CacheSysDict + "_" + req.DictType
 	//从缓存获取
 	iDict := cache.GetOrSetFuncLock(ctx, cacheKey, func(ctx context.Context) (value interface{}, err error) {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			//从数据库获取
 			dict = &system.GetDictRes{}
 			//获取类型数据
@@ -85,7 +86,7 @@ func (s dictDataImpl) GetDictWithDataByType(ctx context.Context, req *system.Get
 // List 获取字典数据
 func (s dictDataImpl) List(ctx context.Context, req *system.DictDataSearchReq) (res *system.DictDataSearchRes, err error) {
 	res = new(system.DictDataSearchRes)
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		m := dao.SysDictData.Ctx(ctx)
 		if req != nil {
 			if req.DictLabel != "" {
@@ -115,7 +116,7 @@ func (s dictDataImpl) List(ctx context.Context, req *system.DictDataSearchReq) (
 }
 
 func (s *dictDataImpl) Add(ctx context.Context, req *system.DictDataAddReq, userId uint64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysDictData.Ctx(ctx).Insert(do.SysDictData{
 			DictSort:  req.DictSort,
 			DictLabel: req.DictLabel,
@@ -138,7 +139,7 @@ func (s *dictDataImpl) Add(ctx context.Context, req *system.DictDataAddReq, user
 // Get 获取字典数据
 func (s *dictDataImpl) Get(ctx context.Context, dictCode uint) (res *system.DictDataGetRes, err error) {
 	res = new(system.DictDataGetRes)
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = dao.SysDictData.Ctx(ctx).WherePri(dictCode).Scan(&res.Dict)
 		liberr.ErrIsNil(ctx, err, "获取字典数据失败")
 	})
@@ -147,7 +148,7 @@ func (s *dictDataImpl) Get(ctx context.Context, dictCode uint) (res *system.Dict
 
 // Edit 修改字典数据
 func (s *dictDataImpl) Edit(ctx context.Context, req *system.DictDataEditReq, userId uint64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysDictData.Ctx(ctx).WherePri(req.DictCode).Update(do.SysDictData{
 			DictSort:  req.DictSort,
 			DictLabel: req.DictLabel,
@@ -169,7 +170,7 @@ func (s *dictDataImpl) Edit(ctx context.Context, req *system.DictDataEditReq, us
 
 // Delete 删除字典数据
 func (s *dictDataImpl) Delete(ctx context.Context, ids []int) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysDictData.Ctx(ctx).Where(dao.SysDictData.Columns().DictCode+" in(?)", ids).Delete()
 		liberr.ErrIsNil(ctx, err, "删除字典数据失败")
 		//清除缓存

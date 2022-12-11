@@ -10,6 +10,7 @@ package service
 import (
 	"context"
 	"errors"
+
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -44,7 +45,7 @@ func Config() IConfig {
 // List 系统参数列表
 func (s *configTmpl) List(ctx context.Context, req *system.ConfigSearchReq) (res *system.ConfigSearchRes, err error) {
 	res = new(system.ConfigSearchRes)
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		m := dao.SysConfig.Ctx(ctx)
 		if req != nil {
 			if req.ConfigName != "" {
@@ -76,7 +77,7 @@ func (s *configTmpl) List(ctx context.Context, req *system.ConfigSearchReq) (res
 }
 
 func (s *configTmpl) Add(ctx context.Context, req *system.ConfigAddReq, userId uint64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = s.CheckConfigKeyUnique(ctx, req.ConfigKey)
 		liberr.ErrIsNil(ctx, err)
 		_, err = dao.SysConfig.Ctx(ctx).Insert(do.SysConfig{
@@ -96,7 +97,7 @@ func (s *configTmpl) Add(ctx context.Context, req *system.ConfigAddReq, userId u
 
 // CheckConfigKeyUnique 验证参数键名是否存在
 func (s *configTmpl) CheckConfigKeyUnique(ctx context.Context, configKey string, configId ...int64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		data := (*entity.SysConfig)(nil)
 		m := dao.SysConfig.Ctx(ctx).Fields(dao.SysConfig.Columns().ConfigId).Where(dao.SysConfig.Columns().ConfigKey, configKey)
 		if len(configId) > 0 {
@@ -114,7 +115,7 @@ func (s *configTmpl) CheckConfigKeyUnique(ctx context.Context, configKey string,
 // Get 获取系统参数
 func (s *configTmpl) Get(ctx context.Context, id int) (res *system.ConfigGetRes, err error) {
 	res = new(system.ConfigGetRes)
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = dao.SysConfig.Ctx(ctx).WherePri(id).Scan(&res.Data)
 		liberr.ErrIsNil(ctx, err, "获取系统参数失败")
 	})
@@ -123,7 +124,7 @@ func (s *configTmpl) Get(ctx context.Context, id int) (res *system.ConfigGetRes,
 
 // Edit 修改系统参数
 func (s *configTmpl) Edit(ctx context.Context, req *system.ConfigEditReq, userId uint64) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = s.CheckConfigKeyUnique(ctx, req.ConfigKey, req.ConfigId)
 		liberr.ErrIsNil(ctx, err)
 		_, err = dao.SysConfig.Ctx(ctx).WherePri(req.ConfigId).Update(do.SysConfig{
@@ -143,7 +144,7 @@ func (s *configTmpl) Edit(ctx context.Context, req *system.ConfigEditReq, userId
 
 // Delete 删除系统参数
 func (s *configTmpl) Delete(ctx context.Context, ids []int) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysConfig.Ctx(ctx).Delete(dao.SysConfig.Columns().ConfigId+" in (?)", ids)
 		liberr.ErrIsNil(ctx, err, "删除失败")
 		//清除缓存

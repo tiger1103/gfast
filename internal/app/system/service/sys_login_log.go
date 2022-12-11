@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/grpool"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -83,7 +84,7 @@ func (s *sysLoginLogImpl) List(ctx context.Context, req *system.LoginLogSearchRe
 			order = req.SortName + " DESC"
 		}
 	}
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		res.Total, err = m.Count()
 		liberr.ErrIsNil(ctx, err, "获取日志失败")
 		err = m.Page(req.PageNum, req.PageSize).Order(order).Scan(&res.List)
@@ -93,7 +94,7 @@ func (s *sysLoginLogImpl) List(ctx context.Context, req *system.LoginLogSearchRe
 }
 
 func (s *sysLoginLogImpl) DeleteLoginLogByIds(ctx context.Context, ids []int) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysLoginLog.Ctx(ctx).Delete("info_id in (?)", ids)
 		liberr.ErrIsNil(ctx, err, "删除失败")
 	})
@@ -101,7 +102,7 @@ func (s *sysLoginLogImpl) DeleteLoginLogByIds(ctx context.Context, ids []int) (e
 }
 
 func (s *sysLoginLogImpl) ClearLoginLog(ctx context.Context) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = g.DB().Ctx(ctx).Exec(ctx, "truncate "+dao.SysLoginLog.Table())
 		liberr.ErrIsNil(ctx, err, "清除失败")
 	})

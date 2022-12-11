@@ -9,6 +9,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
@@ -39,7 +40,7 @@ func Post() IPost {
 // List 岗位列表
 func (s *postImpl) List(ctx context.Context, req *system.PostSearchReq) (res *system.PostSearchRes, err error) {
 	res = new(system.PostSearchRes)
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		m := dao.SysPost.Ctx(ctx)
 		if req != nil {
 			if req.PostCode != "" {
@@ -68,7 +69,7 @@ func (s *postImpl) List(ctx context.Context, req *system.PostSearchReq) (res *sy
 }
 
 func (s *postImpl) Add(ctx context.Context, req *system.PostAddReq) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysPost.Ctx(ctx).Insert(do.SysPost{
 			PostCode:  req.PostCode,
 			PostName:  req.PostName,
@@ -83,7 +84,7 @@ func (s *postImpl) Add(ctx context.Context, req *system.PostAddReq) (err error) 
 }
 
 func (s *postImpl) Edit(ctx context.Context, req *system.PostEditReq) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysPost.Ctx(ctx).WherePri(req.PostId).Update(do.SysPost{
 			PostCode:  req.PostCode,
 			PostName:  req.PostName,
@@ -98,7 +99,7 @@ func (s *postImpl) Edit(ctx context.Context, req *system.PostEditReq) (err error
 }
 
 func (s *postImpl) Delete(ctx context.Context, ids []int) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		_, err = dao.SysPost.Ctx(ctx).Where(dao.SysPost.Columns().PostId+" in(?)", ids).Delete()
 		liberr.ErrIsNil(ctx, err, "删除失败")
 	})
@@ -107,7 +108,7 @@ func (s *postImpl) Delete(ctx context.Context, ids []int) (err error) {
 
 // GetUsedPost 获取正常状态的岗位
 func (s *postImpl) GetUsedPost(ctx context.Context) (list []*entity.SysPost, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = dao.SysPost.Ctx(ctx).Where(dao.SysPost.Columns().Status, 1).
 			Order(dao.SysPost.Columns().PostSort + " ASC, " + dao.SysPost.Columns().PostId + " ASC ").Scan(&list)
 		liberr.ErrIsNil(ctx, err, "获取岗位数据失败")

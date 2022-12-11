@@ -17,6 +17,6 @@ type PageReq struct {
 
 // ListRes 列表公共返回
 type ListRes struct {
-	CurrentPage int `json:"currentPage"`
-	Total       int `json:"total"`
+	CurrentPage int   `json:"currentPage"`
+	Total       int64 `json:"total"`
 }

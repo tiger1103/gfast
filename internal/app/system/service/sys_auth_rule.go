@@ -10,6 +10,7 @@ package service
 import (
 	"context"
 	"fmt"
+
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
@@ -47,7 +48,7 @@ func Rule() IRule {
 }
 
 func (s *ruleImpl) GetMenuListSearch(ctx context.Context, req *system.RuleSearchReq) (res []*model.SysAuthRuleInfoRes, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		m := dao.SysAuthRule.Ctx(ctx)
 		if req.Title != "" {
 			m = m.Where("title like ?", "%"+req.Title+"%")
@@ -90,7 +91,7 @@ func (s *ruleImpl) GetMenuList(ctx context.Context) (list []*model.SysAuthRuleIn
 
 // 从数据库获取所有菜单
 func (s *ruleImpl) getMenuListFromDb(ctx context.Context) (value interface{}, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		var v []*model.SysAuthRuleInfoRes
 		//从数据库获取
 		err = dao.SysAuthRule.Ctx(ctx).
@@ -123,7 +124,7 @@ func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) 
 		return
 	}
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			//菜单数据
 			data := do.SysAuthRule{
 				Pid:       req.Pid,
@@ -158,7 +159,7 @@ func (s *ruleImpl) Add(ctx context.Context, req *system.RuleAddReq) (err error) 
 	return
 }
 
-//检查菜单规则是否存在
+// 检查菜单规则是否存在
 func (s *ruleImpl) menuNameExists(ctx context.Context, name string, id uint) bool {
 	m := dao.SysAuthRule.Ctx(ctx).Where("name=?", name)
 	if id != 0 {
@@ -174,7 +175,7 @@ func (s *ruleImpl) menuNameExists(ctx context.Context, name string, id uint) boo
 
 // BindRoleRule 绑定角色权限
 func (s *ruleImpl) BindRoleRule(ctx context.Context, ruleId interface{}, roleIds []uint) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		for _, roleId := range roleIds {
@@ -186,7 +187,7 @@ func (s *ruleImpl) BindRoleRule(ctx context.Context, ruleId interface{}, roleIds
 }
 
 func (s *ruleImpl) Get(ctx context.Context, id uint) (rule *entity.SysAuthRule, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		err = dao.SysAuthRule.Ctx(ctx).WherePri(id).Scan(&rule)
 		liberr.ErrIsNil(ctx, err, "获取菜单失败")
 	})
@@ -194,7 +195,7 @@ func (s *ruleImpl) Get(ctx context.Context, id uint) (rule *entity.SysAuthRule, 
 }
 
 func (s *ruleImpl) GetMenuRoles(ctx context.Context, id uint) (roleIds []uint, err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		policies := enforcer.GetFilteredNamedPolicy("p", 1, gconv.String(id))
@@ -211,7 +212,7 @@ func (s *ruleImpl) Update(ctx context.Context, req *system.RuleUpdateReq) (err e
 		return
 	}
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		err = g.Try(func() {
+		err = g.Try(ctx, func(ctx context.Context) {
 			//菜单数据
 			data := do.SysAuthRule{
 				Pid:       req.Pid,
@@ -247,7 +248,7 @@ func (s *ruleImpl) Update(ctx context.Context, req *system.RuleUpdateReq) (err e
 }
 
 func (s *ruleImpl) UpdateRoleRule(ctx context.Context, ruleId uint, roleIds []uint) (err error) {
-	err = g.Try(func() {
+	err = g.Try(ctx, func(ctx context.Context) {
 		enforcer, e := commonService.CasbinEnforcer(ctx)
 		liberr.ErrIsNil(ctx, e)
 		//删除旧权限
@@ -296,7 +297,7 @@ func (s *ruleImpl) DeleteMenuByIds(ctx context.Context, ids []int) (err error) {
 	}
 	ids = append(ids, childrenIds...)
 	err = g.DB().Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
-		return g.Try(func() {
+		return g.Try(ctx, func(ctx context.Context) {
 			_, err = dao.SysAuthRule.Ctx(ctx).Where("id in (?)", ids).Delete()
 			liberr.ErrIsNil(ctx, err, "删除失败")
 			//删除权限
