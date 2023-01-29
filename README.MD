@@ -33,6 +33,7 @@
 * 前端采用vue-next-admin 、Vue、Element UI。
 * 本项目由<a href="http://www.qjit.cn/" target="_blank"><b>奇讯科技</b></a>团队开发。
 * 如您想购买云服务器请先领取阿里云优惠券：[点我进入](https://www.aliyun.com/minisite/goods?userCode=fcor2omk )，腾讯云优惠券：[点我领取](https://cloud.tencent.com/act/cps/redirect?redirect=1062&cps_key=20b1c3842f74986b2894e2c5fcde7ea2&from=console )
+* 目前我们基于gfast开发了：吸vo(￣▽￣)ｄ毒人员风控平台、政府数据化招商平台、档案资源普查信息系统、扶贫资产管理系统、厂房消防安全风控平台、重点项目督办平台等。
 
 ## 特征
 * 高生产率：几分钟即可搭建一个后台管理系统
