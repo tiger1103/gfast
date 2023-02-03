@@ -96,6 +96,14 @@ func (s *sMiddleware) Auth(r *ghttp.Request) {
 	}
 	//只验证存在数据库中的规则
 	if menu != nil {
+		//若是不登录能访问的接口则不判断权限
+		excludePaths := g.Cfg().MustGet(ctx, "gfToken.excludePaths").Strings()
+		for _, p := range excludePaths {
+			if gstr.Equal(menu.Name, gstr.TrimLeft(p, "/")) {
+				r.Middleware.Next()
+				return
+			}
+		}
 		//若存在不需要验证的条件则跳过
 		if gstr.Equal(menu.Condition, "nocheck") {
 			r.Middleware.Next()
