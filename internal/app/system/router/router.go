@@ -48,7 +48,7 @@ func (router *Router) BindController(ctx context.Context, group *ghttp.RouterGro
 			controller.Cache, // 缓存处理
 		)
 		//自动绑定定义的控制器
-		if err := libRouter.RouterAutoBind(router, ctx, group); err != nil {
+		if err := libRouter.RouterAutoBind(ctx, router, group); err != nil {
 			panic(err)
 		}
 	})

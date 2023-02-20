@@ -17,7 +17,7 @@ import (
 
 // RouterAutoBind 收集需要被绑定的控制器,自动绑定
 // 路由的方法命名规则必须为：BindXXXController
-func RouterAutoBind(R interface{}, ctx context.Context, group *ghttp.RouterGroup) (err error) {
+func RouterAutoBind(ctx context.Context, R interface{}, group *ghttp.RouterGroup) (err error) {
 	//TypeOf会返回目标数据的类型，比如int/float/struct/指针等
 	typ := reflect.TypeOf(R)
 	//ValueOf返回目标数据的的值
