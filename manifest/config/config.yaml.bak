@@ -37,7 +37,7 @@ database:
     dryRun: false #空跑
     maxIdle: 10 #连接池最大闲置的连接数
     maxOpen: 10 #连接池最大打开的连接数
-    maxLifetime: 30 #(单位秒)连接对象可重复使用的时间长度
+    maxLifetime: "30s" #(单位秒)连接对象可重复使用的时间长度
 
 gfToken:
   cacheKey: "gfToken:"
@@ -49,13 +49,19 @@ gfToken:
   excludePaths:
     - "/api/v1/system/login"
 
+
 # Redis 配置示例
 redis:
   # 单实例配置
   default:
     address: 127.0.0.1:6379
     db: 1
-    idleTimeout: 600
+    idleTimeout: "60s" #连接最大空闲时间，使用时间字符串例如30s/1m/1d
+    maxConnLifetime: "90s" #连接最长存活时间，使用时间字符串例如30s/1m/1d
+    waitTimeout: "60s" #等待连接池连接的超时时间，使用时间字符串例如30s/1m/1d
+    dialTimeout: "30s" #TCP连接的超时时间，使用时间字符串例如30s/1m/1d
+    readTimeout: "30s" #TCP的Read操作超时时间，使用时间字符串例如30s/1m/1d
+    writeTimeout: "30s" #TCP的Write操作超时时间，使用时间字符串例如30s/1m/1d
     maxActive: 100
 
 system:
