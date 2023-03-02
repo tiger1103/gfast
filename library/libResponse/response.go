@@ -60,12 +60,11 @@ func (res *Response) RJson(r *ghttp.Request, code int, msg string, data ...inter
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	response = &Response{
+	r.Response.WriteJson(&Response{
 		Code: code,
 		Msg:  msg,
 		Data: responseData,
-	}
-	r.Response.WriteJson(response)
+	})
 }
 
 // 成功返回JSON
