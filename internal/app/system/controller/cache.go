@@ -10,7 +10,6 @@ package controller
 import (
 	"context"
 	"github.com/gogf/gf/v2/container/gvar"
-	"github.com/gogf/gf/v2/encoding/gbase64"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
@@ -46,8 +45,7 @@ func (c *cacheController) Remove(ctx context.Context, req *system.CacheRemoveReq
 				return
 			}
 			for _, d := range dataSlice {
-				dk := gbase64.MustDecodeToString(d)
-				_, err = g.Redis().Do(ctx, "del", dk)
+				_, err = g.Redis().Do(ctx, "del", d)
 				if err != nil {
 					return
 				}
