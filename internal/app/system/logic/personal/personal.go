@@ -14,6 +14,7 @@ import (
 	"github.com/gogf/gf/v2/util/grand"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/system/dao"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/do"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
 	service "github.com/tiger1103/gfast/v3/internal/app/system/service"
@@ -54,8 +55,7 @@ func (s *sPersonal) GetPersonalInfo(ctx context.Context, req *system.PersonalInf
 	return
 }
 
-func (s *sPersonal) EditPersonal(ctx context.Context, req *system.PersonalEditReq) (res *system.PersonalEditRes, err error) {
-
+func (s *sPersonal) EditPersonal(ctx context.Context, req *system.PersonalEditReq) (user *model.LoginUserRes, err error) {
 	userId := service.Context().GetUserId(ctx)
 	err = service.SysUser().UserNameOrMobileExists(ctx, "", req.Mobile, int64(userId))
 	if err != nil {
@@ -73,6 +73,7 @@ func (s *sPersonal) EditPersonal(ctx context.Context, req *system.PersonalEditRe
 				Avatar:       req.Avatar,
 			})
 			liberr.ErrIsNil(ctx, err, "修改用户信息失败")
+			user, err = service.SysUser().GetUserById(ctx, userId)
 			liberr.ErrIsNil(ctx, err)
 		})
 		return err

@@ -84,6 +84,16 @@ func (s *sSysUser) GetUserByUsername(ctx context.Context, userName string) (user
 	return
 }
 
+// GetUserById 通过用户名获取用户信息
+func (s *sSysUser) GetUserById(ctx context.Context, id uint64) (user *model.LoginUserRes, err error) {
+	err = g.Try(ctx, func(ctx context.Context) {
+		user = &model.LoginUserRes{}
+		err = dao.SysUser.Ctx(ctx).Fields(user).WherePri(id).Scan(user)
+		liberr.ErrIsNil(ctx, err, "获取用户信息失败")
+	})
+	return
+}
+
 // LoginLog 记录登录日志
 func (s *sSysUser) LoginLog(ctx context.Context, params *model.LoginLogParams) {
 	ua := user_agent.New(params.UserAgent)

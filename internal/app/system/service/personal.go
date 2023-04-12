@@ -7,6 +7,7 @@ package service
 
 import (
 	"context"
+	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 )
@@ -14,7 +15,7 @@ import (
 type (
 	IPersonal interface {
 		GetPersonalInfo(ctx context.Context, req *system.PersonalInfoReq) (res *system.PersonalInfoRes, err error)
-		EditPersonal(ctx context.Context, req *system.PersonalEditReq) (res *system.PersonalEditRes, err error)
+		EditPersonal(ctx context.Context, req *system.PersonalEditReq) (user *model.LoginUserRes, err error)
 		ResetPwdPersonal(ctx context.Context, req *system.PersonalResetPwdReq) (res *system.PersonalResetPwdRes, err error)
 	}
 )
