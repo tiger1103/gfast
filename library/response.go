@@ -59,13 +59,13 @@ func (res *Response) RJson(r *ghttp.Request, code int, msg string, data ...inter
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	response = &Response{
+	rs := &Response{
 		Code: code,
 		Msg:  msg,
 		Data: responseData,
 	}
-	r.SetParam("apiReturnRes", response)
-	r.Response.WriteJson(response)
+	r.SetParam("apiReturnRes", rs)
+	r.Response.WriteJson(rs)
 }
 
 //成功返回JSON
