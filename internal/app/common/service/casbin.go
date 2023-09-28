@@ -2,17 +2,14 @@ package service
 
 import (
 	"context"
-	"sync"
-
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	"github.com/casbin/casbin/v2/persist"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/tiger1103/gfast/v3/internal/app/common/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/common/model/entity"
+	"sync"
 )
-
-type cabinImpl struct{}
 
 type adapterCasbin struct {
 	Enforcer    *casbin.SyncedEnforcer
@@ -21,38 +18,38 @@ type adapterCasbin struct {
 }
 
 var (
-	cb   = cabinImpl{}
-	once sync.Once
-	ac   *adapterCasbin
+	once  sync.Once
+	en    *casbin.SyncedEnforcer
+	enErr error
 )
 
 // CasbinEnforcer 获取adapter单例对象
 func CasbinEnforcer(ctx context.Context) (enforcer *casbin.SyncedEnforcer, err error) {
-	once.Do(func() {
-		ac = cb.newAdapter(ctx)
-	})
+	ac := newAdapter(ctx)
 	enforcer = ac.Enforcer
 	err = ac.EnforcerErr
 	return
 }
 
 // 初始化adapter操作
-func (s *cabinImpl) newAdapter(ctx context.Context) (a *adapterCasbin) {
+func newAdapter(ctx context.Context) (a *adapterCasbin) {
 	a = new(adapterCasbin)
-	a.initPolicy(ctx)
 	a.ctx = ctx
+	once.Do(func() {
+		en, enErr = initPolicy(ctx, a)
+	})
+	if enErr == nil && en != nil {
+		en.SetAdapter(a)
+	}
+	a.Enforcer, a.EnforcerErr = en, enErr
 	return
 }
 
-func (a *adapterCasbin) initPolicy(ctx context.Context) {
+func initPolicy(ctx context.Context, a *adapterCasbin) (e *casbin.SyncedEnforcer, err error) {
 	// Because the DB is empty at first,
 	// so we need to load the policy from the file adapter (.CSV) first.
-	e, err := casbin.NewSyncedEnforcer(g.Cfg().MustGet(ctx, "casbin.modelFile").String(), a)
-	if err != nil {
-		a.EnforcerErr = err
-		return
-	}
-	a.Enforcer = e
+	e, err = casbin.NewSyncedEnforcer(g.Cfg().MustGet(ctx, "casbin.modelFile").String(), a)
+	return
 }
 
 // SavePolicy saves policy to database.
@@ -119,6 +116,27 @@ func (a *adapterCasbin) RemovePolicy(sec string, ptype string, rule []string) er
 	line := savePolicyLine(ptype, rule)
 	err := rawDelete(a, line)
 	return err
+}
+
+func (a *adapterCasbin) AddPolicies(sec string, ptype string, rules [][]string) error {
+	lines := make([]*entity.CasbinRule, len(rules))
+	for k, rule := range rules {
+		lines[k] = savePolicyLine(ptype, rule)
+	}
+	_, err := dao.CasbinRule.Ctx(a.ctx).Data(lines).Insert()
+	return err
+}
+
+// RemovePolicies removes policy rules from the storage.
+// This is part of the Auto-Save feature.
+func (a *adapterCasbin) RemovePolicies(sec string, ptype string, rules [][]string) error {
+	for _, rule := range rules {
+		err := a.RemovePolicy(sec, ptype, rule)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // RemoveFilteredPolicy removes policy rules that match the filter from the storage.

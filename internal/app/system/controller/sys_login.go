@@ -12,6 +12,7 @@ import (
 	"github.com/gogf/gf/v2/crypto/gmd5"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/gogf/gf/v2/util/gmode"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
@@ -49,7 +50,7 @@ func (c *loginController) Login(ctx context.Context, req *system.UserLoginReq) (
 	user, err = service.SysUser().GetAdminUserByUsernamePassword(ctx, req)
 	if err != nil {
 		// 保存登录失败的日志信息
-		service.SysLoginLog().Invoke(ctx, &model.LoginLogParams{
+		service.SysLoginLog().Invoke(gctx.New(), &model.LoginLogParams{
 			Status:    0,
 			Username:  req.Username,
 			Ip:        ip,
@@ -64,7 +65,7 @@ func (c *loginController) Login(ctx context.Context, req *system.UserLoginReq) (
 		return
 	}
 	// 报存登录成功的日志信息
-	service.SysLoginLog().Invoke(ctx, &model.LoginLogParams{
+	service.SysLoginLog().Invoke(gctx.New(), &model.LoginLogParams{
 		Status:    1,
 		Username:  req.Username,
 		Ip:        ip,
@@ -95,7 +96,7 @@ func (c *loginController) Login(ctx context.Context, req *system.UserLoginReq) (
 		Permissions: permissions,
 	}
 	//用户在线状态保存
-	service.SysUserOnline().Invoke(ctx, &model.SysUserOnlineParams{
+	service.SysUserOnline().Invoke(gctx.New(), &model.SysUserOnlineParams{
 		UserAgent: userAgent,
 		Uuid:      gmd5.MustEncrypt(token),
 		Token:     token,
