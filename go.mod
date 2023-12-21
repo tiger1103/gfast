@@ -9,7 +9,7 @@ require (
 	github.com/gogf/gf/contrib/nosql/redis/v2 v2.3.0
 	github.com/gogf/gf/v2 v2.5.4
 	github.com/kr/pretty v0.3.0 // indirect
-	github.com/mojocn/base64Captcha v1.3.5
+	github.com/mojocn/base64Captcha v1.3.6
 	github.com/mssola/user_agent v0.5.3
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.2
