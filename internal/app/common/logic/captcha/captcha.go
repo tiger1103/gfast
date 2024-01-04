@@ -57,7 +57,7 @@ var (
 func (s *sCaptcha) GetVerifyImgString(ctx context.Context) (idKeyC string, base64stringC string, err error) {
 	driver := s.driver.ConvertFonts()
 	c := base64Captcha.NewCaptcha(driver, s.store)
-	idKeyC, base64stringC, err = c.Generate()
+	idKeyC, base64stringC, _, err = c.Generate()
 	return
 }
 
