@@ -24,6 +24,8 @@ resource/data/gen_sql
 resource/log/
 resource/public/big_file
 resource/public/upload_file
+resource/data/distCacheDb
+resource/data/distTokenDb
 manifest/config/config.yaml
 GFastV3
 /manifest/config/db.yaml
