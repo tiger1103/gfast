@@ -34,21 +34,25 @@ type sSysDictData struct {
 }
 
 // GetDictWithDataByType 通过字典键类型获取选项
-func (s *sSysDictData) GetDictWithDataByType(ctx context.Context, req *system.GetDictReq) (dict *system.GetDictRes,
+func (s *sSysDictData) GetDictWithDataByType(ctx context.Context, dictType, defaultValue string) (dict *system.GetDictRes,
 	err error) {
 	cache := service.Cache()
-	cacheKey := consts.CacheSysDict + "_" + req.DictType
+	cacheKey := consts.CacheSysDict + "_" + dictType
 	//从缓存获取
 	iDict := cache.GetOrSetFuncLock(ctx, cacheKey, func(ctx context.Context) (value interface{}, err error) {
 		err = g.Try(ctx, func(ctx context.Context) {
 			//从数据库获取
 			dict = &system.GetDictRes{}
 			//获取类型数据
-			err = dao.SysDictType.Ctx(ctx).Where(dao.SysDictType.Columns().DictType, req.DictType).
+			err = dao.SysDictType.Ctx(ctx).Where(dao.SysDictType.Columns().DictType, dictType).
 				Where(dao.SysDictType.Columns().Status, 1).Fields(model.DictTypeRes{}).Scan(&dict.Info)
 			liberr.ErrIsNil(ctx, err, "获取字典类型失败")
+			if dict.Info == nil {
+				return
+			}
 			err = dao.SysDictData.Ctx(ctx).Fields(model.DictDataRes{}).
-				Where(dao.SysDictData.Columns().DictType, req.DictType).
+				Where(dao.SysDictData.Columns().DictType, dictType).
+				Where(dao.SysDictData.Columns().Status, 1).
 				Order(dao.SysDictData.Columns().DictSort + " asc," +
 					dao.SysDictData.Columns().DictCode + " asc").
 				Scan(&dict.Values)
@@ -65,8 +69,8 @@ func (s *sSysDictData) GetDictWithDataByType(ctx context.Context, req *system.Ge
 	}
 	//设置给定的默认值
 	for _, v := range dict.Values {
-		if req.DefaultValue != "" {
-			if gstr.Equal(req.DefaultValue, v.DictValue) {
+		if defaultValue != "" {
+			if gstr.Equal(defaultValue, v.DictValue) {
 				v.IsDefault = 1
 			} else {
 				v.IsDefault = 0

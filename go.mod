@@ -3,6 +3,7 @@ module github.com/tiger1103/gfast/v3
 go 1.16
 
 require (
+	github.com/asaskevich/EventBus v0.0.0-20200907212545-49d423059eef // indirect
 	github.com/casbin/casbin/v2 v2.42.0
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.6.2

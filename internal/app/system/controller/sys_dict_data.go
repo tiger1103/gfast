@@ -21,7 +21,7 @@ type dictDataController struct {
 
 // GetDictData 获取字典数据
 func (c *dictDataController) GetDictData(ctx context.Context, req *system.GetDictReq) (res *system.GetDictRes, err error) {
-	res, err = commonService.SysDictData().GetDictWithDataByType(ctx, req)
+	res, err = commonService.SysDictData().GetDictWithDataByType(ctx, req.DictType, req.DefaultValue)
 	return
 }
 
