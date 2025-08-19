@@ -77,7 +77,7 @@ type DictDataGetRes struct {
 
 type DictDataEditReq struct {
 	g.Meta   `path:"/dict/data/edit" tags:"字典管理" method:"put" summary:"修改字典数据"`
-	DictCode int `p:"dictCode" v:"required|min:1#主键ID不能为空|主键ID不能小于1"`
+	DictCode int64 `p:"dictCode" v:"required|min:1#主键ID不能为空|主键ID不能小于1"`
 	*DictDataReq
 }
 
