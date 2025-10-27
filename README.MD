@@ -35,6 +35,8 @@
 * 如您想购买云服务器请先领取阿里云优惠券：[点我进入](https://www.aliyun.com/minisite/goods?userCode=fcor2omk )，腾讯云优惠券：[点我领取](https://cloud.tencent.com/act/cps/redirect?redirect=1062&cps_key=20b1c3842f74986b2894e2c5fcde7ea2&from=console )
 * 目前我们基于gfast开发了：吸vo(￣▽￣)ｄ毒人员风控平台、政府数据化招商平台、档案资源普查信息系统、扶贫资产管理系统、厂房消防安全风控平台、重点项目督办平台等。
 
+需要gin版本后台管理 [https://github.com/qxkjsoft/ginfast](https://github.com/qxkjsoft/ginfast)
+
 ## 特征
 * 高生产率：几分钟即可搭建一个后台管理系统
 * 模块化：单应用多系统的模式，将一个完整的应用拆分为多个系统，后续扩展更加便捷，增加代码复用性。
@@ -185,5 +187,3 @@ CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](h
 
 ## 支持开源
 如果您喜爱gfast，请给常熬夜的作者来杯咖啡吧！<a href="https://ys0abw.yuque.com/ys0abw/ephcr9/zo38ua" target="_blank"> 点我送咖啡</a>
-
-基于gin开发的后台管理系统 [https://github.com/qxkjsoft/ginfast](https://github.com/qxkjsoft/ginfast)
