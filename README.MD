@@ -26,7 +26,7 @@
 	</p>
 </div>
 
-
+![star](https://gitcode.com/kocie/gfast/star/badge.svg)
 
 ## 平台简介
 * 基于全新Go Frame 2.3+Vue3+Element Plus开发的全栈前后端分离的管理系统
@@ -40,8 +40,8 @@
 * 模块化：单应用多系统的模式，将一个完整的应用拆分为多个系统，后续扩展更加便捷，增加代码复用性。
 * 插件化： 可通过插件的方式扩展系统功能
 * 认证机制：采用gtoken的用户状态认证及casbin的权限认证
-* 路由模式：得利于goframe2.0提供了规范化的路由注册方式,无需注解自动生成api文档 
-* 面向接口开发 
+* 路由模式：得利于goframe2.0提供了规范化的路由注册方式,无需注解自动生成api文档
+* 面向接口开发
 
 
 ## 内置功能
@@ -70,7 +70,7 @@
 [http://v3.g-fast.cn/sys](http://v3.g-fast.cn/sys)
 账号：demo  密码：123456
 ## 配置
-项目数据库文件 `resource/data/db.sql` 创建数据库导入后修改配置 `manifest/config/config.yaml.bak` 复制改为`manifest/config/config.yaml`  
+项目数据库文件 `resource/data/db.sql` 创建数据库导入后修改配置 `manifest/config/config.yaml.bak` 复制改为`manifest/config/config.yaml`
 
 其中gfToken配置
 ```yaml
@@ -86,6 +86,8 @@ gfToken:
 ```
 
 项目为前后端分离，前端地址：
+
+GitCode地址：https://gitcode.com/kocie/gfast-ui
 
 github地址：[https://github.com/tiger1103/gfast-ui](https://github.com/tiger1103/gfast-ui)
 
@@ -129,6 +131,7 @@ gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103
 >
 >casbin [https://github.com/casbin/casbin](https://github.com/casbin/casbin)
 
+基于gin开发的后台管理系统 [https://github.com/qxkjsoft/ginfast](https://github.com/qxkjsoft/ginfast)
 
 PHP开源工作流引擎tpflow   [https://gitee.com/ntdgg/tpflow](https://gitee.com/ntdgg/tpflow)
 
@@ -178,30 +181,9 @@ CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](h
 | Bug修复     | 不定期              | 快速修复并提交                                       |
 | 更新        | 不定期              | 及时更新                                          |
 
-#### 更新日志
-
-#### V3.2.25
-##### date:2024-05-07
-* 1、升级项目依赖包,更新存在安全风险的外部依赖包
-* 2、修复数据权限为全部权限时model返回错误的bug
-* 3、修复webscoket空指针异常，兼容gf2.7.0
-
-#### V3.2.24
-#### date:2024-04-30
-* 1、完善数据权限，简化数据权限接入
-
-#### V3.2.23
-#### date:2024-04-12
-* 1、修复用户选择器回显问题
-* 2、修复图片上传组件只上传一张图片时回显问题
-* 3、完善角色授权模式
-* 3.1、角色有效期和有效时间段设置，若设置了有效日期，只能在该时区内有权限访问
-* 3.2、数据权限功能完善，可针对不同菜单设置不同的数据权限，数据权限划分更细化
-
-更多更新说明请查看[更新日志](http://doc.g-fast.cn/docs/gfast32/gfast32-1fj8kpj9qhntm)
+[更新日志](http://doc.g-fast.cn/docs/gfast32/gfast32-1fj8kpj9qhntm)
 
 ## 支持开源
 如果您喜爱gfast，请给常熬夜的作者来杯咖啡吧！<a href="https://ys0abw.yuque.com/ys0abw/ephcr9/zo38ua" target="_blank"> 点我送咖啡</a>
 
-## [感谢JetBrains提供的免费GoLand](https://jb.gg/OpenSource)
-[![avatar](https://camo.githubusercontent.com/323657c6e81419b8e151e9da4c71f409e3fcc65d630535170c59fe4807dbc905/68747470733a2f2f676f6672616d652e6f72672f646f776e6c6f61642f7468756d626e61696c732f313131343131392f6a6574627261696e732e706e67)](https://jb.gg/OpenSource)
+基于gin开发的后台管理系统 [https://github.com/qxkjsoft/ginfast](https://github.com/qxkjsoft/ginfast)
