@@ -9,6 +9,7 @@ package sysOperLog
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gctx"
@@ -153,17 +154,16 @@ func (s *sOperateLog) List(ctx context.Context, req *system.SysOperLogSearchReq)
 		listRes.List = make([]*model.SysOperLogListRes, len(res))
 		for k, v := range res {
 			listRes.List[k] = &model.SysOperLogListRes{
-				OperId:         v.OperId,
-				Title:          v.Title,
-				RequestMethod:  v.RequestMethod,
-				OperName:       v.OperName,
-				DeptName:       v.DeptName,
-				LinkedDeptName: v.LinkedDeptName,
-				OperUrl:        v.OperUrl,
-				OperIp:         v.OperIp,
-				OperLocation:   v.OperLocation,
-				OperParam:      v.OperParam,
-				OperTime:       v.OperTime,
+				OperId:        v.OperId,
+				Title:         v.Title,
+				RequestMethod: v.RequestMethod,
+				OperName:      v.OperName,
+				DeptName:      v.DeptName,
+				OperUrl:       v.OperUrl,
+				OperIp:        v.OperIp,
+				OperLocation:  v.OperLocation,
+				OperParam:     v.OperParam,
+				OperTime:      v.OperTime,
 			}
 		}
 	})
