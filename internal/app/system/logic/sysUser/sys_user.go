@@ -10,6 +10,7 @@ package sysUser
 import (
 	"context"
 	"fmt"
+
 	"github.com/gogf/gf/v2/container/gset"
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -515,11 +516,10 @@ func (s *sSysUser) UserNameOrMobileExists(ctx context.Context, userName, mobile 
 		if len(id) > 0 {
 			m = m.Where(dao.SysUser.Columns().Id+" != ", id)
 		}
-		m = m.Where(fmt.Sprintf("%s='%s' OR %s='%s'",
+		m = m.Where(fmt.Sprintf("%s=? OR %s=?",
 			dao.SysUser.Columns().UserName,
-			userName,
-			dao.SysUser.Columns().Mobile,
-			mobile))
+			dao.SysUser.Columns().Mobile),
+			userName, mobile)
 		err := m.Limit(1).Scan(&user)
 		liberr.ErrIsNil(ctx, err, "获取用户信息失败")
 		if user == nil {
