@@ -2,66 +2,87 @@ package service
 
 import (
 	"context"
+	"sync"
+
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	"github.com/casbin/casbin/v2/persist"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 	"github.com/tiger1103/gfast/v3/internal/app/common/dao"
 	"github.com/tiger1103/gfast/v3/internal/app/common/model/entity"
-	"sync"
 )
 
+// 1. 结构体定义清理：不需要在 Adapter 里存 Enforcer 指针了
 type adapterCasbin struct {
-	Enforcer    *casbin.SyncedEnforcer
-	EnforcerErr error
-	ctx         context.Context
+	ctx context.Context // 用于 DB 操作的上下文
 }
 
+// 2. 全局变量
 var (
-	once  sync.Once
-	en    *casbin.SyncedEnforcer
-	enErr error
+	once        sync.Once
+	enforcer    *casbin.SyncedEnforcer
+	enforcerErr error
 )
 
-// CasbinEnforcer 获取adapter单例对象
-func CasbinEnforcer(ctx context.Context) (enforcer *casbin.SyncedEnforcer, err error) {
-	ac := newAdapter(ctx)
-	enforcer = ac.Enforcer
-	err = ac.EnforcerErr
-	return
-}
-
-// 初始化adapter操作
-func newAdapter(ctx context.Context) (a *adapterCasbin) {
-	a = new(adapterCasbin)
-	a.ctx = ctx
+// CasbinEnforcer 获取单例对象
+func CasbinEnforcer() (*casbin.SyncedEnforcer, error) {
+	// once.Do 保证内部逻辑只执行一次，无论调用多少次
 	once.Do(func() {
-		en, enErr = initPolicy(ctx, a)
+		enforcer, enforcerErr = initEnforcerSingleton()
 	})
-	if enErr == nil && en != nil {
-		en.SetAdapter(a)
-	}
-	a.Enforcer, a.EnforcerErr = en, enErr
-	return
+	return enforcer, enforcerErr
 }
 
-func initPolicy(ctx context.Context, a *adapterCasbin) (e *casbin.SyncedEnforcer, err error) {
-	// Because the DB is empty at first,
-	// so we need to load the policy from the file adapter (.CSV) first.
-	e, err = casbin.NewSyncedEnforcer(g.Cfg().MustGet(ctx, "casbin.modelFile").String(), a)
-	return
+// initEnforcerSingleton 真正执行初始化的逻辑
+func initEnforcerSingleton() (*casbin.SyncedEnforcer, error) {
+	// A. 初始化 Adapter
+	adapterCtx := gctx.GetInitCtx()
+	a := &adapterCasbin{
+		ctx: adapterCtx,
+	}
+
+	// B. 初始化 Enforcer
+	modelFile := g.Cfg().MustGet(a.ctx, "casbin.modelFile").String()
+	e, err := casbin.NewSyncedEnforcer(modelFile, a)
+	if err != nil {
+		return nil, err
+	}
+	//是否开启集群部署
+	if !g.Cfg().MustGet(a.ctx, "casbin.cluster").Bool() {
+		return e, nil
+	}
+	// C. 初始化 Watcher (使用之前定义的 GfWatcher)
+	// 这里的 watcher channel 名字可以配置，也可以硬编码
+	w, err := NewGfWatcher("casbin_policy_channel")
+	if err != nil {
+		g.Log().Error(a.ctx, "Casbin Watcher 初始化失败，集群同步功能不可用:", err)
+		// 即使 Watcher 失败，通常也应该让 Enforcer 正常返回，只是没有同步功能
+	} else {
+		// 设置 Watcher
+		_ = e.SetWatcher(w)
+
+		// 设置回调：收到消息重新加载
+		_ = w.SetUpdateCallback(func(msg string) {
+			g.Log().Info(a.ctx, "Casbin 规则变更，正在重新加载策略...")
+			if err := e.LoadPolicy(); err != nil {
+				g.Log().Error(a.ctx, "Casbin 重载失败:", err)
+			} else {
+				g.Log().Info(a.ctx, "Casbin 重载成功")
+			}
+		})
+	}
+	return e, nil
 }
+
+// ---------------- 以下为 Adapter 方法 (保持逻辑不变，稍微清理) ----------------
 
 // SavePolicy saves policy to database.
 func (a *adapterCasbin) SavePolicy(model model.Model) (err error) {
-	err = a.dropTable()
-	if err != nil {
-		return
+	if err = a.dropTable(); err != nil {
+		return err
 	}
-	err = a.createTable()
-	if err != nil {
-		return
-	}
+	// 插入 P 规则
 	for ptype, ast := range model["p"] {
 		for _, rule := range ast.Policy {
 			line := savePolicyLine(ptype, rule)
@@ -71,7 +92,7 @@ func (a *adapterCasbin) SavePolicy(model model.Model) (err error) {
 			}
 		}
 	}
-
+	// 插入 G 规则
 	for ptype, ast := range model["g"] {
 		for _, rule := range ast.Policy {
 			line := savePolicyLine(ptype, rule)
@@ -127,8 +148,6 @@ func (a *adapterCasbin) AddPolicies(sec string, ptype string, rules [][]string) 
 	return err
 }
 
-// RemovePolicies removes policy rules from the storage.
-// This is part of the Auto-Save feature.
 func (a *adapterCasbin) RemovePolicies(sec string, ptype string, rules [][]string) error {
 	for _, rule := range rules {
 		err := a.RemovePolicy(sec, ptype, rule)
@@ -139,9 +158,7 @@ func (a *adapterCasbin) RemovePolicies(sec string, ptype string, rules [][]strin
 	return nil
 }
 
-// RemoveFilteredPolicy removes policy rules that match the filter from the storage.
-func (a *adapterCasbin) RemoveFilteredPolicy(sec string, ptype string,
-	fieldIndex int, fieldValues ...string) error {
+func (a *adapterCasbin) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
 	line := &entity.CasbinRule{}
 	line.Ptype = ptype
 	if fieldIndex <= 0 && 0 < fieldIndex+len(fieldValues) {
@@ -166,6 +183,7 @@ func (a *adapterCasbin) RemoveFilteredPolicy(sec string, ptype string,
 	return err
 }
 
+// 辅助函数保持不变
 func loadPolicyLine(line *entity.CasbinRule, model model.Model) {
 	lineText := line.Ptype
 	if line.V0 != "" {

@@ -9,6 +9,7 @@ package middleware
 
 import (
 	"fmt"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/text/gstr"
@@ -113,7 +114,7 @@ func (s *sMiddleware) Auth(r *ghttp.Request) {
 		//菜单没存数据库不验证权限
 		if menuId != 0 {
 			//判断权限操作
-			enforcer, err := commonService.CasbinEnforcer(ctx)
+			enforcer, err := commonService.CasbinEnforcer()
 			if err != nil {
 				g.Log().Error(ctx, err)
 				libResponse.FailJson(true, r, "获取权限失败")

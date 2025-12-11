@@ -190,7 +190,7 @@ func (s *sSysUser) GetAdminRole(ctx context.Context, userId uint64, allRoleList 
 
 // GetAdminRoleIds 获取用户角色ids
 func (s *sSysUser) GetAdminRoleIds(ctx context.Context, userId uint64) (roleIds []uint, err error) {
-	enforcer, e := commonService.CasbinEnforcer(ctx)
+	enforcer, e := commonService.CasbinEnforcer()
 	if e != nil {
 		err = e
 		return
@@ -227,7 +227,7 @@ func (s *sSysUser) GetAllMenus(ctx context.Context) (menus []*model.UserMenus, e
 func (s *sSysUser) GetAdminMenusByRoleIds(ctx context.Context, roleIds []uint) (menus []*model.UserMenus, err error) {
 	//获取角色对应的菜单id
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		menuIds := map[int64]int64{}
 		for _, roleId := range roleIds {
@@ -291,7 +291,7 @@ func (s *sSysUser) setMenuData(menu *model.UserMenu, entity *model.SysAuthRuleIn
 func (s *sSysUser) GetPermissions(ctx context.Context, roleIds []uint) (userButtons []string, err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
 		//获取角色对应的菜单id
-		enforcer, err := commonService.CasbinEnforcer(ctx)
+		enforcer, err := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, err)
 		menuIds := map[int64]int64{}
 		for _, roleId := range roleIds {
@@ -483,7 +483,7 @@ func (s *sSysUser) AddUserPost(ctx context.Context, tx gdb.TX, postIds []int64, 
 // AddUserRole 添加用户角色信息
 func (s *sSysUser) addUserRole(ctx context.Context, roleIds []int64, userId int64) (err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		for _, v := range roleIds {
 			_, e = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", s.casBinUserPrefix, userId), gconv.String(v))
@@ -496,7 +496,7 @@ func (s *sSysUser) addUserRole(ctx context.Context, roleIds []int64, userId int6
 // EditUserRole 修改用户角色信息
 func (s *sSysUser) EditUserRole(ctx context.Context, roleIds []int64, userId int64) (err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 
 		//删除用户旧角色信息
@@ -610,7 +610,7 @@ func (s *sSysUser) Delete(ctx context.Context, ids []int) (err error) {
 			_, err = dao.SysUser.Ctx(ctx).TX(tx).Where(dao.SysUser.Columns().Id+" in(?)", ids).Delete()
 			liberr.ErrIsNil(ctx, err, "删除用户失败")
 			//删除对应权限
-			enforcer, e := commonService.CasbinEnforcer(ctx)
+			enforcer, e := commonService.CasbinEnforcer()
 			liberr.ErrIsNil(ctx, e)
 			for _, v := range ids {
 				enforcer.RemoveFilteredGroupingPolicy(0, fmt.Sprintf("%s%d", s.casBinUserPrefix, v))

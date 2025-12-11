@@ -9,6 +9,7 @@ package sysRole
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -86,7 +87,7 @@ func (s *sSysRole) getRoleListFromDb(ctx context.Context) (value interface{}, er
 // AddRoleRule 添加角色权限
 func (s *sSysRole) AddRoleRule(ctx context.Context, ruleIds []uint, roleId int64) (err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		ruleIdsStr := gconv.Strings(ruleIds)
 		for _, v := range ruleIdsStr {
@@ -100,7 +101,7 @@ func (s *sSysRole) AddRoleRule(ctx context.Context, ruleIds []uint, roleId int64
 // DelRoleRule 删除角色权限
 func (s *sSysRole) DelRoleRule(ctx context.Context, roleId int64) (err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		_, err = enforcer.RemoveFilteredPolicy(0, gconv.String(roleId))
 		liberr.ErrIsNil(ctx, e)
@@ -135,7 +136,7 @@ func (s *sSysRole) Get(ctx context.Context, id uint) (res *entity.SysRole, err e
 // GetFilteredNamedPolicy 获取角色关联的菜单规则
 func (s *sSysRole) GetFilteredNamedPolicy(ctx context.Context, id uint) (gpSlice []int, err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		gp := enforcer.GetFilteredNamedPolicy("p", 0, gconv.String(id))
 		gpSlice = make([]int, len(gp))

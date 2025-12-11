@@ -10,6 +10,7 @@ package sysAuthRule
 import (
 	"context"
 	"fmt"
+
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
@@ -165,7 +166,7 @@ func (s *sSysAuthRule) menuNameExists(ctx context.Context, name string, id uint)
 // BindRoleRule 绑定角色权限
 func (s *sSysAuthRule) BindRoleRule(ctx context.Context, ruleId interface{}, roleIds []uint) (err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		for _, roleId := range roleIds {
 			_, err = enforcer.AddPolicy(fmt.Sprintf("%d", roleId), fmt.Sprintf("%d", ruleId), "All")
@@ -185,7 +186,7 @@ func (s *sSysAuthRule) Get(ctx context.Context, id uint) (rule *entity.SysAuthRu
 
 func (s *sSysAuthRule) GetMenuRoles(ctx context.Context, id uint) (roleIds []uint, err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		policies := enforcer.GetFilteredNamedPolicy("p", 1, gconv.String(id))
 		for _, policy := range policies {
@@ -238,7 +239,7 @@ func (s *sSysAuthRule) Update(ctx context.Context, req *system.RuleUpdateReq) (e
 
 func (s *sSysAuthRule) UpdateRoleRule(ctx context.Context, ruleId uint, roleIds []uint) (err error) {
 	err = g.Try(ctx, func(ctx context.Context) {
-		enforcer, e := commonService.CasbinEnforcer(ctx)
+		enforcer, e := commonService.CasbinEnforcer()
 		liberr.ErrIsNil(ctx, e)
 		//删除旧权限
 		_, e = enforcer.RemoveFilteredPolicy(1, gconv.String(ruleId))
@@ -290,7 +291,7 @@ func (s *sSysAuthRule) DeleteMenuByIds(ctx context.Context, ids []int) (err erro
 			_, err = dao.SysAuthRule.Ctx(ctx).Where("id in (?)", ids).Delete()
 			liberr.ErrIsNil(ctx, err, "删除失败")
 			//删除权限
-			enforcer, err := commonService.CasbinEnforcer(ctx)
+			enforcer, err := commonService.CasbinEnforcer()
 			liberr.ErrIsNil(ctx, err)
 			for _, v := range ids {
 				_, err = enforcer.RemoveFilteredPolicy(1, gconv.String(v))
