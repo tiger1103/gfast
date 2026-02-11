@@ -7,13 +7,13 @@ toolchain go1.24.2
 require (
 	github.com/asaskevich/EventBus v0.0.0-20200907212545-49d423059eef
 	github.com/casbin/casbin/v2 v2.42.0
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.9.4
-	github.com/gogf/gf/contrib/nosql/redis/v2 v2.9.4
-	github.com/gogf/gf/v2 v2.9.4
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.10.0
+	github.com/gogf/gf/contrib/nosql/redis/v2 v2.10.0
+	github.com/gogf/gf/v2 v2.10.0
 	github.com/mojocn/base64Captcha v1.3.6
 	github.com/mssola/user_agent v0.5.3
 	github.com/shirou/gopsutil/v3 v3.23.2
-	github.com/tiger1103/gfast-cache v1.0.11
+	github.com/tiger1103/gfast-cache v1.0.12
 	github.com/tiger1103/gfast-token v1.0.10
 )
 
@@ -27,7 +27,7 @@ require (
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
-	github.com/emirpasic/gods v1.18.1 // indirect
+	github.com/emirpasic/gods/v2 v2.0.0-alpha // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
