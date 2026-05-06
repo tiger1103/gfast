@@ -52,6 +52,22 @@ Issue #22 提到希望支持站点配置、SEO、字符替换、URL 自定义、
 - 建议在 PR 中附上 `go test -v ./library/libUtils` 的终端截图
 - 截图建议包含：命令行、4 个测试用例名称、最终 PASS/ok 行
 
+测试结果（本地）
+执行命令：
+go test -v ./library/libUtils
+
+输出：
+=== RUN   TestBuildSEOMeta
+--- PASS: TestBuildSEOMeta (0.00s)
+=== RUN   TestApplyReplacementRules
+--- PASS: TestApplyReplacementRules (0.00s)
+=== RUN   TestBuildAndParsePseudoStaticURL
+--- PASS: TestBuildAndParsePseudoStaticURL (0.00s)
+=== RUN   TestParsePseudoStaticURLFail
+--- PASS: TestParsePseudoStaticURLFail (0.00s)
+PASS
+ok   github.com/tiger1103/gfast/v3/library/libUtils (cached)
+
 兼容性与风险
 - 本次为新增工具函数，不影响现有接口行为，默认兼容
 - 风险较低，主要在后续接入业务时需统一规则优先级
