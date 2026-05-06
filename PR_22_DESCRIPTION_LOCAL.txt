@@ -39,9 +39,18 @@ Issue #22 提到希望支持站点配置、SEO、字符替换、URL 自定义、
 - TestApplyReplacementRules
 - TestBuildAndParsePseudoStaticURL
 - TestParsePseudoStaticURLFail
+如何测试
+1. 进入仓库根目录：
+   cd /home/calelin/dev/gfast
+2. 执行目标测试：
+   go test -v ./library/libUtils
+3. 期望结果：
+   - 所有测试用例 PASS
+   - 输出包含 TestBuildSEOMeta / TestApplyReplacementRules / TestBuildAndParsePseudoStaticURL / TestParsePseudoStaticURLFail
 
-本地执行命令：
-go -C /home/calelin/dev/gfast test ./library/libUtils
+测试截图
+- 建议在 PR 中附上 `go test -v ./library/libUtils` 的终端截图
+- 截图建议包含：命令行、4 个测试用例名称、最终 PASS/ok 行
 
 兼容性与风险
 - 本次为新增工具函数，不影响现有接口行为，默认兼容
