@@ -102,7 +102,7 @@ func (s *sSysUser) LoginLog(ctx context.Context, params *model.LoginLogParams) {
 	loginData := &do.SysLoginLog{
 		LoginName:     params.Username,
 		Ipaddr:        params.Ip,
-		LoginLocation: libUtils.GetCityByIp(params.Ip),
+		LoginLocation: libUtils.GetCityByIp(ctx, params.Ip),
 		Browser:       browser,
 		Os:            ua.OS(),
 		Status:        params.Status,

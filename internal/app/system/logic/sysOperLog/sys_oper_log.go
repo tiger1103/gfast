@@ -104,7 +104,7 @@ func (s *sOperateLog) operationLogAdd(ctx context.Context, data *model.SysOperLo
 		OperName:      data.User.UserName,
 		DeptName:      dept.DeptName,
 		OperIp:        data.ClientIp,
-		OperLocation:  libUtils.GetCityByIp(data.ClientIp),
+		OperLocation:  libUtils.GetCityByIp(ctx, data.ClientIp),
 		OperTime:      gtime.Now(),
 		OperParam:     data.Params,
 	}

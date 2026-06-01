@@ -15,16 +15,17 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/gogf/gf/v2/crypto/gmd5"
-	"github.com/gogf/gf/v2/encoding/gcharset"
-	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/encoding/gurl"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/lionsoul2014/ip2region/binding/golang/xdb"
 
 	"github.com/tiger1103/gfast/v3/internal/app/common/consts"
 )
@@ -84,29 +85,67 @@ func GetLocalIP() (ip string, err error) {
 	return
 }
 
+// ip2region searcher singleton
+var (
+	ip2regionSearcher *xdb.Searcher
+	ip2regionOnce     sync.Once
+)
+
 // GetCityByIp 获取ip所属城市
-func GetCityByIp(ip string) string {
+func GetCityByIp(ctx context.Context, ip string) string {
 	if ip == "" {
 		return ""
 	}
 	if ip == "::1" || ip == "127.0.0.1" {
 		return "内网IP"
 	}
-	url := "http://whois.pconline.com.cn/ipJson.jsp?json=true&ip=" + ip
-	bytes := g.Client().GetBytes(context.TODO(), url)
-	src := string(bytes)
-	srcCharset := "GBK"
-	tmp, _ := gcharset.ToUTF8(srcCharset, src)
-	json, err := gjson.DecodeToJson(tmp)
+	ip2regionOnce.Do(func() {
+		dataDir := g.Cfg().MustGet(ctx, "system.dataDir").String()
+		if dataDir == "" {
+			dataDir = "./resource/data"
+		}
+		if !filepath.IsAbs(dataDir) {
+			dataDir, _ = filepath.Abs(dataDir)
+		}
+		xdbPath := filepath.Join(dataDir, "ip2region.xdb")
+		// 从文件头获取版本号
+		header, err := xdb.LoadHeaderFromFile(xdbPath)
+		if err != nil {
+			g.Log().Error(ctx, "load ip2region header failed: ", err)
+			return
+		}
+		version, err := xdb.VersionFromHeader(header)
+		if err != nil {
+			g.Log().Error(ctx, "get ip2region version failed: ", err)
+			return
+		}
+		cBuff, err := xdb.LoadContentFromFile(xdbPath)
+		if err != nil {
+			g.Log().Error(ctx, "load ip2region xdb failed: ", err)
+			return
+		}
+		ip2regionSearcher, err = xdb.NewWithBuffer(version, cBuff)
+		if err != nil {
+			g.Log().Error(ctx, "create ip2region searcher failed: ", err)
+		}
+	})
+	if ip2regionSearcher == nil {
+		return ""
+	}
+	region, err := ip2regionSearcher.Search(ip)
 	if err != nil {
 		return ""
 	}
-	if json.Get("code").Int() == 0 {
-		city := fmt.Sprintf("%s %s", json.Get("pro").String(), json.Get("city").String())
-		return city
-	} else {
+	// region format: "中国|0|四川省|成都市|电信"
+	parts := gstr.Split(region, "|")
+	if len(parts) < 3 {
 		return ""
 	}
+	if parts[0] != "中国" {
+		return parts[0]
+	}
+	city := fmt.Sprintf("%s %s", parts[2], parts[3])
+	return city
 }
 
 // 写入文件
