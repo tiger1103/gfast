@@ -113,12 +113,22 @@ func (s *sysOperLog) OperationLogListByPage(req *dao.SysOperLogSearchReq) (total
 			model = model.Where("oper_time <=", req.EndTime)
 		}
 		if req.SortName != "" {
-			if req.SortOrder != "" {
-				order = req.SortName + " " + req.SortOrder
-			} else {
-				order = req.SortName + " DESC"
-			}
-		}
+	        allowedColumns := map[string]string{
+	            "operId":   "oper_id",
+	            "operTime": "oper_time",
+	            "status":   "status",
+	            "title":    "title",
+	        }
+	        col, ok := allowedColumns[req.SortName]
+	        if !ok {
+	            return 0, 0, nil, gerror.New("非法的排序字段")
+	        }
+	        dir := "DESC"
+	        if gstr.ToUpper(req.SortOrder) == "ASC" {
+	            dir = "ASC"
+	        }
+	        order = col + " " + dir
+	    }
 	}
 	total, err = model.Count()
 	if err != nil {
